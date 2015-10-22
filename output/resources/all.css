@@ -1,0 +1,716 @@
+@charset 'utf-8';
+/*! Reset */
+
+/*  Based on Eric Meyer's
+    http://meyerweb.com/eric/tools/css/reset/ 
+*/
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strong, sub, sup, var,
+b, u, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, 
+menu, nav, output, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  vertical-align: baseline;
+}
+input, button {
+  font-family: inherit;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer,
+header, hgroup, main, menu, nav, section {
+  display: block;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+html {
+  box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+          text-size-adjust: 100%;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+
+
+
+/*   ----------------------   */
+/*!  COLOUR REFERENCE         */
+/*                            */
+/*   #607080   Grey           */
+/*   #EFF0F2   10% Grey       */
+/*   #F7F8F9    5% Grey       */
+/*                            */
+/*   #BD3338   Red            */
+/*   #1D8E43   Green          */
+/*   #1369BF   Blue           */
+/*                            */
+/*   #F8EAEB   10% Red        */
+/*   #E8F3EC   10% Green      */
+/*   #E7EFF8   10% Blue       */
+/*   ----------------------   */
+
+
+
+/*! BASIC SETTINGS AND STRUCTURE */
+/* ------------------------------------------------------------------------- */
+
+body {
+  background-color: #607080;
+  font-family: 'Georgia', serif;
+  font-size: 100%;        /* 16 */
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.375rem;  /* 22 */
+}
+
+.wrapper {
+  background-color: #F7F8F9;
+  margin: 0 auto;
+  max-width: 65rem;   /* 1040 */
+  min-height: 100vh;
+  padding: 1.375rem 1rem;   /* 22 | 16 */
+}
+
+
+
+/*! HEADINGS */
+/* ------------------------------------------------------------------------- */
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0 0 1.375rem;  /* 22 bottom margin */
+}
+
+h1 {
+  font-size: 1.375rem;  /* 22 */
+}
+
+h2 {
+  font-size: 1.25rem;  /* 20 */
+}
+
+h3 {
+  font-size: 1.125rem;  /* 18 */
+}
+
+h4 {
+  font-size: 1rem;  /* 16 */
+  font-style: italic;
+}
+
+
+
+/*! BASIC ELEMENTS */
+/* ------------------------------------------------------------------------- */
+
+blockquote,
+figure,
+p,
+pre,
+table, caption,
+dl, ol, ul {
+  margin-bottom: 1.375rem;  /* 22 / 16 */
+}
+
+blockquote,
+pre {
+  background-color: #EFF0F2;
+  padding: 0.6875rem 1rem;  /* 11 & 16 */
+}
+
+blockquote {
+  font-style: italic;
+}
+
+blockquote em,
+blockquote i {
+  font-style: normal;
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+figcaption {
+  font-style: italic;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #607080;
+  margin: 1.375rem 20%;   /* 22 | 20% */
+}
+
+img {
+  max-width: 100%;
+}
+
+pre {
+  overflow-x: scroll;
+}
+
+
+
+/*! LISTS */
+/* ------------------------------------------------------------------------- */
+
+dl,
+ol,
+ul {
+  margin-bottom: 1.375rem;    /* 22 */
+}
+
+ol,
+ul {
+  list-style-position: outside;
+  padding-left: 2rem;   /* 32 */
+}
+
+ol {
+  list-style-type: decimal;
+}
+
+ul {
+  list-style-type: square;
+}
+
+
+
+/*! LINKS */
+/* ------------------------------------------------------------------------- */
+
+a:link {
+  color: #1369BF;   /* Blue */
+}
+
+a:visited {
+  color: #607080;   /* Grey */
+}
+
+a:focus,
+a:hover,
+a:active {
+  background-color: #E7EFF8;  /* 10% Blue */
+  color: #1369BF;             /* Blue */
+}
+
+
+
+/*! PHRASING ELEMENTS (extra text styles) */
+/* ------------------------------------------------------------------------- */
+
+strong,
+b {
+  font-weight: bold;
+}
+
+em,
+i {
+  font-style: italic;
+}
+
+code,
+small {
+  font-size: 0.875rem;  /* 14 / 16 */
+  line-height: 1;  /* Prevent height of content box exceeding p line-height */
+}
+
+code {
+  font-family: 'Source Code Pro', 'Consolas', 'Monaco', monospace;
+}
+
+small {
+  color: #607080;
+}
+
+
+
+/*!  TABLES                   */
+/* ------------------------------------------------------------------------- */
+
+table {
+  /* Restrain table width and force overflow on smaller screens. */
+  table-layout: fixed;
+  width: 100%;
+}
+
+caption {
+  font-style: italic;
+}
+
+thead {
+  border-bottom: 1px solid #607080;
+}
+
+tfoot {
+  border-top: 1px solid #607080;
+}
+
+th,
+td {
+  width: auto;
+  padding: 0.6875rem;  /* 11 / 16 */
+  overflow: auto;
+}
+
+th {
+  background-color: #EFF0F2;
+  font-weight: bold;
+  text-align: left;
+}
+
+.table-figures {
+  text-align: right;
+}
+
+
+
+/*! SITE HEADER */
+/* ------------------------------------------------------------------------- */
+
+.site-header {
+  border-left: 0.5rem solid #1369BF;  /*  8 / 16 */
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+  margin-bottom: 1.375rem;            /* 22 / 16 */
+  padding-left: 0.5rem;               /*  8 / 16 */
+}
+
+.site-title-container {
+  -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+          flex-shrink: 0;
+  margin-right: 2rem;   /* 32 */
+}
+
+.site-title {
+  font-size: 1.375rem;    /* 22 */
+  line-height: 1.375rem;  /* 22 */
+  margin-bottom: 0;
+}
+
+.site-byline {
+  margin-bottom: 0.6875rem;   /* 11 */
+}
+
+.site-menu-container {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+
+.site-links {
+  color: #607080;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  list-style-type: none;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.site-links li {
+  margin-right: 0.5rem;   /* 8 */
+}
+
+.site-links li:last-child {
+  margin-right: 0;
+}
+
+.site-search {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-basis: 100%;
+      -ms-flex-preferred-size: 100%;
+          flex-basis: 100%;
+  margin-top: 0.6875rem;    /* 11 */
+}
+
+.site-search .search-field,
+.site-search .search-button {
+  border: 1px solid #607080;
+  border-radius: 0;
+  margin: 0;
+}
+
+.site-search .search-field {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 60%;
+      -ms-flex: 1 1 60%;
+          flex: 1 1 60%;
+}
+
+.site-search .search-button {
+  background-color: #EFF0F2;
+  border-left: 0;
+  -webkit-flex-basis: 40%;
+      -ms-flex-preferred-size: 40%;
+          flex-basis: 40%;
+}
+
+
+
+/*! SITE FOOTER */
+/* ------------------------------------------------------------------------- */
+
+.site-footer {
+  -webkit-flex-basis: 100%;
+      -ms-flex-preferred-size: 100%;
+          flex-basis: 100%;
+}
+
+
+
+/*! ARTICLES */
+/* ------------------------------------------------------------------------- */
+
+article {
+  border-bottom: 1px solid #607080;
+  margin-bottom: 4.125rem;  /* 66 / 16 */
+}
+
+article:last-child {
+  border-bottom: none;
+}
+
+article header h2 {
+  margin-bottom: 0;
+}
+
+article header time {
+  color: #607080;
+}
+
+article p {
+  max-width: 35rem;  /* 560 / 16 */
+}
+
+
+
+/*! ARCHIVES */
+/* ------------------------------------------------------------------------- */
+
+.archive-date {
+  color: #607080;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 6rem;
+      -ms-flex: 0 0 6rem;
+          flex: 0 0 6rem;   /* 0 0 96 */
+  font-family: 'Source Code Pro', 'Consolas', 'Monaco', monospace;
+  font-size: 0.875rem;    /* 14 / 16 */
+  margin-right: 0.5rem;   /* 8 */
+}
+
+.archive-item {
+  margin-bottom: 0.6875rem;  /* 11 */
+}
+
+.archive-link {
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.archive-list {
+  padding-left: 0;
+  list-style-type: none;
+}
+
+
+
+/*! FLAGS */
+/* ------------------------------------------------------------------------- */
+
+.flag {
+  background-color: #E7EFF8;
+  border-left: 0.5rem solid #1369BF;  /* 8 */
+  margin-bottom: 1.375rem;           /* 22 */
+  padding: 0.6875rem 0.5rem;         /* 11 | 8 */
+}
+
+.flag :last-child {
+  margin-bottom: 0;
+}
+
+
+
+/*! MODIFIER CLASSES     */
+/* ("Icing on the cake") */
+/* ------------------------------------------------------------------------- */
+
+.full-width {
+  max-width: 100%;
+}
+
+.mute-links a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.osx-menu {
+  font-family: -apple-system, -apple-system-font, "Lucida Grande", sans-serif;
+}
+
+
+
+/*! TYPEKIT OVERRIDES */
+/* ------------------------------------------------------------------------- */
+
+.wf-active body {
+  font-family: 'rooney-web', 'Georgia', serif;
+}
+
+.wf-active strong,
+.wf-active b,
+.wf-active th {
+  font-weight: 500;
+}
+
+
+
+/*! MEDIA QUERY: Mid-sized screens */
+/* ------------------------------------------------------------------------- */
+
+/* 35rem == 560 == p max-width */
+@media screen and (min-width: 35rem) {
+
+  /* Structure: increase padding */
+  .wrapper {
+    padding: 1.375rem 2.5rem;   /* 22 | 40 */
+  }
+
+
+
+  /* Site header: adjust link layout */
+  .site-links {
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+  }
+
+  .site-links li {
+    margin-right: 5%;
+  }
+
+
+
+  /* Headings: larger font sizes for larger screens */
+  h1,
+  h2,
+  h3 {
+    line-height: 2.75rem;  /* 44 */
+  }
+
+  h1 {
+    font-size: 2.625rem;  /* 42 */
+  }
+
+  h2 {
+    font-size: 2.25rem;  /* 36 */
+  }
+
+  h3 {
+    font-size: 1.75rem;  /* 28 */
+  }
+
+  h4 {
+    font-size: 1.25rem;  /* 20 */
+    font-style: normal;
+  }
+
+
+
+  /* Table: adapt to screen width */
+  table {
+    table-layout: auto;
+  }
+
+}
+
+
+
+/*! MEDIA QUERY: Larger screens */
+/* ------------------------------------------------------------------------- */
+
+/* 50rem == 800 */
+@media screen and (min-width: 50rem) {
+
+  /* Structure: switch to two-column layout */
+  .wrapper {
+    -webkit-box-align: baseline;
+    -webkit-align-items: baseline;
+        -ms-flex-align: baseline;
+            align-items: baseline;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;  /* Force footer to the bottom */
+  }
+
+  main {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 0;
+        -ms-flex: 1 1 0;
+            flex: 1 1 0;
+    min-width: 0;  /* Fixes overflow in Firefox (needed as of 2015-08) */
+  }
+
+
+
+  /* Site header: switch to vertical layout */
+  .site-header {
+    border-left: 0;
+    display: block;
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 10rem;
+        -ms-flex: 0 0 10rem;
+            flex: 0 0 10rem;    /* 160 */
+    margin-right: 5rem;  /* 80 */
+    padding-left: 0;
+  }
+
+  .site-title-container {
+    border-left: 0.5rem solid #1369BF;  /*  8 / 16 */
+    margin-right: 0;
+    padding-left: 0.5rem;               /*  8 / 16 */
+  }
+
+  .site-links {
+    display: block;
+    margin-bottom: 0.6875rem;  /* 11 */
+  }
+
+  .site-links li {
+    margin-right: 0;
+  }
+
+  .site-search {
+    display: block;
+  }
+
+  .site-search .search-field,
+  .site-search .search-button {
+    width: 100%;
+  }
+
+  .site-search .search-button {
+    border-left: 1px solid #607080;  /* Restore removed border-left */
+  }
+
+}
+
+
+/*   ----------------------   */
+/*!  COLOUR REFERENCE         */
+/*                            */
+/*   #1369BF   Blue           */
+/*   #1D8E43   Green          */
+/*   #BD3338   Red            */
+/*   #607080   Grey           */
+/*                            */
+/*   ----------------------   */
+
+
+/*! Blue */
+.hljs-at_rule,
+.hljs-attribute,
+.hljs-built_in,
+.hljs-command,
+.hljs-decorator,
+.hljs-keyword,
+.hljs-literal,
+.hljs-preprocessor,
+.hljs-tag {
+  color: #1369BF;
+}
+
+
+/*! Green */
+.hljs-regexp,
+.hljs-string,
+.xml .hljs-attribute {
+  color: #1D8E43;
+}
+
+
+/*! Red */
+.hljs-cdata,
+.hljs-constant,
+.hljs-hexcolor,
+.hljs-important,
+.hljs-number,
+.hljs-subst,
+.hljs-variable,
+.json .hljs-literal,
+.xml .hljs-value {
+  color: #BD3338;
+}
+
+
+/*! Grey */
+.hljs-comment,
+.hljs-doctype,
+.hljs-pi,
+.hljs-prompt,
+.hljs-shebang,
+.line-number {
+  color: #607080;
+}
+
+
+/*! Black */
+.css .hljs-tag,
+.objectivec .hljs-title {
+  color: #000;
+}
