@@ -399,6 +399,9 @@ th {
   -webkit-flex-basis: 100%;
       -ms-flex-preferred-size: 100%;
           flex-basis: 100%;
+  -webkit-align-self: flex-end;
+      -ms-flex-item-align: end;
+          align-self: flex-end;
 }
 
 
@@ -413,6 +416,10 @@ article {
 
 article:last-child {
   border-bottom: none;
+}
+
+article header {
+  margin-bottom: 1.375rem; /* 22 / 16 */
 }
 
 article header h2 {
