@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ super() }}Archives{% endblock %}
+
+{% block content %}
+  <h2>Archives</h2>
+    {% for group in content|groupby('date.year')|sort(reverse=True) %}
+    <h3>{{ group.grouper }}</h3>
+    <ul class="archive-list mute-links">
+    {% for post in group.list|sort(reverse=True) %}
+      <li class="archive-item">
+        <a class="archive-link" href="{{ post.url }}">
+          <time datetime="{{ post.date.strftime('%Y-%m-%dT%H:%M:%S%z') }}" class="archive-date">{{ post.date.strftime('%Y-%m-%d') }}</time>
+          <span class="archive-title">{{ post.title }}</span>
+        </a>
+      </li>
+    {% endfor %}
+    </ul>
+    {% endfor %}
+{% endblock %}
