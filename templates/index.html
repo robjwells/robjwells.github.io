@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{% if content.page_number is equalto 1 %}
+{{ settings['site']['title'] }}{% else %}
+{{ super() }}page {{ content.page_number }}{% endif %}
+{% endblock %}
+
+{% block content %}
+{% for post in content %}
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="{{ post.url }}">{{ post.title }}</a></h2>
+      {% if post.date %}
+      <p><time datetime="{{ post.date.strftime('%Y-%m-%dT%H:%M') }}">{{ post.date.strftime('%A, %B %-d %Y') }}</time></p>
+      {% endif %}
+    </header>
+    {{ post.html }}
+  </article>
+{% endfor %}
+  <ul class="pagination">
+    {% if content.newer_index_url %}<li><a href="{{ content.newer_index_url }}">Newer posts</a></li>{% endif %}
+    {% if content.older_index_url %}<li><a href="{{ content.older_index_url }}">Older posts</a></li>{% endif %}
+  </ul>
+{% endblock %}

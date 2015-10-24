@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}{{ settings['site']['title'] }} – {% endblock %}</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+  <!-- Load TypeKit fonts -->
+  <script src="https://use.typekit.net/mlw6eih.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+
+  <!-- Load my combined JavaScript -->
+  <script src="/resources/all.min.js" async></script>
+
+  <link rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="shortcut icon" href="http://img.robjwells.com/site/favicon.ico">
+  <link rel="apple-touch-icon-precomposed" href="http://img.robjwells.com/site/apple-touch-icon-precomposed.png">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content={{ settings['site']['description'] }}">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="#">{{ settings['site']['title'] }}</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="#">About</a></li>
+        <li><a href="#">Archives</a></li>
+        <li><a href="#">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <aside id="site-social">
+      <ul class="site-links mute-links">
+        <li><a href="https://bitbucket.org/robjwells/">Bitbucket</a></li>
+        <li><a href="https://www.flickr.com/photos/orwellianrob/">Flickr</a></li>
+        <li><a href="https://github.com/robjwells">GitHub</a></li>
+        <li><a href="https://pinboard.in/u:robjwells">Pinboard</a></li>
+      </ul>
+    </aside>
+
+    <form class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" class="search-field" placeholder="Site search via DuckDuckGo">
+      <input name="sites" value="{{ settings['site']['url'] }}" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+{% block content %}{% endblock %}
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>
