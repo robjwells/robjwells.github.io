@@ -18,8 +18,8 @@
     {{ post.html }}
   </article>
 {% endfor %}
-  <ul class="pagination">
-    {% if content.newer_index_url %}<li><a href="{{ content.newer_index_url }}">Newer posts</a></li>{% endif %}
-    {% if content.older_index_url %}<li><a href="{{ content.older_index_url }}">Older posts</a></li>{% endif %}
-  </ul>
+  <div class="pagination">
+    {% if content.older_index_url %}<p class="pagination-older"><a href="{{ content.older_index_url }}">Older posts</a></p>{% endif %}
+    {% if content.newer_index_url %}<p class="pagination-newer"><a href="{{ content.newer_index_url }}">Newer posts</a></p>{% endif %}
+  </div>
 {% endblock %}
