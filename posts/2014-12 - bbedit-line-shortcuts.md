@@ -8,13 +8,13 @@ However, I've been doing more work on the command line recently, and not having 
 
 So I whipped up some scripts to give me back those shortcuts while keeping the rest of the Emacs stuff disabled.
 
-### Start of line
+## Start of line
 
     applescript:
     set line_start to the characterOffset of line (startLine of the selection)
     select insertion point before character line_start
 
-### End of line
+## End of line
 
     applescript:
     set current_line to line (startLine of the selection)

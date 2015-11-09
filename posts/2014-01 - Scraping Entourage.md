@@ -8,7 +8,7 @@ Early last year myself and my flatmate got into [Entourage][], which is incredib
 
 In December, when my flatmate rewatched the series, I decided to do something with the soundtrack. Getting the music (for 96 episodes) wasn’t as easy as downloading an album — it took some programming, a few headaches, and a bit of tedium. What follows was ultimately successful, but I’d hesitate to call it a success story.
 
-### Sourcing the music
+## Sourcing the music
 
 HBO’s website *does* list the tracks used in each episode, but you can’t get at them as it’s all Flash. However, [Tunefind][] has [good data][tfent], which I imagine some industrious person has transcribed from the official list. In some cases it’s more complete.
 
@@ -73,7 +73,7 @@ The loop starting on line 20 appends a tuple of the track title and artist name,
 
 Lastly the list is written to a file; I chose JSON because I wasn’t sure what I was going to do next. The tuples are converted to lists, which is fine for our purposes.
 
-### Doing something with it
+## Doing something with it
 
 We’ve now got a nice file of titles and artists — 789 tracks in total. The next question is how to use it. My goal was to construct a Spotify playlist, as the service has a large catalogue of tracks available for free and it would take no effort to use once set up.
 
@@ -194,7 +194,7 @@ The script does a decent job of working around the inability to directly control
 
 Being human, though, I occasionally picked the wrong button in the dialog, meaning some tracks weren’t reported or were reported in error. Ah well. I was still left with a playlist of about 570 tracks.
 
-### A musical interlude
+## A musical interlude
 
 <div class="sym-add flag flag-generic flag-music">
   <p>
@@ -251,7 +251,7 @@ At this point I’ve run the script and redirected the output to a file. My plan
 
 I’ve done this already with the tracks in the reported file, run through a modified version of the above script. It works reasonably well.
 
-### Wrapping up
+## Wrapping up
 
 While writing (and [re-writing][commits]) this post I began to doubt its value. These aren’t polished scripts and this shouldn’t be taken as a guide, but at the same time it is how I solved the problem. Examining the choices made — however little thought went into them — has been instructive for me and hopefully will give people facing similar problems something to think about.
 

@@ -39,7 +39,7 @@ I initially wanted to consolidate the Python scripts into one file but that turn
 [docopt]: http://docopt.org
 [pip]: http://www.pip-installer.org/en/latest/
 
-### Python module: bbcradio
+## Python module: bbcradio
 
 A look at the programme info dictionaries at the top of our modules reveals the differences in our methods:
 
@@ -78,7 +78,7 @@ I’ve kept Dr Drang’s [episodeInfo][epinfo-drang] function — used to fetch 
 
 But there is one important difference: the use of Beautiful Soup’s `select` function, which allows for a liberal search for multiple class names, instead of `find_all`, which only returns elements which *exactly* match a given class string. This is important because every other track listing has an `alt` class.
 
-### Command-line interface: beebhijack
+## Command-line interface: beebhijack
 
 By itself bbcradio is inert, with the moving parts contained in [a single interface script][bb-beebhijack] that has two modes which return an episode’s streaming URL or its details and track list. (Originally these were separate scripts, but there was a lot of duplicate code.)
 
@@ -142,7 +142,7 @@ For example, we both fetch the episode ID in our modules, but I also construct t
 
 This isn’t a big deal either way but I think it reveals my thinking about the beebhijack script: it’s a bridge between what you want to achieve and the program that actually does the work. The heaviest lifting done by beebhijack (joining the details) controls how the information is output, not what the information is.
 
-### Putting it all together
+## Putting it all together
 
 With the Python code sorted, all that’s left to do is to create individual pre- and post-recording AppleScripts that you get Audio Hijack to run (on the input and recording tabs, respectively).
 

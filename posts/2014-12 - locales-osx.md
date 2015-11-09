@@ -40,7 +40,7 @@ That’ll save a .plist file in ~/Library/LaunchAgents/ — a job that gets run 
 
 Setting the locale in this way means that it will be set correctly for any process that follows (even something like `do shell script` in AppleScript).
 
-### But wait
+## But wait
 
 Since we’re mucking around with Launch Agents and using launchctl at boot, we can set up the environment however we like. Rather than use launchctl directly, I run my own script that does several things:
 
@@ -85,7 +85,7 @@ Not everywhere, though. For instance, [TextExpander][] [ensures UTF-8 support][t
 [TextExpander]: http://smilesoftware.com/TextExpander/index.html
 [te-help]: http://www.smilesoftware.com/help/TextExpander/applescript.html
 
-### ‘Legacy subcommands’
+## ‘Legacy subcommands’
 
 The language in the launchctl man page refers to “the previous implementation of launchd” and Yosemite brings with it a new (painful) interface, with the previous interface listed under the heading “legacy subcommands”. Some of the commands listed there don’t have equivalents in the new interface — including the vital `setenv`.
 

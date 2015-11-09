@@ -78,7 +78,7 @@ The other option, `--format`, determines how the date is printed. I use docoptâ€
 
 [iso]: http://en.wikipedia.org/wiki/ISO_8601
 
-### Using the script in TextExpander
+## Using the script in TextExpander
 
 The script works great as a command-line utility:
 

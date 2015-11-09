@@ -13,7 +13,7 @@ Want to quickly restart your Mac in your Windows Bootcamp partition, without hav
 
 Then, to restart, just pick it from that script menu.
 
-### Extra, extra
+## Extra, extra
 
 <del>*Using Leopard (10.5) or earlier?* You’ll have to change the first line as “diskutil info” doesn’t work with volume names. Try this:</del>
 
@@ -27,7 +27,7 @@ Then, to restart, just pick it from that script menu.
 
 *Don’t want to have to type your password in every time?* Add “password "YourPassword" ” after “ -nextonly" ” on the second line, then save your script as run-only. **I do not recommend this.** Your password will not be encrypted. It is only slightly less insecure than keeping your password in a text file. Please, *do not do this*.
 
-### Using it
+## Using it
 
 I’ve got it saved to my ~/Library/Scripts folder, and have [Launchbar][lb] set to index that folder so I can just type "Restart in Windows" into the prompt, hit enter, type my password and then I’m set.
 
@@ -38,7 +38,7 @@ I don’t recommend that you save it as an application, which would let you add 
 [fs]:   http://www.red-sweater.com/fastscripts/
 [lb]:   http://www.obdev.at/products/launchbar/index.html
 
-### The code
+## The code
 
     applescript:
     set deviceID to (do shell script "diskutil info ¬
@@ -50,7 +50,7 @@ I don’t recommend that you save it as an application, which would let you add 
     tell application "Finder" to restart
 
 
-### The story
+## The story
 
 I talk about the origins in [my first post about the script][r1]. Basically, holding down option on my keyboard was unreliable because the computer had booted up too fast for the Bluetooth connection. I’d been using [Bootchamp][], a menubar utility, for a while but you couldn’t trigger a restart from Launchbar and had to mount the partition first.
 
