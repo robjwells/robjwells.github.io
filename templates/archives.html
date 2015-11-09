@@ -3,9 +3,9 @@
 {% block title %}{{ super() }}Archives{% endblock %}
 
 {% block content %}
-  <h2>Archives</h2>
+  <h1>Archives</h1>
     {% for group in content|groupby('date.year')|sort(reverse=True) %}
-    <h3>{{ group.grouper }}</h3>
+    <h2>{{ group.grouper }}</h2>
     <ul class="archive-list mute-links">
     {% for post in group.list|sort(reverse=True) %}
       <li class="archive-item">
