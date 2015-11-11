@@ -10,7 +10,7 @@
     {% for post in group.list|sort(reverse=True) %}
       <li class="archive-item">
         <a class="archive-link" href="{{ post.url }}">
-          <time datetime="{{ post.date.strftime('%Y-%m-%dT%H:%M:%S%z') }}" class="archive-date">{{ post.date.strftime('%Y-%m-%d') }}</time>
+          <time class="archive-date" datetime="{{ post.date.strftime('%Y-%m-%dT%H:%M:%S%z') }}">{{ post.date.strftime('%Y-%m-%d') }}</time>
           <span class="archive-title">{{ post.title }}</span>
         </a>
       </li>
