@@ -35,7 +35,7 @@ It took me a while to work out that this combined with Dr Drang’s larger text 
     <img
         alt="My CSS changes to the And Now It's All This mobile css file caused the text to become huge."
         src="http://img.robjwells.com.s3.amazonaws.com/posts/2015-10-06_massive.png"
-        width="320px">
+        width="320">
 </p>
 
 So those rules went, and some new ones to fix the size of the header came in. But otherwise there are no changes to the styles.
@@ -46,7 +46,7 @@ The change in approach means that the result isn’t an exact match for the real
     <img
         alt="A portrait comparison of my CSS changes to the real And Now It's All This site."
         src="http://img.robjwells.com.s3.amazonaws.com/posts/2015-10-06_portrait-comparison.png"
-        width="641px">
+        width="641">
 </p>
 
 And in landscape the fixed sizes in the CSS file combine with the use of “device size” to produce a layout that’s larger than the screen width, forcing Safari to resize the viewport until it *just* fits:
@@ -55,7 +55,7 @@ And in landscape the fixed sizes in the CSS file combine with the use of “devi
     <img
         alt="A landscape comparison of my CSS changes to the real And Now It's All This site."
         src="http://img.robjwells.com.s3.amazonaws.com/posts/2015-10-06_landscape-comparison.png"
-        width="568px">
+        width="568">
 </p>
 
 The changes mean that responsive design mode in Safari works for portrait mode:
