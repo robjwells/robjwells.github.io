@@ -1,6 +1,7 @@
 [
     ["/Users/robjwells/Sites/primaryunit-2015/build/*",
      {"subdir": "resources"}],
+    ["images"],
     ["pgp"],
     ["robots.txt"]
 ]
