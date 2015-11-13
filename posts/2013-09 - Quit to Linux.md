@@ -59,7 +59,7 @@ My Steam account is 10 years old this month. I signed up in September 2003. At t
 
 When Valve announced that you would be able to download Half-Life 2 instead of buying a physical copy I wondered why anyone would want to spend several days downloading a game when you could just nip to the shops.
 
-[gif]: http://img.robjwells.com/posts/2013-09-17_steam.gif
+[gif]: /images/2013-09-17_steam.gif
 
 A decade later I have [about 200 games registered on my Steam account][steamacc] and I haven’t bought a disc copy of a game in two years (and that was [an exceptional case][dxhr]).
 

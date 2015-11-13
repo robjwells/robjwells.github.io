@@ -175,7 +175,7 @@ This formats the track (using `prep_track` to join the artist and title, and rep
 The AppleScript opens the Spotify search URL and displays a dialog box:
 
 <p class="pic">
-  <img alt="Screenshot of the dialog box on top of the Spotify search results" src="http://img.robjwells.com/posts/2014-01-22_entprompt.png">
+  <img alt="Screenshot of the dialog box on top of the Spotify search results" src="/images/2014-01-22_entprompt.png">
 </p>
 
 The chosen button is returned and assigned to `result`. If the searched-for track couldn’t be found, the “Report” button adds it to the reported file (lines 46 & 47) and proceeds as if “Next” had also been clicked: writing the index of the next track to the position file and returning `True` to cause the loop in lines 59–61 to continue. “Stop” returns false and ends the loop — and so the script.
@@ -255,7 +255,7 @@ I’ve done this already with the tracks in the reported file, run through a mod
 
 While writing (and [re-writing][commits]) this post I began to doubt its value. These aren’t polished scripts and this shouldn’t be taken as a guide, but at the same time it is how I solved the problem. Examining the choices made — however little thought went into them — has been instructive for me and hopefully will give people facing similar problems something to think about.
 
-[commits]: http://img.robjwells.com/posts/2014-01-22_entcommits.png
+[commits]: /images/2014-01-22_entcommits.png
 
 And while I’d hesitate to call this a *real* problem, the cobbled-together solution has at least [produced something][playlist] I’m still listening to after two months.
 

@@ -45,7 +45,7 @@ The biggest file by far is the [League Gothic][lg] web font file, which I like a
 
 The about button, styled as a red casino chip, is the only thing left of those fragile elements. Originally I had [two other chips][chips], with the number on their faces displaying the number of hands won and lost. I liked the look but they were ultimately so fiddly I ditched them for the simpler, clearer text-only counters.
 
-[chips]: http://img.robjwells.com/2013-02-25_bjchips.png
+[chips]: /images/2013-02-25_bjchips.png
 
 These also display better in Firefox, as the tabs around the chips’ outside — originally faked using a dashed border — displayed as a solid ring (because of how Firefox handles high border-radius values).
 

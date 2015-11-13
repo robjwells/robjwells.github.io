@@ -104,7 +104,7 @@ Or you can use TextExpander’s fill-in feature to let you pick the options on t
 
 That looks pretty gross there, and it doesn’t look good in use either:
 
-![Screenshot of the dayshift fill-in TextExpander snippet](http://img.robjwells.com/posts/2014-01-11_weekdaysfillin.png)
+![Screenshot of the dayshift fill-in TextExpander snippet](/images/2014-01-11_weekdaysfillin.png)
 
 But it gives you a lot of control and you can tab between the fields.
 

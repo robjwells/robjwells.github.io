@@ -31,7 +31,7 @@ There’s a [thread on Stack Overflow][so-yosemite] containing some discussion a
 
 Launchd agents are registered using .plist files (XML), which are a pain to work with by hand, so I recommend [Lingon][] (nicer to use) or [LaunchControl][] (exposes more settings). The most basic setup is to call launchctl directly:
 
-![Lingon set to run launchctl at startup with the arguments 'setenv LANG en_GB.UTF-8'](http://img.robjwells.com/posts/2014-12-19_locales-lingon-basic.png)
+![Lingon set to run launchctl at startup with the arguments 'setenv LANG en_GB.UTF-8'](/images/2014-12-19_locales-lingon-basic.png)
 
 [Lingon]: https://www.peterborgapps.com/lingon/
 [LaunchControl]: http://www.soma-zone.com/LaunchControl/

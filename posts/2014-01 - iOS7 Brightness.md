@@ -15,7 +15,7 @@ Not quite. Adjusting the brightness before iOS 7 was slow and a bit haphazard si
 Control Centre, however, flat-out lies to you about the brightness:
 
 <p class="pic">
-    <img alt="Side-by-side image showing the difference in brightness when the iOS7 Control Centre is shown and hidden" src="http://img.robjwells.com/posts/2014-01-16_controlcentre.png">
+    <img alt="Side-by-side image showing the difference in brightness when the iOS7 Control Centre is shown and hidden" src="/images/2014-01-16_controlcentre.png">
 </p>
 
 Now, this is by design — Control Centre’s a giant grey panel that covers the screen. But it means that the only elements at the “true” brightness are filled sections of enabled buttons and sliders.
