@@ -42,14 +42,15 @@ Dx06dOjQoUPPB704/LySh75Q9I4mdOjQoUOHDh069N7+CzAAEK0Kk5vmtLkAAAAASUVORK5CYII=
 " width="500" height="400" alt="The first frame of the gif." id="toast">
 
 <script>
+var toast_img = document.getElementById('toast');
+var data_uri = toast_img.src;
+var gif_url = '/images/2015-08-05_Junior-Senior-Yeah.gif';
 document.getElementById('toast').addEventListener('click', function (ev) {
   var target = ev.target;
-  var gif_url = '/images/2015-08-05_Junior-Senior-Yeah.gif';
-  if (target.src !== gif_url) {
-      target.old_src = target.src;
+  if (target.src.match(/^data:image/)) {
       target.src = gif_url;
   } else {
-      target.src = target.old_src;
+      target.src = data_uri;
   }
 });
 </script>
@@ -69,17 +70,18 @@ Here’s the code:
      3:  " width="500" height="400" alt="The first frame of the gif." id="toast">
      4:  
      5:  <script>
-     6:  document.getElementById('toast').addEventListener('click', function (ev) {
-     7:    var target = ev.target;
-     8:    var gif_url = 'gif URL';
-     9:    if (target.src !== gif_url) {
-    10:      target.old_src = target.src;
-    11:      target.src = gif_url;
-    12:    } else {
-    13:      target.src = target.old_src;
-    14:    }
-    15:  });
-    16:  </script>
+     6:  var toast_img = document.getElementById('toast');
+     7:  var data_uri = toast_img.src;
+     8:  var gif_url = '/images/2015-08-05_Junior-Senior-Yeah.gif';
+     9:  document.getElementById('toast').addEventListener('click', function (ev) {
+    10:    var target = ev.target;
+    11:    if (target.src.match(/^data:image/)) {
+    12:        target.src = gif_url;
+    13:    } else {
+    14:        target.src = data_uri;
+    15:    }
+    16:  });
+    17:  </script>
     17:  <noscript>
     18:    <p>
     19:      Sorry, you don’t have JavaScript enabled.
