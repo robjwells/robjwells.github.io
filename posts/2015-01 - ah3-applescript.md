@@ -23,7 +23,7 @@ On a separate but related matter, there’s no AppleScript dictionary for Audio 
 
 [ah3]: http://rogueamoeba.com/audiohijack/
 [ah3_blog]: http://weblog.rogueamoeba.com/2015/01/20/audio-hijack-3-has-arrived/
-[beeb_hijack]: http://robjwells.com/post/72667571379/hijacking-the-bbc
+[beeb_hijack]: http://robjwells.com/2014/01/hijacking-the-bbc/
 [Flask]: http://flask.pocoo.org
 [web.py]: http://webpy.org
 [Fission]: http://rogueamoeba.com/fission/

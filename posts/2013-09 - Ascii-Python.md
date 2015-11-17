@@ -3,7 +3,7 @@ date: 2013-09-14 14:05
 tags: OS X, Programming, Python, Shell
 
 <div class="sym-add flag flag-warning">
-  <p><strong>This post isn’t quite right.</strong> Please see my more recent one about <a href="http://robjwells.com/post/105693102839">setting environment variables using launchd and launchctl</a>.</p>
+  <p><strong>This post isn’t quite right.</strong> Please see my more recent one about <a href="http://robjwells.com/2014/12/locale-in-os-x-and-launch-agents/">setting environment variables using launchd and launchctl</a>.</p>
 </div>
 
 When I was writing the script in [yesterday’s post][solo-diff] I came across this bizarre text encoding problem:
@@ -13,7 +13,7 @@ When I was writing the script in [yesterday’s post][solo-diff] I came across t
 
 Ascii what? We’re all Unicode now, don’t you know? If I’m taking in UTF-8 text, keeping it in a Unicode string, and then writing it out to UTF-8 encoded text files where is goddamn Ascii creeping in?
 
-[solo-diff]: http://robjwells.com/post/61132555301/solo-diff
+[solo-diff]: http://robjwells.com/2013/09/solo-diff/
 
 This first occurred at work, while I was *trying to work*, so my horrendous hack solution was to switch the temporary files into binary mode and encode the two strings into UTF-8 before writing them out. (This was when the script was still a text filter, so the problem was only on the back end.)
 

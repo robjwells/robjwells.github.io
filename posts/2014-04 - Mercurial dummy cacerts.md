@@ -7,7 +7,7 @@ When I tried to push [my last post][manhandled] to Bitbucket I received this ugl
     abort: error: _ssl.c:507: error:14090086:SSL
     routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed
 
-[manhandled]: http://robjwells.com/post/82561579583
+[manhandled]: http://robjwells.com/2014/04/manhandled/
 
 Gross as it is, the message is straightforward: the SSL certificate failed to verify. I imagine the root cause is the whole [OpenSSL mess][heartbleed] and everyone reissuing their certificates, but it posed an immediate practical local problem: I couldn’t push to my source control.
 

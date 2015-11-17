@@ -4,7 +4,7 @@ tags: AppleScript, Programming, Python, TextExpander
 
 A little while ago I wrote about [using TextExpander to write dates][tedate], the bulk of which was given over to an Applescript that returned a long date complete with date suffixes.
 
-[tedate]: http://robjwells.com/post/44699403276/setting-a-date-with-textexpander
+[tedate]: http://robjwells.com/2013/03/setting-a-date-with-textexpander/
 
 Since I’ve been writing more and more Python, I thought it would be fun to rewrite it to see the difference between the two.
 
@@ -51,7 +51,7 @@ And now the Python:
         <strong>Update: <time>2015-01-17</time></strong>
     </p>
     <p>
-        <a href="http://robjwells.com/post/108366697214">I’ve improved the Python code.</a> Please use the more recent code and not that above.
+        <a href="http://robjwells.com/2015/01/updated-date-suffix-script/">I’ve improved the Python code.</a> Please use the more recent code and not that above.
     </p>
 </div>
 

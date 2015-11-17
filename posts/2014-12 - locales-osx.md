@@ -5,7 +5,7 @@ tags: OS X
 
 I really dislike [last year’s post about ASCII and UTF-8][rjw-ascii]. It’s one of those posts that, when you look back, reveals how little you know about a topic. The stuff in there isn’t all wrong but as a whole it’s not correct.
 
-[rjw-ascii]: http://robjwells.com/post/61198832297/get-your-us-ascii-out-of-my-face
+[rjw-ascii]: http://robjwells.com/2013/09/get-your-us-ascii-out-of-my-face/
 
 Towards the end I say that the way to make sure that the locale isn’t `C` is to export `LANG` in a bunch of profile/rc files. But that doesn’t work if those files aren’t sourced — quite common when scripts get run on your behalf.
 

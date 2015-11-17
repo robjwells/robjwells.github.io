@@ -18,7 +18,7 @@ But should you do this? No. Please don’t. At this point you’re effectively d
 
 Also: [Abracadabra][].
 
-[post]: http://robjwells.com/post/126091701894/python-counter-gotcha-with-max
+[post]: http://robjwells.com/2015/08/python-counter-gotcha-with-max/
 [js]: http://jacobsondergaard.com
 [most_common]: https://hg.python.org/cpython/file/tip/Lib/collections/__init__.py#l530
 [Abracadabra]: https://www.youtube.com/watch?v=fH850qp85Zk

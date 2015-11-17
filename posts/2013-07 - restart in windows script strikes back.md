@@ -16,7 +16,7 @@ I’ve revised the script again, this time relying on the `$NF` variable in `awk
       with administrator privileges
     tell application "Finder" to restart
 
-[1]: http://robjwells.com/post/33015505284/restart-in-windows-revenge-of-the-script
+[1]: http://robjwells.com/2012/10/restart-in-windows-revenge-of-the-script/
 
 Here’s the shell part to get the identifier on its own:
 

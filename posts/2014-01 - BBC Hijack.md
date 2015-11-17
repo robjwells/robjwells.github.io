@@ -131,7 +131,7 @@ It’s important to note that I don’t exactly `print` the details — instead 
 
 [wb]: https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/beebhijack#cl-38
 [drang-tracklist]: https://github.com/drdrang/radio2/blob/master/radio2-tracklist#L44
-[ascii]: http://robjwells.com/post/61198832297/get-your-us-ascii-out-of-my-face
+[ascii]: http://robjwells.com/2013/09/get-your-us-ascii-out-of-my-face/
 
 Generally, I think the key distinction between beebhijack and Dr Drang’s four scripts is that I keep all of the “real work” in the module.
 
