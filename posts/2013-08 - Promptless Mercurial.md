@@ -43,4 +43,4 @@ When called inside a repository, `hg now` prints something like this:
 
 If there are any changes in the working directory that’s followed by the usual output of `hg status`, like so:
 
-<img src="/images/2013-08-24_hgnow.png" alt="Image of the output of hg now when there are changes in the working directory.">
+<img src="http://www.robjwells.com/images/2013-08-24_hgnow.png" alt="Image of the output of hg now when there are changes in the working directory.">

@@ -34,7 +34,7 @@ It took me a while to work out that this combined with Dr Drang’s larger text 
 <p>
     <img
         alt="My CSS changes to the And Now It's All This mobile css file caused the text to become huge."
-        src="/images/2015-10-06_massive.png"
+        src="http://www.robjwells.com/images/2015-10-06_massive.png"
         width="320">
 </p>
 
@@ -45,7 +45,7 @@ The change in approach means that the result isn’t an exact match for the real
 <p class="pic">
     <img
         alt="A portrait comparison of my CSS changes to the real And Now It's All This site."
-        src="/images/2015-10-06_portrait-comparison.png"
+        src="http://www.robjwells.com/images/2015-10-06_portrait-comparison.png"
         width="641">
 </p>
 
@@ -54,7 +54,7 @@ And in landscape the fixed sizes in the CSS file combine with the use of “devi
 <p class="pic">
     <img
         alt="A landscape comparison of my CSS changes to the real And Now It's All This site."
-        src="/images/2015-10-06_landscape-comparison.png"
+        src="http://www.robjwells.com/images/2015-10-06_landscape-comparison.png"
         width="568">
 </p>
 
@@ -63,7 +63,7 @@ The changes mean that responsive design mode in Safari works for portrait mode:
 <p class="pic">
     <img
         alt="My CSS changes to And Now It's All This in Safari's responsive design mode in portrait."
-        src="/images/2015-10-06_portrait-rdm.png">
+        src="http://www.robjwells.com/images/2015-10-06_portrait-rdm.png">
 </p>
 
 But landscape mode is not accurate, as there isn’t the viewport-resizing that squeezes the too-large layout to fit on the phone itself:
@@ -71,7 +71,7 @@ But landscape mode is not accurate, as there isn’t the viewport-resizing that 
 <p class="pic">
     <img
         alt="My CSS changes to And Now It's All This in Safari's responsive design mode in portrait."
-        src="/images/2015-10-06_landscape-rdm.png">
+        src="http://www.robjwells.com/images/2015-10-06_landscape-rdm.png">
 </p>
 
 Lastly, I’m going to close with my tips for not going completely mad when trying to make a responsive layout:
