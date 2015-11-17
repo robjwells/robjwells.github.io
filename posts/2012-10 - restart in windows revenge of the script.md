@@ -52,9 +52,8 @@ I don’t recommend that you save it as an application, which would let you add 
 
 ## The story
 
-I talk about the origins in [my first post about the script][r1]. Basically, holding down option on my keyboard was unreliable because the computer had booted up too fast for the Bluetooth connection. I’d been using [Bootchamp][], a menubar utility, for a while but you couldn’t trigger a restart from Launchbar and had to mount the partition first.
+Basically, holding down option on my keyboard was unreliable because the computer had booted up too fast for the Bluetooth connection. I’d been using [Bootchamp][], a menubar utility, for a while but you couldn’t trigger a restart from Launchbar and had to mount the partition first.
 
-[r1]:   http://robjwells.com/post/27373542696/restarting-in-bootcamp-the-easy-way
 [Bootchamp]:    http://www.kainjow.com
 
 The first version relied on the disk identifier never changing. You can’t rely on a partition having the same identifier after a restart, so the script would silently fail.
