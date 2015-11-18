@@ -1,0 +1,74 @@
+==================================================================
+https://keybase.io/robjwells
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://www.robjwells.com
+  * I am robjwells (https://keybase.io/robjwells) on keybase.
+  * I have a public key with fingerprint BF60 AE62 6723 EBC7 97CC  12A7 9E0A 4806 CFE9 E7D1
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "eldest_kid": "0101c764d7124ef858ebddf4b257afc2af4e2cb515ad23ced27bb71a63921eb2c96e0a",
+            "fingerprint": "bf60ae626723ebc797cc12a79e0a4806cfe9e7d1",
+            "host": "keybase.io",
+            "key_id": "9e0a4806cfe9e7d1",
+            "kid": "0101c764d7124ef858ebddf4b257afc2af4e2cb515ad23ced27bb71a63921eb2c96e0a",
+            "uid": "aeabae6431c4659d69cba67742a6e700",
+            "username": "robjwells"
+        },
+        "revoke": {
+            "sig_ids": [
+                "2e148382b8eb061923f4db7b0b62b164ccdd68f9eeeb9898b97f233b08c611a10f"
+            ]
+        },
+        "service": {
+            "hostname": "www.robjwells.com",
+            "protocol": "http:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1447809251,
+    "expire_in": 157680000,
+    "prev": "147cc1bec53d66035639374dfac18153998c0b074c7249568a61fdc4f771f2a7",
+    "seqno": 6,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Comment: GPGTools - https://gpgtools.org
+
+owGtkl1oXEUUxzcm1roxaovRCmkLo4LCks7Xnbl3CS1YMEUJhVRbROo6M/fc5CbZ
+vdu7N9nEWIpSH1Jb2qAYSymIHyBYSiN+RWm1lZJqitpY1OCLVB8MQmOlSaoB49yl
++uSj8zLMzP/8z2/OOYea6jPZuvb7j/3VXP/w6rqpWZ3Z/sjXc8NIR/4Qyg+jXqht
+0OdDJSn0hj7KI0wwMVJwXxLKIXAdF7TvB1xTR6rAUBVwoEY7xFE+ZQZ8KrWWRAnm
+UQKaGk8AViiHgrDUBXE5DkuJtdWBwAoEFZIy0EZ60hhClfSsmLtYmAA8kD6xgd1R
+JY2wcFpVoDWM7J09FGp4/6H/n7n7a3YKlLa8nBHDheP5wjNaCSk5VQIkxqmwAnFJ
+FcGq40j3VKGvr4J251AMA1EvpIWthF2WuoLyTyAKhLvMpdpiYUE8ygLua6mxFlQT
+wY3xfeEGHgBoz/Vc7cmAMqaxawQhiuAA7bTeNuVAaGrmaZmup69Wq63/IrSaqGjp
+ynGURCbqs8/dSVLOp2QTyVC5pgdduO5U0GHJt52yEQMQV8KohPLESk0SptaEc+li
+jzokh2CwHMZQCFOFI4WL7UrzwIC1JDxtqAbjMF8IzBxbVya5HyhDXOIwz3MN1lhy
+Iyn3HOEqQQLf8EBKEtg5QOnfdpUilBc5lKgua2mrV1JJfwxod3akrqUhU5fNrLjx
+hnSEM9mbb/9nrvUrNy1vXSpfqM4MX5h97dDTE58/MHOyu/PEg0OTe0+9ubp+U9Oa
+x4qNzXPFNvZHtHRb1+L85is/X9qx/5lx9vzivvlp0dMx9c1703ePr6MjK8/veai8
+5cfp59qvfPjp4NZr+86MDprLG188PXbm8Ryf3/XtqXNv3dHzxZGxW15f+LOhbXZq
+WXQ0XVx1/Kt3b/3k3OG1LS8f+GCneyD7m9yj6xu/ny7C+tF49qVL7xx+6uq6g6z9
+5McznduO3fvG3A8Hf3rhaKfceJ87dnXvk/vbLr76/soNx9csNI79snTn0eTaox+J
+bRPrzz873jKS798xOcrummw4svj2Wbbpsy9PL6zoOLv29+9WbW5ebt/ya7jhnsv4
+bw==
+=0OT+
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/robjwells
+
+==================================================================

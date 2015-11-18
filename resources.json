@@ -3,5 +3,6 @@
      {"subdir": "resources"}],
     ["images"],
     ["pgp"],
-    ["robots.txt"]
+    ["robots.txt"],
+    ["keybase.txt"]
 ]
