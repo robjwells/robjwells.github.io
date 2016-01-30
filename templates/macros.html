@@ -1,0 +1,7 @@
+{% macro maketitle(text, is_index=False) %}
+  {%- if is_index and text is equalto 'page 1' -%}
+    {{ settings['site']['title'] }}
+  {%- else -%}
+    {{ settings['site']['title'] }} – {{ text }}
+  {%- endif -%}
+{% endmacro %}

@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
+{% import 'macros.html' as macros %}
 
-{% block title %}
-{% if content.page_number is equalto 1 %}
-{{ settings['site']['title'] }}{% else %}
-{{ super() }}page {{ content.page_number }}{% endif %}
-{% endblock %}
+{% block title -%}
+  {{ macros.maketitle('page ' + content.page_number|string, is_index=True) }}
+{%- endblock %}
 
 {% block content %}
 {% for post in content %}

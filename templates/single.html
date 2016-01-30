@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% import 'macros.html' as macros %}
 
-{% block title %}{{ super() }}{{ content.title }}{% endblock %}
+{% block title %}{{ macros.maketitle(content.title) }}{% endblock %}
 
 {% block content %}
   <article>
