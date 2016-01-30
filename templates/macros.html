@@ -5,3 +5,15 @@
     {{ settings['site']['title'] }} – {{ text }}
   {%- endif -%}
 {% endmacro %}
+
+{% macro makearticle(content) -%}
+  <article>
+    <header>
+      <h1 class="mute-links"><a href="{{ content.url }}">{{ content.title }}</a></h1>
+      {% if content.date %}
+      <p><time datetime="{{ content.date.strftime('%Y-%m-%dT%H:%M') }}">{{ content.date.strftime('%A, %B %-d %Y') }}</time></p>
+      {% endif %}
+    </header>
+    {{ content.html }}
+  </article>
+{%- endmacro %}
