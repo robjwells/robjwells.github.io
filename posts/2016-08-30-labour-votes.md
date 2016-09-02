@@ -34,12 +34,12 @@ This is nonsense, as this chart shows:
 
 Between the 1997 victory and 2010 defeat, Labour lost 4.9 million votes. These votes largely didn’t go to the Conservatives. In 2001 both lost many votes, and the Tory recovery in 2005 was small compared to the number of votes Labour lost again.
 
-And other parties did not increase their vote by nearly enough to explain away the collapse:
+The imbalance between Labour’s losses and the fortunes of other parties can be seen in the following chart. While some Labour votes may go elsewhere, they don’t make up the full picture.
 
 <p class="full-width">
     <img
         alt="Plot showing the popular vote of Labour, Conservative and other parties between 1992 and 2015"
-        src="http://www.robjwells.com/images/lab_con_oth_1992-2015.svg"
+        src="http://www.robjwells.com/images/vote_change_1992-2015.svg"
         class="no-border">
 </p>
 
