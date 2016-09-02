@@ -1,5 +1,5 @@
 title: Where could Labour’s votes come from?
-date: 2016-09-02 14:15
+date: 2016-09-02 14:30
 
 It was suggested often during last year’s Labour leadership contest that if the party had Jeremy Corbyn at the helm it couldn’t win a general election. The argument holds that Corbyn, as a leftwinger, couldn’t appeal to people who had previously voted for the Tories, and these were the people Labour needed to win over in order to make the sums work.
 
@@ -28,7 +28,7 @@ This is nonsense, as this chart shows:
 <p class="full-width">
     <img
         alt="Plot showing Labour and Conservative popular vote between 1992 and 2015"
-        src="/images/lab_con_1992-2015.svg"
+        src="http://www.robjwells.com/images/lab_con_1992-2015.svg"
         class="no-border">
 </p>
 
@@ -39,7 +39,7 @@ And other parties did not increase their vote by nearly enough to explain away t
 <p class="full-width">
     <img
         alt="Plot showing the popular vote of Labour, Conservative and other parties between 1992 and 2015"
-        src="/images/lab_con_oth_1992-2015.svg"
+        src="http://www.robjwells.com/images/lab_con_oth_1992-2015.svg"
         class="no-border">
 </p>
 
@@ -56,7 +56,7 @@ The following chart shows the evaporation of Labour votes, and puts the party’
 <p class="full-width">
     <img
         alt="Plot showing Labour and Conservative popular vote between 1992 and 2015"
-        src="/images/lab_electorate_1992-2015.svg"
+        src="http://www.robjwells.com/images/lab_electorate_1992-2015.svg"
         class="no-border">
 </p>
 
