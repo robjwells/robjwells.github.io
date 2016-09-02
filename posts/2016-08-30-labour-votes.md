@@ -17,7 +17,7 @@ Of course, total votes doesn’t translate neatly into total seats — on vote s
 
 This also underlies the idea that each vote taken off the Conservatives counts double, as they’re Labour’s main national opponents.
 
-Taking votes off the Tories is a plausible strategy. In a abstract way, the numbers work, but it raises some difficult questions. “Winning over Tory voters” is traditionally code for adopting right-wing policies and it’s not clear if Tory voters would ever switch to Labour in sufficient numbers, let alone what it would do to Labour as a “democratic socialist party.”
+Taking votes off the Tories is a plausible strategy. In an abstract way, the numbers work, but it raises some difficult questions. “Winning over Tory voters” is traditionally code for adopting right-wing policies and it’s not clear if Tory voters would ever switch to Labour in sufficient numbers, let alone what it would do to Labour as a “democratic socialist party.”
 
 However, this has been presented as the *only* way that Labour can win, usually by people who would like Labour to shift to the right regardless. But it’s very clearly not the only way Labour can win.
 
