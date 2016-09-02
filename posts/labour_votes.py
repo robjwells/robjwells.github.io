@@ -3,6 +3,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+images_path = '/Users/robjwells/Dropbox/primaryunit/images/'
+
 lab = [11.56, 13.52, 10.72, 9.55, 8.61, 9.35]
 con = [14.09, 9.6, 8.34, 8.78, 10.7, 11.3]
 other = [7.96, 8.17, 7.3, 8.81, 10.38, 10.05]
@@ -35,7 +37,8 @@ ax.set_xlim(-2, 17)
 ax.set_title('Labour, Conservative and others’ vote totals 1992–2015')
 ax.set_ylabel('Votes (millions)')
 
-plt.savefig('lab_con_oth_1992-2015.svg', format='svg', transparent=True)
+plt.savefig(images_path + 'lab_con_oth_1992-2015.svg',
+            format='svg', transparent=True, bbox_inches='tight')
 
 plt.cla()  # Clear axis
 ax.grid(b=False, axis='x')
@@ -53,7 +56,8 @@ ax.set_ylabel('Votes (millions)')
 for side in ['top', 'right', 'bottom', 'left']:
     ax.spines[side].set_visible(False)
 
-plt.savefig('lab_con_1992-2015.svg', format='svg', transparent=True)
+plt.savefig(images_path + 'lab_con_1992-2015.svg',
+            format='svg', transparent=True, bbox_inches='tight')
 
 plt.cla()  # Clear axis
 ax.grid(b=False, axis='x')
@@ -71,4 +75,5 @@ ax.bar(bar_locs - 0.75, lab, color=red, width=1.5, edgecolor='none')
 ax.set_title('UK electorate, turnout and Labour votes 1992–2015')
 ax.set_ylabel('Voters (millions)')
 
-plt.savefig('lab_electorate_1992-2015.svg', transparent=True)
+plt.savefig(images_path + 'lab_electorate_1992-2015.svg',
+            format='svg', transparent=True, bbox_inches='tight')
