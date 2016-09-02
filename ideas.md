@@ -7,7 +7,6 @@
 * Star text analysis:
     * Bylines over time
     * Topic frequency over time
-* Labour Party loss of votes 1997-2010 (plots)
 * Analysis of Leicester’s performance over time
     * (Like Dr Drang’s baseball post: http://leancrew.com/all-this/2015/08/pandas-and-cubs/)
 * majestic round-up
