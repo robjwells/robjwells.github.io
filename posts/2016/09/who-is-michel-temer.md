@@ -1,7 +1,7 @@
 title: Who is Michel Temer?
 date: 2016-09-07 01:30
 
-Some politicians intrigue me in a bizarre way, in that they are so shamelessly atrocious, so lacking in self-awareness. There are a few in the Labour Party, but I won’t say who as I’ve been told recently that if I offend the compliance unit my vote can be torn up despite me having cast it.
+Some politicians intrigue me in a bizarre way, in that they are so shamelessly atrocious, so lacking in self-awareness. There are a few in the Labour Party, but I won’t say who as I’ve been told recently that if I offend the Compliance Unit my vote can be torn up despite me having cast it.
 
 The man who has most recently attracted my attention is the new president of Brazil, Michel Temer, who has led the coup against Dilma Rousseff and the Workers Party (PT).
 
