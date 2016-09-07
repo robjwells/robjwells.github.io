@@ -62,7 +62,7 @@ It appears that Temer and his pals finally snapped when an avalanche of corrupti
 
 [latimes]: http://www.latimes.com/world/mexico-americas/la-fg-brazil-impeach-20160328-story.html
 
-Temer himself is banned from standing for public office for eight years — even for his own job — for breaking election finance laws. He’s being investigated as part of the huge Operation Car Wash graft investigation and has been accused of taking hundreds of thousands of pounds in bribes.
+Temer himself is banned from standing for public office for eight years — even for his own job — for breaking election finance laws. He’s being investigated as part of the huge Operation Car Wash graft probe and has been accused of taking hundreds of thousands of pounds in bribes.
 
 What better time, then, to stage a coup? Sweep those pesky corruption charges under the rug and seize power while you’re at it.
 
