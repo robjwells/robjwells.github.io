@@ -1,8 +1,17 @@
-Who is Michel Temer - article on Brazil’s new president
+title: Who is Michel Temer?
+date: 2016-09-07 01:30
 
-Rob Wells, published in Morning Star of Tuesday September 6 2016
+Some politicians intrigue me in a bizarre way, in that they are so shamelessly atrocious, so lacking in self-awareness. There are a few in the Labour Party, but I won’t say who as I’ve been told recently that if I offend the compliance unit my vote can be torn up despite me having cast it.
 
-http://morningstaronline.co.uk/a-540e-Who-is-Michel-Temer
+The man who has most recently attracted my attention is the new president of Brazil, Michel Temer, who has led the coup against Dilma Rousseff and the Workers Party (PT).
+
+I’m not a big fan of Rousseff, nor the way the PT has conducted itself while in power. The situation it finds itself in now, I think, is a testament to its refusal under both Rousseff and Lula to confront centres of power. It shows the weaknesses of social democracy in contrast to socialism. If the PT had been more combative the coup likely would have still come, but perhaps more in the way that Venezuela has experienced.
+
+But anyway, this isn’t about the PT! This is about Temer. Who is hilarious. (But not if you’re Brazilian!) Here’s a feature I wrote for work, which is [on the website][mstar] but presented here with links.
+
+[mstar]: http://morningstaronline.co.uk/a-540e-Who-is-Michel-Temer
+
+* * *
 
 AFTER the [ousting of democratically elected Brazilian president Dilma Rousseff][impeachment] last week by a pack of corrupt senators the reins of power have fallen into the hands of the man who was her vice-president, Michel Temer.
 
