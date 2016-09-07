@@ -13,7 +13,7 @@ But anyway, this isn’t about the PT! This is about Temer. Who is hilarious. (B
 
 * * *
 
-AFTER the [ousting of democratically elected Brazilian president Dilma Rousseff][impeachment] last week by a pack of corrupt senators the reins of power have fallen into the hands of the man who was her vice-president, Michel Temer.
+After the [ousting of democratically elected Brazilian president Dilma Rousseff][impeachment] last week by a pack of corrupt senators the reins of power have fallen into the hands of the man who was her vice-president, Michel Temer.
 
 [impeachment]: http://www.bbc.co.uk/news/world-latin-america-37237513
 
