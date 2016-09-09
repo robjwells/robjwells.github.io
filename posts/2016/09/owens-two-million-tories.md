@@ -7,7 +7,7 @@ In my recent post about [where Labour’s votes could come from][labour-votes] i
 
 Both Owen Smith and Jeremy Corbyn say they support solidly centre-left policies, and that argument is a good base on which to build and campaign for such policies.
 
-But watching last night’s [Question Time debate][bbc-qt] debate, something struck me quite clearly about Smith’s argument that I hadn’t really recognised before. So let’s [get factional][factional].
+But watching last night’s [Question Time debate][bbc-qt], something struck me quite clearly about Smith’s argument that I hadn’t really recognised before. So let’s [get factional][factional].
 
 [bbc-qt]: http://www.bbc.co.uk/programmes/b07vcy7q
 [factional]: https://www.youtube.com/watch?v=Ve9Y-dl40sQ
