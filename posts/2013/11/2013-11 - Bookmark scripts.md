@@ -5,7 +5,7 @@ tags: AppleScript, Launchbar
 I hate the bookmarks bar. This thing:
 
 <p class="pic no-squish">
-    <img src="http://www.robjwells.com/images/2013-11-18_bookmarksbar.png" alt="The bookmarks bar in Safari" class="no-border">
+    <img src="/images/2013-11-18_bookmarksbar.png" alt="The bookmarks bar in Safari" class="no-border">
 </p>
 
 It’s all about the mouse here. Keyboard access is through `⌘1` for the first entry and so on, which often leaves me counting along to find which number I need.
@@ -42,7 +42,7 @@ Save that script into a new folder — mine’s in `~/Library/Scripts/Applicatio
 Lastly [add that new folder to Launchbar’s index][lbindex]. I have my entry set to access on sub-search only, so to get to the bookmarklet scripts I type `bookm →` and I end up with this panel:
 
 <p class="pic">
-    <img src="http://www.robjwells.com/images/2013-11-18_launchbarpanel.png" alt="Launchbar’s list of my Safari bookmarklet scripts" class="no-border">
+    <img src="/images/2013-11-18_launchbarpanel.png" alt="Launchbar’s list of my Safari bookmarklet scripts" class="no-border">
 </p>
 
 [lbindex]: /images/2013-11-18_launchbarindex.png

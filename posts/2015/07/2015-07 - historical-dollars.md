@@ -106,7 +106,7 @@ But now I would recommend people use the editor, as actually getting the code to
 
 And here’s what it looks like in action:
 
-<img src="http://www.robjwells.com/images/2015-07-15_historical-dollars.png" alt="A screenshot of the historical dollars script run in Pythonista on an iPhone." width="320" height="568">
+<img src="/images/2015-07-15_historical-dollars.png" alt="A screenshot of the historical dollars script run in Pythonista on an iPhone." width="320" height="568">
 
 The thing that really tripped me up was `.flex` on views, for resizing the element based on its containing view. In the code above this isn’t used. I initially followed the example code from the documentation and had all sorts of fun trying to work out why the view spacing was screwed up.
 

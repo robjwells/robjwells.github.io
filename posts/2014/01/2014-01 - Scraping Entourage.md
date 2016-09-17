@@ -175,7 +175,7 @@ This formats the track (using `prep_track` to join the artist and title, and rep
 The AppleScript opens the Spotify search URL and displays a dialog box:
 
 <p class="pic">
-  <img alt="Screenshot of the dialog box on top of the Spotify search results" src="http://www.robjwells.com/images/2014-01-22_entprompt.png">
+  <img alt="Screenshot of the dialog box on top of the Spotify search results" src="/images/2014-01-22_entprompt.png">
 </p>
 
 The chosen button is returned and assigned to `result`. If the searched-for track couldn’t be found, the “Report” button adds it to the reported file (lines 46 & 47) and proceeds as if “Next” had also been clicked: writing the index of the next track to the position file and returning `True` to cause the loop in lines 59–61 to continue. “Stop” returns false and ends the loop — and so the script.

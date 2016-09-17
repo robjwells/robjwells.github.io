@@ -12,7 +12,7 @@ I’ve spent £1,487.85 on Oyster fares in the two years since September 6 2014.
 
 <p class="full-width">
     <img alt="A plot showing weekly spending on transport"
-         src="http://www.robjwells.com/images/2016-09-weekly_spending.svg"
+         src="/images/2016-09-weekly_spending.svg"
          class="no-border">
 </p>
 
@@ -37,7 +37,7 @@ In contrast I made *918 journeys by rail*, spending a total of 472 hours and 1 m
 
 <p class="full-width">
     <img alt="A histogram of journey lengths"
-         src="http://www.robjwells.com/images/2016-09-journey_lengths.svg"
+         src="/images/2016-09-journey_lengths.svg"
          class="no-border">
 </p>
 
@@ -55,7 +55,7 @@ Overall, that histogram is dominated by the half-hour length of my former commut
 
 <p class="full-width">
     <img alt="A histogram of journey start times by hour"
-         src="http://www.robjwells.com/images/2016-09-journeys_by_hour.svg"
+         src="/images/2016-09-journeys_by_hour.svg"
          class="no-border">
 </p>
 
@@ -65,7 +65,7 @@ And the commute takes the first three slots in my 10 most common journeys (in ei
 
 <p class="full-width">
     <img alt="A bar chart of the most common journeys in either direction"
-         src="http://www.robjwells.com/images/2016-09-station_pairs.svg"
+         src="/images/2016-09-station_pairs.svg"
          class="no-border">
 </p>
 

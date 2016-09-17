@@ -10,7 +10,7 @@ Setting the column count to 1 doesn’t automatically resize it, and extending t
 
 The solution is to **resize the view itself** — so that you eat into the space occupied by the single column, and then expand back to your desired width. It is incredibly stupid. Here’s a video:
 
-<video src="http://www.robjwells.com/images/2014-01-26_tableview.m4v" poster="http://www.robjwells.com/images/2014-01-26_tableview_poster.png" controls preload="metadata">
+<video src="/images/2014-01-26_tableview.m4v" poster="http://www.robjwells.com/images/2014-01-26_tableview_poster.png" controls preload="metadata">
   Sorry if you can’t see it. <a href="http://www.robjwells.com/images/2014-01-26_tableview.m4v">Here’s a link to the file itself.</a>
 </video>
 

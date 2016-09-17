@@ -28,7 +28,7 @@ This is nonsense, as this chart shows:
 <p class="full-width">
     <img
         alt="Plot showing Labour and Conservative popular vote between 1992 and 2015"
-        src="http://www.robjwells.com/images/lab_con_1992-2015.svg"
+        src="/images/lab_con_1992-2015.svg"
         class="no-border">
 </p>
 
@@ -39,7 +39,7 @@ The imbalance between Labour’s losses and the fortunes of other parties can be
 <p class="full-width">
     <img
         alt="Plot showing the change in the Labour vote, others’ vote and total change compared with the previous election between 1997 and 2015"
-        src="http://www.robjwells.com/images/vote_change_1992-2015.svg"
+        src="/images/vote_change_1992-2015.svg"
         class="no-border">
 </p>
 
@@ -56,7 +56,7 @@ The following chart shows the evaporation of Labour votes, and puts the party’
 <p class="full-width">
     <img
         alt="Plot showing the size of the electorate, total number of votes and total Labour vote between 1992 and 2015"
-        src="http://www.robjwells.com/images/lab_electorate_1992-2015.svg"
+        src="/images/lab_electorate_1992-2015.svg"
         class="no-border">
 </p>
 

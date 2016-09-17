@@ -48,7 +48,7 @@ It took me a long time to pick out the dark blue used as the left-hand border of
 
 The image below shows all the colours used on the site, apart from those used for code. (The two oranges are only used for the RSS link.)
 
-<p class="pic"><img src="http://www.robjwells.com/images/2013-07-06_Spectrum.png" alt="The 14 colours used on robjwells.com"></p>
+<p class="pic"><img src="/images/2013-07-06_Spectrum.png" alt="The 14 colours used on robjwells.com"></p>
 
 The syntax highlighting for code is another thing I lifted from Dr Drang, which is to say it is [highlight.js][hljs] combined with [the Doc’s script to conditionally invoke][drangsyntax] the highlight functions and add line numbers.
 
