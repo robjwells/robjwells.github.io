@@ -7,7 +7,7 @@ So, I reinstalled [a Twitter client][tw] on my phone the other day. Not as a gre
 
 So I’m now following about a dozen people, split roughly into two groups: cycling and politics. These are people where I was already looking at their streams in a browser, so explicitly following them in a client just took some of the overhead away.
 
-This all started with two specific events and their aftermath. First was the opening of the [East-West Cycle Superhighway][ew] (CS3 extension) in central London. I went down there when it was meant to be open, at the start of May, but it wasn’t so I searched around and found a few people talking about it. Turns out I love cycling infrastructure, so stuck with [a][hc] [few][rh] [people][mt].
+This all started with two specific events and their aftermath. First was the opening of the [East-West Cycle Superhighway][ew] (CS3 extension) in central London. I went down there when I thought it would be open, at the start of May, but it wasn’t so I searched around and found a few people talking about it. Turns out I love cycling infrastructure, so stuck with [a][hc] [few][rh] [people][mt].
 
 (Seriously, the CS3 extension is great. Sometimes, when I’ve had a tough day at work and finish late, I’ll cycle from the Olympic Park, down CS2, cross to CS3, ride along the Thames and to Parliament and then back home. It’s really quite special late at night in the dark.)
 
@@ -32,7 +32,7 @@ So what’s the plan? Right now, I’m not sure. A couple of people are going to
 
 Frankly I can see myself arriving at a situation where I uninstall the Twitter client again.
 
-While I appreciate Twitter has its merits, it’s not a medium I feel comfortable with. I can’t help but feel that a lot of the vileness in the Labour leadership election (on all sides) has fed off people’s ability to make remarks to a wide audience that they perhaps wouldn’t have made if they’d thought about it a bit more.
+While I appreciate Twitter has its merits, it’s not a medium I feel comfortable with. I can’t help but feel that a lot of the vileness in the Labour leadership election (on all sides) has fed off people’s ability to make remarks to a wide audience that they perhaps wouldn’t have made if they’d thought about it a bit more. (Although I’d like to stress that the extent of this has been vastly exaggerated for political point-scoring.)
 
 We’ve all been in arguments in real life and it’s easy to say something unkind in the heat of the moment. I worry that on Twitter that combines with the remoteness of the person on the other side of the screen (and, in a few cases, online anonymity) to create a situation where people are more likely to say things that they would refrain from — or even just rephrase — were they speaking to someone face-to-face.
 
