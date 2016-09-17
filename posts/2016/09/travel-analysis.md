@@ -93,7 +93,8 @@ Lastly, as I couldn’t work out how to weave this in, is some trivia about the 
         <tr>
             <td>Baker Street</td>
             <td>
-                <a href="https://en.wikipedia.org/wiki/Abbey_Road_DLR_station">Abbey Road</a> (not <em>that</em> Abbey Road)</td>
+                <a href="https://en.wikipedia.org/wiki/Abbey_Road_DLR_station">Abbey Road</a> (not <em>that</em> Abbey Road)
+            </td>
         </tr>
         <tr><td>Blackfriars</td> <td>Blackheath</td></tr>
         <tr><td>Boston Manor</td> <td>Bond Street</td></tr>
