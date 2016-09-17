@@ -11,6 +11,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates
 
+
+image_dir = '/Users/robjwells/Dropbox/primaryunit/images/'
+
+
 headers = ['Date',
            'Start Time',
            'End Time',
@@ -189,7 +193,7 @@ def plot_weekly_spending():
         ax.spines[side].set_visible(False)
     ax.tick_params(top=False, right=False, bottom=False, left=False)
 
-    plt.savefig('weekly_spending.svg', transparent=True, bbox_inches='tight')
+    plt.savefig(image_dir + '2016-09-weekly_spending.svg', transparent=True, bbox_inches='tight')
     plt.gcf().clear()
 
 
@@ -206,7 +210,7 @@ def plot_journey_length_histogram():
     plt.ylabel('Number of journeys')
     plt.title('Journey time', y=1.025)
 
-    plt.savefig('journey_lengths.svg', transparent=True, bbox_inches='tight')
+    plt.savefig(image_dir + '2016-09-journey_lengths.svg', transparent=True, bbox_inches='tight')
     plt.gcf().clear()
 
 
@@ -235,7 +239,7 @@ def plot_common_stations():
 
     plt.title('Most common journey endpoints', y=1.025, x=0.4)
     plt.xlabel('Number of journeys')
-    plt.savefig('station_pairs.svg', transparent=True, bbox_inches='tight')
+    plt.savefig(image_dir + '2016-09-station_pairs.svg', transparent=True, bbox_inches='tight')
     plt.gcf().clear()
 
 
@@ -258,7 +262,7 @@ def plot_journey_hours():
     plt.xlabel('Hour of day')
     plt.ylabel('Number of journeys')
     plt.title('Journeys by hour started', y=1.025)
-    plt.savefig('journeys_by_hour.svg', transparent=True, bbox_inches='tight')
+    plt.savefig(image_dir + '2016-09-journeys_by_hour.svg', transparent=True, bbox_inches='tight')
 
 
 ### Reporting
