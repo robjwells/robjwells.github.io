@@ -1,5 +1,5 @@
 title: Leicester’s start to the season
-date: 2016-09-19 18:00
+date: 2016-09-19 18:30
 
 CHAMPIONS! Champions! Kings of the world. Fabulous Foxes.
 
