@@ -141,6 +141,40 @@ def plot_adrift(seasons):
     plt.close()
 
 
+def plot_relegated(seasons):
+    teams = ['Aston Villa', 'Norwich City', 'Newcastle United', 'Sunderland AFC']
+    colours = ['#58092B', '#00A94F', '#000000', '#DE2027']
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+    safety_trend = np.arange(1, 39) * 40/38
+    plt.axhline(y=0, color='#607080', linewidth=1)
+
+    for team, colour in zip(teams, colours):
+        points = seasons['2015-16'][team]
+        line_style = '--' if team == 'Sunderland AFC' else '-'
+        plt.plot(np.arange(len(points)),
+                 np.cumsum(points) - safety_trend[:len(points)],
+                 label=team, linewidth=2, color=colour, linestyle=line_style)
+
+    plt.xlim(0, 37)
+
+    plt.xticks(np.arange(0, 38, 5), np.arange(1, 39, 5))
+
+    plt.title(
+        'Bottom four teams’ distance from safety trend, 2015-16 season',
+        y=1.025)
+    plt.xlabel('Games played')
+    plt.ylabel('Points difference')
+    plt.legend(loc='best')
+
+    plt.savefig(image_dir +
+        '{0:%Y-%m-%d}_lcfc-bottom_4_points_adrift.svg'.format(date.today()),
+        transparent=True, bbox_inches='tight')
+    plt.close()
+
+
+
 plot_season_so_far(seasons)
 plot_all(seasons)
 plot_adrift(seasons)
+plot_relegated(seasons)
