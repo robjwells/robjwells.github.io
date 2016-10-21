@@ -1,13 +1,13 @@
-title: Padding regex groups in Namemangler
+title: Padding regex groups in Name Mangler
 date: 2016-10-21 22:45
 
-I’m a big fan of [NameManger by Many Tricks][nm], an interactive file renaming application for everything from simple operations to really quite complex and powerful ones, with a comfortable and straightforward interface.
+I’m a big fan of [Name Mangler by Many Tricks][nm], an interactive file renaming application for everything from simple operations to really quite complex and powerful ones, with a comfortable and straightforward interface.
 
 [nm]: http://manytricks.com/namemangler/
 
 I don’t use it particularly often but it’s nice to have in the toolbox for things that might otherwise be frustrating.
 
-One of my most common tasks for NameMangler is converting the filename convention used internally at work for naming page files to a more general format we use for our external partners.
+One of my most common tasks for Name Mangler is converting the filename convention used internally at work for naming page files to a more general format we use for our external partners.
 
 Here’s what they look like:
 
@@ -18,7 +18,7 @@ Here’s what they look like:
 
 Normally this is done automatically with a scheduled script, but occasionally that script fails (at a different stage) and it has to be done by hand. Now obviously this involves a regular expression, and the page number group (at the start of the internal name, end of the external) is zero-padded so it’s three digits long.
 
-So, in NameMangler’s advanced renaming syntax that becomes:
+So, in Name Mangler’s advanced renaming syntax that becomes:
 
     [pad
         "$1"
@@ -52,4 +52,4 @@ By necessity this uses regexes twice: one for parsing the date and constructing 
 
 Which takes care of the padding with no fuss. (At this point, the date has been parsed for completeness’s sake, hence the strftime codes.)
 
-That might lead to a question about why I don’t just use Python to do this. And the answer is that, once you’ve got a recipe that works for you, NameManger is painless and flexible. Really, [check it out][nm].
+That might lead to a question about why I don’t just use Python to do this. And the answer is that, once you’ve got a recipe that works for you, Name Mangler is painless and flexible. Really, [check it out][nm].
