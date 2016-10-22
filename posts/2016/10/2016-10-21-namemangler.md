@@ -30,7 +30,7 @@ right?
 
 Well, no. What happens is interesting. The literal string `$1` is zero-padded until it’s three digits long: `0$1` (one extra zero). But after that the regex replacement is made, so page #1 becomes `01`: 1 with one zero on the front.
 
-To ManyTricks’s great credit, they responded to the support ticket I raised with example code in less than a day, along with an explanation of what’s happening by the developer.
+To Many Tricks’s great credit, they responded to the support ticket I raised with example code in less than a day, along with an explanation of what’s happening by the developer.
 
 The trick is, instead of providing the group name as the argument to pad, to perform the regex search in-line:
 
