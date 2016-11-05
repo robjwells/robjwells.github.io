@@ -11,7 +11,7 @@ image_dir = '/Users/robjwells/Dropbox/primaryunit/images/'
 scores = []
 meet_counters = defaultdict(Counter)
 
-with open('blind_date_reviewed.csv', encoding='utf-8') as csv_file:
+with open('blind_date.csv', encoding='utf-8') as csv_file:
     reader = csv.DictReader(csv_file,
                             fieldnames=['_s', '_m', 'score', 'meet'])
     next(reader)    # Skip headers
