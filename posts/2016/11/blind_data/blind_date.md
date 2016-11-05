@@ -94,7 +94,7 @@ And lastly, our favourite fairly common sort of cop-out answer: spark.
         width="480"
         height="270"
         preload="none"
-        controls loop muted
+        controls loop muted playsinline
         >
     </video>
 </p>
