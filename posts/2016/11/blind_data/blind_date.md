@@ -88,7 +88,14 @@ That’s it. I did pick up a few scoring bugbears while doing this, though:
 And lastly, our favourite fairly common sort of cop-out answer: spark.
 
 <p>
-    <video src="/images/2016-11-05-spark.mp4" controls loop muted></video>
+    <video
+        src="/images/2016-11-05-spark.mp4"
+        poster="/images/2016-11-05-spark.jpg"
+        width="480"
+        height="270"
+        controls loop muted
+        >
+    </video>
 </p>
 
 Across the 357 articles I downloaded (a handful of which aren’t actual Blind Date columns), spark is mentioned 45 separate times — about once every eight articles, which is much less frequently than I expected.
