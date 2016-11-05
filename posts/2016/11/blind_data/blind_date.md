@@ -1,6 +1,5 @@
 title: Blind data
-date: 2016-11-04 23:45
-<!-- date: 2016-11-05 09:00 -->
+date: 2016-11-05 01:00
 
 The [Guardian’s Blind Date column][blind-date] has been going for over seven and a half years now, but I always struggled to read it. There was something missing — I didn’t just want to peer into these people’s lives and be left feeling bad for them if things hadn’t gone well.
 
