@@ -93,6 +93,7 @@ And lastly, our favourite fairly common sort of cop-out answer: spark.
         poster="/images/2016-11-05-spark.jpg"
         width="480"
         height="270"
+        preload="none"
         controls loop muted
         >
     </video>
