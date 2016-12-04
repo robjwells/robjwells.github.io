@@ -20,7 +20,7 @@ Hmm. That’s a bit dear. What about singles… oh. “From £71.” Really?
 Yes, really. Here’s a selection of single tickets for trains leaving St Pancras the night before Christmas Eve, along with the ticket cost in euros for reasons that will become clear:
 
 <table>
-  <caption>Single train tickets leaving St Pancras for Leicester, Friday December 23 2016</caption>
+  <caption>Single train tickets (selected) leaving St Pancras for Leicester, Friday December 23 2016</caption>
   <thead>
     <tr>
       <th>Depart</th> <th>Arrive</th> <th>Cost (£)</th> <th>Cost (€)</th>
