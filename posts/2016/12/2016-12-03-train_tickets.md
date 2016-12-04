@@ -81,7 +81,7 @@ Why does it cost £79.50 to travel at 17:57? £79.50! That’s £6.40 more than 
 [jsa]: https://www.gov.uk/jobseekers-allowance/overview
 [minw]: https://www.gov.uk/national-minimum-wage-rates
 
-What’s the situation abroad. Let’s pick on the Netherlands, going from Amsterdam to Eindhoven as the journey times are similar.
+What’s the situation abroad? Let’s pick on the Netherlands, going from Amsterdam to Eindhoven as the journey times are similar.
 
 <table>
   <caption>Single train tickets leaving Amsterdam for Eindhoven, Friday December 23 2016</caption>
