@@ -17,57 +17,61 @@ Hmm. That’s a bit dear. What about singles… oh. “From £71.” Really?
 
 [xmas-trains]: http://ojp.nationalrail.co.uk/service/timesandfares/STP/LEI/231216/2000/dep/271216/1200/dep
 
-Yes, really. Here’s a selection of single tickets for trains leaving St Pancras the night before Christmas Eve, along with the ticket cost in euros for reasons that will become clear:
+Yes, really. Here’s a selection of single tickets for trains leaving St Pancras the night before Christmas Eve:
+
+<div class="flag">
+  <p><strong>Update <time>2016-12-04</time>:</strong> I’ve tidied up the tables to make things clearer since I first published this post.</p>
+</div>
 
 <table>
   <caption>Single train tickets (selected) leaving St Pancras for Leicester, Friday December 23 2016</caption>
   <thead>
     <tr>
-      <th>Depart</th> <th>Arrive</th> <th>Cost (£)</th> <th>Cost (€)</th>
+      <th>Depart</th> <th>Duration</th> <th>Cost</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>17:57</td> <td>19:00</td> <td>£79.50</td> <td>€95.00</td>
+      <td>17:57</td> <td>1:03</td> <td>£79.50</td>
     </tr>
     <tr>
-      <td>18:25</td> <td>19:40</td> <td>£55.00</td> <td>€65.50</td>
+      <td>18:25</td> <td>1:15</td> <td>£55.00</td>
     </tr>
     <tr>
-      <td>18:30</td> <td>19:52</td> <td>£71.00</td> <td>€84.50</td>
+      <td>18:30</td> <td>1:22</td> <td>£71.00</td>
     </tr>
     <tr>
-      <td>19:15</td> <td>20:23</td> <td>£58.50</td> <td>€70.00</td>
+      <td>19:15</td> <td>1:08</td> <td>£58.50</td>
     </tr>
     <tr>
-      <td>19:32</td> <td>20:53</td> <td>£42.50</td> <td>€50.50</td>
+      <td>19:32</td> <td>1:21</td> <td>£42.50</td>
     </tr>
     <tr>
-      <td>19:55</td> <td>21:01</td> <td>£55.00</td> <td>€65.50</td>
+      <td>19:55</td> <td>1:06</td> <td>£55.00</td>
     </tr>
     <tr>
-      <td>20:15</td> <td>21:22</td> <td>£55.00</td> <td>€65.50</td>
+      <td>20:15</td> <td>1:07</td> <td>£55.00</td>
     </tr>
     <tr>
-      <td>20:26</td> <td>21:29</td> <td>£42.50</td> <td>€50.50</td>
+      <td>20:26</td> <td>1:03</td> <td>£42.50</td>
     </tr>
     <tr>
-      <td>20:55</td> <td>22:02</td> <td>£42.50</td> <td>€50.50</td>
+      <td>20:55</td> <td>1:07</td> <td>£42.50</td>
     </tr>
     <tr>
-      <td>21:00</td> <td>22:26</td> <td>£28.50</td> <td>€34.00</td>
+      <td>21:00</td> <td>1:26</td> <td>£28.50</td>
     </tr>
     <tr>
-      <td>21:30</td> <td>23:15</td> <td>£58.50</td> <td>€70.00</td>
+      <td>21:30</td> <td>1:45</td> <td>£58.50</td>
     </tr>
     <tr>
-      <td>22:00</td> <td>23:44</td> <td>£21.00</td> <td>€25.00</td>
+      <td>22:00</td> <td>1:44</td> <td>£21.00</td>
     </tr>
     <tr>
-      <td>22:25</td> <td>23:57</td> <td>£17.50</td> <td>€21.00</td>
+      <td>22:25</td> <td>1:32</td> <td>£17.50</td>
     </tr>
     <tr>
-      <td>23:15</td> <td>01:50</td> <td>£14.50</td> <td>€17.50</td>
+      <td>23:15</td> <td>2:35</td> <td>£14.50</td>
     </tr>
   </tbody>
 </table>
@@ -81,30 +85,30 @@ Why does it cost £79.50 to travel at 17:57? £79.50! That’s £6.40 more than 
 [jsa]: https://www.gov.uk/jobseekers-allowance/overview
 [minw]: https://www.gov.uk/national-minimum-wage-rates
 
-What’s the situation abroad? Let’s pick on the Netherlands, going from Amsterdam to Eindhoven as the journey times are similar.
+What’s the situation abroad? Let’s pick on the Netherlands, going from Amsterdam to Eindhoven as the journey times are similar (prices converted from euros).
 
 <table>
   <caption>Single train tickets leaving Amsterdam for Eindhoven, Friday December 23 2016</caption>
   <thead>
     <tr>
-      <th>Depart</th> <th>Arrive</th> <th>Cost (£)</th> <th>Cost (€)</th>
+      <th>Depart</th> <th>Duration</th> <th>Cost</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>19:55</td> <td>21:16</td> <td>£16.00</td> <td>€19.20</td>
+      <td>19:55</td> <td>1:21</td> <td>£16.00</td>
     </tr>
     <tr>
-      <td>20:10</td> <td>21:28</td> <td>£16.00</td> <td>€19.20</td>
+      <td>20:10</td> <td>1:18</td> <td>£16.00</td>
     </tr>
     <tr>
-      <td>20:25</td> <td>21:46</td> <td>£16.00</td> <td>€19.20</td>
+      <td>20:25</td> <td>1:21</td> <td>£16.00</td>
     </tr>
     <tr>
-      <td>20:40</td> <td>21:58</td> <td>£16.00</td> <td>€19.20</td>
+      <td>20:40</td> <td>1:18</td> <td>£16.00</td>
     </tr>
     <tr>
-      <td>20:55</td> <td>22:16</td> <td>£16.00</td> <td>€19.20</td>
+      <td>20:55</td> <td>1:21</td> <td>£16.00</td>
     </tr>
   </tbody>
 </table>
@@ -117,7 +121,7 @@ Leaving aside the much higher price in England — a function of our railways be
 
 [souter]: https://en.wikipedia.org/wiki/Brian_Souter
 
-Train journeys are not an essential service to be provided to all, but a scare commodity to be sold for the most profit. There’s nothing inherently different about these services — they travel the same distance along the same tracks and serve similar stations along the way.
+Train journeys are not an essential service to be provided to all, but a scarce commodity to be sold for the most profit. There’s nothing inherently different about these services — they travel the same distance along the same tracks and serve similar stations along the way.
 
 But there’s more demand at certain times, so the price goes up — to make the most amount of money out of people able to pay it or who absolutely must travel at those times.
 
