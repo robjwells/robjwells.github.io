@@ -51,14 +51,16 @@ operator_order = {
     'SNCF': 3
     }
 
-fig, ax = plt.subplots(figsize=(10,5))
+fig, ax = plt.subplots(figsize=(10, 5))
 for operator, data in sorted(train_data.items(),
                              key=lambda x: operator_order[x[0]]):
-    times = mdates.date2num([x[0] for x in data])
-    costs = np.array([x[1] for x in data])
+    times = [x[0] for x in data]
+    costs = [x[1] for x in data]
+    times_arr = mdates.date2num(times)
+    costs_arr = np.array(costs)
 
     plt.plot(
-        times, costs,
+        times_arr, costs_arr,
         operator_markers[operator],
         color=operator_colors[operator],
         label=operator,
@@ -66,22 +68,12 @@ for operator, data in sorted(train_data.items(),
         markersize=8)
 
     if operator == 'East Mids':
-        avg_start = datetime(2016, 12, 23, 15)
         avg_times = []
         avg_costs = []
-        for hours_to_add in range(10):
-            current_hour = avg_start + timedelta(
-                seconds=hours_to_add * 60 * 60)
-            previous_hour_costs = [
-                cost for time, cost in data
-                if 0 <= (current_hour - time).seconds <= 3600
-                ]
-            if not previous_hour_costs:
-                continue
-            avg_times.append(current_hour)
-            avg_costs.append(
-                sum(previous_hour_costs) / len(previous_hour_costs)
-                )
+        for journey in times:
+            costs = [c for t, c in data if 0 <= (journey - t).seconds <= 3600]
+            avg_times.append(journey)
+            avg_costs.append(sum(costs) / len(costs))
         avg_times = mdates.date2num(avg_times)
         avg_costs = np.array(avg_costs)
         ax.plot(
@@ -89,7 +81,6 @@ for operator, data in sorted(train_data.items(),
             '-',
             color=operator_colors[operator]
             )
-
 
 
 hours = [datetime(2016, 12, 23, 14) + timedelta(seconds=x * 60 * 60)
@@ -107,7 +98,8 @@ plt.ylim((0, 100))
 plt.yticks(range(10, 101, 10))
 plt.xlabel('Time')
 plt.ylabel('Ticket cost (€)')
-plt.title('Cost of single train tickets leaving European\ncapital cities on Friday December 23 2016',
+plt.title(('Cost of single train tickets leaving European\n'
+           'capital cities on Friday December 23 2016'),
           y=1.025)
 
 plt.legend(loc='best', numpoints=1)
