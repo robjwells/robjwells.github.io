@@ -3,9 +3,9 @@ date: 2016-09-25 21:00
 
 Having written a few things about the Labour Party recently ([1][], [2][], [3][]), it would be remiss of me not to mark the result.
 
-[1]: http://www.robjwells.com/2016/08/playing-a-dirty-game/
-[2]: http://www.robjwells.com/2016/09/where-could-labours-votes-come-from/
-[3]: http://www.robjwells.com/2016/09/owens-two-million-tories/
+[1]: /2016/08/playing-a-dirty-game/
+[2]: /2016/09/where-could-labours-votes-come-from/
+[3]: /2016/09/owens-two-million-tories/
 
 Obviously I’m very happy. The movement for change represented by Jeremy Corbyn still has a long way to go so it’s good to have fended off the first serious attempt to revert back to the old Establishment party.
 

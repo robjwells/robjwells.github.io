@@ -4,7 +4,7 @@ tags: Hazel, Mercurial, Shell
 
 Since I’ve been playing around with Mercurial I thought it would only be fair to write another version of [my Hazel gating snippet][gitgate].
 
-[gitgate]: http://robjwells.com/2013/06/more-precise-git-status-gating/
+[gitgate]: /2013/06/more-precise-git-status-gating/
 
 The basic mechanism is the same (parsing the status output) and the code is barely changed:
 
@@ -24,7 +24,7 @@ An important difference to note is that this script checks that the file is clea
 
 As I mentioned previously in my post about [branch comparison][hgb], I’ve spent some time recently to learn more about Git and Mercurial. This was both to improve my pretty basic Git skills and see why [Daniel Jalkut][] keeps [banging on about Mercurial][podcast] (go to the 28-minute mark).
 
-[hgb]: http://robjwells.com/2013/07/easy-branch-comparison-with-mercurial/
+[hgb]: /2013/07/easy-branch-comparison-with-mercurial/
 [Daniel Jalkut]: http://www.red-sweater.com
 [podcast]: https://learn.thoughtbot.com/giantrobots/32
 

@@ -4,7 +4,7 @@ tags: AppleScript
 
 <div class="flag flag-update sym-add">
 <strong>UPDATE 2013-05-25</strong>
-<p>I’ve changed the script to fix the fiddliness on Leopard. Please <a href="http://robjwells.com/2013/05/restart-in-windows-the-script-strikes-back/">see my new post</a> for details. I’ve left the rest of this post mainly intact, but please bear in mind that the code has changed slightly.</p>
+<p>I’ve changed the script to fix the fiddliness on Leopard. Please <a href="/2013/05/restart-in-windows-the-script-strikes-back/">see my new post</a> for details. I’ve left the rest of this post mainly intact, but please bear in mind that the code has changed slightly.</p>
 </div>
 
 Want to quickly restart your Mac in your Windows Bootcamp partition, without having to hold down option/alt as the computer starts?
@@ -23,7 +23,7 @@ Then, to restart, just pick it from that script menu.
 
 <del>That should return something like "disk0s4". If it doesn’t change “print $8” to a different number, probably 7. (I recommend you try this in the Terminal until you’ve got it right, then adjust the AppleScript. The number refers to the column of the information.)</del>
 
-<ins>The above isn’t true anymore. <a href="http://robjwells.com/2013/05/restart-in-windows-the-script-strikes-back/">Please see my latest post about it.</a></ins>
+<ins>The above isn’t true anymore. <a href="/2013/05/restart-in-windows-the-script-strikes-back/">Please see my latest post about it.</a></ins>
 
 *Don’t want to have to type your password in every time?* Add “password "YourPassword" ” after “ -nextonly" ” on the second line, then save your script as run-only. **I do not recommend this.** Your password will not be encrypted. It is only slightly less insecure than keeping your password in a text file. Please, *do not do this*.
 

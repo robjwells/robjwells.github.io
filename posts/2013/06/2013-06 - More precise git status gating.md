@@ -11,7 +11,7 @@ At the end of my post about having [Hazel][] [check a file’s commit status][po
 > the file (provided by Hazel as `$1`).
 
 [Hazel]: http://www.noodlesoft.com
-[post]: http://robjwells.com/2013/06/gating-hazel-with-git-status/
+[post]: /2013/06/gating-hazel-with-git-status/
 
 It has been on my mind all day, so I decided to have a crack at it:
 
@@ -29,7 +29,7 @@ It has been on my mind all day, so I decided to have a crack at it:
     <strong>Update 2013-06-27</strong>
     <p>I’ve slightly revised the code and have rewritten the explanation to be clearer.</p>
     <strong>Update 2013-07-31</strong>
-    <p>I’ve tweaked the script to make it simpler and more reliable, with the explanation below rewritten again. There is now also <a href="http://robjwells.com/2013/07/hazel-gating-with-mercurial/">a version for Mercurial users</a>.</p>
+    <p>I’ve tweaked the script to make it simpler and more reliable, with the explanation below rewritten again. There is now also <a href="/2013/07/hazel-gating-with-mercurial/">a version for Mercurial users</a>.</p>
 </div>
 
 The script is largely the same [as in my original post][post], but with a few tweaks and a different method of action.

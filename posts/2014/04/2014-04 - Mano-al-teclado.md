@@ -22,7 +22,7 @@ Thatâ€™s remarkably similar to using indexes: after typing a simple shortcut (`â
 
 [drman1]: http://www.leancrew.com/all-this/2014/04/oh-man/
 [drman2]: http://www.leancrew.com/all-this/2014/04/man-page-followup/
-[bookm]: http://robjwells.com/2013/11/die-bookmarks-bar-die/
+[bookm]: /2013/11/die-bookmarks-bar-die/
 [tog]: http://www.asktog.com/TOI/toi06KeyboardVMouse1.html
 [idqap]: http://help.adobe.com/en_US/indesign/cs/using/WSa285fff53dea4f8617383751001ea8cb3f-6e68a.html#WSE4179F8F-7053-48b4-BFDC-2102D5F27789
 [lb]: http://www.obdev.at/products/launchbar/index.html

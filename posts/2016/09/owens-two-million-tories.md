@@ -3,7 +3,7 @@ date: 2016-09-09 01:00
 
 In my recent post about [where Labour’s votes could come from][labour-votes] in the next general election, I tried to keep clear of factional arguments about the current leadership election. I think that the argument that Tory votes are not required is strong enough under whichever leader.
 
-[labour-votes]: http://www.robjwells.com/2016/09/where-could-labours-votes-come-from/
+[labour-votes]: /2016/09/where-could-labours-votes-come-from/
 
 Both Owen Smith and Jeremy Corbyn say they support solidly centre-left policies, and that argument is a good base on which to build and campaign for such policies.
 

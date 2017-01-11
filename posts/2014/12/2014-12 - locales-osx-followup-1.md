@@ -4,7 +4,7 @@ tags: OS X
 
 One thing that I didn’t but meant to mention in [my post about setting the locale correctly in OS X][locales-osx] is a [recent post by Python core developer Nick Coghlan][coghlan], where he talks generally about locales and languages.
 
-[locales-osx]: http://robjwells.com/2014/12/locale-in-os-x-and-launch-agents/
+[locales-osx]: /2014/12/locale-in-os-x-and-launch-agents/
 [coghlan]: http://www.curiousefficiency.org/posts/2014/08/multilingual-programming.html
 
 One of the points he makes is about getting OS vendors to transition to using Unicode. Nick writes:
@@ -17,7 +17,7 @@ Which has been my experience with OS X (see [my recent locales post][locales-osx
 > 
 > They’ve been one of the major drivers of Unicode since the beginning … and *were able to force the necessary configuration changes on all their systems*
 
-[ascii-utf8]: http://robjwells.com/2013/09/get-your-us-ascii-out-of-my-face/
+[ascii-utf8]: /2013/09/get-your-us-ascii-out-of-my-face/
 
 Which brings me back to something I noted in my last post: *I don’t have a clean install of OS X*. It’s been upgraded from 10.7 up through 10.10. Same story with the machines at work (which are even older).
 

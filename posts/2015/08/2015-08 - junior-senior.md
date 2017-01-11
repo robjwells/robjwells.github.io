@@ -55,7 +55,7 @@ document.getElementById('toast').addEventListener('click', function (ev) {
 });
 </script>
 <noscript>
-  <p>Sorry, you don’t have JavaScript enabled. Here’s <a href="http://www.robjwells.com/images/2015-08-05_Junior-Senior-Yeah.gif">a link to the gif</a>.</p>
+  <p>Sorry, you don’t have JavaScript enabled. Here’s <a href="/images/2015-08-05_Junior-Senior-Yeah.gif">a link to the gif</a>.</p>
 </noscript>
 
 Since 100 words about a 12-year-old pop track with an amusing video feels like I’m cheating you, dear reader, here’s some technical stuff about doing easy click-to-start gifs.

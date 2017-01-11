@@ -37,4 +37,4 @@ Initially I did this check in the AppleScript that was applied to the file once 
 
 If you work with repositories which are rarely “all clear” as in this case, you could improve this snippet by [checking the status tool’s list of uncommitted modified files for the name of the file][update] (provided by Hazel as `$1`).
 
-[update]: http://robjwells.com/2013/06/more-precise-git-status-gating/
+[update]: /2013/06/more-precise-git-status-gating/

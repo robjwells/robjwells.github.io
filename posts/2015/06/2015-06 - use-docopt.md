@@ -5,7 +5,7 @@ tags: Python, Programming
 If you write any command-line tools that have a need for a help message, then you should really try [docopt][], which gets you out of having to write argument-parsing code yourself. I’ve mentioned it before, [briefly][], and I wouldn’t want to be without it.
 
 [docopt]: http://docopt.org
-[briefly]: http://robjwells.com/2014/01/hijacking-the-bbc/
+[briefly]: /2014/01/hijacking-the-bbc/
 
 For an example I’m going to pick on Dr Drang, who was unfortunate enough to [post such a script recently][drang]. Sorry!
 

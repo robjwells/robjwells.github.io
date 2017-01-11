@@ -4,7 +4,7 @@ tags: Personal, Web
 
 My post from a couple of weeks ago [about the changes to this site][newlook] briefly mentioned that despite having this domain for about five years I’d never been satisfied with its design.
 
-[newlook]: http://robjwells.com/2013/06/a-new-look-and-name/
+[newlook]: /2013/06/a-new-look-and-name/
 
 I’ve actually lost count of the number of times I’ve switched themes but, spread across Blogger, WordPress and Tumblr, it must be at least 10. None of them stuck.
 

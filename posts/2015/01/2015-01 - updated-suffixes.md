@@ -4,7 +4,7 @@ tags: Python, Programming
 
 One of my favourite scripts is [a snippet of Python that produces a date with an ordinal suffix][suffixes]. It’s [short, simple][good_code], and was probably the first thing I did in Python that made me sit back and smile.
 
-[suffixes]: http://robjwells.com/2013/10/date-suffixes-in-python/
+[suffixes]: /2013/10/date-suffixes-in-python/
 [good_code]: http://stilldrinking.org/programming-sucks
 
 But it contains a hack to prevent the day of the month from being prefixed with a zero (`%d`) or a space (`%e`). I recently [discovered][drang] that you can use a hyphen in the format specifier to prevent this: `%-d`.
