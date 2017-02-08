@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: http://www.robjwells.com/sitemap.xml
+Sitemap: https://www.robjwells.com/sitemap.xml
