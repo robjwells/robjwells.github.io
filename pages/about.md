@@ -11,7 +11,7 @@ If you’d like to say hi, send an email to my first name at this website.
 
 And I’m on [Keybase][] if you need to contact me securely.
 
-[RSS]: /rss
+[RSS]: /feed
 [Bitbucket]: https://bitbucket.org/robjwells/
 [GitHub]: https://github.com/robjwells
 [gists]: https://gist.github.com/robjwells
