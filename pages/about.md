@@ -16,5 +16,5 @@ And I’m on [Keybase][] if you need to contact me securely.
 [GitHub]: https://github.com/robjwells
 [gists]: https://gist.github.com/robjwells
 [Pinboard]: https://pinboard.in/u:robjwells/public
-[Flickr]: http://flickr.com/photos/orwellianrob/
+[Flickr]: https://www.flickr.com/photos/orwellianrob/
 [Keybase]: https://keybase.io/robjwells
