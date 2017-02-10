@@ -1,0 +1,65 @@
+@import url('styles.css');
+
+/*   ----------------------   */
+/*!  COLOUR REFERENCE         */
+/*                            */
+/*   #1369BF   Blue           */
+/*   #00800a   Green          */
+/*   #BD3338   Red            */
+/*   #607080   Grey           */
+/*                            */
+/*   ----------------------   */
+
+
+/*! Blue */
+.hljs-at_rule,
+.hljs-attribute,
+.hljs-built_in,
+.hljs-command,
+.hljs-decorator,
+.hljs-keyword,
+.hljs-literal,
+.hljs-preprocessor,
+.hljs-tag {
+  color: #1369BF;
+}
+
+
+/*! Green */
+.hljs-regexp,
+.hljs-string,
+.xml .hljs-attribute {
+  color: #00800a;
+}
+
+
+/*! Red */
+.hljs-cdata,
+.hljs-constant,
+.hljs-hexcolor,
+.hljs-important,
+.hljs-number,
+.hljs-subst,
+.hljs-variable,
+.json .hljs-literal,
+.xml .hljs-value {
+  color: #BD3338;
+}
+
+
+/*! Grey */
+.hljs-comment,
+.hljs-doctype,
+.hljs-pi,
+.hljs-prompt,
+.hljs-shebang,
+.line-number {
+  color: #607080;
+}
+
+
+/*! Black */
+.css .hljs-tag,
+.objectivec .hljs-title {
+  color: #000;
+}

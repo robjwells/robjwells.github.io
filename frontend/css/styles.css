@@ -1,0 +1,576 @@
+@charset 'utf-8';
+@import url('reset.css');
+
+
+
+/*   ----------------------   */
+/*!  COLOUR REFERENCE         */
+/*                            */
+/*   #607080   Grey           */
+/*   #EFF0F2   10% Grey       */
+/*   #F7F8F9    5% Grey       */
+/*                            */
+/*   #BD3338   Red            */
+/*   #00800a   Green          */
+/*   #1369BF   Blue           */
+/*   #7436B3   Purple         */
+/*                            */
+/*   #F8EAEB   10% Red        */
+/*   #E8F3EC   10% Green      */
+/*   #E7EFF8   10% Blue       */
+/*   ----------------------   */
+
+
+
+/*! BASIC SETTINGS AND STRUCTURE */
+/* ------------------------------------------------------------------------- */
+
+body {
+  background-color: #607080;
+  font-family: 'Trebuchet MS', 'Geneva', serif;
+  font-size: 100%;        /* 16 */
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.375rem;  /* 22 */
+  letter-spacing: 0.01rem;
+}
+
+.wrapper {
+  background-color: #F7F8F9;
+  margin: 0 auto;
+  max-width: 65rem;   /* 1040 */
+  min-height: 100vh;
+  padding: 1.375rem 1rem;   /* 22 | 16 */
+}
+
+
+
+/*! HEADINGS */
+/* ------------------------------------------------------------------------- */
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0 0 1.375rem;  /* 22 bottom margin */
+}
+
+h1,
+h2 {
+  font-size: 1.25rem;  /* 20 */
+}
+
+h3 {
+  font-size: 1.125rem;  /* 18 */
+}
+
+h4 {
+  font-size: 1rem;  /* 16 */
+  font-style: italic;
+}
+
+
+
+/*! BASIC ELEMENTS */
+/* ------------------------------------------------------------------------- */
+
+blockquote,
+figure,
+p,
+pre,
+table, caption,
+dl, ol, ul {
+  margin-bottom: 1.375rem;  /* 22 / 16 */
+}
+
+blockquote,
+pre {
+  background-color: #EFF0F2;
+  padding: 0.6875rem 1rem;  /* 11 & 16 */
+}
+
+blockquote {
+  font-style: italic;
+}
+
+blockquote em,
+blockquote i {
+  font-style: normal;
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+figcaption {
+  font-style: italic;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #607080;  /* Grey */
+  margin: 1.375rem 0;   /* 22 | 0 */
+}
+
+img,
+video {
+  border: 1px solid #607080;  /* Grey */
+  height: auto;               /* Prevent horizontal squishing */
+  max-width: 100%;
+}
+
+pre {
+  overflow-x: auto;  /* auto not scroll to hide unneeded scrollbars */
+}
+
+
+
+/*! LISTS */
+/* ------------------------------------------------------------------------- */
+
+dl,
+ol,
+ul {
+  margin-bottom: 1.375rem;    /* 22 */
+}
+
+ol,
+ul {
+  list-style-position: outside;
+  padding-left: 2rem;   /* 32 */
+}
+
+ol {
+  list-style-type: decimal;
+}
+
+ul {
+  list-style-type: square;
+}
+
+
+
+/*! LINKS */
+/* ------------------------------------------------------------------------- */
+
+a:link {
+  color: #1369BF;   /* Blue */
+  text-decoration: underline;
+}
+
+a:visited {
+  color: #7436B3;  /* Purple */
+}
+
+a:focus,
+a:hover,
+a:active {
+  background-color: #E7EFF8;  /* 10% Blue */
+}
+
+
+
+/*! PHRASING ELEMENTS (extra text styles) */
+/* ------------------------------------------------------------------------- */
+
+strong,
+b {
+  font-weight: bold;
+}
+
+em,
+i {
+  font-style: italic;
+}
+
+code,
+small {
+  font-size: 0.875rem;  /* 14 / 16 */
+  line-height: 1;  /* Prevent height of content box exceeding p line-height */
+}
+
+code {
+  font-family: 'Source Code Pro', 'Consolas', 'Monaco', monospace;
+}
+
+small {
+  color: #607080;
+}
+
+
+
+/*!  TABLES                   */
+/* ------------------------------------------------------------------------- */
+
+table {
+  /* Restrain table width and force overflow on smaller screens. */
+  table-layout: fixed;
+  width: 100%;
+}
+
+caption {
+  font-style: italic;
+}
+
+thead {
+  border-bottom: 1px solid #607080;
+}
+
+tfoot {
+  border-top: 1px solid #607080;
+}
+
+th,
+td {
+  width: auto;
+  padding: 0.6875rem;  /* 11 / 16 */
+  overflow: auto;
+}
+
+th {
+  background-color: #EFF0F2;
+  font-weight: bold;
+  text-align: left;
+}
+
+.table-figures {
+  text-align: right;
+  font-family: 'Source Code Pro', 'Consolas', 'Monaco', monospace;
+}
+
+
+
+/*! SITE HEADER */
+/* ------------------------------------------------------------------------- */
+
+.site-header {
+  border-left: 0.5rem solid #1369BF;  /*  8 / 16 */
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 1.375rem;            /* 22 / 16 */
+  padding-left: 0.5rem;               /*  8 / 16 */
+}
+
+.site-title-container {
+  flex-shrink: 0;
+  margin-right: 2rem;   /* 32 */
+}
+
+.site-title {
+  font-size: 1.375rem;    /* 22 */
+  line-height: 1.375rem;  /* 22 */
+  margin-bottom: 0;
+}
+
+.site-byline {
+  margin-bottom: 0.6875rem;   /* 11 */
+}
+
+.site-menu-container {
+  flex-grow: 1;
+}
+
+.site-links {
+  color: #607080;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  list-style-type: none;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.site-links li {
+  margin-right: 0.5rem;   /* 8 */
+}
+
+.site-links li:last-child {
+  margin-right: 0;
+}
+
+.site-search-label {
+  color: #607080;           /* Grey */
+  margin-top: 0.6875rem;    /* 11 */
+}
+
+.site-search {
+  display: flex;
+}
+
+.site-search .search-field,
+.site-search .search-button {
+  border: 1px solid #607080;
+  border-radius: 0;
+  margin: 0;
+}
+
+.site-search .search-field {
+  flex: 1 1 60%;
+}
+
+.site-search .search-button {
+  background-color: #EFF0F2;
+  border-left: 0;
+  flex-basis: 40%;
+}
+
+
+
+/*! SITE FOOTER */
+/* ------------------------------------------------------------------------- */
+
+.site-footer {
+  flex-basis: 100%;
+  align-self: flex-end;
+  margin-top: 4.125rem;  /* 66 / 16 */
+}
+
+
+
+/*! ARTICLES */
+/* ------------------------------------------------------------------------- */
+
+article {
+  border-bottom: 1px solid #607080;
+  margin-bottom: 4.125rem;  /* 66 / 16 */
+}
+
+article:last-of-type {
+  border-bottom: none;
+}
+
+article header {
+  margin-bottom: 1.375rem; /* 22 / 16 */
+}
+
+article header h2 {
+  margin-bottom: 0;
+}
+
+article header time {
+  color: #607080;
+}
+
+article p {
+  max-width: 35rem;  /* 560 / 16 */
+}
+
+article li {
+  margin-bottom: 1.375rem;  /* 22 / 16 */
+  max-width: 33rem;  /* p max-width - ol/ul padding-left (2rem) */
+}
+
+
+
+/*! PAGINATION */
+/* ------------------------------------------------------------------------- */
+
+.pagination {
+  display: flex;
+  justify-content: space-around;
+  max-width: 35rem;
+}
+
+.pagination-older,
+.pagination-newer {
+  margin-bottom: 0;
+}
+
+.pagination-older::before {
+    content: "← ";
+}
+
+.pagination-newer::after {
+    content: " →";
+}
+
+
+
+/*! ARCHIVES */
+/* ------------------------------------------------------------------------- */
+
+.archive-date {
+  color: #607080;
+  flex: 0 0 6rem;   /* 0 0 96 */
+  font-family: 'Source Code Pro', 'Consolas', 'Monaco', monospace;
+  font-size: 0.875rem;    /* 14 / 16 */
+  margin-right: 0.5rem;   /* 8 */
+}
+
+.archive-item {
+  margin-bottom: 0.6875rem;  /* 11 */
+}
+
+.archive-link {
+  align-items: baseline;
+  display: flex;
+}
+
+.archive-list {
+  padding-left: 0;
+  list-style-type: none;
+}
+
+
+
+/*! FLAGS */
+/* ------------------------------------------------------------------------- */
+
+.flag {
+  background-color: #E7EFF8;
+  border-left: 0.5rem solid #1369BF;  /* 8 */
+  margin-bottom: 1.375rem;           /* 22 */
+  padding: 0.6875rem 0.5rem;         /* 11 | 8 */
+}
+
+.flag :last-child {
+  margin-bottom: 0;
+}
+
+
+
+/*! MODIFIER CLASSES     */
+/* ("Icing on the cake") */
+/* ------------------------------------------------------------------------- */
+
+.full-width {
+  max-width: 100%;
+}
+
+.mute-links a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.no-border {
+  border: 0;
+}
+
+/* Swap img max-width resizing for scroll */
+/* Place on the img's container */
+.no-squish {
+  overflow: auto;
+}
+.no-squish img {
+  max-width: none;
+}
+
+.osx-menu {
+  font-family: -apple-system, -apple-system-font, "Lucida Grande", sans-serif;
+}
+
+
+
+/*! MEDIA QUERY: Mid-sized screens */
+/* ------------------------------------------------------------------------- */
+
+/* 35rem == 560 == p max-width */
+@media screen and (min-width: 35rem) {
+
+  /* Structure: increase padding */
+  .wrapper {
+    padding: 1.375rem 2.5rem;   /* 22 | 40 */
+  }
+
+
+
+  /* Site header: adjust link layout */
+  .site-links {
+    justify-content: flex-start;
+  }
+
+  .site-links li {
+    margin-right: 5%;
+  }
+
+
+
+  /* Headings: larger font sizes for larger screens */
+  h1,
+  h2 {
+    line-height: 2.75rem;  /* 44 */
+  }
+
+  h1,
+  h2 {
+    font-size: 2.25rem;  /* 36 */
+  }
+
+  h3 {
+    font-size: 1.75rem;  /* 28 */
+  }
+
+  h4 {
+    font-size: 1.25rem;  /* 20 */
+    font-style: normal;
+  }
+
+
+
+  /* Table: adapt to screen width */
+  table {
+    table-layout: auto;
+  }
+
+}
+
+
+
+/*! MEDIA QUERY: Larger screens */
+/* ------------------------------------------------------------------------- */
+
+/* 50rem == 800 */
+@media screen and (min-width: 50rem) {
+
+  /* Structure: switch to two-column layout */
+  .wrapper {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;  /* Force footer to the bottom */
+  }
+
+  main {
+    flex: 1 1 0;
+    min-width: 0;  /* Fixes overflow in Firefox (needed as of 2015-08) */
+  }
+
+
+
+  /* Site header: switch to vertical layout */
+  .site-header {
+    border-left: 0;
+    display: block;
+    flex: 0 0 10rem;    /* 160 */
+    margin-right: 5rem;  /* 80 */
+    padding-left: 0;
+  }
+
+  .site-title-container {
+    border-left: 0.5rem solid #1369BF;  /*  8 / 16 */
+    margin-right: 0;
+    padding-left: 0.5rem;               /*  8 / 16 */
+  }
+
+  .site-links {
+    display: block;
+    margin-bottom: 0.6875rem;  /* 11 */
+  }
+
+  .site-links li {
+    margin-right: 0;
+  }
+
+  .site-search {
+    display: block;
+  }
+
+  .site-search .search-field,
+  .site-search .search-button {
+    width: 100%;
+  }
+
+  .site-search .search-button {
+    border-left: 1px solid #607080;  /* Restore removed border-left */
+  }
+
+}

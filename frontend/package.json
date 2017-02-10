@@ -1,0 +1,24 @@
+{
+  "name": "primaryunit",
+  "version": "1.0.0",
+  "description": "Build system for Primary Unit CSS and JS",
+  "main": "index.js",
+  "dependencies": {
+    "gulp": "*",
+    "gulp-autoprefixer": "*"
+  },
+  "devDependencies": {
+    "gulp-changed": "*",
+    "gulp-concat": "*",
+    "gulp-csso": "*",
+    "gulp-gzip": "*",
+    "gulp-rename": "*",
+    "gulp-replace": "*",
+    "gulp-uglify": "*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
