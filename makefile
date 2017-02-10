@@ -4,7 +4,7 @@ all: robjwells github
 
 robjwells:
 	majestic --settings=settings.cfg
-	rsync -zv -e ssh www.robjwells.com.conf rick@deckard:/srv/www/www.robjwells.com/www.robjwells.com.conf
+	rsync -zv -e ssh www.robjwells.com.conf rick@deckard:/srv/www/www.robjwells.com/
 	rsync -azv -e ssh site/ rick@deckard:/srv/www/www.robjwells.com/html
 
 github:
