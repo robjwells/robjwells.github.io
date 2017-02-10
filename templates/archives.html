@@ -4,9 +4,9 @@
 {% block title %}{{ macros.maketitle('Archives') }}{% endblock %}
 
 {% block content %}
-  <h1>Archives</h1>
+  <h2>Archives</h2>
     {% for group in content|groupby('date.year')|sort(reverse=True) %}
-    <h2>{{ group.grouper }}</h2>
+    <h3>{{ group.grouper }}</h3>
     <ul class="archive-list mute-links">
     {% for post in group.list|sort(reverse=True) %}
       <li class="archive-item">
