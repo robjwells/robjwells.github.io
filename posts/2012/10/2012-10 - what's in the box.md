@@ -4,7 +4,7 @@ tags: AppleScript
 
 <p class="pic"><img src="http://f.cl.ly/items/1H130B292f363D1h442Z/SevenBox.jpg" alt="Become vengeance, David. Become wrath."></p>
 
-## Accessing AppleScript records using a variable
+### Accessing AppleScript records using a variable
 
 AppleScript gets a lot of stick for being a rubbish language. And it is. But before last night there wasn’t anything that really threw me and made me think “wow, that’s incredibly, impressively, mind-meltingly dumb”. (Admittedly, I’m not a programmer.)
 

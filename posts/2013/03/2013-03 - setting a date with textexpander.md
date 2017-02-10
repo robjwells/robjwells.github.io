@@ -29,13 +29,13 @@ So that’s four — only half as bad as before!
 
 [ms]: http://www.morningstaronline.co.uk
 
-## Time
+### Time
 
 I’m sticking with my old `;time` snippet here, a colon-separated 24-hour time. If I need a more human-friendly time, typing 10am or 8pm or whatever is as easy as typing an abbreviation (and TextExpander only does uppercase AM/PM, which I dislike). Here’s the snippet:
 
     %H:%M   ->    10:23
 
-## Short date
+### Short date
 
 Because, well, [XKCD][], I’m going to use the [ISO 8601 date format][iso] for this. It means I can dump my separate backwards date snippet and avoids any confusion across DD/MM/YY and MM/DD/YY countries.
 
@@ -44,7 +44,7 @@ Because, well, [XKCD][], I’m going to use the [ISO 8601 date format][iso] for 
 [XKCD]: http://xkcd.com/1179/
 [iso]: http://en.wikipedia.org/wiki/ISO_8601
 
-## Long date
+### Long date
 
 Since this is implicitly not the format to use when you’re counting characters and one that’s explicit enough to avoid confusion, there’s quite a bit of personal freedom here.
 
@@ -103,7 +103,7 @@ Now let’s roll it up and `return` a constructed date:
     return (theDay & ", " & theMonth & " " & theDate & ", " &¬
      theYear) as string
 
-## End result
+### End result
 
 Hey! You made it! I was sure I’d lose everyone in the middle of breaking down that AppleScript.
 

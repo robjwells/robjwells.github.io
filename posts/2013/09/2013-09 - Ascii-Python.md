@@ -46,7 +46,7 @@ So the system setting wasn’t the culprit. But why is the system encoding diffe
 
 Locale refers to the environment variables in my Terminal, but when I try `echo $LANG` it’s set to `en_GB.UTF-8` — surely that’s not the problem?
 
-## WRONG.
+### WRONG.
 
 As [this thread][lang] eventually made me realise, I didn’t actually have `$LANG` set to anything — it was all smoke and mirrors that cleared away when I ran the script through BBEdit. (I also had a similar problem with Applescript’s `do shell script` and it looks like [Sublime Text users][sublime] have also run into it.) Checking the `os.environ` output from the script above confirmed it: no `$LANG`.
 

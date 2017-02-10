@@ -4,7 +4,7 @@ tags: AppleScript
 
 At work recently I ran into two subtle AppleScript oddities that tripped me up when modifying one of our production scripts.
 
-## Return value could be a string or a list
+### Return value could be a string or a list
 
 This may be specific to InDesign but I'd be surprised (I haven't checked). When asking for:
 
@@ -17,7 +17,7 @@ This causes a problem when you want to compare the result to another string, bec
 
 The solution is to cast the result to a list, using `as list`. If it's already a list it's unchanged, if it's a lone string it's just wrapped in a list.
 
-## AppleScript's for-in may not give you the value
+### AppleScript's for-in may not give you the value
 
 AppleScript lets you do the following:
 

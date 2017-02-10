@@ -6,7 +6,7 @@ At work we have about 40 employees. A couple of weeks ago I moved our email to a
 
 [FastMail]: https://fastmail.com
 
-## Background
+### Background
 
 From what I can tell, we’d been running our email through cPanel on a [shared host][ukwsd] since 2003. (I was hired in 2010 and this became my responsibility in May 2014.)
 
@@ -29,7 +29,7 @@ We were in a pretty bad state. (Hopefully little of this sounds familiar to you.
 [ukwsd]: https://ukwebsolutionsdirect.co.uk
 [rbl]: https://en.wikipedia.org/wiki/DNSBL
 
-## Preparation
+### Preparation
 
 The biggest task before the switch itself was to move everyone using POP to access their mail to IMAP, otherwise when it came time to do the migration there’d be nothing to move across. They’d have to keep the old POP account in their client forever to be able to access old mail (one remote worker has had to do this because they couldn’t manage to set up IMAP access to their account in [Entourage][], their version of which is [old and busted][office]).
 
@@ -52,7 +52,7 @@ Aliases also let me clean up our unpredictable account names, so that everyone i
 
 You can get started on this list at any point, and it was one of the first things that I did after getting approval. But as you approach D-Day you need to *make sure that the list is up to date*. I failed to do this and, while it didn't cause major problems, it caused me to panic a bit as I scrambled to get the missing accounts up and running.
 
-## Transition
+### Transition
 
 It will benefit you greatly if you draw up a plan for the transition. That includes choosing a D-Day, and detailing what actions you are going to perform and in which order. My biggest mistake was to let a worsening of the problems detailed above force my hand and act hastily. Do everything you can to avoid this and work according to plan.
 
@@ -86,7 +86,7 @@ Once you’ve got everyone moved over, flip the switch on the MX records so that
 
 [migration]: https://www.fastmail.com/help/business/migrate.html
 
-### Aside: hosting your DNS with FastMail
+#### Aside: hosting your DNS with FastMail
 
 FastMail encourages you to host your DNS with them. I haven’t done it for `robjwells.com` or work because I feel that there should be a separation there (DNS settings stay with [the registrar][Hover]) and I’m not intimidated by DNS records (although they’re a massive pain).
 
@@ -96,7 +96,7 @@ But if, say, [my stepdad][dave] wanted email for [his business][dave] I’d tell
 
 I did briefly switch work to use FastMail’s DNS two nights ago, to see if it enabled automatic configuration in Apple Mail or Thunderbird. No difference. (Our domain publishes SRV records that are meant to help with this and I thought I might have made a mistake, but no dice with either. Outlook may be a different story, but as we’re a mostly Mac office who cares?)
 
-## Afterwards
+### Afterwards
 
 The actual change in email provider should largely be invisible to your users. Your biggest problem is going to be what I’ll call user education. Some of this will be straightforward. In our case, an example was to get people to check their spam folder (we previously had daily quarantine emails).
 

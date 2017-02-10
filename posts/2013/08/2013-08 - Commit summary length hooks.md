@@ -10,7 +10,7 @@ Right now I’m learning towards Mercurial (and am using it to track these blog 
 
 So when I wrote my first commit hook I did it in both flavours. It’s a simple Python script that rejects a commit if the first-line summary is too long (over 50 characters) or too short (10 characters). The idea is to make sure `hg log` and `git log (--oneline|--pretty=short)` are informative but brief.
 
-## Mercurial
+### Mercurial
 
     python:
      1:  #!/usr/bin/env python3
@@ -44,7 +44,7 @@ Line 11 finds the length of the first line of the commit message, and lines 13�
 
 The colour function called on lines 14 and 17 is used to turn the warning text red. I’ll explain it below.
 
-## Git
+### Git
 
     python:
      1:  #!/usr/bin/env python3
@@ -71,7 +71,7 @@ We read a single line from the file on line 7, but still use the splitlines meth
 
 The if block at the end is almost identical to the Mercurial version, save for the “commit” replacing “changeset”. This is just me trying to avoid blindly using Git terminology when discussing Mercurial.
 
-## Usage
+### Usage
 
 I include the hook in my main Mercurial config file (`~/.hgrc`), which means it applies to all repositories:
 
@@ -87,7 +87,7 @@ With Git things are a little more tricky, as the script (or a link to it) must a
 [icefox-githooks]: https://github.com/icefox/git-hooks
 
 
-## Terminal colouring
+### Terminal colouring
 
 In both scripts the printed warnings are run through a colour function, which is something I whipped up with exactly this situation in mind.
 
