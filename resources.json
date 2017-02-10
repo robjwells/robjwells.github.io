@@ -1,7 +1,6 @@
 [
     ["frontend/build/*", {"subdir": "resources"}],
     ["images"],
-    ["pgp"],
     ["robots.txt"],
     ["keybase.txt"]
 ]
