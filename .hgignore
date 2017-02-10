@@ -1,5 +1,4 @@
 site/
 gh-pages/
-deploy.sh
 frontend/node_modules
 frontend/build
