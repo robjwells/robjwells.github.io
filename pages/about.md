@@ -1,20 +1,17 @@
 title: About Primary Unit
 slug: about
 
-Primary Unit is written by me, Rob Wells. I work production at a newspaper in London, England.
+Primary Unit is written by me, Rob Wells, as a personal blog. I work production at a newspaper in London, England. You can subscribe to my posts by [RSS][].
 
-This blog is my place to write about my hobbyist programming, games, plenty more computer stuff and, well, whatever else. You can subscribe to my posts by [RSS][].
+If you’d like to get in touch, send an email to my first name at this website. Or you can contact me securely on [Keybase][], or say hi on [Twitter][].
 
-I share my code on [Bitbucket][] and [GitHub][] and shorter snippets as [gists][], save interesting things on [Pinboard][], and very occasionally post photos on [Flickr][].
-
-If you’d like to say hi, send an email to my first name at this website.
-
-And I’m on [Keybase][] if you need to contact me securely.
+You can find my code at [GitHub][] and [Bitbucket][], bookmarks at [Pinboard][], and photos on [Flickr][].
 
 [RSS]: /feed
-[Bitbucket]: https://bitbucket.org/robjwells/
+[Keybase]: https://keybase.io/robjwells
+[Twitter]: https://twitter.com/robjwells
+
 [GitHub]: https://github.com/robjwells
-[gists]: https://gist.github.com/robjwells
+[Bitbucket]: https://bitbucket.org/robjwells/
 [Pinboard]: https://pinboard.in/u:robjwells/public
 [Flickr]: https://www.flickr.com/photos/orwellianrob/
-[Keybase]: https://keybase.io/robjwells
