@@ -14,6 +14,8 @@ endef
 
 all: robjwells github
 
+force-all: force-robjwells force-github
+
 robjwells:
 	majestic --settings=settings.cfg
 	$(upload-robjwells)
