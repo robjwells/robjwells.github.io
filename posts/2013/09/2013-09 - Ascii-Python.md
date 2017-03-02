@@ -2,8 +2,19 @@ title: Get your US-ASCII out of my face
 date: 2013-09-14 14:05
 tags: OS X, Programming, Python, Shell
 
-<div class="sym-add flag flag-warning">
-  <p><strong>This post isn’t quite right.</strong> Please see my more recent one about <a href="/2014/12/locale-in-os-x-and-launch-agents/">setting environment variables using launchd and launchctl</a>.</p>
+<div class="flag">
+  <p><strong>Warning: The contents of this post may not be up to date!</strong></p>
+  <p>Sorry, but if you’re searching for answers about why you can’t reliably set environment variables in OS X (particularly <code>PATH</code>), the information below may be out of date.</p>
+  <p>Apple has changed the system so many times in so many different ways it’s difficult to find <em>anything</em> on the internet about this that is correct and up-to-date, so I’ve placed this warning on the top of every post I’ve written about it.</p>
+  <p>As of 2017-03-02 it appears that the best collection of information is <a href="https://github.com/ersiner/osx-env-sync">the osx-env-sync project on GitHub</a> and its associated issues.</p>
+  <p>Be wary of anything that you find on StackOverflow: the answers there may well have been correct at the time but incorrect now.</p>
+  <p>For reference, my own posts on this problem (newest first) are:</p>
+  <ul>
+    <li><a href="/2017/03/setting-os-xs-environment/">Setting OS X’s environment</a></li>
+    <li><a href="/2014/12/locale-in-os-x-whats-the-current-situation/">Locale in OS X — what’s the current situation?</a></li>
+    <li><a href="/2014/12/locale-in-os-x-and-launch-agents/">Locale in OS X and Launch Agents</a></li>
+    <li><a href="/2013/09/get-your-us-ascii-out-of-my-face/">Get your US-ASCII out of my face</a></li>
+  </ul>
 </div>
 
 When I was writing the script in [yesterday’s post][solo-diff] I came across this bizarre text encoding problem:
