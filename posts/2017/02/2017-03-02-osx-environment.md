@@ -38,7 +38,7 @@ This bit me again the other day when using a Jupyter notebook to [export from Te
     UnicodeEncodeError: 'ascii' codec can't encode character
     '\u2603' in position 0: ordinal not in range(128)
 
-Now, this machine has been upgraded all the way from 10.7 and my understanding is that if you’ve a fresh install of a more recent version than you should be OK as far as the encoding-related environment variables (`LANG`, `LC_CTYPE`, `LC_ALL`). [A recent Python enhancement proposal][pep] includes the paragraph:
+Now, this machine has been upgraded all the way from 10.7 and my understanding is that if you’ve a fresh install of a more recent version then you should be OK as far as the encoding-related environment variables (`LANG`, `LC_CTYPE`, `LC_ALL`). [A recent Python enhancement proposal][pep] includes the paragraph:
 
 [pep]: https://www.python.org/dev/peps/pep-0538/#background
 
