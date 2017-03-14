@@ -1,5 +1,5 @@
-title: Backups
-date: 2017-03-15 10:00
+title: Backups: before
+date: 2017-03-14 15:00
 
 At [work][] I’m responsible for our office file server, which is mostly used for storing the InDesign pages and related files we need to produce the paper every day.
 
@@ -31,7 +31,7 @@ You’ll have noticed some fuzziness in my recollections just there, for an impo
 
 [AFP]: https://en.wikipedia.org/wiki/Apple_Filing_Protocol
 
-And this is the point where it gets concerning. It wasn’t rare to login to the server to find a SuperDuper copy having run for 12 hours and still going, or that Arq had hung and needed its agent restarted. Both are solid pieces of software (though it was an older version of Arq, v3 I think) so the blame does lie with the machine.
+And this is the point where it gets concerning. It wasn’t rare to log in to the server to find a SuperDuper copy having run for 12 hours and still going, or that Arq had hung and needed its agent restarted. Both are solid pieces of software (though it was an older version of Arq, v3 I think) so the blame does lie with the machine.
 
 Which is odd, really, because its only tasks were:
 
@@ -74,3 +74,10 @@ It’s perhaps clear that the chances of recovering your work are *not good*. It
 
 (When I was very new at the Star I did something similar. I was asked to work on a features page for the following day. I opened up the corresponding page for edition to save a copy but for whatever reason didn’t — and began to work *on the “live” page for edition*. When this was noticed — close to deadline! — I was thankfully able to undo my way back to the original state, as I hadn’t closed InDesign since opening it. It was an *incredibly* close call that still makes me feel queasy when I think about it.)
 
+So while we did have a strategy that included both local and remote backups, it was effectively useless. That everything locally was in RAID 1 — meaning that if one drive of a mirror fails, you don’t lose data — I think just shows that when it was set up, the core purpose of backing up our data was misunderstood. 
+
+We had copies of our business-critical data, but constructed in such a way that protection against drive failure was far, far more important that the much more common case of restoring fast-changing files. In this system, you could have five drives die and still have a copy of our server data locally, or all six die (perhaps in a fire) and be able to recover remotely.
+
+To sum up, it was reasonable protection for a rare event but little protection for a common event.
+
+It is, of course, possible to have both. In my next post I’ll go into what’s changed, why, and what that means for protecting our data in both the common and rare cases.
