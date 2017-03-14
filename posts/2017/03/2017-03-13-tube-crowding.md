@@ -29,7 +29,7 @@ Let’s start with the [Waterloo & City][Waterloo] line because it’s simplest:
     </a>
 </p>
 
-Hopefully you can pick out the labels on the left showing the source and destination stations, the times (5am to 2am) and the change in colour showing how crowded the trains are. It’s quiet easy to pick out the peaks here: Waterloo to Bank around 8 and 9am, Bank to Waterloo around 5 and 6pm.
+Hopefully you can pick out the labels on the left showing the source and destination stations, the times (5am to 2am) and the change in colour showing how crowded the trains are. It’s quite easy to pick out the peaks here: Waterloo to Bank around 8 and 9am, Bank to Waterloo around 5 and 6pm.
 
 Now, in alphabetical order, let’s go through the rest. [Bakerloo][]:
 
