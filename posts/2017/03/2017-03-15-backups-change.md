@@ -1,6 +1,6 @@
 title: Backups: the change
 date: 2017-03-15 10:00
-
+draft
 What prompted me to overhaul work’s [previous backup strategy][before] was a nerve-wracking hour late last year when the Mac Mini server became unresponsive and would fail to reboot with its external drives attached.
 
 Detaching the drives, booting and then reattaching the drives got us back to normal. (This had happened before; I think it might have been connected to the third-party RAID driver we were using, but I don't know that for sure.) 
