@@ -1,5 +1,5 @@
 title: Backups: the change
-date 2017-03-15 10:00
+date: 2017-03-15 10:00
 
 What prompted me to overhaul work’s [previous backup strategy][before] was a nerve-wracking hour late last year when the Mac Mini server became unresponsive and would fail to reboot with its external drives attached.
 
