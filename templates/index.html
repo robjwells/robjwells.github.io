@@ -5,6 +5,12 @@
   {{ macros.maketitle('page ' + content.page_number|string, is_index=True) }}
 {%- endblock %}
 
+{% block script -%}
+{% if content|selectattr('include_highlighting')|list -%}
+{{ macros.add_highlighting }}
+{%- endif %}
+{%- endblock %}
+
 {% block content %}
 {% for post in content %}
   {{ macros.makearticle(post) }}

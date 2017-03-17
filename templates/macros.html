@@ -17,3 +17,8 @@
     {{ content.html }}
   </article>
 {%- endmacro %}
+
+{% macro add_highlighting() %}
+  <!-- Load my combined JavaScript -->
+  <script src="/resources/all.min.js" async></script>
+{% endmacro %}

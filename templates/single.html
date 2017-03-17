@@ -3,6 +3,12 @@
 
 {% block title %}{{ macros.maketitle(content.title) }}{% endblock %}
 
+{% block script -%}
+{%- if content.include_highlighting -%}
+{{ macros.add_highlighting() }}
+{%- endif -%}
+{%- endblock %}
+
 {% block content %}
   {{ macros.makearticle(content) }}
 {% endblock %}
