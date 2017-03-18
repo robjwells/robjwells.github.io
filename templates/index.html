@@ -7,7 +7,7 @@
 
 {% block script -%}
 {% if content|selectattr('include_highlighting')|list -%}
-{{ macros.add_highlighting }}
+{{ macros.add_highlighting() }}
 {%- endif %}
 {%- endblock %}
 
