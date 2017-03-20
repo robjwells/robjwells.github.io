@@ -41,7 +41,6 @@
 .hljs-number,
 .hljs-subst,
 .hljs-variable,
-.json .hljs-literal,
 .xml .hljs-value {
   color: #BD3338;
 }
@@ -55,11 +54,4 @@
 .hljs-shebang,
 .line-number {
   color: #607080;
-}
-
-
-/*! Black */
-.css .hljs-tag,
-.objectivec .hljs-title {
-  color: #000;
 }
