@@ -80,4 +80,6 @@ We had copies of our business-critical data, but constructed in such a way that 
 
 To sum up, it was reasonable protection for a rare event but little protection for a common event.
 
-It is, of course, possible to have both. In my next post I’ll go into what’s changed, why, and what that means for protecting our data in both the common and rare cases.
+It is, of course, possible to have both. In [my next post][next] I’ll go into what’s changed, why, and what that means for protecting our data in both the common and rare cases.
+
+[next]: https://www.robjwells.com/2017/03/backups-the-change/
