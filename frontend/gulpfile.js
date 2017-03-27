@@ -32,6 +32,7 @@ gulp.task('css', function () {
         .pipe(autoprefixer())
         .pipe(concat('all.css'))
         .pipe(replace(/^/, "@charset 'utf-8';\n")) // add back single charset
+        .pipe(replace(/\/\*![^\n]+/g, ''))         // remove comments
         .pipe(gulp.dest(build_dir))
         .pipe(csso())  // minify
         .pipe(rename('all.min.css'))
