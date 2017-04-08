@@ -1,0 +1,11 @@
+{
+    "site": {
+        "url": "https://robjwells.github.io",
+        "title": "Primary Unit mirror",
+        "description": "A mirror of https://www.robjwells.com"
+    },
+
+    "paths": {
+        "output root": "gh-pages"
+    }
+}
