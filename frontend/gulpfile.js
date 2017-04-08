@@ -42,7 +42,7 @@ gulp.task('css', function () {
 
 gulp.task('js', function () {
     // The order of filenames in ordered_files is important
-    var ordered_files = ['highlight.pack', 'robjwells'].map(function (name) {
+    var ordered_files = ['robjwells'].map(function (name) {
         return js_dir + name + '.js';
     });
 

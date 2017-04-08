@@ -1,7 +1,7 @@
 import re
 
 highlighted_code_regex = re.compile(
-    r'<pre> \s* <code> \s* (?P<language_name> [-\da-z]+ ) :',
+    r'<div \s+ class="syntax">',
     flags=re.IGNORECASE|re.VERBOSE
     )
 
