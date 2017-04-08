@@ -17,17 +17,17 @@ all: robjwells github
 force-all: force-robjwells force-github
 
 robjwells:
-	majestic --settings=settings.cfg
+	majestic
 	$(upload-robjwells)
 
 force-robjwells:
-	majestic --settings=settings.cfg --force-write
+	majestic --force-write
 	$(upload-robjwells)
 
 github:
-	majestic --settings=robjwells.github.io.cfg
+	majestic --settings=robjwells.github.io.json
 	$(upload-github)
 
 force-github:
-	majestic --settings=robjwells.github.io.cfg --force-write
+	majestic --settings=robjwells.github.io.json --force-write
 	$(upload-github)
