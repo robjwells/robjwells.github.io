@@ -229,7 +229,7 @@ class HiliteTreeprocessor(Treeprocessor):
                 block.text = placeholder
 
 
-class CodeHiliteExtension(Extension):
+class RJWHighlighter(Extension):
     """ Add source code hilighting to markdown codeblocks. """
 
     def __init__(self, *args, **kwargs):
@@ -254,7 +254,7 @@ class CodeHiliteExtension(Extension):
                              'Default: True']
             }
 
-        super(CodeHiliteExtension, self).__init__(*args, **kwargs)
+        super(RJWHighlighter, self).__init__(*args, **kwargs)
 
     def extendMarkdown(self, md, md_globals):
         """ Add HilitePostprocessor to Markdown instance. """
@@ -266,4 +266,4 @@ class CodeHiliteExtension(Extension):
 
 
 def makeExtension(*args, **kwargs):
-    return CodeHiliteExtension(*args, **kwargs)
+    return RJWHighlighter(*args, **kwargs)

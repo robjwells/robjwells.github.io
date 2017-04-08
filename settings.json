@@ -32,7 +32,7 @@
 
     "markdown": {
         "extensions": {
-            "CodeHiliteExtension": {
+            "RJWHighlighter": {
                 "css_class": "syntax"
             }
         }
