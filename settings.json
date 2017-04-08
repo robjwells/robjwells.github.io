@@ -19,6 +19,14 @@
     },
 
     "jinja": {
-        "custom options": "true"
-    }
+        "lstrip_blocks": true,
+        "trim_blocks": true
+    },
+
+    "resources": [
+        ["frontend/build/*", {"subdir": "resources"}],
+        ["images"],
+        ["robots.txt"],
+        ["keybase.txt"]
+    ]
 }
