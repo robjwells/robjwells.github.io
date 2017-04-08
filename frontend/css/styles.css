@@ -183,14 +183,20 @@ i {
   font-style: italic;
 }
 
+.syntax,
 code,
 small {
-  font-size: 0.875rem;  /* 14 / 16 */
-  line-height: 1;  /* Prevent height of content box exceeding p line-height */
+  font-size: 0.875rem; /* 14 / 16 */
 }
 
+.syntax,
 code {
   font-family: 'Source Code Pro', 'Consolas', 'Monaco', monospace;
+}
+
+code,
+small {
+  line-height: 1;  /* Prevent height of content box exceeding p line-height */
 }
 
 small {

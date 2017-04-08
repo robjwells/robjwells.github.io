@@ -28,5 +28,13 @@
         ["images"],
         ["robots.txt"],
         ["keybase.txt"]
-    ]
+    ],
+
+    "markdown": {
+        "extensions": {
+            "CodeHiliteExtension": {
+                "css_class": "syntax"
+            }
+        }
+    }
 }

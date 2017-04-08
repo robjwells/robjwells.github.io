@@ -11,47 +11,64 @@
 /*   ----------------------   */
 
 
-/*! Blue */
-.hljs-at_rule,
-.hljs-attribute,
-.hljs-built_in,
-.hljs-command,
-.hljs-decorator,
-.hljs-keyword,
-.hljs-literal,
-.hljs-preprocessor,
-.hljs-tag {
-  color: #1369BF;
+.syntax .lineno {
+    padding-right: 0.5em;
+}
+
+/* Grey */
+.syntax .lineno,
+.syntax .c,
+.syntax .c1,
+.syntax .ch,
+.syntax .cm,
+.syntax .cp,
+.syntax .cpf,
+.syntax .cs,
+.syntax .gp,
+.syntax .gt
+{
+    color: #607080;
+}
+
+/* Blue */
+.syntax .nb,
+.syntax .k,
+.syntax .kn,
+.syntax .ow,
+.syntax .bp,
+.syntax .nt,
+.syntax .kd,
+.syntax .nd
+{
+    color: #1369BF;
 }
 
 
-/*! Green */
-.hljs-regexp,
-.hljs-string,
-.xml .hljs-attribute {
-  color: #00800A;
+/* Red */
+.syntax .si,
+.syntax .se,
+.syntax .m,
+.syntax .mb,
+.syntax .mf,
+.syntax .mh,
+.syntax .mi,
+.syntax .mo,
+.syntax .sr,
+.syntax .sa,
+.syntax .gr
+{
+    color: #BD3338;
 }
 
 
-/*! Red */
-.hljs-cdata,
-.hljs-constant,
-.hljs-hexcolor,
-.hljs-important,
-.hljs-number,
-.hljs-subst,
-.hljs-variable,
-.xml .hljs-value {
-  color: #BD3338;
-}
-
-
-/*! Grey */
-.hljs-comment,
-.hljs-doctype,
-.hljs-pi,
-.hljs-prompt,
-.hljs-shebang,
-.line-number {
-  color: #607080;
+/* Green */
+.syntax .s,
+.syntax .s1,
+.syntax .s2,
+.syntax .sd,
+.syntax .sb,
+.syntax .sc,
+.syntax .dl
+{
+    color: #00800A;
 }
