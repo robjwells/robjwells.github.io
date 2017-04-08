@@ -1,0 +1,24 @@
+{
+    "site": {
+        "url": "https://www.robjwells.com",
+        "title": "Primary Unit",
+        "description": "A blog by Rob Wells, mostly about computer stuff."
+    },
+
+    "paths": {
+        "output root": "site"
+    },
+
+    "templates": {
+        "post": "single.html",
+        "page": "single.html"
+    },
+
+    "dates": {
+        "timezone": "Europe/London"
+    },
+
+    "jinja": {
+        "custom options": "true"
+    }
+}
