@@ -1,7 +1,7 @@
 import re
 
 highlighted_code_regex = re.compile(
-    r'<div \s+ class="syntax">',
+    r'class=["\']syntax["\']>',
     flags=re.IGNORECASE|re.VERBOSE
     )
 
