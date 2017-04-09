@@ -3,15 +3,15 @@
 
     // Tag-replacing function taken from this StackOverflow question:
     // http://stackoverflow.com/questions/5499078/
-    var santise_tags = function (str) {
+    function santise_tags(str) {
         return (
             str.replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;")
         );
-    };
+    }
 
-    var clean_code = function (node) {
+    function clean_code(node) {
         // Remove 'Show without line numbers' link
         node.lastChild.remove();
 
@@ -23,27 +23,27 @@
         });
 
         return node.textContent;
-    };
+    }
 
-    var create_code_page = function (code) {
+    function create_code_page(code) {
         // This takes advantage of optional tags in HTML5
         // Code is sanitised to prevent oddities with HTML snippets
         return (
             "<!DOCTYPE html><title>Code</title>" +
             "<pre><code>" + santise_tags(code) + "</code></pre>"
         );
-    };
+    }
 
-    var open_new_window = function (content) {
+    function open_new_window(content) {
         var new_window = window.open();
         var new_document = new_window.document;
 
         new_document.open();
         new_document.write(create_code_page(content));
         new_document.close();
-    };
+    }
 
-    var code_link_listener = function (ev) {
+    function code_link_listener(ev) {
         ev.preventDefault();
         open_new_window(
             clean_code(
@@ -52,9 +52,9 @@
                 ev.target.parentElement.cloneNode(true)
             )
         );
-    };
+    }
 
-    var add_plain_code_link = function (el) {
+    function add_plain_code_link(el) {
         // Add newline to space out link
         el.appendChild(document.createTextNode("\n"));
 
@@ -66,9 +66,9 @@
         link.addEventListener("click", code_link_listener, false);
 
         el.appendChild(link);
-    };
+    }
 
-    var add_links_to_code_blocks = function () {
+    function add_links_to_code_blocks() {
         var pre_blocks = Array.prototype.slice.call(
             document.querySelectorAll(".syntax pre")
         );
@@ -77,7 +77,7 @@
                 add_plain_code_link(el);
             }
         });
-    };
+    }
 
     // Wait for DOMContentLoaded if it hasn't already fired
     if (document.readyState === "loading") {
