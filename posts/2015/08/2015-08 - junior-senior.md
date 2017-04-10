@@ -64,7 +64,7 @@ I wanted to share that toast clip but after reading [Jacques Mattheij’s post T
 
 Here’s the code:
 
-    xml:
+    html:
      1:  <img src="data:image/png;base64,
      2:  … base64 data …
      3:  " width="500" height="400" alt="The first frame of the gif." id="toast">
