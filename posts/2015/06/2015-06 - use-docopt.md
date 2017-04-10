@@ -46,7 +46,7 @@ It’s essentially the same, but with a couple of minor changes:
 
 And here’s the new argument-handling code, to replace lines 54–87 in his script (there’s also the new line `from docopt import docopt` earlier on):
 
-    python:
+    python3:
     # Handle options.
     args = docopt(help)
     sta = args['--station'].upper()

@@ -42,7 +42,7 @@ As for the syntax, while I was pleased I’d managed to lump together enough par
 
 Anyway, let’s move on to the Python script:
 
-    python:
+    python3:
      1:  #!/usr/bin/env python3
      2:  
      3:  from __future__ import print_function

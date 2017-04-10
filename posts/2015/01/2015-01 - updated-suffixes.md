@@ -15,7 +15,7 @@ Also, the method of inserting the suffixed day just uses `str.replace` to replac
 
 Here’s the new code:
 
-    python:
+    python3:
      1:  from datetime import date
      2:  
      3:  def ordinal_suffix(day):

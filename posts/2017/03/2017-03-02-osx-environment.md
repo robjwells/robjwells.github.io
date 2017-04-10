@@ -28,7 +28,7 @@ This bit me again the other day when using a Jupyter notebook to [export from Te
 
 [te-lb]: /2017/03/textexpander-to-launchbar-snippets/
 
-    python:
+    py3tb:
     -----------------------------------------------------------------
     UnicodeEncodeError              Traceback (most recent call last)
     <ipython-input-8-c4b3c1d6f2e6> in <module>()

@@ -9,7 +9,7 @@ I was recently reminded of David Sparks’s [TextExpander date snippets][ds-date
 
 Out of curiosity, I wrote a Python command-line tool called dayshift that does something similar. Its main differences are that it doesn’t have to be set up for specific days like the AppleScript snippets, and that it can find the date for a past weekday (“last Monday”) as well as a future one (“next Monday”).
 
-    python:
+    python3:
      1:  #!/usr/local/bin/python3
      2:  """
      3:  Print the date of the next or last specified weekday.

@@ -43,7 +43,7 @@ I decided on a Python text filter. Not entirely appropriate — we don't transfo
 
 Using Python lets us do all sorts of wonderful things too other than just preparing the InDesign text to be entered into the fields. Here's the code, before I dive in any further:
 
-    python:
+    python3:
      1:  #!/usr/local/bin/python3
      2:  
      3:  import sys

@@ -19,6 +19,7 @@ tags: OS X, Programming, Python, Shell
 
 When I was writing the script in [yesterday’s post][solo-diff] I came across this bizarre text encoding problem:
 
+    py3tb:
     UnicodeDecodeError: 'ascii' codec can't decode byte
     0xe2 in position 5: ordinal not in range(128)
 
@@ -36,7 +37,7 @@ This was the point at which I found [a relevant Stack Overflow question][so]. Un
 
 Hm. But what’s this about `sys.setdefaultencoding`? So I started poking around with this terrible little script:
 
-    python:
+    python3:
     #!/usr/bin/env python3
     import os
     import sys

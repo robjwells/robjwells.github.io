@@ -12,7 +12,7 @@ So when I wrote my first commit hook I did it in both flavours. It’s a simple 
 
 ### Mercurial
 
-    python:
+    python3:
      1:  #!/usr/bin/env python3
      2:  
      3:  import os
@@ -46,7 +46,7 @@ The colour function called on lines 14 and 17 is used to turn the warning text r
 
 ### Git
 
-    python:
+    python3:
      1:  #!/usr/bin/env python3
      2:  
      3:  import sys
@@ -91,7 +91,7 @@ With Git things are a little more tricky, as the script (or a link to it) must a
 
 In both scripts the printed warnings are run through a colour function, which is something I whipped up with exactly this situation in mind.
 
-    python:
+    python3:
      1:  def colour(str, col, background=False):
      2:    COLOURS = {'black': "30",
      3:               'red': "31",

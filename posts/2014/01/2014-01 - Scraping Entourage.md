@@ -25,7 +25,7 @@ But the advantages of having users assemble such data are weighed against the mi
   </p>
 </div>
 
-    python:
+    python3:
      1:  #!/usr/local/bin/python3
      2:  
      3:  import re
@@ -94,7 +94,7 @@ After mulling over how much manual work I was willing to do, I came up with the 
 
 Underneath that would be Python that managed the track list, assembled the URL and handled the controls:
 
-    python:
+    python3:
      1:  #!/usr/local/bin/python3
      2:  
      3:  import json
@@ -206,7 +206,7 @@ Since creating it in mid-December, I’ve been listening to the playlist and mar
 
 Dragging a track from the Spotify client gives you an `http://open.spotify.com/track/…` URL. Opening it in a browser will likely get you the newfangled web player, which isn’t much use, but tools such as `curl` still return the source to the detail view you used to get. We’ll use this to turn the URLs back into track titles and artist names, and from there into iTunes links.
 
-    python:
+    python3:
      1:  #!/usr/local/bin/python3
      2:  
      3:  import os

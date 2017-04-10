@@ -43,7 +43,7 @@ I initially wanted to consolidate the Python scripts into one file but that turn
 
 A look at the programme info dictionaries at the top of our modules reveals the differences in our methods:
 
-    python:
+    python3:
     # Dr Drang’s
     showinfo = {'70s': (6, re.compile(r"Sounds of the '?70s")),
                 '60s': (5, re.compile(r"Sounds of the '?60s")),
@@ -101,7 +101,7 @@ At the command line you just pick a mode and supply a programme name. Here’s t
 
 And, because I’m still blown away how simple [docopt][] is, here’s all the code needed to produce that interface:
 
-    python:
+    python3:
      7:  programmes = '''\
      8:  Accepted programmes:
      9:      {}'''.format('\n    '.join(bbcradio.PROG_DICT.keys()))

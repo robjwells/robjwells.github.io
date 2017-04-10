@@ -105,7 +105,7 @@ It started off life as [a shell script by Nathan Grigg][ng], which I was first a
 
 Here’s the version I use at home:
 
-    python:
+    python3:
      1:  #!/usr/local/bin/python3
      2:  """Automatically start TimeMachine backups, with rotation"""
      3:  
@@ -203,7 +203,7 @@ The arguments to `tmutil` on line 49 get Time Machine to behave as if it were ru
 
 The version at work is the same except that it contains some code to skip backups overnight:
 
-    python:
+    python3:
     TIME_LIMITS = (8, 23)
     
     def check_time(time, limits=TIME_LIMITS):

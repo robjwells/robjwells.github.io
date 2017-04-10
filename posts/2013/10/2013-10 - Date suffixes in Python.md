@@ -29,7 +29,7 @@ First, here’s my original Applescript:
 
 And now the Python:
 
-    python:
+    python3:
      1:  #!/usr/local/bin/python3
      2:  
      3:  from datetime import date

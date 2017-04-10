@@ -9,7 +9,7 @@ I had read that the modulo operator (remainder after integer division) was slow 
 
 Project Euler is a collection of problems designed to exercise those skills and its first, simplest task is to add up the multiples of 3 and 5 below 1,000, which I first solved with a fairly typical “brute-force” approach:
 
-    python:
+    python3:
     sum = 0
     for x in range(1, 1000):
         if x % 3 == 0 or x % 5 == 0:
@@ -25,7 +25,7 @@ The modulo method took 4 minutes and 24.506 seconds (264.506s) while the more ma
 
 The modulo code was similar to that above while the other method was written like so:
 
-    python:
+    python3:
     def sum_series(multiple, top_limit):
         mult_max = top_limit // multiple
         return multiple * (mult_max * (mult_max + 1)) / 2

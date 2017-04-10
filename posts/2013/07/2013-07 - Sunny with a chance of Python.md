@@ -12,7 +12,7 @@ It’s incredibly basic but complements my [automatic weather script][weatherman
 
 [weatherman]: https://github.com/robjwells/weatherman
 
-    python:
+    python3:
      1:  #!/usr/bin/env python3
      2:  """Get a 3 to 5 day outlook for the UK from the Met Office."""
      3:  
@@ -44,7 +44,7 @@ Lines 8–10 set up variables needed to access the [Met Office API][datapoint], 
 
 Beautiful Soup is used to parse the API response in line 16. I love its dead simple method for finding elements, especially compared to ElementTree’s insistence that you provide the XML namespace:
 
-    python:
+    python3:
     pattern = (".//{www.metoffice.gov.uk/xml/metoRegionalFcst}" +
                "Period[@id='day3to5']")
 

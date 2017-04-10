@@ -10,7 +10,7 @@ It’s a nice, quick way of having something to refer back to without the hassle
 
 It began as a loose convention, with different people having their own way of marking off the original copy. To make it completely painless, and to bring in a standard method, I wrote this short Python script a couple of months ago:
 
-    python:
+    python3:
     #!/usr/bin/env python3
     from sys import stdin
     orig = stdin.read()
@@ -29,7 +29,7 @@ Thankfully both of the new people use the duplication script consistently, so it
     <p>The code below is written for BBEdit, which I use at home. Except for <code>BB_DOC_PATH</code>, I swap out <code>bb</code> for <code>tw</code> in the script used at work.</p>
 </div>
 
-    python:
+    python3:
      1:  #!/usr/bin/env python3
      2:  
      3:  import os

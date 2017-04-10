@@ -15,7 +15,7 @@ Getting the greatest element from a sequence in Python is dead simple: just use 
 
 Storing the frequency of items is also dead easy with [collections.Counter][counter]:
 
-    python:
+    pycon:
     >>> from collections import Counter
     >>> c = Counter('abracadabra')
     >>> print(c)
@@ -23,7 +23,7 @@ Storing the frequency of items is also dead easy with [collections.Counter][coun
 
 The greatest item in a counter is obviously the most common, so surely we’ll just …
 
-    python:
+    pycon:
     >>> max(c)
     'r'
 
@@ -31,13 +31,13 @@ The greatest item in a counter is obviously the most common, so surely we’ll j
 
 To get the most common element you have to use — surprise! — `Counter.most_common()`. Without arguments this produces a list of tuples (item, count), sorted by count:
 
-    python:
+    pycon:
     >>> c.most_common()
     [('a', 5), ('b', 2), ('r', 2), ('c', 1), ('d', 1)]
 
 So to get the actual most common element, you do:
 
-    python:
+    pycon:
     >>> c.most_common(1)[0][0]
     'a'
 
@@ -45,7 +45,7 @@ Where the argument `1` limits it to the first tuple.
 
 But what if the counter’s empty? You’ll get an IndexError trying to index into the list returned by `most_common()`:
 
-    python:
+    pycon:
     >>> d = Counter()
     >>> d.most_common()
     []
@@ -56,7 +56,7 @@ But what if the counter’s empty? You’ll get an IndexError trying to index in
 
 In Python 3.4 `max` got the `default` argument, which you can use to get a default value when a sequence is empty. Here’s how to get similar behaviour with Counter:
 
-    python:
+    python3:
     d.most_common(1)[0][0] if d else None
 
 This takes advantage of the "falsey" nature of an empty dictionary to give you `None` without having to handle an IndexError.
