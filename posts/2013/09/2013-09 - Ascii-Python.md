@@ -19,7 +19,6 @@ tags: OS X, Programming, Python, Shell
 
 When I was writing the script in [yesterday’s post][solo-diff] I came across this bizarre text encoding problem:
 
-    py3tb:
     UnicodeDecodeError: 'ascii' codec can't decode byte
     0xe2 in position 5: ordinal not in range(128)
 
