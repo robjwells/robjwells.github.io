@@ -55,7 +55,6 @@ And then there’s the `PATH`, which I used to set in the same script using `lau
 
 [env-sync]: https://github.com/ersiner/osx-env-sync/issues/1#issuecomment-230053839
 
-    bash:
     sudo launchctl config user path $PATH
 
 But that doesn’t work for me. You can swap `user` for `system` but I’m wary of doing that.
