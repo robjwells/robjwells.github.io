@@ -2,7 +2,11 @@ title: What’s in the box!?
 date: 2012-10-05 00:00
 tags: AppleScript
 
-<p class="full-width"><img src="http://f.cl.ly/items/1H130B292f363D1h442Z/SevenBox.jpg" alt="Become vengeance, David. Become wrath."></p>
+<p class="full-width">
+    <img src="/images/2012-10-05-SevenBox.jpg"
+         alt="Become vengeance, David. Become wrath."
+         >
+</p>
 
 ### Accessing AppleScript records using a variable
 
@@ -97,4 +101,8 @@ I plan to learn Python at some point so I may end up leaning towards “for wors
 
 There’s a bunch more, like slash-separated paths being treated differently from colon-separated paths — often requiring a line of code to convert them, because in many cases you can only get one type. But whatever. I’m a little worried that “proper” programming languages won’t be masochistic enough.)
 
-<p class="full-width"><img src="http://f.cl.ly/items/232I3S0E2H2V3k3v143q/SevenEnd.jpg" alt="Jesus Christ. Somebody call somebody. Call somebody."></p>
+<p class="full-width">
+    <img src="/images/2012-10-05-SevenEnd.jpg"
+         alt="Jesus Christ. Somebody call somebody. Call somebody."
+         >
+</p>
