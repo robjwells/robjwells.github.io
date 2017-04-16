@@ -3,7 +3,7 @@
 
     // Tag-replacing function taken from this StackOverflow question:
     // http://stackoverflow.com/questions/5499078/
-    function santise_tags(str) {
+    function sanitise_tags(str) {
         return (
             str.replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
@@ -30,7 +30,7 @@
         // Code is sanitised to prevent oddities with HTML snippets
         return (
             "<!DOCTYPE html><title>Code</title>" +
-            "<pre><code>" + santise_tags(code) + "</code></pre>"
+            "<pre><code>" + sanitise_tags(code) + "</code></pre>"
         );
     }
 
