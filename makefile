@@ -1,4 +1,5 @@
 NOW = $(shell date +'%Y-%m-%d %H:%M')
+DISTID = $(shell cat cloudfront-distribution-id)
 
 
 define upload-robjwells
@@ -14,6 +15,7 @@ endef
 
 define upload-aws
 aws s3 sync s3 s3://s3.robjwells.com --delete
+aws cloudfront create-invalidation --distribution-id="$(DISTID)" --paths=/index.html
 endef
 
 
