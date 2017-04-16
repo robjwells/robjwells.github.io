@@ -1,6 +1,8 @@
+---
 title: Get your US-ASCII out of my face
 date: 2013-09-14 14:05
 tags: OS X, Programming, Python, Shell
+---
 
 <div class="flag">
   <p><strong>Warning: The contents of this post may not be up to date!</strong></p>

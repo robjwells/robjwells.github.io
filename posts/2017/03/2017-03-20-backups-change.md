@@ -1,5 +1,7 @@
+---
 title: Backups: the change
 date: 2017-03-21 01:05
+---
 
 To recount from [last time][before], our backup strategy was a mess. The tools were solid but used in such a way that the common case (fast file restoration) was likely to fail, even if the rare case (complete disk failure) was covered.
 

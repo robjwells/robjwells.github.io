@@ -1,6 +1,8 @@
+---
 title: My email nightmare
 date: 2015-02-25 12:35
 tags: email
+---
 
 At work we have about 40 employees. A couple of weeks ago I moved our email to a new provider ([FastMail][]). It took a while to get to but most of the activity was extremely concentrated, and that led me to make some mistakes. However, the move was successful, and hopefully my experience can smooth the way for people in a similar situation.
 

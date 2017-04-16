@@ -1,6 +1,8 @@
+---
 title: Everyday automation
 date: 2012-09-18 18:23
 tags: AppleScript
+---
 
 Learning AppleScript can really pay off.
 

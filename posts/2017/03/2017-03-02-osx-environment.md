@@ -1,5 +1,7 @@
+---
 title: Setting OS X’s environment
 date: 2017-03-02 14:30
+---
 
 <div class="flag">
   <p><strong>Warning: The contents of this post may not be up to date!</strong></p>

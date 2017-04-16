@@ -1,7 +1,8 @@
+---
 title: Python’s Counter class, again
 date: 2015-08-10 22:34
 tags: Python
-
+---
 
 I made a mistake in [my recent post about Python’s Counter class][post] by using numbers in the example rather than strings. It meant it wasn’t clear what I actually wanted out of the counter. (While I was writing it, I was getting confused between the keys and their counts myself. I should have taken the hint.) That post’s now been updated.
 

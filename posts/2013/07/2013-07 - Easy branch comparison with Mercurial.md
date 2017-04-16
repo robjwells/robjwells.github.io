@@ -1,6 +1,8 @@
+---
 title: Easy branch comparison with Mercurial
 date: 2013-07-27 20:33
 tags: Git, Mercurial
+---
 
 I’ve spent a lot of time recently learning [Git][] and [Mercurial][], and trying to decide which one I prefer and want to keep using.
 Both are nice, but one thing I like about Git is how easy it is to quickly see which commits are on one branch but not another.

@@ -1,5 +1,7 @@
+---
 title: Status update
 date: 2015-11-17 16:10
+---
 
 Earlier today I switched the site off Tumblr and to my own server, hosted by Linode. So if you can see this, that’s a good sign! If you’re reading the RSS feed you might see some duplicate entries but that should settle down.
 

@@ -1,6 +1,8 @@
+---
 title: What’s in the box!?
 date: 2012-10-05 00:00
 tags: AppleScript
+---
 
 <p class="full-width">
     <img src="/images/2012-10-05-SevenBox.jpg"

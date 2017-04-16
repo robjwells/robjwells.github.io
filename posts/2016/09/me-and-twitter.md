@@ -1,5 +1,7 @@
+---
 title: Twitter
 date: 2016-09-16 22:50
+---
 
 So, I reinstalled [a Twitter client][tw] on my phone the other day. Not as a great statement of intent, but a recognition that there were certain things that I could only get from people’s Twitter accounts.
 

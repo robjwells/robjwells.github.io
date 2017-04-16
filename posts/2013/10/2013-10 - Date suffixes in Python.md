@@ -1,6 +1,8 @@
+---
 title: Date suffixes in Python
 date: 2013-10-07 22:51
 tags: AppleScript, Programming, Python, TextExpander
+---
 
 A little while ago I wrote about [using TextExpander to write dates][tedate], the bulk of which was given over to an Applescript that returned a long date complete with date suffixes.
 

@@ -1,6 +1,8 @@
+---
 title: Audio Hijack 3 and scripts
 date: 2015-01-21 21:03
 tags: Audio Hijack Pro, Audio Hijack 3
+---
 
 Rogue Amoeba released [their upgrade to Audio Hijack Pro][ah3] [yesterday][ah3_blog], and it looks superb. I haven’t had a chance to do any recording with it yet, but I just did a quick test to see how it handles [scripted recordings][beeb_hijack].
 

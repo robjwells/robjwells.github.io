@@ -1,6 +1,8 @@
+---
 title: Misbehaving single-column NSTableView
 date: 2014-01-26 19:24
 tags: Cocoa, Programming, Xcode
+---
 
 This is mostly a note for myself, as I was ready to pull my hair out earlier.
 

@@ -1,6 +1,8 @@
+---
 title: Start and end of line shortcuts in BBEdit
 date: 2014-12-18 00:34
 tags: AppleScript, BBEdit
+---
 
 I keep BBEdit's option to emulate Emacs key bindings disabled, because I don't know most of them and some of those combinations I want to use for other things.
 

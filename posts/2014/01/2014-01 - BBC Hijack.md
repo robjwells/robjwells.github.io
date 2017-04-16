@@ -1,6 +1,8 @@
+---
 title: Hijacking the BBC
 date: 2014-01-08 15:56
 tags: Audio Hijack Pro, Programming, Python
+---
 
 In December I started using [Audio Hijack Pro][ahp] to record [Jazz on 3][j3], initially from the [Radio 3 live stream][3live]. I soon realised this wasn’t a great idea: live streaming, Flash and an occasionally patchy internet connection don’t make for reliable recording.
 

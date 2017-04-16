@@ -1,7 +1,8 @@
+---
 title: Python Counter gotcha with max
 date: 2015-08-07 13:49
 tags: Python
-
+---
 
 <div class="flag">
   <p><strong>Update 2015-08-10</strong></p>

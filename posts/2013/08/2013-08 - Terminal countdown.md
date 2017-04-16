@@ -1,7 +1,8 @@
+---
 title: Terminal countdown
 date: 2013-08-17 14:36
 tags: Python, Programming, Shell
-
+---
 
 I’ve got some annual leave booked for the very end of September, which is pretty far away still — but I wanted to know exactly how many days I have to go before my break.
 

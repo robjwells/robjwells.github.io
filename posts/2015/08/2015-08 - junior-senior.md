@@ -1,7 +1,8 @@
+---
 title: Yeah!
 date: 2015-08-05 20:04
 tags: music, JavaScript
-
+---
 
 For some reason, the other day I was thinking about [Junior Senior][js]. I knew they had a pop hit something like 10 years ago but I just couldn’t place it at all: what it was called, what it sounded like, who they were, nothing.
 

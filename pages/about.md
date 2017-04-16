@@ -1,5 +1,7 @@
+---
 title: About Primary Unit
 slug: about
+---
 
 Primary Unit is written by me, Rob Wells, as a personal blog. I work production at a newspaper in London, England. You can subscribe to my posts by [RSS][].
 

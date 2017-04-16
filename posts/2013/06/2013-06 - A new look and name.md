@@ -1,6 +1,8 @@
+---
 title: A new look and name
 date: 2013-06-24 17:36
 tags: Personal
+---
 
 I thought it was time for a change on this blog, as I’ve never been particularly happy it and have lost count of the number of major changes it has been through.
 

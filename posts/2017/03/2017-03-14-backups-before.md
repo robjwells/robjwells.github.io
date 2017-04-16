@@ -1,5 +1,7 @@
+---
 title: Backups: before
 date: 2017-03-14 15:00
+---
 
 At [work][] I’m responsible for our office file server, which is mostly used for storing the InDesign pages and related files we need to produce the paper every day.
 

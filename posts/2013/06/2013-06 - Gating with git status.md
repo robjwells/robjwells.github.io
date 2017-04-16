@@ -1,6 +1,8 @@
+---
 title: Gating Hazel with git status
 date: 2013-06-25 00:52
 tags: Git, Hazel, Shell
+---
 
 The JavaScript and CSS files for this site live on Amazon S3, but getting them up there can be a chore once you consider compression and uploading with the right headers.
 

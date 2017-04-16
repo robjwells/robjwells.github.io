@@ -1,6 +1,8 @@
+---
 title: My one iOS 7 problem
 date: 2014-01-16 12:25
 tags: iOS
+---
 
 I don’t want to get into the business of critiquing Apple’s OS releases — there are plenty of people better placed to do that. But I have *one* major criticism of iOS 7. One that irritated me on the day of release and irritates me today. It’s time to share.
 

@@ -1,6 +1,8 @@
+---
 title: Restart in Windows: The script strikes back
 date: 2013-05-25 17:47
 tags: AppleScript
+---
 
 A quick and hopefully final update on my short AppleScript to restart from Mac OS X into your Bootcamp partition.
 

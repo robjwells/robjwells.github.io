@@ -1,6 +1,8 @@
+---
 title: Hazel gating with Mercurial
 date: 2013-07-31 23:16
 tags: Hazel, Mercurial, Shell
+---
 
 Since I’ve been playing around with Mercurial I thought it would only be fair to write another version of [my Hazel gating snippet][gitgate].
 

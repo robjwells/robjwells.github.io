@@ -1,6 +1,8 @@
+---
 title: Sunny with a chance of Python
 date: 2013-07-23 22:28
 tags: Programming, Python
+---
 
 Learning Python is the next goal that I’ve set myself, though I have put it off for a bit while I [improve my maths skills][maths].
 

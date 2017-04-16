@@ -1,6 +1,8 @@
+---
 title: Solving boredom with four languages
 date: 2014-12-04 00:01
 tags: Shell, AppleScript, JavaScript, Python
+---
 
 At work one of the most tedious jobs is putting all of the stories that appear in the paper onto our website. We're still working from text files (which works very well) as for a number of reasons we haven't yet changed to use the site's CMS as the central location where copy is stored.
 

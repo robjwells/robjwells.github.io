@@ -1,6 +1,8 @@
+---
 title: The automation paradox at work
 date: 2015-07-02 13:19
 tags: Work
+---
 
 A couple of great recent episodes of [99% invisible][99pi] ([one][99pi_1], [two][99pi_2]) tackle the "automation paradox", where the increased use of automation leaves people unable to perform the task themselves.
 

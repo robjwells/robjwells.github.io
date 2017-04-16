@@ -1,7 +1,8 @@
+---
 title: Blackjack!
 date: 2013-02-25 14:58
 tags: Web
-
+---
 
 For the last few months I’ve been working, on and off, on a little web project — [a basic blackjack game you can play in your browser][bj]. It’s not going to win any awards but it was a fun exercise to teach myself some JavaScript, HTML and CSS.
 

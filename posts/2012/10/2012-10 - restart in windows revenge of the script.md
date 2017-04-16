@@ -1,6 +1,8 @@
+---
 title: Restart in Windows: Revenge of the Script
 date: 2012-10-06 18:14
 tags: AppleScript
+---
 
 <div class="flag">
 <strong>UPDATE 2013-05-25</strong>

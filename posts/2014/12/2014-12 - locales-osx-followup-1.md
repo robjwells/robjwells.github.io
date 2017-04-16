@@ -1,6 +1,8 @@
+---
 title: Locale in OS X — what’s the current situation?
 date: 2014-12-22 10:16
 tags: OS X
+---
 
 <div class="flag">
   <p><strong>Warning: The contents of this post may not be up to date!</strong></p>

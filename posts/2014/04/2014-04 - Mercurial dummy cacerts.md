@@ -1,6 +1,8 @@
+---
 title: Broken Mercurial dummy cacerts
 date: 2014-04-13 09:37
 tags: Mercurial
+---
 
 When I tried to push [my last post][manhandled] to Bitbucket I received this ugly error:
 

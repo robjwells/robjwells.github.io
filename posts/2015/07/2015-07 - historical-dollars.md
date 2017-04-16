@@ -1,6 +1,8 @@
+---
 title: Historical dollars
 date: 2015-07-15 23:40
 tags: Python, Programming
+---
 
 I’ve read [a][zinn] [few][chandler] [books][allen] recently where references were made to dollar amounts from many years ago. However, I often find it difficult to understand the context of, say, $10,000 in 1829.
 
