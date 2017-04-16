@@ -2,7 +2,7 @@ title: The Call of the Weird
 date: 2012-02-01 15:18
 tags: Books
 
-<img src="http://media.tumblr.com/tumblr_lypzhkrBOe1qzg8aa.jpg" class="g1-unitRight g2-unitRight pull-right"/>
+<img src="/images/2012-02-01-call-of-the-weird.jpg" class="pull-right"/>
 
 Louis Theroux’s first and so far only book, published in 2005, is the funniest thing I’ve read in a long, *long* time. We’re talking out-loud laughs. The kind of laughs that make you not want to read it on the Tube because other people will think you’re crazy and stare at you but you can’t put it down and end up looking mental anyway.
 
