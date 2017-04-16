@@ -518,6 +518,19 @@ article li {
     table-layout: auto;
   }
 
+
+
+  /* Enable floating modifier classes */
+  .pull-left {
+    float: left;
+    margin-right: 1rem;
+  }
+
+  .pull-right {
+      float: right;
+      margin-left: 1rem;
+  }
+
 }
 
 
