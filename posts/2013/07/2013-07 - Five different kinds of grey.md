@@ -33,7 +33,7 @@ All text is set in [Rooney][]. A while ago I had got obsessed with [Tisa][] and 
 
 Paragraphs are limited to roughly 65 characters (about 12 words) a line, though I’m still tweaking the exact length. I had initially had an idea to accommodate margin notes in the extra space but technical hurdles, a lack of anything to put there and fear of looking incredibly pompous made me decide against it. A remnant of this can be seen in the blockquotes, code blocks and coloured boxes I use, which all stretch the full width of the column. Code blocks are the only element that make use the extra space, but the others get it because I like how their background colours can help break up long columns of text.
 
-<div class="flag flag-generic flag-info sym-add">
+<div class="flag">
     <p>The coloured boxes I mentioned above I call “flags” and came about when I decided I wanted a way to <em>flag</em> updates to posts. (Again, an influence of Dr Drang: <a href="http://www.leancrew.com/all-this/2012/07/some-safari-6-stuff/">see the updates in this post</a>.) I then generalised the style to be applicable to a range of things, such as flagging download links and warnings.</p>
 </div>
 
@@ -48,7 +48,7 @@ It took me a long time to pick out the dark blue used as the left-hand border of
 
 The image below shows all the colours used on the site, apart from those used for code. (The two oranges are only used for the RSS link.)
 
-<p class="pic"><img src="/images/2013-07-06_Spectrum.png" alt="The 14 colours used on robjwells.com"></p>
+<p class="full-width"><img src="/images/2013-07-06_Spectrum.png" alt="The 14 colours used on robjwells.com"></p>
 
 The syntax highlighting for code is another thing I lifted from Dr Drang, which is to say it is [highlight.js][hljs] combined with [the Doc’s script to conditionally invoke][drangsyntax] the highlight functions and add line numbers.
 

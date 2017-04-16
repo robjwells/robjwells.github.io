@@ -2,7 +2,7 @@ title: Restart in Windows: Revenge of the Script
 date: 2012-10-06 18:14
 tags: AppleScript
 
-<div class="flag flag-update sym-add">
+<div class="flag">
 <strong>UPDATE 2013-05-25</strong>
 <p>I’ve changed the script to fix the fiddliness on Leopard. Please <a href="/2013/05/restart-in-windows-the-script-strikes-back/">see my new post</a> for details. I’ve left the rest of this post mainly intact, but please bear in mind that the code has changed slightly.</p>
 </div>

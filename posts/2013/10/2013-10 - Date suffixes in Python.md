@@ -46,7 +46,7 @@ And now the Python:
     14:  
     15:  print(date_string.replace('#', day), end='')
 
-<div class="sym-add flag flag-update">
+<div class="flag">
     <p>
         <strong>Update: <time>2015-01-17</time></strong>
     </p>

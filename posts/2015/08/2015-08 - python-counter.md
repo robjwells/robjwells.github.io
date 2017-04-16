@@ -3,7 +3,7 @@ date: 2015-08-07 13:49
 tags: Python
 
 
-<div class="sym-add flag flag-update">
+<div class="flag">
   <p><strong>Update 2015-08-10</strong></p>
   <p>
     The example given now uses strings as the keys instead of numbers

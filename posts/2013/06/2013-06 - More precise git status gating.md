@@ -25,7 +25,7 @@ It has been on my mind all day, so I decided to have a crack at it:
     7:    exit 1 # Dirty
     8:  fi
 
-<div class="flag flag-update sym-add">
+<div class="flag">
     <strong>Update 2013-06-27</strong>
     <p>I’ve slightly revised the code and have rewritten the explanation to be clearer.</p>
     <strong>Update 2013-07-31</strong>

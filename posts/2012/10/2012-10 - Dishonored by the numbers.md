@@ -10,44 +10,44 @@ I can’t really think of a comparison, as in “If you liked game X then you’
 
 Simply put: you should [buy Dishonored right now](http://store.steampowered.com/app/205100/).
 
-<table class="g1-unitRight g1-50 g2-unitRight g2-33 pull-right">
+<table>
   <caption>Dishonored mission stats</caption>
 
   <tbody>
     <tr>
       <th>Hostiles killed</th>
-      <td class="tab-figures">1</td>
+      <td class="table-figures">1</td>
     </tr>
     <tr>
       <th>Civilians killed</th>
-      <td class="tab-figures">2</td>
+      <td class="table-figures">2</td>
     </tr>
     <tr>
       <th>Alarms rung</th>
-      <td class="tab-figures">0</td>
+      <td class="table-figures">0</td>
     </tr>
     <tr>
       <th>Bodies found</th>
-      <td class="tab-figures">7</td>
+      <td class="table-figures">7</td>
     </tr>
     <tr>
       <th>No kills</th>
-      <td class="tab-figures">6/9</td>
+      <td class="table-figures">6/9</td>
     </tr>
     <tr>
       <th>Not detected</th>
-      <td class="tab-figures">6/9</td>
+      <td class="table-figures">6/9</td>
     </tr>
     <tr>
       <th>Chaos</th>
-      <td class="tab-figures">Low</td>
+      <td class="table-figures">Low</td>
     </tr>
   </tbody>
 </table>
 
 After each mission you get a stats screen but unfortunately there’s not one for the entire game. I went through and totted up the figures for my first playthrough.
 
-<table class="g1-unitRight g1-50 g2-unitRight g2-33 pull-right">
+<table>
   <caption>Assassination target status</caption>
   <tbody>
     <tr>

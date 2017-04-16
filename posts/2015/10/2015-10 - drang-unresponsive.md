@@ -42,7 +42,7 @@ So those rules went, and some new ones to fix the size of the header came in. Bu
 
 The change in approach means that the result isn’t an exact match for the real site:
 
-<p class="pic">
+<p class="full-width">
     <img
         alt="A portrait comparison of my CSS changes to the real And Now It's All This site."
         src="/images/2015-10-06_portrait-comparison.png"
@@ -51,7 +51,7 @@ The change in approach means that the result isn’t an exact match for the real
 
 And in landscape the fixed sizes in the CSS file combine with the use of “device size” to produce a layout that’s larger than the screen width, forcing Safari to resize the viewport until it *just* fits:
 
-<p class="pic">
+<p class="full-width">
     <img
         alt="A landscape comparison of my CSS changes to the real And Now It's All This site."
         src="/images/2015-10-06_landscape-comparison.png"
@@ -60,7 +60,7 @@ And in landscape the fixed sizes in the CSS file combine with the use of “devi
 
 The changes mean that responsive design mode in Safari works for portrait mode:
 
-<p class="pic">
+<p class="full-width">
     <img
         alt="My CSS changes to And Now It's All This in Safari's responsive design mode in portrait."
         src="/images/2015-10-06_portrait-rdm.png">
@@ -68,7 +68,7 @@ The changes mean that responsive design mode in Safari works for portrait mode:
 
 But landscape mode is not accurate, as there isn’t the viewport-resizing that squeezes the too-large layout to fit on the phone itself:
 
-<p class="pic">
+<p class="full-width">
     <img
         alt="My CSS changes to And Now It's All This in Safari's responsive design mode in portrait."
         src="/images/2015-10-06_landscape-rdm.png">

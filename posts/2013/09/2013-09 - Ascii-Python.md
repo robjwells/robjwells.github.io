@@ -80,7 +80,7 @@ You could set the other `LC_*` keywords as well, if you like, but `$LANG` should
 
 [manlang]: https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/locale.1.html
 
-<div class="sym-add flag flag-update">
+<div class="flag">
   <p><strong>Update 2013-09-21</strong></p>
   <p>I’ve just re-watched <a href="http://nedbatchelder.com/text/unipain.html">Ned Batchelder’s great Pragmatic Unicode video</a> and while setting the <code>$LANG</code> environment variable is a handy solution on your own machines, it’s not a good fit when you’re writing a program that will run on systems where you can’t control the default encoding.</p>
   <p>In such cases it makes sense to adopt his “Unicode sandwich” approach of explicitly decoding I/O and then working on the resulting Unicode.</p>

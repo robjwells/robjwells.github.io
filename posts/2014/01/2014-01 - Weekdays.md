@@ -51,7 +51,7 @@ Out of curiosity, I wrote a Python command-line tool called dayshift that does s
     39:  ending = '' if args['--inline'] else '\n'
     40:  print(target_date.strftime(args['--format']), end=ending)
 
-<div class="sym-add flag flag-update" id="update_2014-01-13">
+<div class="flag" id="update_2014-01-13">
   <p><strong>Update <time>2014-01-13</time></strong></p>
   <p>I’ve added an offset to the starting day (lines 22 & 23) to skip past the two days before and after the current date. The line numbers in the explanation below have been altered to match.</p>
   <p>You might like to look at the <a href="https://gist.github.com/robjwells/8370699">corresponding Gist</a> in case I’ve made any further changes.</p>
@@ -108,7 +108,7 @@ That looks pretty gross there, and it doesn’t look good in use either:
 
 But it gives you a lot of control and you can tab between the fields.
 
-<div class="sym-add flag flag-update" id="update_2014-01-12">
+<div class="flag" id="update_2014-01-12">
   <p><strong>Update <time>2014-01-12</time></strong></p>
   <p>Shortly after posting this yesterday, <a href="http://leancrew.com/all-this/">Dr Drang</a> sent me a nice email pointing out a <a href="http://www.leancrew.com/all-this/2012/09/eight-days-a-week/#comment-24659">comment by Dave Cross</a> on how to use the <code>date</code> utility in Unix to similar effect, which in its simplest form is <code>date -v+weds</code> (to get next Wednesday’s date).</p>
   <p>I recommend reading <a href="http://www.leancrew.com/all-this/2012/09/eight-days-a-week/">the entire post</a> that comment is in reply to as it addresses a very similar situation to the one above, but with an illuminating look at working with weekdays as integers.</p>

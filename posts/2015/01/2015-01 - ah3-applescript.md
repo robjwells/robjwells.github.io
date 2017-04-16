@@ -14,7 +14,7 @@ Who knows — maybe the removed functionality will be reintroduced down the line
 
 On a separate but related matter, there’s no AppleScript dictionary for Audio Hijack 3 (as with [Fission][]).
 
-<div class="sym-add flag flag-update">
+<div class="flag">
   <p>
     <strong>Update: 2015-01-28</strong><br>
     In <a href="http://weblog.rogueamoeba.com/2015/01/28/audio-hijack-3-is-a-hit-and-audio-hijack-3-0-1-is-here/">a new post about Audio Hijack 3’s first week</a>, scripting is explicitly noted as an area that might get some attention.

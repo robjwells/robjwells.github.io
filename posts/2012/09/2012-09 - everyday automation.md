@@ -56,7 +56,7 @@ But if you’re tempted, even a little, give it a go. If you don’t have any pr
 
 Also make sure to check out [Script Debugger 5][sd5], which at $199 (about £170 including VAT) is a bit pricey if you’re just starting but makes things so much easier it’s a joke. It’s like switching from MSPaint to Photoshop. You’ll never go back to (Apple)Script Editor.
 
-<div class="flag flag-update sym-add">
+<div class="flag">
   <p><strong>Update 2012-09-12</p></strong>
   <p>“Learning AppleScript can really pay off. Once you’ve suffered through its oddities enough to be able to write it without weeping, you’ll be tempted to write scripts that achieve things you can do with copy and paste, like this one.”</p>
   <p>Maybe I should have thought harder about that first line.</p>

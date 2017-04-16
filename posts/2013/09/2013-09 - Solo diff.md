@@ -25,7 +25,7 @@ But manually creating two new windows and pasting in the text can be a pain — 
 
 Thankfully both of the new people use the duplication script consistently, so it’s easy to use a regular expression to split the file into original and subbed versions. Armed with this knowledge, I wrote a script to automate the comparison, using TextWrangler’s `twdiff` command-line tool.
 
-<div class="flag flag-generic flag-info sym-add">
+<div class="flag">
     <p>The code below is written for BBEdit, which I use at home. Except for <code>BB_DOC_PATH</code>, I swap out <code>bb</code> for <code>tw</code> in the script used at work.</p>
 </div>
 

@@ -41,7 +41,7 @@ Save that script into a new folder — mine’s in `~/Library/Scripts/Applicatio
 
 Lastly [add that new folder to Launchbar’s index][lbindex]. I have my entry set to access on sub-search only, so to get to the bookmarklet scripts I type `bookm →` and I end up with this panel:
 
-<p class="pic">
+<p class="full-width">
     <img src="/images/2013-11-18_launchbarpanel.png" alt="Launchbar’s list of my Safari bookmarklet scripts" class="no-border">
 </p>
 

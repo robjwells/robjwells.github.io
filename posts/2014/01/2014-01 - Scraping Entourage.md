@@ -17,7 +17,7 @@ HBO’s website *does* list the tracks used in each episode, but you can’t get
 
 But the advantages of having users assemble such data are weighed against the mistakes they may make and inconsistencies that creep in. I’ll address the practical implications later. First we need to extract the track details from the website.
 
-<div class="sym-add flag flag-generic flag-info">
+<div class="flag">
   <p>
     The programs in this post are incredibly rough. I share them in the hope they’ll help others and spark ideas, <em>not</em> as good examples.</p>
   <p>
@@ -81,7 +81,7 @@ Initially I considered using the [Spotify API][spot-api], but it appeared too da
 
 [spot-api]: https://developer.spotify.com
 
-<div class="sym-add flag flag-update">
+<div class="flag">
   <p>
     When I publish I always check the post’s links. Thank god I did, because Spotify has recently overhauled its developer site. The <a href="https://developer.spotify.com/technologies/web-api/">metadata API</a> looks far more approachable.
   </p>
@@ -174,7 +174,7 @@ This formats the track (using `prep_track` to join the artist and title, and rep
 
 The AppleScript opens the Spotify search URL and displays a dialog box:
 
-<p class="pic">
+<p class="full-width">
   <img alt="Screenshot of the dialog box on top of the Spotify search results" src="/images/2014-01-22_entprompt.png">
 </p>
 
@@ -196,7 +196,7 @@ Being human, though, I occasionally picked the wrong button in the dialog, meani
 
 ### A musical interlude
 
-<div class="sym-add flag flag-generic flag-music">
+<div class="flag">
   <p>
     Here’s <a href="http://open.spotify.com/user/rjwells/playlist/6ddbHbP6pf8bHQ0CuvEowP">the link to the Entourage playlist</a>.
   </p>
