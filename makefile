@@ -12,6 +12,11 @@ cd gh-pages ; git add . ; git commit -m "$(NOW)" ; git push
 endef
 
 
+define upload-s3
+aws s3 sync s3 s3://s3.robjwells.com --delete
+endef
+
+
 all: robjwells github
 
 force-all: force-robjwells force-github
@@ -31,3 +36,11 @@ github:
 force-github:
 	majestic --settings=robjwells.github.io.json --force-write
 	$(upload-github)
+
+s3:
+	majestic --settings=s3.robjwells.com.json
+	$(upload-s3)
+
+force-s3:
+	majestic --settings=s3.robjwells.com.json --force-write
+	$(upload-s3)

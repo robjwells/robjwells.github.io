@@ -1,8 +1,8 @@
 {
     "site": {
         "url": "https://robjwells.github.io",
-        "title": "Primary Unit mirror",
-        "description": "A mirror of https://www.robjwells.com"
+        "title": "Primary Unit mirror on GitHub",
+        "description": "A mirror of https://www.robjwells.com hosted on GitHub"
     },
 
     "paths": {
