@@ -17,9 +17,9 @@ aws s3 sync s3 s3://s3.robjwells.com --delete
 endef
 
 
-all: robjwells github
+all: robjwells github s3
 
-force-all: force-robjwells force-github
+force-all: force-robjwells force-github force-s3
 
 robjwells:
 	majestic
