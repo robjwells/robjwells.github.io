@@ -523,12 +523,14 @@ article li {
   /* Enable floating modifier classes */
   .pull-left {
     float: left;
+    clear: left;
     margin-right: 1rem;
   }
 
   .pull-right {
-      float: right;
-      margin-left: 1rem;
+    float: right;
+    clear: right;
+    margin-left: 1rem;
   }
 
 }
