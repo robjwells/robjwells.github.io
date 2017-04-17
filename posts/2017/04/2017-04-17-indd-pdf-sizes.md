@@ -15,7 +15,7 @@ It’s interesting to look at exactly what is making the files large enough to r
      class="pull-right"
      alt="A low-quality image of a Morning Star arts page.">
 
-Let’s take Tuesday’s arts page as our example. It’s pretty basic: two small images and a medium-sized one, two drop shadows, one transparency and a fair amount of text.
+Let’s take Tuesday’s arts page as our example. It’s pretty basic: two small images and a medium-sized one, two drop shadows, one transparency and a fair amount of text. (That line of undermatter in the lead article was corrected before we went to print.)
 
 But exporting using InDesign’s lowest-quality PDF preset creates a 715kB file. The images are small and rendered at a low DPI, so they’re not inflating the file.
 
