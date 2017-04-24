@@ -25,6 +25,7 @@
 
     "resources": [
         ["frontend/build/*", {"subdir": "resources"}],
+        ["frontend/build/favicon.ico"],
         ["images"],
         ["robots.txt"],
         ["keybase.txt"]
