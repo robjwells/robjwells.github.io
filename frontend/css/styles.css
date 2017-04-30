@@ -260,6 +260,7 @@ th {
 .site-title-container {
   flex-shrink: 0;
   margin-right: 2rem;   /* 32 */
+  max-width: 100%;      /* Prevent title from spilling out */
 }
 
 .site-title {
@@ -570,7 +571,6 @@ article li {
     border-left: 0.5rem solid #1369BF;  /*  8 / 16 */
     margin-right: 0;
     padding-left: 0.5rem;               /*  8 / 16 */
-    max-width: 100%;  /* Prevent title from spilling out */
   }
 
   .site-links {
