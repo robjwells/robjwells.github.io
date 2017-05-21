@@ -12,7 +12,7 @@
   ]]></style>
 </defs>
 <rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
-<rect x='0.00' y='0.00' width='576.00' height='288.00' style='stroke-width: 1.07; stroke: #FFFFFF;' />
+<rect x='0.00' y='0.00' width='576.00' height='288.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
 <defs>
   <clipPath id='cpNDAuMTM2M3w0NDguNTYxfDI1Ny43OTd8MzguMjc5NQ=='>
     <rect x='40.14' y='38.28' width='408.43' height='219.52' />
@@ -189,7 +189,7 @@
 <g clip-path='url(#cpMHw1NzZ8Mjg4fDA=)'><text x='433.39' y='269.03' style='font-size: 8.80px; fill: #4D4D4D; font-family: Trebuchet MS;' textLength='21.68px' lengthAdjust='spacingAndGlyphs'>00:00</text></g>
 <g clip-path='url(#cpMHw1NzZ8Mjg4fDA=)'><text x='232.02' y='282.38' style='font-size: 11.00px; font-family: Trebuchet MS;' textLength='24.65px' lengthAdjust='spacingAndGlyphs'>Time</text></g>
 <g clip-path='url(#cpMHw1NzZ8Mjg4fDA=)'><text transform='translate(13.35,183.80) rotate(-90)' style='font-size: 11.00px; font-family: Trebuchet MS;' textLength='71.52px' lengthAdjust='spacingAndGlyphs'>Ticket cost (€)</text></g>
-<rect x='459.90' y='101.71' width='110.62' height='92.65' style='stroke-width: 1.07; stroke: none;' clip-path='url(#cpMHw1NzZ8Mjg4fDA=)' />
+<rect x='459.90' y='101.71' width='110.62' height='92.65' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' clip-path='url(#cpMHw1NzZ8Mjg4fDA=)' />
 <g clip-path='url(#cpMHw1NzZ8Mjg4fDA=)'><text x='465.57' y='115.26' style='font-size: 11.00px; font-family: Trebuchet MS;' textLength='71.53px' lengthAdjust='spacingAndGlyphs'>Train operator</text></g>
 <rect x='465.57' y='119.58' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' clip-path='url(#cpMHw1NzZ8Mjg4fDA=)' />
 <circle cx='474.21' cy='128.22' r='1.95pt' style='stroke-width: 0.71; stroke: #F8766D; fill: #F8766D;' clip-path='url(#cpMHw1NzZ8Mjg4fDA=)' />

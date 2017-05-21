@@ -1,8 +1,4 @@
 library(ggplot2)
-library(Cairo)
-
-# 'Open up' an SVG device to record the plots
-CairoSVG('plot.svg', width = 8, height = 4, bg = 'transparent')
 
 # Read in and convert string times to datetimes
 trains <- read.csv('collected.csv')
@@ -32,9 +28,8 @@ completed <- p + geom_point(aes(color = Operator)) +
                        'on Friday December 23 2016'),
          y = 'Ticket cost (€)',
          color = 'Train operator') +
-    theme_bw(base_family = 'Source Sans Pro') +
+    theme_bw(base_family = 'Trebuchet MS') +
     theme(plot.title = element_text(hjust = 0.5))
 
-# Display the plot and close the SVG device
-print(completed)
-dev.off()
+ggsave('plot.svg', plot = completed, device = 'svg',
+       width = 8, height = 4, units = 'in')
