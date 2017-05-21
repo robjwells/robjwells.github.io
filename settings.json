@@ -49,5 +49,9 @@
                 "css_class": "syntax"
             }
         }
+    },
+
+    "preview": {
+        "browser": "safari"
     }
 }
