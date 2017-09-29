@@ -1,8 +1,10 @@
-This originally appeared in [the Morning Star of Thursday September 28 2017][ms-link]. The print version included photographs by the [Ranty Highwayman][rh-twitter] and [Hackney Cyclist][hc-twitter], to whom I’m incredibly grateful, of people going about their everyday lives by cycle in the Netherlands.
+This originally appeared in [the Morning Star of Thursday September 28 2017][ms-link]. The [print version][ms-jpg] ([*large* PDF version here][ms-pdf]) included photographs by [Hackney Cyclist][hc-twitter] and the [Ranty Highwayman][rh-twitter], to whom I’m incredibly grateful, of people going about their everyday lives by cycle in the Netherlands — which I think absolutely made it.
 
 [ms-link]: http://morningstaronline.co.uk/a-a624-We-must-put-the-century-of-the-car-to-an-end
-[rh-twitter]: https://twitter.com/rantyhighwayman
+[ms-jpg]: /images/2017-09-28-RW-transport-feature.jpg
+[ms-pdf]: /images/2017-09-28-RW-transport-feature.pdf
 [hc-twitter]: https://twitter.com/hackneycyclist
+[rh-twitter]: https://twitter.com/rantyhighwayman
 
 * * *
 
