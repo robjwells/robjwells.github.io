@@ -81,7 +81,7 @@ But fitting exercise into already busy days is hard, which is where transport co
 
 With the government focus for the past 60 years on the private car as the way to get about, it’s no surprise that [62 per cent of trips and 78 per cent of distance travelled in Britain is by car][nts-2016].
 
-[rjw-roads]: http://morningstaronline.co.uk/a-f284-The-Tories-will-abandon-us-all-on-the-road-to-nowhere
+[rjw-roads]: https://www.robjwells.com/2016/12/roads-a-laypersons-guide/
 [beeching]: https://en.wikipedia.org/wiki/Beeching_cuts
 [nts-2016]: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/633077/national-travel-survey-2016.pdf
 
