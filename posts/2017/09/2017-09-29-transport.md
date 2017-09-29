@@ -1,3 +1,8 @@
+---
+title: We must put the century of the car to an end
+date: 2017-09-29 14:40
+---
+
 This originally appeared in [the Morning Star of Thursday September 28 2017][ms-link]. The [print version][ms-jpg] ([*large* PDF version here][ms-pdf]) included photographs by [Hackney Cyclist][hc-twitter] and the [Ranty Highwayman][rh-twitter], to whom I’m incredibly grateful, of people going about their everyday lives by cycle in the Netherlands — which I think absolutely made it.
 
 [ms-link]: http://morningstaronline.co.uk/a-a624-We-must-put-the-century-of-the-car-to-an-end
