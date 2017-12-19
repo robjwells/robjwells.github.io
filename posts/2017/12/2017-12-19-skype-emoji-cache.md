@@ -52,3 +52,7 @@ Except that, unlike the super-low-quality version above, the original is 2.4MB a
 5,000 of these things. There’s even a Forrest Gump one!
 
 And you’d think “cache” means that “you sent this before, you might need it again” — but as far as I can remember I’ve only ever sent “standard” emojis on Skype. 🤷‍♀️
+
+<div class="flag">
+  <p><b>Postscript:</b> If you delete all the mp4 and png files in that directory and then relaunch Skype, it will refill it — but with 3.5MB of animated png emojis.</p>
+</div>
