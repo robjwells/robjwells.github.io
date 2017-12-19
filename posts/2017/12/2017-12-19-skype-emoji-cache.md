@@ -1,5 +1,5 @@
 ---
-title: Skype 🤦‍♀️
+title: Skype’s emoji cache
 slug: skype-emoji-cache
 date: 2017-12-19 11:31
 ---
@@ -55,4 +55,6 @@ And you’d think “cache” means that “you sent this before, you might need
 
 <div class="flag">
   <p><b>Postscript:</b> If you delete all the mp4 and png files in that directory and then relaunch Skype, it will refill it — but with 3.5MB of animated png emojis.</p>
+  <p><b>Post-postscript:</b> I changed the title to remove the emoji as some feed-reading services (like Feed Wrangler, the one I use), couldn’t handle
+  🤦‍♀️. Oh well 🤦‍♂️. (And, funnily enough, BBEdit doesn’t handle the “emoji + zero width joiner + modifier” as a single character. Unicode is hard.)</p>
 </div>
