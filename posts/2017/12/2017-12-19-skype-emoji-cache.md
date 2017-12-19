@@ -33,17 +33,19 @@ How far we’ve come: Skype today is over five times the size it was five years 
 
 Drilling down into the robjwells subfolder we find emo\_cache\_v2, accounting for nearly all the 370MB size of its parents. What’s inside? 5,138 emojis and animations. Here’s a taste:
 
-<video
-  controls
-  width=200
-  height=200
-  muted
-  preload="none"
-  playsinline
-  poster="/images/2017-12-19-skype-animation.jpg"
-  src="/images/2017-12-19-skype-animation.mp4"
-  >
-</video>
+<p>
+  <video
+    controls
+    width=200
+    height=200
+    muted
+    preload="none"
+    playsinline
+    poster="/images/2017-12-19-skype-animation.jpg"
+    src="/images/2017-12-19-skype-animation.mp4"
+    >
+  </video>
+</p>
 
 Except that, unlike the super-low-quality version above, the original is 2.4MB and has a delightful reggae soundtrack to accompany its 17-second length.
 
