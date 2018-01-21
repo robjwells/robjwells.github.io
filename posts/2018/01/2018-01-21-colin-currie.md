@@ -21,6 +21,6 @@ Really incredible stuff, all of it, start to finish. Reich’s compositions are 
 [programme]: https://www.kingsplace.co.uk/whats-on/contemporary/time-phase/
 [soundcloud-quartet]: https://soundcloud.com/colin-currie-perc/colin-currie-group-steve-reich-quartet-excerpt
 [youtube-quartet]: https://www.youtube.com/watch?v=-8y8N4Z8tkQ
-[pulse-quartet]: http://www.colincurriegroup.com/2017/12/world-premiere-recording-of-steve-reichs-quartet/
+[pulse-quartet]: http://www.nonesuch.com/journal/steve-reich-pulse-quartet-february-2-nonesuch-records-2017-12-14
 [ICE]: https://www.iceorg.org
 [drumming]: http://www.colincurriegroup.com/2018/01/pre-order-the-groups-first-recording/
