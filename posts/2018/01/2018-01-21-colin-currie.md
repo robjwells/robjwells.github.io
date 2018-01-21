@@ -1,6 +1,6 @@
 ---
 title: Colin Currie Group at Kings Place
-date: 2018-01-21
+date: 2018-01-21 10:00
 ---
 
 Last night, I treated myself to seeing the [Colin Currie Group][] [at Kings Place][programme], and they were absolutely sensational.
