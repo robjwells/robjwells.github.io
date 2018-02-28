@@ -534,6 +534,12 @@ article li {
     margin-left: 1rem;
   }
 
+  .pull-left img,
+  .pull-right img {
+    display: block;
+    margin-bottom: 1.375rem;
+  }
+
 }
 
 
