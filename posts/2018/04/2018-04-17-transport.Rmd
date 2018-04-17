@@ -1,0 +1,203 @@
+---
+title: Tube usage
+author: Rob Wells
+date: 2018-04-17 21:00
+output:
+    md_document:
+        variant: markdown_strict+backtick_code_blocks
+        preserve_yaml: true
+        fig_width: 7.5 ## 96(dpi) * 7.5 = 720 (width of blog column)
+        fig_retina: 2  ## Cajole the use of HTML img tags
+        dev: svg
+        df_print: tibble
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+We’ll need Hadley Wickham’s libraries, so we’ll use the shortcut to bring the the core Tidyverse in, as well as a date-handling library.
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(lubridate)
+```
+
+All of the journey history data is stored in the original CSV files emailed to me by Transport for London. At this point I’ve accrued quite a few.
+
+```{r}
+oyster_filenames <- dir(
+    '~/Documents/Oyster card/Journey history CSVs/',
+    pattern = '*.csv', full.names = TRUE)
+
+length(oyster_filenames)
+```
+
+Now we need to read in the data, but importantly we need to skip the initial header row and then combine all of the per-CSV data into one frame.
+
+```{r message=FALSE}
+oyster_data <- oyster_filenames %>%
+    map(~ read_csv(., skip = 1)) %>%
+    reduce(rbind)
+```
+
+The funky `%>%` operator pipes the data through, just like at the Unix command line. Using `map` and `~` allow us to specify arguments to `read_csv`, to skip the column headers. The last part of this pipeline reduces the 100-odd frames into a single one.
+
+Let’s take a look at our data before we start to clean it up.
+
+```{r}
+nrow(oyster_data)  # Number of rows
+head(oyster_data)
+```
+
+Just from the top few rows, you can spot that the data is untidy. Line 3 shows a top-up to the balance on the card being picked up, while the rest are records of journeys made.
+
+The date and time columns need combining. It’s unclear what we need out of Charge, Credit and Balance at the moment, but clearly not all three. There’s also a note column, but it’s mostly empty. (NA is R’s missing value.)
+
+```{r}
+sum( !(oyster_data$Note %>% is.na) ) # Number of non-NA Note fields
+oyster_data %>%
+    select(Note) %>%
+    distinct
+```
+
+This is a warning of some data-quality problems: no start or ending station for some journeys. We can safely leave rows mentioning fare capping, as well as journey continuation ([which is fairly new][hopper]).
+
+[hopper]: https://www.londonreconnections.com/2016/dont-fear-beeper-bus-hopper-tickets-future-oyster/
+
+While we mull over how or whether to handle the incomplete journey records, let’s see what might need doing to incomplete journeys where I’ve been able to say where I tapped in or out afterwards.
+
+```{r warning=FALSE}
+oyster_data %>%
+    filter( Note %>% startsWith('This incomplete') ) %>%
+    select('Journey/Action')
+```
+
+Angle brackets around the station that was added after-the-fact. Let’s see if any other rows contain angle brackets. (`grepl` returns a logical vector that `filter` can make use of.)
+
+```{r}
+oyster_data %>%
+    filter( grepl('[<>]', `Journey/Action`) ) %>%
+    nrow
+```
+
+Nope, OK. Let’s just trim out those brackets. (There must be a tidier way of doing this.)
+
+```{r}
+bracket_row <- grep('[<>]', oyster_data$`Journey/Action`)
+bracket_text <-  oyster_data$`Journey/Action`[bracket_row]
+oyster_data$`Journey/Action`[bracket_row] <- 
+    gsub('[<>]', '', bracket_text)
+print(oyster_data$`Journey/Action`[bracket_row])
+```
+
+Next, let’s find out what else is lurking in our data. We’ve already seen rail journeys, which start and end (ideally) at a station. But is there anything else in this data frame that doesn’t match that formulation?
+
+```{r}
+oyster_data %>%
+    select('Journey/Action') %>%
+    filter( !grepl('.+ to .+', `Journey/Action`) )
+```
+
+There’s still quite a few of these, but there’s a pattern: the activity type, then a comma, then more detail. What kinds of activity are we dealing with?
+
+```{r}
+unique((oyster_data %>%
+    select('Journey/Action') %>%
+    filter( !grepl('.+ to .+', `Journey/Action`) ) %>%
+    map(~ gsub('^([^,]+),.+$', '\\1', .))
+)$`Journey/Action`)
+```
+
+Things got a little weird there, with me somehow creating a list with a sole property of the name I selected from the frame. But hey ho, I’m still learning the ropes with R.
+
+Anyway, as far as travel goes, the bus journeys are the only interesting type here. (Well, the “Unknown transaction” rows caused me a little bit of concern! But it seems to tally, though still oddly, with my old commute.)
+
+```{r}
+oyster_data %>%
+    filter( grepl('Unknown transaction', `Journey/Action`) ) %>%
+    select(Date, `Start Time`, `Journey/Action`, `Charge`, `Credit`)
+```
+
+Anyway, we can draw up a list of row prefixes that we’ll exclude from the data we use for analysis:
+
+* Auto top-up
+* Automated Refund
+* Oyster helpline refund
+* Unknown transaction
+* Entered and exited Woolwich Arsenal DLR
+
+Let’s also jettison journeys where we don’t know the start or end station. Thankfully there are only a few of these.
+
+```{r}
+oyster_data %>%
+    filter(Note %>% startsWith('We are not able to show')) %>%
+    nrow
+```
+
+I’m also going to exclude bus journeys for the same reason, to make things simpler. I rarely take the bus so it’s no great loss.
+
+```{r}
+oyster_data %>%
+    filter(`Journey/Action` %>% startsWith('Bus journey')) %>%
+    nrow
+```
+
+Now, all but one of the cases mentioned above can be excluded by filtering for missing start or end times. The oddity case in when I entered and then immediately left Woolwich Arsenal, so we’ll handle that specifically.
+
+```{r}
+working_data <- oyster_data %>%
+    filter( !grepl('Entered and exited', `Journey/Action`)) %>%
+    drop_na(`Start Time`, `End Time`)
+```
+
+Let’s look at sorting out our dates. Really the start and finish times should be a datetime type, rather than times stored alongside a date. But there’s a possibility that the finish time journeys will actually be the following calendar day (after midnight).
+
+```{r}
+working_data <- working_data %>%
+    mutate(
+        start_dt = dmy_hms(paste(Date, `Start Time`),tz = 'Europe/London'),
+        ends_next_day = `End Time` < `Start Time`,
+        end_dt = dmy_hms(paste(Date, `End Time`)) + days(1 * ends_next_day))
+working_data %>%
+    select(start_dt, end_dt) %>%
+    head
+```
+
+Great. Now let’s split up the stations into where I entered and exited the network.
+
+```{r}
+working_data <- working_data %>%
+    mutate(
+        enter = gsub('(.+) to (.+)', '\\1', `Journey/Action`),
+        exit = gsub('(.+) to (.+)', '\\2', `Journey/Action`),
+    )
+working_data %>%
+    select(enter, exit) %>%
+    head
+```
+
+Fab. Let’s just have a quick look at the remaining journeys that have some kind of note attached to them, out of interest, excluding the corrected-incomplete journey from earlier.
+
+```{r}
+remaining_notes <- working_data %>%
+    filter(!is.na(Note), !grepl('incomplete', Note)) %>%
+    arrange(start_dt) %>%
+    select(start_dt, enter, exit, Charge, Note)
+```
+
+They’re all journeys where the fare reduced because I’d hit the cap for the day, but fewer than 20 across 3.5 years.
+
+Let’s at long last put our data into a tidy format.
+
+```{r}
+tidied <- working_data %>%
+    select(start = start_dt,
+           finish = end_dt,
+           enter, exit,
+           fare = Charge) %>%
+    arrange(start)
+head(tidied)
+```
+
+After much faffing about, we have the basics we want, and correctly converted. The journey start and finish times and stations, and the fare.
