@@ -1,15 +1,8 @@
 ---
-title: Tube usage
-author: Rob Wells
-date: 2018-04-17 21:00
-output:
-    md_document:
-        variant: markdown_strict+backtick_code_blocks
-        preserve_yaml: true
-        fig_width: 7.5 ## 96(dpi) * 7.5 = 720 (width of blog column)
-        fig_retina: 2  ## Cajole the use of HTML img tags
-        dev: svg
-        df_print: tibble
+title: "Tube usage"
+author: "Rob Wells"
+date: "2018-04-17 21:00"
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -21,6 +14,24 @@ We’ll need Hadley Wickham’s libraries, so we’ll use the shortcut to bring 
 ```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 library(lubridate)
+```
+
+```{r echo=FALSE}
+theme_rjw <- function(base_size = 14, base_family = 'Source Sans Pro')
+{
+    theme_minimal(base_size = base_size,
+                  base_family = base_family) %+replace%
+        theme(panel.background = element_blank(),
+              plot.background = element_rect(
+                  fill = '#f7f8f9', color = NA),
+              legend.background = element_blank()) +
+        theme(plot.title = element_text(margin = margin(b = 5)),
+              plot.subtitle = element_text(margin = margin(b = 5)),
+              axis.title.x.top = element_text(margin = margin(t = 5, b = 10)),
+              axis.text = element_text(color = '#607080'),
+              panel.grid.major = element_line(color = '#60708040'),
+              panel.grid.minor = element_line(color = '#60708033'))
+}
 ```
 
 All of the journey history data is stored in the original CSV files emailed to me by Transport for London. At this point I’ve accrued quite a few.
@@ -201,3 +212,81 @@ head(tidied)
 ```
 
 After much faffing about, we have the basics we want, and correctly converted. The journey start and finish times and stations, and the fare.
+
+
+### Plots
+
+Let’s now look at getting this reasonably clean data into some pretty pictures. To warm up, we’ll just plot the cumulative spending over the period.
+
+```{r}
+ggplot(data = tidied) +
+    geom_vline(xintercept = as.POSIXct('2016-08-01'),
+               alpha = 0.5) +
+    annotate(geom = 'text',
+             x = as.POSIXct('2017-03-01'), y = 325,
+             label = '← Moved nearer to work',
+             family = 'Source Sans Pro') +
+    geom_line(mapping = aes(x = start, y = cumsum(fare))) +
+    theme_rjw() +
+    scale_x_datetime(date_breaks = '6 months',
+                     date_labels = '%b %Y',
+                     limits = as.POSIXct(c(ymd('2014-07-01'),
+                                           ymd('2018-05-01')))) +
+    scale_y_continuous(labels = scales::dollar_format(prefix = '£'),
+                       breaks = c(500, 1000, 1500)) +
+    labs(x = NULL, y = NULL,
+         title = 'Cumulative spending on London rail travel',
+         subtitle = 'September 6 2014 to April 4 2018')
+```
+
+Now let’s see if we can recreate the first plot I showed the first time I ran this kind of analysis, weekly totals with a running average.
+
+```{r}
+weekly_fares <- tidied %>%
+    group_by(year_week = format(start, '%G %V')) %>%
+    summarise(week_end = max(start),
+              week_total = sum(fare))
+
+ggplot(weekly_fares, mapping = aes(x = week_end, y = week_total)) +
+    geom_point() +
+    geom_smooth(method = 'lm')
+```
+
+But this isn’t ideal, because we’re missing weeks where I didn’t travel at all. So we need to add in those zero-expenditure weeks. Let’s create a sequence of weeks starting from the first in the data frame above, and then join that against the real data, keeping the zero values when there isn’t any data.
+
+```{r}
+week_series <- seq(ymd('2014-09-07'),
+                   ymd('2018-04-04'),
+                   by = '1 week') %>%
+    tibble(
+        week_end = as_datetime(.),
+        year_week = format(., '%G %V'),
+        week_total = 0)
+
+week_series <- week_series %>%
+    select(year_week, week_end, week_total)
+
+joined_weeks <- full_join(week_series, weekly_fares,
+                          by = 'year_week') %>%
+    mutate(week_end = coalesce(week_end.y, week_end.x),
+           week_total = coalesce(week_total.y, week_total.x)) %>%
+    select(-contains('.'))
+
+ggplot(joined_weeks, mapping = aes(x = week_end, y = week_total)) +
+    geom_vline(xintercept = as.POSIXct('2016-08-01'),
+               alpha = 0.5) +
+    geom_point() +
+    geom_smooth(method = 'loess', se = FALSE)
+```
+
+The number of weeks where I don’t travel at all increases notably after I moved house. Let’s focus in on that for a second.
+
+```{r}
+joined_weeks %>%
+    ggplot(mapping = aes(x = year_week, y = 1,
+                         alpha = week_total == 0)) +
+    geom_col() +
+    scale_y_discrete(limits = c(FALSE, TRUE), labels = NULL, breaks = NULL) +
+    scale_x_discrete(labels = NULL, breaks = NULL)
+```
+
