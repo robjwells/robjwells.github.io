@@ -223,17 +223,20 @@ ggplot(data = tidied) +
     geom_vline(xintercept = as.POSIXct('2016-08-01'),
                alpha = 0.5) +
     annotate(geom = 'text',
-             x = as.POSIXct('2017-03-01'), y = 325,
+             x = as.POSIXct('2017-01-15'), y = 325,
              label = '← Moved nearer to work',
              family = 'Source Sans Pro') +
     geom_line(mapping = aes(x = start, y = cumsum(fare))) +
     theme_rjw() +
     scale_x_datetime(date_breaks = '6 months',
                      date_labels = '%b %Y',
-                     limits = as.POSIXct(c(ymd('2014-07-01'),
-                                           ymd('2018-05-01')))) +
+                     limits = as.POSIXct(c(ymd('2014-09-01'),
+                                           ymd('2018-06-01'))),
+                     expand = c(0, 0)) +
     scale_y_continuous(labels = scales::dollar_format(prefix = '£'),
-                       breaks = c(500, 1000, 1500)) +
+                       breaks = c(0, 500, 1000, 1400, 1650),
+                       limits = c(0, 1700),
+                       expand = c(0, 0)) +
     labs(x = NULL, y = NULL,
          title = 'Cumulative spending on London rail travel',
          subtitle = 'September 6 2014 to April 4 2018')
@@ -249,7 +252,17 @@ weekly_fares <- tidied %>%
 
 ggplot(weekly_fares, mapping = aes(x = week_end, y = week_total)) +
     geom_point() +
-    geom_smooth(method = 'lm')
+    geom_smooth(method = 'loess') +
+    theme_rjw() +
+    scale_x_datetime(date_breaks = '6 months',
+                     date_labels = '%b %Y',
+                     limits = as.POSIXct(c(ymd('2014-09-01'),
+                                           ymd('2018-06-01'))),
+                     expand = c(0, 0)) +
+    scale_y_continuous(labels = scales::dollar_format(prefix = '£'),
+                       breaks = c(0, 10, 20, 30, 40),
+                       limits = c(0, 40),
+                       expand = c(0, 0))
 ```
 
 But this isn’t ideal, because we’re missing weeks where I didn’t travel at all. So we need to add in those zero-expenditure weeks. Let’s create a sequence of weeks starting from the first in the data frame above, and then join that against the real data, keeping the zero values when there isn’t any data.
@@ -276,17 +289,68 @@ ggplot(joined_weeks, mapping = aes(x = week_end, y = week_total)) +
     geom_vline(xintercept = as.POSIXct('2016-08-01'),
                alpha = 0.5) +
     geom_point() +
-    geom_smooth(method = 'loess', se = FALSE)
+    theme_rjw() +
+    scale_x_datetime(date_breaks = '6 months',
+                     date_labels = '%b %Y',
+                     limits = as.POSIXct(c(ymd('2014-09-01'),
+                                           ymd('2018-06-01'))),
+                     expand = c(0, 0)) +
+    scale_y_continuous(labels = scales::dollar_format(prefix = '£'),
+                       breaks = c(0, 10, 20, 30, 40),
+                       limits = c(0, 40))
 ```
 
 The number of weeks where I don’t travel at all increases notably after I moved house. Let’s focus in on that for a second.
 
-```{r}
+```{r fig.width=8, fig.height=2}
 joined_weeks %>%
     ggplot(mapping = aes(x = year_week, y = 1,
                          alpha = week_total == 0)) +
-    geom_col() +
-    scale_y_discrete(limits = c(FALSE, TRUE), labels = NULL, breaks = NULL) +
-    scale_x_discrete(labels = NULL, breaks = NULL)
+    geom_col(width = 1) +
+    theme_rjw() +
+    scale_y_discrete(limits = c(FALSE, TRUE),
+                     labels = NULL,
+                     breaks = NULL,
+                     expand = c(0, 0)) +
+    scale_x_discrete(labels = NULL,
+                     breaks = NULL)
+```
+
+Now let’s see if we can plot a moving average of the data:
+
+```{r warning=FALSE}
+mav <- function(x,n=5){stats::filter(x,rep(1/n,n), sides = 1)}
+ggplot(joined_weeks) +
+    theme_rjw() +
+    geom_vline(xintercept = as.POSIXct('2016-08-01'),
+               alpha = 0.5) +
+    geom_line(mapping = aes(x = week_end, y = mav(week_total, 13))) +
+    scale_x_datetime(date_breaks = '6 months',
+                     date_labels = '%b %Y',
+                     limits = as.POSIXct(c(ymd('2014-09-01'),
+                                           ymd('2018-06-01'))),
+                     expand = c(0, 0)) +
+    scale_y_continuous(labels = scales::dollar_format(prefix = '£'),
+                       breaks = c(0, 10, 20, 30, 40),
+                       limits = c(0, 40),
+                       expand = c(0, 0))
+```
+
+Let’s try to plot a moving average of zero-spending weeks:
+
+```{r warning=FALSE}
+ggplot(joined_weeks) +
+    geom_vline(xintercept = as.POSIXct('2016-08-01'),
+               alpha = 0.5) +
+    geom_line(aes(x = week_end, y = mav(week_total == 0, 26))) +
+    theme_rjw() +
+    scale_x_datetime(date_breaks = '6 months',
+                     date_labels = '%b %Y',
+                     limits = as.POSIXct(c(ymd('2014-09-01'),
+                                           ymd('2018-06-01'))),
+                     expand = c(0, 0)) +
+    scale_y_continuous(limits = c(0, 1),
+                       labels = scales::percent_format(),
+                       expand = c(0, 0))
 ```
 
