@@ -169,7 +169,7 @@ working_data <- working_data %>%
     mutate(
         start_dt = dmy_hms(paste(Date, `Start Time`),tz = 'Europe/London'),
         ends_next_day = `End Time` < `Start Time`,
-        end_dt = dmy_hms(paste(Date, `End Time`)) + days(1 * ends_next_day))
+        end_dt = dmy_hms(paste(Date, `End Time`), tz = 'Europe/London') + days(1 * ends_next_day))
 working_data %>%
     select(start_dt, end_dt) %>%
     head
@@ -289,6 +289,7 @@ ggplot(joined_weeks, mapping = aes(x = week_end, y = week_total)) +
     geom_vline(xintercept = as.POSIXct('2016-08-01'),
                alpha = 0.5) +
     geom_point() +
+    geom_smooth(se = FALSE, method = 'loess') +
     theme_rjw() +
     scale_x_datetime(date_breaks = '6 months',
                      date_labels = '%b %Y',
@@ -352,5 +353,51 @@ ggplot(joined_weeks) +
     scale_y_continuous(limits = c(0, 1),
                        labels = scales::percent_format(),
                        expand = c(0, 0))
+```
+
+Now let’s look at the length of journeys:
+
+```{r}
+ggplot(tidied) +
+    geom_histogram(aes(finish - start),
+                   breaks = seq(0, 80, 5),
+                   fill = 'royalblue',
+                   closed = 'left',  # Important for matching previous
+                   colour = 'black',
+                   size = 0.2) +
+    theme_rjw() +
+    scale_x_continuous(limits = c(0, 80),
+                       expand = c(0, 0),
+                       breaks = seq(0, 80, 10),
+                       minor_breaks = NULL,
+                       labels = seq(0, 80, 10)) +
+    scale_y_continuous(breaks = seq(0, 350, 50),
+                       minor_breaks = NULL,
+                       labels = seq(0, 350, 50),
+                       limits = c(0, 350),
+                       expand = c(0, 0))
+```
+
+```{r}
+ggplot(tidied) +
+    geom_histogram(aes(x = finish - start,
+                       fill = start > ymd('20160801')),
+                   breaks = seq(0, 80, 5),
+                   closed = 'left',  # Important for matching previous
+                   colour = 'black',
+                   size = 0.2) +
+    theme_rjw() +
+    scale_x_continuous(limits = c(0, 80),
+                       expand = c(0, 0),
+                       breaks = seq(0, 80, 10),
+                       minor_breaks = NULL,
+                       labels = seq(0, 80, 10)) +
+    scale_y_continuous(breaks = seq(0, 350, 50),
+                       minor_breaks = NULL,
+                       labels = seq(0, 350, 50),
+                       limits = c(0, 350),
+                       expand = c(0, 0))
+```
+
 ```
 
