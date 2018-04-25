@@ -32,6 +32,8 @@ theme_rjw <- function(base_size = 14, base_family = 'Source Sans Pro')
 }
 
 theme_set(theme_rjw())
+
+mav <- function(x,n=5){stats::filter(x,rep(1/n,n), sides = 1)}
 ```
 
 
@@ -230,16 +232,14 @@ ggplot(data = tidied) +
     geom_line(mapping = aes(x = start, y = cumsum(fare))) +
     scale_x_datetime(date_breaks = '6 months',
                      date_labels = '%b %Y',
-                     limits = as.POSIXct(c(ymd('2014-09-01'),
-                                           ymd('2018-06-01'))),
+                     limits = as.POSIXct(c(ymd('2014-09-06'),
+                                           ymd('2018-04-25'))),
                      expand = c(0, 0)) +
     scale_y_continuous(labels = scales::dollar_format(prefix = '£'),
-                       breaks = c(0, 500, 1000, 1400, 1650),
-                       limits = c(0, 1700),
-                       expand = c(0, 0)) +
+                       breaks = c(0, 500, 1000, 1400, 1650)) +
     labs(x = NULL, y = NULL,
          title = 'Cumulative spending on London rail travel',
-         subtitle = 'September 6 2014 to April 4 2018')
+         subtitle = 'September 6 2014 to April 25 2018')
 ```
 
 Now let’s see if we can recreate the first plot I showed the first time I ran this kind of analysis, weekly totals with a running average.
@@ -267,9 +267,9 @@ ggplot(weekly_fares, mapping = aes(x = week_end, y = week_total)) +
 
 But this isn’t ideal, because we’re missing weeks where I didn’t travel at all. So we need to add in those zero-expenditure weeks. Let’s create a sequence of weeks starting from the first in the data frame above, and then join that against the real data, keeping the zero values when there isn’t any data.
 
-```{r}
+```{r warning=FALSE}
 week_series <- seq(ymd('2014-09-07'),
-                   ymd('2018-04-04'),
+                   ymd('2018-04-25'),
                    by = '1 week') %>%
     tibble(
         week_end = as_datetime(.),
@@ -288,16 +288,22 @@ joined_weeks <- full_join(week_series, weekly_fares,
 ggplot(joined_weeks, mapping = aes(x = week_end, y = week_total)) +
     geom_vline(xintercept = as.POSIXct('2016-08-01'),
                alpha = 0.5) +
-    geom_point() +
-    geom_smooth(se = FALSE, method = 'loess') +
+    geom_point(size = .5, color = '#1369bf') +
+    geom_line(mapping = aes(x = week_end, y = mav(week_total, 6)),
+              color = '#bd3338', size = .75) +
     scale_x_datetime(date_breaks = '6 months',
-                     date_labels = '%b %Y',
+                     date_labels = '%b ’%y',
                      limits = as.POSIXct(c(ymd('2014-09-01'),
                                            ymd('2018-06-01'))),
                      expand = c(0, 0)) +
     scale_y_continuous(labels = scales::dollar_format(prefix = '£'),
                        breaks = c(0, 10, 20, 30, 40),
-                       limits = c(0, 40))
+                       limits = c(0, 40)) +
+    labs(x = NULL,
+         y = 'Weekly total cost',
+         title = 'Weekly transport spending and six-week moving average',
+         subtitle = 'September 6 2014 to April 25 2018; vertical line marks house move',
+         caption = 'This isn’t tremendously informative')
 ```
 
 The number of weeks where I don’t travel at all increases notably after I moved house. Let’s focus in on that for a second.
@@ -311,14 +317,18 @@ joined_weeks %>%
                      labels = NULL,
                      breaks = NULL,
                      expand = c(0, 0)) +
-    scale_x_discrete(labels = NULL,
-                     breaks = NULL)
+    scale_x_discrete(breaks = NULL) +
+    scale_alpha_discrete(labels = c('Some', 'Zero')) +
+    labs(title = 'Weeks with no journeys made',
+         subtitle = 'September 6 2014 to April 25 2018',
+         x = NULL, y = NULL,
+         alpha = 'Number of journeys') +
+    theme(legend.position = 'bottom')
 ```
 
 Now let’s see if we can plot a moving average of the data:
 
 ```{r warning=FALSE}
-mav <- function(x,n=5){stats::filter(x,rep(1/n,n), sides = 1)}
 ggplot(joined_weeks) +
     geom_vline(xintercept = as.POSIXct('2016-08-01'),
                alpha = 0.5) +
@@ -375,7 +385,7 @@ ggplot(tidied) +
 
 So far, that looks like that histogram in my original post about this topic. Let’s plot the difference between journey lengths when I lived in Woolwich and after my move to Leyton:
 
-```{r}
+```{r warning=FALSE}
 ggplot(tidied) +
     geom_histogram(aes(x = finish - start,
                        fill = start > ymd('20160801')),
@@ -392,55 +402,102 @@ ggplot(tidied) +
                        minor_breaks = NULL,
                        labels = seq(0, 350, 50),
                        limits = c(0, 350),
-                       expand = c(0, 0))
+                       expand = c(0, 0)) +
+    scale_fill_discrete(labels = c('Before move', 'After move'),
+                        position = 'top') +
+    labs(title = 'Journey length',
+         subtitle = 'Five-minute groups, bars stacked',
+         x = 'Duration (minutes)',
+         y = 'Number of journeys',
+         fill = NULL) +
+    theme(legend.position = 'bottom')
 ```
 
 You can see that my post-move journeys tend to be shorter; this is likely because I can now easily get the high-speed train from Stratford International to St Pancras (for national rail services to, and from, my home town of Leicester). The high-speed journey itself is about 7 minutes, so a bit of waiting around at each end could easily push it up into the 10-minute bin.
 
-```{r}
+```{r warning=FALSE}
 paired <- tidied %>%
     rowwise %>%
     mutate(station_pair = paste(sort(c(enter, exit)),
-                                collapse = ' ←→ '),
+                                collapse = '\n'),
            after_move = start > ymd('20160801'))
-ggplot(paired %>%
-    group_by(station_pair, after_move) %>%
+top_pairs <- paired %>%
+    group_by(station_pair) %>%
     summarise(count = n()) %>%
-    filter(count >= 10)) +
+    filter(count >= 10)
+
+subsetted <- subset(paired, station_pair %in% top_pairs$station_pair)
+new <- left_join(subsetted, top_pairs, by = 'station_pair')
+
+
+station_cleaner <- function(x) {
+    str_replace_all(x, ' DLR', '') %>%
+        str_replace_all('International', 'Int’l') %>%
+        str_replace_all(' \\[London [^\n]+', '')
+}
+
+ggplot(new) +
     geom_bar(aes(x = reorder(station_pair, count),
-                 y = count,
                  fill = after_move),
-             stat = 'identity') +
+             stat = 'count',
+             position = 'stack',
+             width = 0.8) +
     coord_flip() +
-    scale_x_discrete(
-        labels = c('Oxford Circus\nWoolwich Arsenal',
-                   'Kings Cross\nWoolwich Arsenal',
-                   'St Pancras [HS1]\nStratford Int’l [HS1]',
-                   'North Greenwich\nWoolwich Arsenal',
-                   'Pudding Mill Lane\nWoolwich Arsenal',
-                   'Stratford Int’l DLR\nWoolwich Arsenal',
-                   'Stratford\nWoolwich Arsenal')
-    )
+    scale_x_discrete(labels = station_cleaner) +
+    scale_y_continuous(breaks = seq(0, 300, 50),
+                       minor_breaks = NULL) +
+    scale_fill_discrete(labels = c('Before move', 'After move')) +
+    labs(title = 'Most common journeys',
+         subtitle = 'In either direction between stations, 10 or more trips',
+         y = NULL, x = NULL, fill = NULL) +
+    theme(legend.position = 'bottom',
+          panel.grid.major.y = element_blank(),
+          axis.text.y = element_text(size = 9))
 ```
 
 ```{r}
+left_join(subsetted, top_pairs, by = 'station_pair')
+```
+
+
+```{r warning=FALSE}
 ggplot(tidied, aes(x = start,
-                   y = mav(fare, 20))) +
+                   y = mav(fare, 10))) +
     geom_vline(xintercept = as.POSIXct('2016-08-01'),
                alpha = 0.5) +
-    geom_point()
+    annotate(geom = 'rect',
+             xmin = as.POSIXct('2015-03-20'),
+             xmax = as.POSIXct('2016-02-05'),
+             ymin = 0.95, ymax = 1.40,
+             alpha = 0.2, fill = '#1369bf') +
+    annotate(geom = 'text',
+             x = as.POSIXct('2016-11-14'),
+             y = 1.10,
+             label = '← Off-peak railcard discount applied',
+             family = 'Source Sans Pro') +
+    geom_point(size = .75) +
+    scale_y_continuous(labels = scales::dollar_format(prefix = '£')) +
+    labs(x = NULL,
+         y = 'Fare',
+         title = 'Journey cost over time',
+         subtitle = '10-trip moving average. Vertical line marks house move')
 ```
 
-```{r}
+```{r warning=FALSE}
 ggplot(tidied, aes(x = start,
-                   y = mav(finish - start, 20))) +
+                   y = mav(finish - start, 10))) +
     geom_vline(xintercept = as.POSIXct('2016-08-01'),
                alpha = 0.5) +
-    geom_point()
+    geom_point(size = 0.75) +
+    scale_y_continuous() +
+    labs(x = NULL,
+         y = 'Duration (minutes)',
+         title = 'Journey length over time',
+         subtitle = '10-trip moving average. Vertical line marks house move')
 ```
 
 
-```{r}
+```{r warning=FALSE}
 ggplot(tidied, aes(x = fare,
                    y = finish - start,
                    colour = start > ymd('20160801'))) +
@@ -458,4 +515,34 @@ ggplot(tidied, aes(x = fare,
     guides(colour = FALSE) +
     theme(panel.border = element_rect(colour='black', fill=NA))
 ```
+
+Now let’s go back to time and see when my journeys were most commonly made, and the difference before and after the move.
+
+```{r}
+tidied %>%
+    mutate(start_hour = case_when(
+        hour(start) == 0 ~ as.integer(24),
+        TRUE ~ hour(start)
+    )) %>%
+    # filter(start > ymd('20160801')) %>%
+    ggplot(aes(x = start_hour,
+               fill = start > ymd('20160801'))) +
+    geom_histogram(binwidth = 1,
+                   closed = 'left',
+                   color = 'black',
+                   size = 0.2) +
+    scale_x_continuous(breaks = seq(5, 24, 1),
+                       labels = c(seq(5, 23, 1), c(0))) +
+    # scale_y_continuous(breaks = seq(0, 12, 4)) +
+    scale_fill_discrete(labels = c('Before move', 'After move')) +
+    theme(panel.grid.minor.x = element_blank(),
+          panel.grid.major.x = element_blank(),
+          legend.position = 'bottom') +
+    labs(title = 'Journeys by hour started',
+         subtitle = 'Bars stacked',
+         x = 'Hour of the day',
+         y = 'Number of journeys',
+         fill = NULL)
+```
+
 
