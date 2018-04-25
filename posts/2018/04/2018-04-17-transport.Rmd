@@ -453,7 +453,9 @@ ggplot(subsetted) +
          y = NULL, x = NULL, fill = NULL) +
     theme(legend.position = 'bottom',
           panel.grid.major.y = element_blank(),
-          axis.text.y = element_text(size = 9))
+          axis.text.y = element_text(
+              size = 9,
+              margin = unit(c(0, -4, 0, 0), 'mm')))
 ```
 
 ```{r warning=FALSE}
