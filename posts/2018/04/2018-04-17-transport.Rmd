@@ -426,17 +426,18 @@ top_pairs <- paired %>%
     summarise(count = n()) %>%
     filter(count >= 10)
 
-subsetted <- subset(paired, station_pair %in% top_pairs$station_pair)
-new <- left_join(subsetted, top_pairs, by = 'station_pair')
-
+# Bring the counts into the frame to make life easier
+subsetted <- subset(paired, station_pair %in% top_pairs$station_pair) %>%
+    left_join(top_pairs, by = 'station_pair')
 
 station_cleaner <- function(x) {
-    str_replace_all(x, ' DLR', '') %>%
+    x %>%
+        str_replace_all(' DLR', '') %>%
         str_replace_all('International', 'Int’l') %>%
         str_replace_all(' \\[London [^\n]+', '')
 }
 
-ggplot(new) +
+ggplot(subsetted) +
     geom_bar(aes(x = reorder(station_pair, count),
                  fill = after_move),
              stat = 'count',
@@ -448,17 +449,12 @@ ggplot(new) +
                        minor_breaks = NULL) +
     scale_fill_discrete(labels = c('Before move', 'After move')) +
     labs(title = 'Most common journeys',
-         subtitle = 'In either direction between stations, 10 or more trips',
+         subtitle = 'In either direction between stations, 10 or more trips (bars stacked)',
          y = NULL, x = NULL, fill = NULL) +
     theme(legend.position = 'bottom',
           panel.grid.major.y = element_blank(),
           axis.text.y = element_text(size = 9))
 ```
-
-```{r}
-left_join(subsetted, top_pairs, by = 'station_pair')
-```
-
 
 ```{r warning=FALSE}
 ggplot(tidied, aes(x = start,
