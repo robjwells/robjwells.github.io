@@ -522,7 +522,6 @@ tidied %>%
         hour(start) == 0 ~ as.integer(24),
         TRUE ~ hour(start)
     )) %>%
-    # filter(start > ymd('20160801')) %>%
     ggplot(aes(x = start_hour,
                y = ..density..,
                fill = start > ymd('20160801'))) +
