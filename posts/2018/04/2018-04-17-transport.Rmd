@@ -541,7 +541,7 @@ tidied %>%
           legend.position = 'bottom') +
     labs(title = 'Journeys by hour started',
          x = 'Hour of the day',
-         y = 'Number of journeys') +
+         y = 'Proportion of journeys') +
     guides(fill = FALSE)
 ```
 
