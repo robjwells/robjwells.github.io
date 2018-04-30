@@ -1,0 +1,28 @@
+---
+title: 3.75 years on the Tube
+author: Rob Wells
+date: 2018-04-30 21:45
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+A couple of years ago, shortly after I moved house, I wrote [a post analysing my Tube travel][tube-1]. It was my first real attempt to do that kind of analysis, and the first time I’d done anything with [Matplotlib][] of any level of complexity.
+
+[tube-1]: /2016/09/two-years-on-the-tube/
+[Matplotlib]: https://matplotlib.org
+
+I thought I’d have another crack at it now, looking at the changes in my travel patterns since the move, and also changing from Python and Matplotlib to R and ggplot2.
+
+Why now? There’s no great reason, though for a time I was thinking about stopping to use my Oyster card in favour of a contactless bank card. You don’t have the option to be emailed CSV journey history files with a bank card, and the main advantage of weekly capping wouldn’t affect me, so I’ll be sticking with the Oyster card for the moment.
+
+And why the switch in environment? Python is still the language that fits my brain the best, but Matplotlib feels like hard work. R is a pretty odd language in many ways, but the ggplot2 way of building plots makes a great deal of sense to me, and has allowed me to play with plots quickly in ways that I feel that wouldn’t be available if I was trying to contort to fit Matplotlib’s preferences. I freely admit that I don’t have a great deal of experience with Matplotlib, so it’s entirely possible that’s the reason why I find it a struggle, but that barrier just isn’t there with ggplot2.
+
+I’m writing this post in [RStudio][] in a [R Markdown][] document, but it’s actually my second go at this. The first was invaluable in getting myself acquainted with the process and playing around with ideas, but it kind of spiralled out of control so it’s not presentable. Hopefully this is something approaching readable.
+
+[RStudio]: https://www.rstudio.com/products/RStudio/
+[RMarkdown]: https://rmarkdown.rstudio.com
+
+
