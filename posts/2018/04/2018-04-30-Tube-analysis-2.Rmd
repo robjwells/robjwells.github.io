@@ -88,7 +88,7 @@ oyster_data <- oyster_filenames %>%
     reduce(rbind)
 ```
 
-Here we’re piping `oyster_filenames` through `map`, where we use an R formula to supply arguments to `read_csv` to skip the header line in each file. Finally we `reduce` the `r length(oyster_filenames)` by binding them by row.
+Here we’re piping `oyster_filenames` through `map`, where we use an R formula to supply arguments to `read_csv` to skip the header line in each file. Finally we `reduce` the `r length(oyster_filenames)` data frames by binding them by row.
 
 ### Poking around the data
 
