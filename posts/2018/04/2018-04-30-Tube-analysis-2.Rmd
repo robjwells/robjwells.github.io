@@ -3,6 +3,7 @@ title: 3.75 years on the Tube
 author: Rob Wells
 date: 2018-04-30 21:45
 output:
+    html_document:
     md_document:
         variant: markdown_strict+fenced_code_blocks
         preserve_yaml: true
