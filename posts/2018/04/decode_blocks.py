@@ -3,7 +3,7 @@
 import fileinput
 import re
 
-block_boundary = re.compile(r'^```(?: (\S+))?$')
+block_boundary = re.compile(r'^~~~~(?: (\S+))?$')
 indent = ' ' * 4
 
 new_lines = []
@@ -12,6 +12,7 @@ in_block = False
 for line in fileinput.input():
     if in_block and block_boundary.match(line):
         in_block = False
+        new_lines.append('\n<!-- Comment to separate R code and output -->\n')
         continue
 
     if block_boundary.match(line):
