@@ -2,7 +2,10 @@
 title: 3.75 years on the Tube
 author: Rob Wells
 date: 2018-04-30 21:45
-output: html_document
+output:
+    md_document:
+        variant: markdown_strict+fenced_code_blocks
+        preserve_yaml: true
 ---
 
 ```{r setup, include=FALSE}
@@ -23,6 +26,155 @@ And why the switch in environment? Python is still the language that fits my bra
 I’m writing this post in [RStudio][] in a [R Markdown][] document, but it’s actually my second go at this. The first was invaluable in getting myself acquainted with the process and playing around with ideas, but it kind of spiralled out of control so it’s not presentable. Hopefully this is something approaching readable.
 
 [RStudio]: https://www.rstudio.com/products/RStudio/
-[RMarkdown]: https://rmarkdown.rstudio.com
+[R Markdown]: https://rmarkdown.rstudio.com
 
+### Setup
+
+To start with we’re going to load some libraries to make our life easier. The [Tidyverse][] wraps up several helpful packages, forgive me for not making clear where functions come from below (like Swift, R imports into the global namespace), lubridate has some handy date-handling functions, and stringr is helpful for, er, strings.
+
+Not shown is my customised ggplot2 theme, which you can find if you [look at the original .Rmd source file][github].
+
+[Tidyverse]: https://www.tidyverse.org
+[github]: https://github.com/robjwells/primaryunit/tree/master/posts/2018/04
+
+```{r warning=FALSE, message=FALSE}
+library(tidyverse)
+library(lubridate)
+library(stringr)
+
+# Moving average function from https://stackoverflow.com/a/4862334/1845155
+mav <- function(x, n=5) {
+    stats::filter(x, rep(1/n, n), sides = 1)
+}
+```
+
+```{r include=FALSE}
+theme_rjw <- function(base_size = 14, base_family = 'Source Sans Pro')
+{
+    theme_minimal(base_size = base_size,
+                  base_family = base_family) %+replace%
+        theme(panel.background = element_blank(),
+              plot.background = element_rect(
+                  fill = '#f7f8f9', color = NA),
+              legend.background = element_blank()) +
+        theme(plot.title = element_text(margin = margin(b = 5)),
+              plot.subtitle = element_text(margin = margin(b = 5)),
+              axis.title.x.top = element_text(margin = margin(t = 5, b = 10)),
+              axis.text = element_text(color = '#607080'),
+              panel.grid.major = element_line(color = '#60708040'),
+              panel.grid.minor = element_line(color = '#60708033'))
+}
+
+theme_set(theme_rjw())
+```
+
+### Data import
+
+I keep all the CSV files as received, just dating the filenames with the date I got them. (Sorry, I won’t be sharing the data.) Let’s load all the files:
+
+```{r}
+oyster_filenames <- dir(
+    '~/Documents/Oyster card/Journey history CSVs/',
+    pattern = '*.csv',
+    full.names = TRUE)
+```
+
+There are `r length(oyster_filenames)` CSV files that we need to open, load, and combine.
+
+```{r message=FALSE}
+oyster_data <- oyster_filenames %>%
+    map(~ read_csv(., skip = 1)) %>%
+    reduce(rbind)
+```
+
+Here we’re piping `oyster_filenames` through `map`, where we use an R formula to supply arguments to `read_csv` to skip the header line in each file. Finally we `reduce` the `r length(oyster_filenames)` by binding them by row.
+
+### Poking around the data
+
+We can take a look at the data to get an idea of its structure:
+
+```{r}
+head(oyster_data)
+```
+
+It’s clearly in need of a clean-up. The journey history file appears to be a record of every action involving the card. It’s interesting to note that the Oyster card isn’t just a “key” to pass through the ticket barriers, but a core part of how the account is managed (note that having an online account is entirely optional).
+
+Actions taken “outside” of the card need to be “picked up” by the card by tapping on an Oyster card reader. Here we can see a balance increase being collected, mixed in with the journey details. (Funnily enough, TfL accidentally cancelled my automatic top-up a couple of months ago, but that was never applied to my account as I didn’t use the card before the action expired.)
+
+But we’re only interested in rail journeys, one station to another, with a start and finish time.
+
+Let’s see if the notes field can give us any guidance of what we may need to exclude.
+
+```{r}
+oyster_data %>%
+    filter(!is.na(Note)) %>%
+    count(Note, sort = TRUE)
+```
+
+OK, not much here, but there are some troublesome rail journeys missing either a starting or finishing station. The "incomplete journey" line also hints at something to be aware of:
+
+```{r}
+oyster_data %>%
+    filter(str_detect(Note, 'This incomplete journey')) %>%
+    select(`Journey/Action`) %>%
+    first()
+```
+
+Note the angle brackets surrounding the substituted station. We’ll come back this later.
+
+Let’s have a look at rows missing start or finish times, which are a giveaway for oddities, and summarise the Journey/Action description:
+
+```{r}
+oyster_data %>%
+    filter(is.na(`Start Time`) | is.na(`End Time`)) %>%
+    mutate(abbr = str_extract(`Journey/Action`, '^[^,]+')) %>%
+    count(abbr, sort = TRUE)
+```
+
+### Tidying the data
+
+All these should be filtered out of the data for analysis. (The two unknown transactions appear to be two halves of my old commute. Strange.)
+
+```{r}
+rail_journeys <- oyster_data %>%
+    filter(!(is.na(`Start Time`) | is.na(`End Time`)))
+```
+
+That leaves us with `r nrow(rail_journeys)` rail journeys to have a look at.
+
+But there’s more tidying-up to do:
+
+*   Journey dates and times are stored separately. Finish times may be after midnight (and so on the day after the date they’re associated with).
+*   Start and finish stations need to be separated. (And don’t forget that set of angle brackets.)
+*   All money-related fields should be dropped except for “charge” (the journey fare).
+
+Let’s have a crack at it, proceeding in that order:
+
+```{r}
+tidy_journeys <- rail_journeys %>%
+    mutate(
+        start = dmy_hms(
+            str_c(Date, `Start Time`, sep=' '),
+            tz = 'Europe/London'),
+        end = dmy_hms(
+            str_c(Date, `End Time`, sep=' '),
+            tz = 'Europe/London') +
+            # Add an extra day if the journey ends “earlier” than the start
+            days(1 * (`End Time` < `Start Time`)),
+        # Let’s add a duration to make our lives easier
+        duration = end - start,
+
+        # Regex handles angle-bracket substituted stations for refunds
+        enter = str_match(`Journey/Action`, '^<?([^>]+)>? to ')[,2],
+        exit = str_match(`Journey/Action`, ' to <?([^>]+)>?$')[,2]
+    ) %>%
+    select(
+        start, end, duration,
+        enter, exit,
+        fare = Charge
+    )
+head(tidy_journeys)
+```
+
+Great. The duration variable isn’t strictly necessary but it’ll make things a tad clearer later on.
 
