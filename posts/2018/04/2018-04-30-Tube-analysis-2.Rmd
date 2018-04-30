@@ -173,7 +173,9 @@ tidy_journeys <- rail_journeys %>%
         start, end, duration,
         enter, exit,
         fare = Charge
-    )
+    ) %>%
+    # Sorting solely to correct the slightly odd example output
+    arrange(start)
 head(tidy_journeys)
 ```
 
