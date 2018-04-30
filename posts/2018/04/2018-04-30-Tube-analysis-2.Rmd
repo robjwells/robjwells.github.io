@@ -43,7 +43,7 @@ library(lubridate)
 library(stringr)
 
 # Moving average function from https://stackoverflow.com/a/4862334/1845155
-mav <- function(x, n=5) {
+mav <- function(x, n = 5) {
     stats::filter(x, rep(1/n, n), sides = 1)
 }
 ```
