@@ -19,6 +19,17 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+# This is to silence warnings when knitting the document
+# with non-standard fonts used in plot themes.
+#
+# https://github.com/yihui/knitr/issues/729#issuecomment-40336104
+#
+# Warnings are the following repeated:
+# "font family 'Source Sans Pro' not found in PostScript font database"
+options(device = function(file, width, height) {
+  svg(tempfile(), width = width, height = height)
+})
 ```
 
 A couple of years ago, shortly after I moved house, I wrote [a post analysing my Tube travel][tube-1]. It was my first real attempt to do that kind of analysis, and the first time I’d done anything with [Matplotlib][] of any level of complexity.
