@@ -123,11 +123,16 @@ oyster_data %>%
 
 Note the angle brackets surrounding the substituted station. We’ll come back this later.
 
-Let’s have a look at rows missing start or finish times, which are a giveaway for oddities, and summarise the Journey/Action description:
+A missing start or finish time is a giveaway for oddities, which overlaps somewhat but not completely with Journey/Action fields that don’t match the pattern of `{station} to {station}`. Let’s fish those out and have a look at the abbreviated descriptions:
 
 ```{r}
+stations_regex <- '^<?([^>]+)>? to <?([^>]+)>?$'
+
 oyster_data %>%
-    filter(is.na(`Start Time`) | is.na(`End Time`)) %>%
+    filter(
+        is.na(`Start Time`) |
+        is.na(`End Time`) |
+        !str_detect(`Journey/Action`, stations_regex)) %>%
     mutate(abbr = str_extract(`Journey/Action`, '^[^,]+')) %>%
     count(abbr, sort = TRUE)
 ```
@@ -138,7 +143,11 @@ All these should be filtered out of the data for analysis. (The two unknown tran
 
 ```{r}
 rail_journeys <- oyster_data %>%
-    filter(!(is.na(`Start Time`) | is.na(`End Time`)))
+    # Note the !() below to invert the earlier filter
+    filter(!(
+        is.na(`Start Time`) |
+        is.na(`End Time`) |
+        !str_detect(`Journey/Action`, stations_regex)))
 ```
 
 That leaves us with `r nrow(rail_journeys)` rail journeys to have a look at.
@@ -165,9 +174,8 @@ tidy_journeys <- rail_journeys %>%
         # Let’s add a duration to make our lives easier
         duration = end - start,
 
-        # Regex handles angle-bracket substituted stations for refunds
-        enter = str_match(`Journey/Action`, '^<?([^>]+)>? to ')[,2],
-        exit = str_match(`Journey/Action`, ' to <?([^>]+)>?$')[,2]
+        enter = str_match(`Journey/Action`, stations_regex)[,2],
+        exit = str_match(`Journey/Action`, stations_regex)[,3]
     ) %>%
     select(
         start, end, duration,
