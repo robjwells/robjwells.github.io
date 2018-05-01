@@ -294,4 +294,30 @@ It’s pretty clear that there is a marked difference before and after the house
 
 That said, the code for this plot is a pretty great example of what I like about ggplot2: you create a plot, add geoms to it, customise the labels and scales, piece by piece until you’re happy. It’s fairly straightforward to discover things (especially with RStudio’s completion), and you change things by adding on top of the basics instead of hunting around in the properties of figures or axes or whatever.
 
+### Cumulative spending
+
+The first plot showed a change in my average weekly spending. What does that look like when we plot the cumulative spending over this period?
+
+```{r}
+ggplot(data = tidy_journeys,
+       mapping = aes(x = start,
+                     y = cumsum(fare),
+                     colour = start > house_move)) +
+    geom_line() +
+
+    labs(
+        title = 'Cumulative Oyster card spending',
+        subtitle = 'September 2014 to May 2018',
+        x = NULL, y = NULL,
+        colour = 'House move') +
+    scale_y_continuous(
+        labels = scales::dollar_format(prefix = '£'),
+        breaks = c(0, 500, 1000, 1400, 1650)) +
+    scale_color_brewer(
+        labels = c('Before', 'After'),
+        palette = 'Dark2') +
+    theme(
+        legend.position = 'bottom')
+```
+
 
