@@ -3,10 +3,18 @@ title: 3.75 years on the Tube
 author: Rob Wells
 date: 2018-05-01 21:30
 output:
-    html_document: default
+    html_document:
+        dpi: 200
+        fig_width: 7.5
+        fig_height: 5
+        dev: svg
     md_document:
         variant: markdown_strict+fenced_code_blocks
         preserve_yaml: true
+        dpi: 200
+        fig_width: 7.5
+        fig_height: 5
+        dev: svg
 ---
 
 ```{r setup, include=FALSE}
