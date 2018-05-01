@@ -1,9 +1,9 @@
 ---
 title: 3.75 years on the Tube
 author: Rob Wells
-date: 2018-05-01 10:30
+date: 2018-05-01 21:30
 output:
-    html_document:
+    html_document: default
     md_document:
         variant: markdown_strict+fenced_code_blocks
         preserve_yaml: true
@@ -67,6 +67,11 @@ theme_rjw <- function(base_size = 14, base_family = 'Source Sans Pro')
 }
 
 theme_set(theme_rjw())
+
+rjw_red = '#BD3338'
+rjw_green = '#00800A'
+rjw_blue = '#1369BF'
+rjw_grey = '#607080'
 ```
 
 ### Data import
@@ -188,4 +193,61 @@ head(tidy_journeys)
 ```
 
 Great. The duration variable isn’t strictly necessary but it’ll make things a tad clearer later on.
+
+### Weekly totals
+
+For a start, let’s try to remake the first plot from [my previous post][tube-1], a plot of weekly spending with a six-week moving average. Looking back at that plot, it’s not tremendously helpful, but it’s a starting point.
+
+First, though, a problem with the data: they record journeys made, not the absence of any journeys (obviously). If we’re to accurately plot weekly spending, we need to include weeks where no journeys were made and no money spent.
+
+First, let’s make a data frame containing every [ISO week][] from the earliest journey in our data to the most recent.
+
+[ISO week]: https://en.wikipedia.org/wiki/ISO_week_date
+
+```{r}
+blank_weeks <- seq(min(tidy_journeys$start),
+    max(tidy_journeys$end),
+    by = '1 week') %>%
+    tibble(
+        start = .,
+        week = format(., '%G-W%V')
+    )
+head(blank_weeks)
+```
+
+The format string uses the ISO week year (%G) and the ISO week number (%V), which made differ from what you might intuitively expect. I’ve included a somewhat arbitrary start time to make plotting a little easier later.
+
+Now we need to summarise our actual journey data, collecting the total fare for each ISO week. We’ll use `group_by()` and `summarise()` — two tools that took me a few tries to get a handle on. Here `summarise()` works group-wise based on the result of `group_by()`, you don’t have to pass the group into the `summarise()` call, just the value you want summarised and how.
+
+```{r}
+real_week_totals <- tidy_journeys %>%
+    group_by(week = format(start, '%G-W%V')) %>%
+    summarise(total = sum(fare))
+```
+
+That done, we can use an SQL-like join operation to take every week in our giant list and match it against the week summaries from our real data. The join leaves missing values (`NA`) in the total column for weeks where no journeys were made (and so weren’t present in the data to summarise) so we replace them with zero.
+
+``` {r}
+complete_week_totals <- left_join(blank_weeks,
+                                  real_week_totals,
+                                  by = 'week') %>%
+    replace_na(list(total = 0))
+tail(complete_week_totals)
+```
+
+With this summary frame assembled, we can now plot the totals.
+
+```{r}
+ggplot(data = complete_week_totals,
+       mapping = aes(x = start, y = total)) +
+    geom_vline(xintercept = as.POSIXct('2016-08-01'),
+               colour = rjw_grey,
+               alpha = 0.5) +
+    geom_point(
+        colour = rjw_blue,
+        size = 0.75) +
+    geom_line(
+        mapping = aes(y = mav(complete_week_totals$total, 6)),
+        colour = rjw_red)
+```
 
