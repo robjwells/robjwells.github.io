@@ -279,9 +279,8 @@ ggplot(data = complete_week_totals,
         title = str_glue(
             'Weekly transport spending and {weeks_for_avg}',
             '-week moving average'),
-        subtitle = str_c(
-            'September 2014 to May 2018 (vertical bar marks house move)',
-            sep = ' '),
+        subtitle = (
+            'September 2014 to May 2018 (vertical bar marks house move)'),
         x = NULL, y = NULL) +
 
     scale_x_datetime(
