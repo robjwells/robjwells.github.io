@@ -196,7 +196,9 @@ Great. The duration variable isn’t strictly necessary but it’ll make things 
 
 ### Weekly totals
 
-For a start, let’s try to remake the first plot from [my previous post][tube-1], a plot of weekly spending with a six-week moving average. Looking back at that plot, it’s not tremendously helpful, but it’s a starting point.
+For a start, let’s try to remake the first plot from [my previous post][tube-1], a plot of weekly spending with a moving average. Looking back at that plot, it’s not tremendously helpful, but it’s a starting point. (In addition, while that plot is labelled as showing a six-week average, the code computes [an eight-week average][tube-1-avg], and a quick count of the points on the plot confirms it.)
+
+[tube-1-avg]: https://github.com/robjwells/primaryunit/blob/master/posts/2016/09/analyse_journey_history.py#L168
 
 First, though, a problem with the data: they record journeys made, not the absence of any journeys (obviously). If we’re to accurately plot weekly spending, we need to include weeks where no journeys were made and no money spent.
 
@@ -235,19 +237,43 @@ complete_week_totals <- left_join(blank_weeks,
 tail(complete_week_totals)
 ```
 
-With this summary frame assembled, we can now plot the totals.
+With this summary frame assembled, we can now plot the totals. I’m also going to mark roughly when I moved house so we can try to see if there’s any particular shift.
 
-```{r}
+```{r warning=FALSE}
+house_move <- as.POSIXct('2016-08-01')
+weeks_for_avg <- 8
+
 ggplot(data = complete_week_totals,
        mapping = aes(x = start, y = total)) +
-    geom_vline(xintercept = as.POSIXct('2016-08-01'),
+    geom_vline(xintercept = house_move,
                colour = rjw_grey,
-               alpha = 0.5) +
+               alpha = 0.75) +
     geom_point(
         colour = rjw_blue,
         size = 0.75) +
     geom_line(
-        mapping = aes(y = mav(complete_week_totals$total, 6)),
-        colour = rjw_red)
+        mapping = aes(y = mav(complete_week_totals$total,
+                              weeks_for_avg)),
+        colour = rjw_red) +
+
+    labs(
+        title = str_glue(
+            'Weekly transport spending and {weeks_for_avg}',
+            '-week moving average'),
+        subtitle = str_c(
+            'September 2014 to May 2018 (vertical bar marks house move)',
+            sep = ' '),
+        x = NULL, y = NULL) +
+
+    scale_x_datetime(
+        date_breaks = '6 months',
+        date_labels = '%b ’%y') +
+    scale_y_continuous(
+        labels = scales::dollar_format(prefix = '£'))
 ```
+
+It’s pretty clear that there is a marked difference before and after the house move. But I’m not sure this plot is the best way to show it. (Nor the best way to show anything.)
+
+That said, the code for this plot is a pretty great example of what I like about ggplot2: you create a plot, add geoms to it, customise the labels and scales, piece by piece until you’re happy. It’s fairly straightforward to discover things (especially with RStudio’s completion), and you change things by adding on top of the basics instead of hunting around in the properties of figures or axes or whatever.
+
 
