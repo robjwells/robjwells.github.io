@@ -263,6 +263,8 @@ With this summary frame assembled, we can now plot the totals. I’m also going 
 
 ```{r warning=FALSE}
 house_move <- as.POSIXct('2016-08-01')
+pound_scale <- scales::dollar_format(prefix = '£')
+
 weeks_for_avg <- 8
 
 ggplot(data = complete_week_totals,
@@ -290,7 +292,7 @@ ggplot(data = complete_week_totals,
         date_breaks = '6 months',
         date_labels = '%b ’%y') +
     scale_y_continuous(
-        labels = scales::dollar_format(prefix = '£'))
+        labels = pound_scale)
 ```
 
 It’s pretty clear that there is a marked difference before and after the house move. But I’m not sure this plot is the best way to show it. (Nor the best way to show anything.)
@@ -314,7 +316,7 @@ ggplot(data = tidy_journeys,
         x = NULL, y = NULL,
         colour = 'House move') +
     scale_y_continuous(
-        labels = scales::dollar_format(prefix = '£'),
+        labels = pound_scale,
         breaks = c(0, 500, 1000, 1400, 1650)) +
     scale_color_brewer(
         labels = c('Before', 'After'),
