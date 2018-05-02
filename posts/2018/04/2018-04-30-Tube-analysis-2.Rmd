@@ -320,4 +320,5 @@ ggplot(data = tidy_journeys,
         legend.position = 'bottom')
 ```
 
+The difference in slope is quite clear; at one point I fitted a linear smoother to the two periods but it overlapped so tightly with the data that it was difficult to read either. I’ve also monkeyed around with the y-axis breaks to highlight the difference; what before took three to six months to spend has taken about 21 months since the house move.
 
