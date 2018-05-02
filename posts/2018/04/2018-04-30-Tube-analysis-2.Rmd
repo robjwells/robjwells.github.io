@@ -464,3 +464,9 @@ But what is crucial to understanding the averages are the two rough groups circl
 My old commute was low-cost, each way either £1.50 or £1 (with an off-peak railcard discount, applied for part of the pre-move period). There are a lot of these journeys (nearly 500). It was a fairly predictable 30ish-minute journey.
 
 On the other hand, trips involving the HS1 line are expensive and very short. A single off-peak fare is currently £3.90 and peak £5.60, while the journey time between Stratford International and St Pancras is just seven minutes, with a bit of waiting inside the gateline.
+
+### Last thoughts
+
+If you made it this far, well done, and thanks for reading. There’s a lot of R code in this post, probably too much. But there are two reasons for that: as a reference for myself, and to show that there’s not any magic going on behind the curtain, and very little hard work. (In my code at least, there’s plenty of both in the libraries!)
+
+Working in R with ggplot2 and the other packages really is a pleasure; it doesn’t take very long to grasp how the different tools fit together into nice, composable pieces, and to assemble them in ways that produce something that matches what you have pictured in your mind.
