@@ -407,4 +407,59 @@ duration_over_time <- ggplot(tidy_journeys,
     labs(x = NULL)
 ```
 
-There’s a tendency for journeys to become shorter and more expensive after the house move. How distinct in this regard are pre- and post-move journeys?
+There’s a tendency for journeys to become shorter and more expensive after the house move. How distinct in this regard are pre- and post-move journeys? What is driving the averages? I have a hunch so let me rush on ahead with this plot.
+
+```{r warning = FALSE}
+commute_stations <- c('Woolwich Arsenal DLR', 'Stratford International DLR',
+                      'Stratford', 'Pudding Mill Lane')
+
+commute_journeys <- tidy_journeys %>%
+    filter(
+        enter %in% commute_stations,
+        exit %in% commute_stations)
+
+high_speed_journeys <- tidy_journeys %>%
+    filter(
+        str_detect(enter, 'HS1'),
+        str_detect(exit, 'HS1'))
+
+ggplot(tidy_journeys,
+       aes(x = fare,
+           y = duration,
+           colour = start > house_move)) +
+    geom_jitter(
+        width = 0.05,  # 5p
+        height = 0.5,  # 30 seconds
+        alpha = 0.5) +
+    geom_encircle(
+        data = commute_journeys,
+        size = 1.5) +
+    geom_encircle(
+        data = high_speed_journeys,
+        size = 1.5) +
+
+    scale_color_brewer(
+        palette = 'Set2',
+        labels = c('Before', 'After')) +
+    scale_x_continuous(
+        labels = pound_scale) +
+    scale_y_continuous(
+        limits = c(0, 80)) +
+    labs(
+        title = 'Pre- and post-move averages driven by two groups',
+        subtitle = 'Old commute and high-speed journeys circled, positions not exact',
+        x = 'Fare',
+        y = 'Duration',
+        colour = 'House move'
+    )
+```
+
+We can see in the lower central section that there’s some overlap. Remember also that there are far fewer post-move journeys, so it’s not surprising that earlier ones dominate this plot. (I added jitter to the points to make things a little easier to see — `geom_jitter()` is a wrapper around `geom_point()`.)
+
+But what is crucial to understanding the averages are the two rough groups circled: journeys between stations that I used for my old commute (on the left in green), and journeys involving travel on the [High Speed 1][HS1] (HS1) rail line (on the right in orange).
+
+[HS1]: https://en.wikipedia.org/wiki/High_Speed_1
+
+My old commute was low-cost, each way either £1.50 or £1 (with an off-peak railcard discount, applied for part of the pre-move period). There are a lot of these journeys (nearly 500). It was a fairly predictable 30ish-minute journey.
+
+On the other hand, trips involving the HS1 line are expensive and very short. A single off-peak fare is currently £3.90 and peak £5.60, while the journey time between Stratford International and St Pancras is just seven minutes, with a bit of waiting inside the gateline.
