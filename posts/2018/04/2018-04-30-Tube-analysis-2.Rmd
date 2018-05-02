@@ -52,7 +52,7 @@ I’m writing this post in [RStudio][] in a [R Markdown][] document, but it’s 
 
 ### Setup
 
-To start with we’re going to load some libraries to make our life easier. The [Tidyverse][] wraps up several helpful packages, lubridate has some handy date-handling functions, and stringr is helpful for, er, strings, and patchwork allows you to easily combine plots into one figure. Forgive me for not making clear where functions come from below as, like Swift, R imports into the global namespace.
+To start with we’re going to load some libraries to make our life easier. The [Tidyverse][] wraps up several helpful packages; lubridate has some handy date-handling functions; stringr is helpful for, er, strings; patchwork allows you to easily combine plots into one figure; ggalt provides an extra geom (`geom_encircle()`) that we’ll use in a bit. Forgive me for not making clear where functions come from below as, like Swift, R imports into the global namespace.
 
 Not shown is my customised ggplot2 theme, which you can find if you [look at the original .Rmd source file][github].
 
@@ -64,6 +64,7 @@ library(tidyverse)
 library(lubridate)
 library(stringr)
 library(patchwork)
+library(ggalt)
 
 # Moving average function from https://stackoverflow.com/a/4862334/1845155
 mav <- function(x, n = 5) {
