@@ -365,3 +365,44 @@ The change here after I moved house is stark, nearly an inversion of the previou
 [a barcode]: https://www.robjwells.com/2018/02/british-newspaper-barcodes-explained-and-automated/
 [Dr Drang]: http://leancrew.com/all-this/
 
+### Changes in journey properties
+
+So it’s clear that I travel less on the Tube network, and that I spend less. But what has happened to the sort of journeys that I make? Are they longer? Shorter? Less expensive? More?
+
+Let’s have a look at how the average fare and average journey length change over time.
+
+```{r warning = FALSE}
+n_journey_avg <- 10
+
+common_vline <- geom_vline(
+    xintercept = house_move,
+    colour = rjw_red)
+common_point <- geom_point(size = .5)
+
+fares_over_time <- ggplot(tidy_journeys,
+                          aes(x = start,
+                              y = mav(fare, n_journey_avg))) +
+    scale_x_datetime(
+        labels = NULL) +
+    scale_y_continuous(
+        labels = pound_scale) +
+    labs(
+        y = 'Fare',
+        title = 'More expensive, shorter journeys',
+        subtitle = str_glue('{n_journey_avg}-journey average, ',
+                            'vertical line marks house move'))
+
+duration_over_time <- ggplot(tidy_journeys,
+                             aes(x = start,
+                                 y = mav(duration, n_journey_avg))) +
+    scale_y_continuous() +
+    labs(
+        y = 'Duration (mins)')
+
+(fares_over_time / duration_over_time) &  # Patchwork is magic
+    common_vline &
+    common_point &
+    labs(x = NULL)
+```
+
+There’s a tendency for journeys to become shorter and more expensive after the house move. How distinct in this regard are pre- and post-move journeys?
