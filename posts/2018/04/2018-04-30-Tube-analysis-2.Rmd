@@ -322,3 +322,29 @@ ggplot(data = tidy_journeys,
 
 The difference in slope is quite clear; at one point I fitted a linear smoother to the two periods but it overlapped so tightly with the data that it was difficult to read either. I’ve also monkeyed around with the y-axis breaks to highlight the difference; what before took three to six months to spend has taken about 21 months since the house move.
 
+### Zero-spending weeks
+
+One thing that shows up in the first plot, and likely underlies the drop in average spending, is the number of weeks where I don’t travel using my Oyster card at all. Let’s pull together a one-dimensional plot showing just that.
+
+```{r fig.height=3, fig.width = 7.5}
+ggplot(complete_week_totals,
+       aes(x = start,
+           y = as.integer(total == 0))) +
+    geom_vline(
+        xintercept = as.POSIXct(house_move),
+        colour = rjw_red) +
+    geom_col(
+        width = 60 * 60 * 24 * 7) +  # Datetime width handled as seconds
+
+    scale_y_continuous(
+        breaks = c()) +
+    labs(
+        title = 'Weeks with zero Oyster card spending',
+        subtitle = 'September 2014 to May 2018, red line marks house move',
+        x = NULL, y = NULL
+        )
+```
+
+The change here is pretty stark, almost an inversion of the previous pattern of zero/no-zero spending weeks. (Almost looks like [a barcode][]!)
+
+[a barcode]: https://www.robjwells.com/2018/02/british-newspaper-barcodes-explained-and-automated/
