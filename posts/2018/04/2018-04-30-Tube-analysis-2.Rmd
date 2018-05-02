@@ -362,7 +362,9 @@ ggplot(complete_week_totals,
         legend.position = 'bottom')
 ```
 
-The change here after I moved house is stark, nearly an inversion of the previous pattern of zero/no-zero spending weeks. (Almost looks like [a barcode][]! Apologies for the thin lines between columns, which is an SVG artefact. The inspiration for this was a plot of games/non-games in the App Store top charts that [Dr Drang][] included at the bottom of one of his posts and, for the life of me, I can’t find now.)
+The change here after I moved house is stark, nearly an inversion of the previous pattern of zero/no-zero spending weeks. (Almost looks like [a barcode][]!)
+
+My apologies for the thin lines between columns, which is an SVG artefact. The inspiration for this was a plot of games/non-games in the App Store top charts that [Dr Drang][] included at the bottom of one of his posts and, for the life of me, I can’t find now.
 
 [a barcode]: https://www.robjwells.com/2018/02/british-newspaper-barcodes-explained-and-automated/
 [Dr Drang]: http://leancrew.com/all-this/
