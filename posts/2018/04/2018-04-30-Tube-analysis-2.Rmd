@@ -309,7 +309,8 @@ ggplot(data = tidy_journeys,
        mapping = aes(x = start,
                      y = cumsum(fare),
                      colour = start > house_move)) +
-    geom_line() +
+    geom_line(
+        size = 1) +
 
     labs(
         title = 'Cumulative Oyster card spending',
@@ -321,7 +322,7 @@ ggplot(data = tidy_journeys,
         breaks = c(0, 500, 1000, 1400, 1650)) +
     scale_color_brewer(
         labels = c('Before', 'After'),
-        palette = 'Dark2') +
+        palette = 'Set2') +
     theme(
         legend.position = 'bottom')
 ```
