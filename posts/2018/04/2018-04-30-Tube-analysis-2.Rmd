@@ -410,7 +410,7 @@ duration_over_time <- ggplot(tidy_journeys,
 
 There’s a tendency for journeys to become shorter and more expensive after the house move. How distinct in this regard are pre- and post-move journeys? What is driving the averages? I have a hunch so let me rush on ahead with this plot.
 
-```{r fare-against-distance, warning = FALSE}
+```{r fare-against-duration_scatter, warning = FALSE}
 commute_stations <- c('Woolwich Arsenal DLR', 'Stratford International DLR',
                       'Stratford', 'Pudding Mill Lane')
 
@@ -448,9 +448,10 @@ ggplot(tidy_journeys,
         limits = c(0, 80)) +
     labs(
         title = 'Pre- and post-move averages driven by two groups',
-        subtitle = 'Old commute and high-speed journeys circled, positions not exact',
+        subtitle = str_c('Old commute and high-speed journeys circled,',
+                         ' positions not exact'),
         x = 'Fare',
-        y = 'Duration',
+        y = 'Duration (mins)',
         colour = 'House move'
     )
 ```

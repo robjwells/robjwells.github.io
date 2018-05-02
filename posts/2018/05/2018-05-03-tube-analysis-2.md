@@ -630,9 +630,10 @@ ahead with this plot.
             limits = c(0, 80)) +
         labs(
             title = 'Pre- and post-move averages driven by two groups',
-            subtitle = 'Old commute and high-speed journeys circled, positions not exact',
+            subtitle = str_c('Old commute and high-speed journeys circled,',
+                             ' positions not exact'),
             x = 'Fare',
-            y = 'Duration',
+            y = 'Duration (mins)',
             colour = 'House move'
         )
 
