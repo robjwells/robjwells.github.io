@@ -1,7 +1,7 @@
 ---
 title: 3.75 years on the Tube
 author: Rob Wells
-date: 2018-05-03 00:50
+date: 2018-05-03 01:00
 output:
     md_document:
         variant: markdown_strict+fenced_code_blocks
@@ -9,6 +9,9 @@ output:
         fig_width: 7.5
         fig_height: 5
         dev: svg
+        pandoc_args: [
+            "--wrap", "preserve"
+        ]
     html_document:
         dpi: 200
         fig_width: 7.5
@@ -261,7 +264,7 @@ tail(complete_week_totals)
 
 With this summary frame assembled, we can now plot the totals. I’m also going to mark roughly when I moved house so we can try to see if there’s any particular shift.
 
-```{r weekly-spending, warning=FALSE}
+```{r weekly-spending, fig.cap = c('A plot showing my weekly Oyster card spending, September 2014 to May 2018'), warning=FALSE}
 house_move <- as.POSIXct('2016-08-01')
 pound_scale <- scales::dollar_format(prefix = '£')
 
@@ -303,7 +306,7 @@ That said, the code for this plot is a pretty great example of what I like about
 
 The first plot showed a change in my average weekly spending. What does that look like when we plot the cumulative spending over this period?
 
-```{r cumulative-spending}
+```{r cumulative-spending, fig.cap = 'A plot showing my cumulative Oyster card spending, September 2014 to May 2018'}
 ggplot(data = tidy_journeys,
        mapping = aes(x = start,
                      y = cumsum(fare),
@@ -332,7 +335,7 @@ The difference in slope is quite clear; at one point I fitted a linear smoother 
 
 One thing that shows up in the first plot, and likely underlies the drop in average spending, is the number of weeks where I don’t travel using my Oyster card at all. Let’s pull together a one-dimensional plot showing just that.
 
-```{r zero-spending-weeks, fig.height=3, fig.width = 7.5}
+```{r zero-spending-weeks, fig.cap = 'A plot showing weeks where I made no journeys using my Oyster card', fig.height = 3, fig.width = 7.5}
 ggplot(complete_week_totals,
        aes(x = start,
            y = 1,
@@ -374,7 +377,7 @@ So it’s clear that I travel less on the Tube network, and that I spend less. B
 
 Let’s have a look at how the average fare and average journey length change over time.
 
-```{r fare-duration-averages, warning = FALSE}
+```{r fare-duration-averages, fig.cap = 'A plot of average fares and journey durations over time', warning = FALSE}
 n_journey_avg <- 10
 
 common_vline <- geom_vline(
@@ -410,7 +413,7 @@ duration_over_time <- ggplot(tidy_journeys,
 
 There’s a tendency for journeys to become shorter and more expensive after the house move. How distinct in this regard are pre- and post-move journeys? What is driving the averages? I have a hunch so let me rush on ahead with this plot.
 
-```{r fare-against-duration_scatter, warning = FALSE}
+```{r fare-duration-scatter, fig.cap = 'A plot of journey fare against distance, grouped by whether the journeys were before or after I moved house', warning = FALSE}
 commute_stations <- c('Woolwich Arsenal DLR', 'Stratford International DLR',
                       'Stratford', 'Pudding Mill Lane')
 
