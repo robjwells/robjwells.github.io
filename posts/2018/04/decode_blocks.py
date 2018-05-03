@@ -33,7 +33,7 @@ image_html = '''\
 <p class="full-width">
     <img
         src="/images/{date}-{fn}"
-        alt="<#alt text#>"
+        alt="{alt}"
         class="no-border"
         width=720
         />
@@ -47,12 +47,17 @@ if not date_lines:
 else:
     date_prefix = date_lines[0]
 
+image_regex = re.compile(
+    r'!\[ (?P<alt> [^\]]+ ) \] \( (?P<path> [^)]+ ) \)',
+    flags=re.VERBOSE)
 
 # Rewrite images
 for idx, line in enumerate(new_lines):
-    if line.startswith('![]('):
-        fn = line.rstrip()[:-1].rsplit('/', maxsplit=1)[-1]
-        new_lines[idx] = image_html.format(date=date_prefix, fn=fn)
+    image_match = image_regex.match(line)
+    if image_match:
+        fn = image_match['path'].rsplit('/', maxsplit=1)[-1]
+        new_lines[idx] = image_html.format(
+            date=date_prefix, fn=fn, alt=image_match['alt'])
 
 
 print(''.join(new_lines))
