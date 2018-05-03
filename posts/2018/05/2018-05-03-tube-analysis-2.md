@@ -641,7 +641,7 @@ ahead with this plot.
 
 <p class="full-width">
     <img
-        src="/images/2018-05-03-fare-against-distance-1.svg"
+        src="/images/2018-05-03-fare-against-duration_scatter.svg"
         alt="A plot of journey fare against distance, grouped by whether the journeys were before or after I moved house"
         class="no-border"
         width=720
