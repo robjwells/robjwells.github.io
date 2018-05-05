@@ -415,7 +415,7 @@ There’s a tendency for journeys to become shorter and more expensive after the
 
 ```{r fare-duration-scatter, fig.cap = 'A plot of journey fare against distance, grouped by whether the journeys were before or after I moved house', warning = FALSE}
 commute_stations <- c('Woolwich Arsenal DLR', 'Stratford International DLR',
-                      'Stratford', 'Pudding Mill Lane')
+                      'Stratford', 'Pudding Mill Lane DLR')
 
 commute_journeys <- tidy_journeys %>%
     filter(
