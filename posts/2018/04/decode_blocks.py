@@ -32,7 +32,7 @@ for line in fileinput.input():
 image_html = '''\
 <p class="full-width">
     <img
-        src="/images/{date}-{fn}"
+        src="/images/{fn}"
         alt="{alt}"
         class="no-border"
         width=720
@@ -40,12 +40,6 @@ image_html = '''\
 </p>
 '''
 
-
-date_lines = [l[6:16] for l in new_lines if l.startswith('date: ')]
-if not date_lines:
-    date_prefix = ''
-else:
-    date_prefix = date_lines[0]
 
 image_regex = re.compile(
     r'!\[ (?P<alt> [^\]]+ ) \] \( (?P<path> [^)]+ ) \)',
@@ -57,7 +51,7 @@ for idx, line in enumerate(new_lines):
     if image_match:
         fn = image_match['path'].rsplit('/', maxsplit=1)[-1]
         new_lines[idx] = image_html.format(
-            date=date_prefix, fn=fn, alt=image_match['alt'])
+            fn=fn, alt=image_match['alt'])
 
 
 print(''.join(new_lines))
