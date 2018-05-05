@@ -7,14 +7,21 @@ I’ve just published an update to [my recent Tube travel post][tube-2], fixing 
 
 I didn’t fix the mistake in the title, as I felt it was too late, but of course it’s 3⅔ years, not 3.75, since September 2014.
 
-<picture>
-    <source
-        type="video/mp4"
-        srcset="/images/2018-05-05-naked-gun-realise-that-now.mp4">
-    <img
+<p>
+    <video src="/images/2018-05-05-naked-gun-realise-that-now.mp4"
+        poster="/images/2018-05-05-naked-gun-realise-that-now.jpg"
+        autoplay
+        loop
+        muted
+        width=391
+        height=222>
+        <img
         src="/images/2018-05-05-naked-gun-realise-that-now.jpg"
-        alt="“I realise that, now…” from the film Naked Gun">
-</picture>
+        alt="“I realise that, now…” from the film Naked Gun"
+        width=391
+        height=222>
+    </video>
+</p>
 
 [tube-2]: https://www.robjwells.com/2018/05/3-75-years-on-the-tube/
 
