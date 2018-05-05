@@ -69,7 +69,7 @@ library(patchwork)
 library(ggalt)
 
 # Moving average function from https://stackoverflow.com/a/4862334/1845155
-mav <- function(x, n = 5) {
+mav <- function(x, n) {
     stats::filter(x, rep(1/n, n), sides = 1)
 }
 ```
@@ -142,7 +142,7 @@ oyster_data %>%
     count(Note, sort = TRUE)
 ```
 
-OK, not much here, but there are some troublesome rail journeys missing either a starting or finishing station. The "incomplete journey" line also hints at something to be aware of:
+OK, not much here, but there are some troublesome rail journeys missing either a starting or finishing station. The “incomplete journey” line also hints at something to be aware of:
 
 ```{r}
 oyster_data %>%
@@ -151,7 +151,7 @@ oyster_data %>%
     first()
 ```
 
-Note the angle brackets surrounding the substituted station. We’ll come back this later.
+Note the angle brackets surrounding the substituted station. We’ll come back to this later.
 
 A missing start or finish time is a giveaway for oddities, which overlaps somewhat but not completely with Journey/Action fields that don’t match the pattern of `{station} to {station}`. Let’s fish those out and have a look at the abbreviated descriptions:
 
@@ -221,11 +221,13 @@ Great. The duration variable isn’t strictly necessary but it’ll make things 
 
 ### Weekly totals
 
-For a start, let’s try to remake the first plot from [my previous post][tube-1], a plot of weekly spending with a moving average. Looking back at that plot, it’s not tremendously helpful, but it’s a starting point. (In addition, while that plot is labelled as showing a six-week average, the code computes [an eight-week average][tube-1-avg], and a quick count of the points on the plot confirms it.)
+For a start, let’s try to remake the first plot from [my previous post][tube-1], of weekly spending with a moving average.
+
+Looking back, it’s not tremendously helpful, but it’s a starting point. (In addition, while that plot is labelled as showing a six-week average, the code computes [an eight-week average][tube-1-avg], and a quick count of the points preceding the average line confirms it.)
 
 [tube-1-avg]: https://github.com/robjwells/primaryunit/blob/master/posts/2016/09/analyse_journey_history.py#L168
 
-First, though, a problem with the data: they record journeys made, not the absence of any journeys (obviously). If we’re to accurately plot weekly spending, we need to include weeks where no journeys were made and no money spent.
+But there’s a problem with the data: they record journeys made, not the absence of any journeys (obviously). If we’re to accurately plot weekly spending, we need to include weeks where no journeys were made and no money spent.
 
 First, let’s make a data frame containing every [ISO week][] from the earliest journey in our data to the most recent.
 
@@ -242,9 +244,9 @@ blank_weeks <- seq(min(tidy_journeys$start),
 head(blank_weeks)
 ```
 
-The format string uses the ISO week year (%G) and the ISO week number (%V), which made differ from what you might intuitively expect. I’ve included a somewhat arbitrary start time to make plotting a little easier later.
+The format string uses the ISO week year (%G) and the ISO week number (%V), which may differ from what you might intuitively expect. I’ve included a somewhat arbitrary start time, as it’s a bit easier to plot and label datetimes rather than the year-week strings.
 
-Now we need to summarise our actual journey data, collecting the total fare for each ISO week. We’ll use `group_by()` and `summarise()` — two tools that took me a few tries to get a handle on. Here `summarise()` works group-wise based on the result of `group_by()`, you don’t have to pass the group into the `summarise()` call, just the value you want summarised and how.
+Now we need to summarise our actual journey data, collecting the total fare for each ISO week. We’ll use `group_by()` and `summarise()` — two tools that took me a few tries to get a handle on. Here `summarise()` works group-wise based on the result of `group_by()`; you don’t have to pass the group into the `summarise()` call, just specify the value you want summarised and how.
 
 ```{r}
 real_week_totals <- tidy_journeys %>%
@@ -264,7 +266,7 @@ tail(complete_week_totals)
 
 With this summary frame assembled, we can now plot the totals. I’m also going to mark roughly when I moved house so we can try to see if there’s any particular shift.
 
-```{r weekly-spending, fig.cap = c('A plot showing my weekly Oyster card spending, September 2014 to May 2018'), warning=FALSE}
+```{r 2018-05-03-weekly-spending, fig.cap = c('A plot showing my weekly Oyster card spending, September 2014 to May 2018'), warning=FALSE}
 house_move <- as.POSIXct('2016-08-01')
 pound_scale <- scales::dollar_format(prefix = '£')
 
@@ -272,9 +274,10 @@ weeks_for_avg <- 8
 
 ggplot(data = complete_week_totals,
        mapping = aes(x = start, y = total)) +
-    geom_vline(xintercept = house_move,
-               colour = rjw_grey,
-               alpha = 0.75) +
+    geom_vline(
+        xintercept = house_move,
+        colour = rjw_grey,
+        alpha = 0.75) +
     geom_point(
         colour = rjw_blue,
         size = 0.75) +
@@ -298,7 +301,7 @@ ggplot(data = complete_week_totals,
         labels = pound_scale)
 ```
 
-It’s pretty clear that there is a marked difference before and after the house move. But I’m not sure this plot is the best way to show it. (Nor the best way to show anything.)
+It’s clear that there is a difference after the house move. But I’m not sure this plot is the best way to show it. (Nor the best way to show anything.)
 
 That said, the code for this plot is a pretty great example of what I like about ggplot2: you create a plot, add geoms to it, customise the labels and scales, piece by piece until you’re happy. It’s fairly straightforward to discover things (especially with RStudio’s completion), and you change things by adding on top of the basics instead of hunting around in the properties of figures or axes or whatever.
 
@@ -306,7 +309,7 @@ That said, the code for this plot is a pretty great example of what I like about
 
 The first plot showed a change in my average weekly spending. What does that look like when we plot the cumulative spending over this period?
 
-```{r cumulative-spending, fig.cap = 'A plot showing my cumulative Oyster card spending, September 2014 to May 2018'}
+```{r 2018-05-03-cumulative-spending, fig.cap = 'A plot showing my cumulative Oyster card spending, September 2014 to May 2018'}
 ggplot(data = tidy_journeys,
        mapping = aes(x = start,
                      y = cumsum(fare),
@@ -335,15 +338,15 @@ The difference in slope is quite clear; at one point I fitted a linear smoother 
 
 One thing that shows up in the first plot, and likely underlies the drop in average spending, is the number of weeks where I don’t travel using my Oyster card at all. Let’s pull together a one-dimensional plot showing just that.
 
-```{r zero-spending-weeks, fig.cap = 'A plot showing weeks where I made no journeys using my Oyster card', fig.height = 3, fig.width = 7.5}
+```{r 2018-05-03-zero-spending-weeks, fig.cap = 'A plot showing weeks where I made no journeys using my Oyster card', fig.height = 3, fig.width = 7.5}
 ggplot(complete_week_totals,
        aes(x = start,
            y = 1,
            fill = total == 0)) +
     geom_col(
-        width = 60 * 60 * 24 * 7) +  # Datetime width handled as seconds
+        width = 60 * 60 * 24 * 7) +  # datetime col width handled as seconds
     geom_vline(
-        xintercept = as.POSIXct(house_move),
+        xintercept = house_move,
         colour = rjw_red) +
 
     scale_fill_manual(
@@ -354,7 +357,7 @@ ggplot(complete_week_totals,
                    max(complete_week_totals$start)),
         expand = c(0, 0)) +
     scale_y_continuous(
-        breaks = c()) +
+        breaks = NULL) +
     labs(
         title = 'Weeks with zero Oyster card spending',
         subtitle = 'September 2014 to May 2018, red line marks house move',
@@ -375,14 +378,13 @@ My apologies for the thin lines between columns, which is an SVG artefact. The i
 
 So it’s clear that I travel less on the Tube network, and that I spend less. But what has happened to the sort of journeys that I make? Are they longer? Shorter? Less expensive? More?
 
-Let’s have a look at how the average fare and average journey length change over time.
+Let’s have a look at how the average fare and average journey duration change over time.
 
 ```{r fare-duration-averages, fig.cap = 'A plot of average fares and journey durations over time', warning = FALSE}
 n_journey_avg <- 10
 
-common_vline <- geom_vline(
-    xintercept = house_move,
-    colour = rjw_red)
+common_vline <- geom_vline(xintercept = house_move,
+                           colour = rjw_red)
 common_point <- geom_point(size = .5)
 
 fares_over_time <- ggplot(tidy_journeys,
@@ -411,7 +413,7 @@ duration_over_time <- ggplot(tidy_journeys,
     labs(x = NULL)
 ```
 
-There’s a tendency for journeys to become shorter and more expensive after the house move. How distinct in this regard are pre- and post-move journeys? What is driving the averages? I have a hunch so let me rush on ahead with this plot.
+Journeys taken after the house move appear to be shorter and more expensive. How distinct is this? What is driving the averages? I have a hunch so let me rush on ahead with this plot.
 
 ```{r fare-duration-scatter, fig.cap = 'A plot of journey fare against distance, grouped by whether the journeys were before or after I moved house', warning = FALSE}
 commute_stations <- c('Woolwich Arsenal DLR', 'Stratford International DLR',
@@ -455,8 +457,7 @@ ggplot(tidy_journeys,
                          ' positions not exact'),
         x = 'Fare',
         y = 'Duration (mins)',
-        colour = 'House move'
-    )
+        colour = 'House move')
 ```
 
 We can see in the lower central section that there’s some overlap. Remember also that there are far fewer post-move journeys, so it’s not surprising that earlier ones dominate this plot. (I added jitter to the points to make things a little easier to see — `geom_jitter()` is a wrapper around `geom_point()`.)
