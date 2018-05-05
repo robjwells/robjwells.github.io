@@ -487,12 +487,13 @@ ggplot(journeys_without_extremes,
        aes(x = duration,
            fill = start > house_move)) +
     geom_histogram(
-        binwidth = 3,
+        binwidth = 5,
         closed = 'left',
         colour = 'black',
         size = 0.15,
         position = 'identity') +
     scale_x_continuous(
+        breaks = seq(0, 70, 10),
         limits = c(0, 70)) +
     scale_fill_brewer(
         palette = 'Set2',
