@@ -45,7 +45,7 @@ Not shown is my customised ggplot2 theme, which you can find if you [look at the
     library(ggalt)
     
     # Moving average function from https://stackoverflow.com/a/4862334/1845155
-    mav <- function(x, n = 5) {
+    mav <- function(x, n) {
         stats::filter(x, rep(1/n, n), sides = 1)
     }
 
@@ -118,7 +118,7 @@ Let’s see if the notes field can give us any guidance of what we may need to e
     ## 4 We are not able to show where you touched in during this journey       1
     ## 5 You have not been charged for this journey as it is viewed as a c…     1
 
-OK, not much here, but there are some troublesome rail journeys missing either a starting or finishing station. The "incomplete journey" line also hints at something to be aware of:
+OK, not much here, but there are some troublesome rail journeys missing either a starting or finishing station. The “incomplete journey” line also hints at something to be aware of:
 
     r:
     oyster_data %>%
@@ -130,7 +130,7 @@ OK, not much here, but there are some troublesome rail journeys missing either a
 
     ## [1] "Woolwich Arsenal DLR to <Blackheath [National Rail]>"
 
-Note the angle brackets surrounding the substituted station. We’ll come back this later.
+Note the angle brackets surrounding the substituted station. We’ll come back to this later.
 
 A missing start or finish time is a giveaway for oddities, which overlaps somewhat but not completely with Journey/Action fields that don’t match the pattern of `{station} to {station}`. Let’s fish those out and have a look at the abbreviated descriptions:
 
@@ -228,9 +228,11 @@ Great. The duration variable isn’t strictly necessary but it’ll make things 
 
 ### Weekly totals
 
-For a start, let’s try to remake the first plot from [my previous post](/2016/09/two-years-on-the-tube/), a plot of weekly spending with a moving average. Looking back at that plot, it’s not tremendously helpful, but it’s a starting point. (In addition, while that plot is labelled as showing a six-week average, the code computes [an eight-week average](https://github.com/robjwells/primaryunit/blob/master/posts/2016/09/analyse_journey_history.py#L168), and a quick count of the points on the plot confirms it.)
+For a start, let’s try to remake the first plot from [my previous post](/2016/09/two-years-on-the-tube/), of weekly spending with a moving average.
 
-First, though, a problem with the data: they record journeys made, not the absence of any journeys (obviously). If we’re to accurately plot weekly spending, we need to include weeks where no journeys were made and no money spent.
+Looking back, it’s not tremendously helpful, but it’s a starting point. (In addition, while that plot is labelled as showing a six-week average, the code computes [an eight-week average](https://github.com/robjwells/primaryunit/blob/master/posts/2016/09/analyse_journey_history.py#L168), and a quick count of the points preceding the average line confirms it.)
+
+But there’s a problem with the data: they record journeys made, not the absence of any journeys (obviously). If we’re to accurately plot weekly spending, we need to include weeks where no journeys were made and no money spent.
 
 First, let’s make a data frame containing every [ISO week](https://en.wikipedia.org/wiki/ISO_week_date) from the earliest journey in our data to the most recent.
 
@@ -256,9 +258,9 @@ First, let’s make a data frame containing every [ISO week](https://en.wikipedi
     ## 5 2014-10-04 13:14:00 2014-W40
     ## 6 2014-10-11 13:14:00 2014-W41
 
-The format string uses the ISO week year (%G) and the ISO week number (%V), which made differ from what you might intuitively expect. I’ve included a somewhat arbitrary start time to make plotting a little easier later.
+The format string uses the ISO week year (%G) and the ISO week number (%V), which may differ from what you might intuitively expect. I’ve included a somewhat arbitrary start time, as it’s a bit easier to plot and label datetimes rather than the year-week strings.
 
-Now we need to summarise our actual journey data, collecting the total fare for each ISO week. We’ll use `group_by()` and `summarise()` — two tools that took me a few tries to get a handle on. Here `summarise()` works group-wise based on the result of `group_by()`, you don’t have to pass the group into the `summarise()` call, just the value you want summarised and how.
+Now we need to summarise our actual journey data, collecting the total fare for each ISO week. We’ll use `group_by()` and `summarise()` — two tools that took me a few tries to get a handle on. Here `summarise()` works group-wise based on the result of `group_by()`; you don’t have to pass the group into the `summarise()` call, just specify the value you want summarised and how.
 
     r:
     real_week_totals <- tidy_journeys %>%
@@ -298,9 +300,10 @@ With this summary frame assembled, we can now plot the totals. I’m also going 
     
     ggplot(data = complete_week_totals,
            mapping = aes(x = start, y = total)) +
-        geom_vline(xintercept = house_move,
-                   colour = rjw_grey,
-                   alpha = 0.75) +
+        geom_vline(
+            xintercept = house_move,
+            colour = rjw_grey,
+            alpha = 0.75) +
         geom_point(
             colour = rjw_blue,
             size = 0.75) +
@@ -334,7 +337,7 @@ With this summary frame assembled, we can now plot the totals. I’m also going 
         />
 </p>
 
-It’s pretty clear that there is a marked difference before and after the house move. But I’m not sure this plot is the best way to show it. (Nor the best way to show anything.)
+It’s clear that there is a difference after the house move. But I’m not sure this plot is the best way to show it. (Nor the best way to show anything.)
 
 That said, the code for this plot is a pretty great example of what I like about ggplot2: you create a plot, add geoms to it, customise the labels and scales, piece by piece until you’re happy. It’s fairly straightforward to discover things (especially with RStudio’s completion), and you change things by adding on top of the basics instead of hunting around in the properties of figures or axes or whatever.
 
@@ -387,9 +390,9 @@ One thing that shows up in the first plot, and likely underlies the drop in aver
                y = 1,
                fill = total == 0)) +
         geom_col(
-            width = 60 * 60 * 24 * 7) +  # Datetime width handled as seconds
+            width = 60 * 60 * 24 * 7) +  # datetime col width handled as seconds
         geom_vline(
-            xintercept = as.POSIXct(house_move),
+            xintercept = house_move,
             colour = rjw_red) +
     
         scale_fill_manual(
@@ -400,7 +403,7 @@ One thing that shows up in the first plot, and likely underlies the drop in aver
                        max(complete_week_totals$start)),
             expand = c(0, 0)) +
         scale_y_continuous(
-            breaks = c()) +
+            breaks = NULL) +
         labs(
             title = 'Weeks with zero Oyster card spending',
             subtitle = 'September 2014 to May 2018, red line marks house move',
@@ -428,14 +431,13 @@ My apologies for the thin lines between columns, which is an SVG artefact. The i
 
 So it’s clear that I travel less on the Tube network, and that I spend less. But what has happened to the sort of journeys that I make? Are they longer? Shorter? Less expensive? More?
 
-Let’s have a look at how the average fare and average journey length change over time.
+Let’s have a look at how the average fare and average journey duration change over time.
 
     r:
     n_journey_avg <- 10
     
-    common_vline <- geom_vline(
-        xintercept = house_move,
-        colour = rjw_red)
+    common_vline <- geom_vline(xintercept = house_move,
+                               colour = rjw_red)
     common_point <- geom_point(size = .5)
     
     fares_over_time <- ggplot(tidy_journeys,
@@ -474,11 +476,11 @@ Let’s have a look at how the average fare and average journey length change ov
         />
 </p>
 
-There’s a tendency for journeys to become shorter and more expensive after the house move. How distinct in this regard are pre- and post-move journeys? What is driving the averages? I have a hunch so let me rush on ahead with this plot.
+Journeys taken after the house move appear to be shorter and more expensive. How distinct is this? What is driving the averages? I have a hunch so let me rush on ahead with this plot.
 
     r:
     commute_stations <- c('Woolwich Arsenal DLR', 'Stratford International DLR',
-                          'Stratford', 'Pudding Mill Lane')
+                          'Stratford', 'Pudding Mill Lane DLR')
     
     commute_journeys <- tidy_journeys %>%
         filter(
@@ -518,8 +520,7 @@ There’s a tendency for journeys to become shorter and more expensive after the
                              ' positions not exact'),
             x = 'Fare',
             y = 'Duration (mins)',
-            colour = 'House move'
-        )
+            colour = 'House move')
 
 <!-- Comment to separate R code and output -->
 
@@ -539,6 +540,97 @@ But what is crucial to understanding the averages are the two rough groups circl
 My old commute was low-cost, each way either £1.50 or £1 (with an off-peak railcard discount, applied for part of the pre-move period). There are a lot of these journeys (nearly 500). It was a fairly predictable 30ish-minute journey.
 
 On the other hand, trips involving the HS1 line are expensive and very short. A single off-peak fare is currently £3.90 and peak £5.60, while the journey time between Stratford International and St Pancras is just seven minutes, with a bit of waiting inside the gateline.
+
+### But is that it?
+
+Does that theory of the two extreme groups really explain the difference? Let’s filter out the two groups from our journey data.
+
+    r:
+    journeys_without_extremes <- tidy_journeys %>%
+        anti_join(commute_journeys) %>%
+        anti_join(high_speed_journeys)
+
+<!-- Comment to separate R code and output -->
+
+Let’s look how the journey durations compare:
+
+    r:
+    ggplot(journeys_without_extremes,
+           aes(x = duration,
+               fill = start > house_move)) +
+        geom_histogram(
+            binwidth = 5,
+            closed = 'left',
+            colour = 'black',
+            size = 0.15,
+            position = 'identity') +
+        scale_x_continuous(
+            breaks = seq(0, 70, 10),
+            limits = c(0, 70)) +
+        scale_fill_brewer(
+            palette = 'Set2',
+            labels = c('Before', 'After')) +
+        labs(
+            title = 'Post-move journeys still shorter',
+            subtitle = 'Commute and HS1 journeys excluded, bars overlap',
+            x = 'Duration (mins)',
+            y = 'Number of journeys',
+            fill = 'House move')
+
+<!-- Comment to separate R code and output -->
+
+<p class="full-width">
+    <img
+        src="/images/2018-05-03-duration-hist-without-extremes-1.svg"
+        alt="A histogram showing journey durations having excluded known extremes, with post-move journeys generally shorter"
+        class="no-border"
+        width=720
+        />
+</p>
+
+And the fares:
+
+    r:
+    ggplot(journeys_without_extremes,
+           aes(x = fare,
+               fill = start > house_move)) +
+        geom_histogram(
+            binwidth = 0.5,
+            closed = 'left',
+            colour = 'black',
+            size = 0.15,
+            position = 'identity') +
+        scale_x_continuous(
+            labels = pound_scale) +
+        scale_fill_brewer(
+            palette = 'Set2',
+            labels = c('Before', 'After')) +
+    
+        labs(
+            title = 'Post-move journeys generally more expensive',
+            subtitle = 'Commute and HS1 journeys excluded, bars overlap',
+            x = 'Fare',
+            y = 'Number of journeys',
+            fill = 'House move')
+
+<!-- Comment to separate R code and output -->
+
+<p class="full-width">
+    <img
+        src="/images/2018-05-03-fare-hist-without-extremes-1.svg"
+        alt="A histogram showing journey fares having excluded known extremes, with post-move fares generally more expensive"
+        class="no-border"
+        width=720
+        />
+</p>
+
+While it’s much clearer for duration than cost now, post-move journeys are still generally shorter and more expensive.
+
+At this point, I’ve reached the limits of how far I’m able to take this with visualisation. One possible route would be to look at the distance between station (in miles), how many stations used are in which fare zone, and the number of fare zones crossed. I don’t have stations/fare zones data readily to hand so we’ll leave that here.
+
+But I’ll end with an intuitive answer. Durations are shorter because from Woolwich it takes additional time to get into the main Tube network from the DLR, and particularly to central stations. Whereas now I’m not far from a Central Line station, which will get me into zone 1 fairly quickly.
+
+Fares are higher because I’ve transferred classes of journeys to cycling — not just my commute to work but shopping and leisure. I’d reckon that the remaining journeys are more likely to involve travel into and within central London, and maybe more likely to be at peak times.
 
 ### Last thoughts
 
