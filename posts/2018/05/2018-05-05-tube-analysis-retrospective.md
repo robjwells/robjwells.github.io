@@ -10,6 +10,7 @@ I didn’t fix the mistake in the title, as I felt it was too late, but of cours
 <p>
     <video src="/images/2018-05-05-naked-gun-realise-that-now.mp4"
         poster="/images/2018-05-05-naked-gun-realise-that-now.jpg"
+        controls
         muted
         width=391
         height=222>
