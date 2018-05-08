@@ -10,8 +10,6 @@ I didn’t fix the mistake in the title, as I felt it was too late, but of cours
 <p>
     <video src="/images/2018-05-05-naked-gun-realise-that-now.mp4"
         poster="/images/2018-05-05-naked-gun-realise-that-now.jpg"
-        autoplay
-        loop
         muted
         width=391
         height=222>
@@ -25,13 +23,13 @@ I didn’t fix the mistake in the title, as I felt it was too late, but of cours
 
 [tube-2]: https://www.robjwells.com/2018/05/3-75-years-on-the-tube/
 
-In that post I mentioned how pleasant it is working in [R Studio][] in a [R Markdown][] document. It really is, and I find the R Markdown way of mixing prose and code much more natural and fluid than [Jupyter notebooks][jupyter], which I like but struggle to fit them into my workflow.
+In that post I mentioned how pleasant it is working in [R Studio][] in a [R Markdown][] document. It really is, and I find the R Markdown way of mixing prose and code much more natural and fluid than [Jupyter notebooks][jupyter], which I like the idea of but find the block-based method a bit awkward.
 
 [R Studio]: https://www.rstudio.com/products/RStudio/ 
 [R Markdown]: https://rmarkdown.rstudio.com
 [jupyter]: https://jupyter.org
 
-The biggest problem with R Markdown was fitting it into my, admittedly arcane, [blogging system][majestic]. To do so, I’ve cooked [a short Python script][script] to transform the Markdown output from R Studio and [knitr][].
+The biggest problem with R Markdown was fitting it into my, admittedly arcane, [blogging system][majestic]. To do so, I’ve cooked up [a short Python script][script] to transform the Markdown output from R Studio and [knitr][].
 
 [majestic]: https://github.com/robjwells/majestic
 [script]: https://github.com/robjwells/primaryunit/blob/3be7c91007f10946e60fecb3c2007f85080d3950/posts/2018/04/decode_blocks.py
