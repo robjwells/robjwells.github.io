@@ -11,7 +11,7 @@ This job has largely escaped automation. I do have a Python script that prints a
 
 However, I’ve found things of this nature, if not automated, are put off, forgotten, or done wrong. This, because it’s not actually vital to anything, is no exception, particularly when I’m pulled into jobs that actually are vital.
 
-The report looks a little like this, so you get the idea
+The report looks a little like this, so you get the idea:
 
     Tue May 08    16pp    Alice Jones
     Wed May 09    16pp    Bob Smith
@@ -27,7 +27,7 @@ So let’s forget the pagination and just focus on pulling together a list of ev
 
 Our newsroom rota is just a spreadsheet, which is actually the best tool I’ve found so far for handling a couple dozen people with intricate job-cover links between them. (The rota used to be laid out in InDesign, which, no matter what you think about spreadsheets or InDesign, was much more difficult.)
 
-It looks a bit like this:
+It looks a bit like this (the real spreadsheet has proper formatting and so on):
 
 <table>
     <thead>
@@ -72,19 +72,19 @@ It looks a bit like this:
     </tbody>
 </table>
 
-There’s a fair amount of information in here: names, dates, days off, cover responsibilities, new and accrued [TOIL][]. It’s entirely designed for humans, and it takes a little while until they’re able to read it, not computers.
+There’s a fair amount of information: names, dates, days off, cover responsibilities, new and accrued [TOIL][]. It’s entirely designed for humans, not computers (and it takes the humans a little while until they’re able to read it).
 
 [TOIL]: https://www.gov.uk/overtime-your-rights/time-off-and-paid-leave
 
-A lot of stuff is implicit as well. If we assume in this example that Alice is the chief sub, she is performing that role on her usual working days (the empty cells). It is only marked for people who have to cover someone else’s job.
+A lot is implicit. If we assume in this example that Alice is the chief sub, she is performing that role on her usual working days (the empty cells). It is only marked for people who have to cover someone else’s job.
 
-It’s not something that you can just chuck into a computer program; it needs cleaning up first.
+This table is not something that you can just chuck into a computer program; it needs cleaning up first.
 
-Thankfully, R (and the [Tidyverse][] particularly) is a great environment in which to wrangle your data into shape, and fairly quickly. All the code below was pulled together in about 30 minutes total (with a good 10 minutes of reading documentation and fixing errors in the original source data).
+Thankfully, R (and the [Tidyverse][] particularly) is a great environment in which to wrangle your data, and to do so fairly quickly. All the code below was pulled together in about 30 minutes total (with a good 10 minutes of reading documentation and fixing errors in the original source data). Writing this post has taken much longer.
 
 [Tidyverse]: https://www.tidyverse.org
 
-In our example below we’re going to have four workers who each cover the chief sub at different times. Here we’re going make “Dan Taylor” the chief sub. Congratulations, Dan! Dan has a deputy, who we’ll call “Carole Williams.”
+In our example below we’re going to have four workers who each cover the chief sub at different times. Here we’re going make “Dan Taylor” the chief sub. Congratulations, Dan!
 
 First we’ll pull in our libraries.
 
@@ -93,7 +93,7 @@ First we’ll pull in our libraries.
     library(lubridate)
     library(stringr)
 
-Then we’ll read in the data, which is saved in a TSV file after copying and pasting from the spreadsheet into a text document. We’ll select only the production days and the unnamed first column (renamed automatically to X1), excluding Saturdays and the TOIL columns.
+Then we’ll read in the data, which is saved in a TSV file after copying and pasting from the spreadsheet into a text document. We’ll select only the production days and the unnamed first column (named X1 on import), excluding Saturdays and the TOIL columns.
 
     r:
     wide <- read_tsv('chsub.tsv') %>%
@@ -124,7 +124,7 @@ Then we’ll use a [tidyr][] function, [`gather()`][gather], to transform our wi
     ## 5 Alice Jones    Mon 30/4 <NA>
     ## 6 Bob Smith      Mon 30/4 Off
 
-We now have a row for each person for each day, along with their “status” for the day — whatever was written in the cell for the day.
+We now have a row for each person for each day, along with their “status” for the day.
 
 But Dan doesn’t have his chief sub days marked, as it would be nearly every day. Let’s split out Dan’s rows and replace the empty cells with `Ch Sub`, the same status string used by everyone else. Then we’ll combine the filled-out Dan rows with all the non-Dan rows from the original data frame.
 
@@ -151,7 +151,7 @@ But Dan doesn’t have his chief sub days marked, as it would be nearly every da
     ## 5 Dan Taylor Thu 3/1   Ch Sub
     ## 6 Dan Taylor Fri 4/1   Ch Sub
 
-Great. But poor Dan, he’s working every day over New Year 2018-2019. In reality, I haven’t done that far on the rota, just up to October. We’ll convert all those dates now — but only the ones in the period where the rota has actually been completed, and filter out all the now-missing entries (where the month was outside our range).
+Great. But poor Dan, he’s working every day over New Year 2018-2019. In reality, I haven’t done that far on the rota, just up to October. We’ll convert all those dates now, and filter out all the newly missing entries where the month was outside our range.
 
     r:
     dated <- all %>%
@@ -181,7 +181,7 @@ Let’s get only the chief sub-related rows and sort them by date.
     ## 5 2018-05-03 Dan Taylor
     ## 6 2018-05-04 Carol Williams
 
-Exactly what we want. Now time for a bit of formatting to make this giant list somewhat acceptable for humans. This is also where my knowledge of R runs out.
+Exactly what we want. Now time for a bit of formatting to make this giant list somewhat acceptable for other people. This is also where my knowledge of R runs out.
 
     r:
     formatted <- str_c(
