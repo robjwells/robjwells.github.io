@@ -209,8 +209,6 @@ small {
 /* ------------------------------------------------------------------------- */
 
 table {
-  /* Restrain table width and force overflow on smaller screens. */
-  table-layout: fixed;
   width: 100%;
 }
 
@@ -510,13 +508,6 @@ article li {
   h4 {
     font-size: 1.25rem;  /* 20 */
     font-style: normal;
-  }
-
-
-
-  /* Table: adapt to screen width */
-  table {
-    table-layout: auto;
   }
 
 
