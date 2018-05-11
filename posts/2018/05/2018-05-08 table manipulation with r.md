@@ -29,48 +29,50 @@ Our newsroom rota is just a spreadsheet, which is actually the best tool I’ve 
 
 It looks a bit like this (the real spreadsheet has proper formatting and so on):
 
-<table>
-    <thead>
-        <tr>
-            <th></th>
-            <th>Sun 6/5</th>
-            <th>Mon 7/5</th>
-            <th>Tue 8/5</th>
-            <th>Wed 9/5</th>
-            <th>Thu 10/5</th>
-            <th>Fri 11/5</th>
-            <th>Sat 12/5</th>
-            <th>Lieu add</th>
-            <th>Lieu tot</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Rob Wells</td>
-            <td>Off</td>
-            <td></td>
-            <td></td>
-            <td>Sport</td>
-            <td>Ch Sub</td>
-            <td>Sport</td>
-            <td></td>
-            <td></td>
-            <td>10</td>
-        </tr>
-        <tr>
-            <td>Alice Jones</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>Off</td>
-            <td></td>
-            <td></td>
-            <td>0.25</td>
-            <td>4.5</td>
-        </tr>
-    </tbody>
-</table>
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Sun 6/5</th>
+                <th>Mon 7/5</th>
+                <th>Tue 8/5</th>
+                <th>Wed 9/5</th>
+                <th>Thu 10/5</th>
+                <th>Fri 11/5</th>
+                <th>Sat 12/5</th>
+                <th>Lieu add</th>
+                <th>Lieu tot</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Rob Wells</td>
+                <td>Off</td>
+                <td></td>
+                <td></td>
+                <td>Sport</td>
+                <td>Ch Sub</td>
+                <td>Sport</td>
+                <td></td>
+                <td></td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td>Alice Jones</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Off</td>
+                <td></td>
+                <td></td>
+                <td>0.25</td>
+                <td>4.5</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 There’s a fair amount of information: names, dates, days off, cover responsibilities, new and accrued [TOIL][]. It’s entirely designed for humans, not computers (and it takes the humans a little while until they’re able to read it).
 

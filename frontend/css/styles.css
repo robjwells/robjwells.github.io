@@ -212,6 +212,12 @@ table {
   width: 100%;
 }
 
+.table-container {
+  /* Scroll the table horizontally when it’s too wide for the container
+     Apply this class to an enclosing div. */
+  overflow-x: auto;
+}
+
 caption {
   font-style: italic;
 }
