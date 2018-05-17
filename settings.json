@@ -39,6 +39,7 @@
         ["frontend/build/*", {"subdir": "resources"}],
         ["frontend/build/favicon.ico"],
         ["images"],
+        ["files"],
         ["robots.txt"],
         ["keybase.txt"]
     ],
