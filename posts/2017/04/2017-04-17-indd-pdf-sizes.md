@@ -10,8 +10,6 @@ At work we deal a lot with PDFs, both press quality and low-quality for viewing 
 It’s interesting to look at exactly what is making the files large enough to require slimming down in the first place. All our low-quality PDFs are exported from InDesign with the built-in “Smallest file size” preset, but the sizes are usually around 700kB for single tabloid-sized, image-sparse pages.
 
 <img src="/images/2017-04-17-arts-full.jpg"
-     width="250"
-     height="312"
      class="pull-right"
      alt="A low-quality image of a Morning Star arts page.">
 

@@ -93,8 +93,6 @@ And lastly, our favourite fairly common sort of cop-out answer: spark.
     <video
         src="/images/2016-11-05-spark.mp4"
         poster="/images/2016-11-05-spark.jpg"
-        width="480"
-        height="270"
         preload="none"
         controls loop muted playsinline
         >

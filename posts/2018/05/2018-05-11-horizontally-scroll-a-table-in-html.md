@@ -11,8 +11,6 @@ After I published [my post about manipulating tables (of data) in R][chsub], I n
     <img
         src="/images/2018-05-11-table-fixed.png"
         alt="A screenshot showing a table laid out with table-layout: fixed in CSS, with many cells wrapping with scrollbars in an unreadable fashion."
-        width=596
-        height=245
         />
 </p>
 
@@ -47,8 +45,6 @@ This has the effect of having the table overflow the container horizontally if t
     <img
         src="/images/2018-05-11-table-auto.png"
         alt="A screenshot showing a table laid out with table-layout: auto in CSS, with the table overflowing its container horizontally."
-        width=596
-        height=245
         />
 </p>
 
@@ -64,8 +60,6 @@ Here’s what that looks like when rendered:
     <img
         src="/images/2018-05-11-table-div.png"
         alt="A screenshot showing a table laid out and scrolling within a containing div with its overflow-x property set to auto."
-        width=596
-        height=245
         />
 </p>
 

@@ -24,8 +24,6 @@ The Upgrade subfolder contains 230MB of old Skype versions, with the oldest dati
     <img
         src="/images/2017-12-19-skype-upgrade.png"
         alt="A screenshot showing Skype’s Upgrade folder, containing five previous versions, with the oldest dating back five years."
-        width=560
-        height=280
         />
 </p>
 
@@ -36,8 +34,6 @@ Drilling down into the robjwells subfolder we find emo\_cache\_v2, accounting fo
 <p>
   <video
     controls
-    width=200
-    height=200
     muted
     preload="none"
     playsinline

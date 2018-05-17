@@ -19,8 +19,6 @@ We can use this to make finding and opening the particular notebook server you w
     <img
         src="/images/2018-05-17-macro-overview.png"
         alt="A screenshot showing the (minimised) Keyboard Maestro steps"
-        width=540
-        height=360
         />
 </p>
 

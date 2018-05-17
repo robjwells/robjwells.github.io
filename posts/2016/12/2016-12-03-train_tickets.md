@@ -9,8 +9,6 @@ No such luck this year as Christmas Eve is on the Saturday, so I’m going back 
 
 <img src="/images/2016-12-03-train-tickets.gif"
      alt="An edited screenshot showing return tickets all costing £59.50."
-     width=480
-     height=260
      >
 
 (This screenshot is heavily edited to condense the information, but you can [see the tickets for yourself][xmas-trains].)

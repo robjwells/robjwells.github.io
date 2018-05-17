@@ -40,7 +40,7 @@ nw/9fIa+IPRHm7PpbLhCnxW9eyCXxfCGPit6wtsw0N820qFDh75A9Li/3XWFvij0Q92jJf0p+UUc
 dOjQoUOHDh06dOjQoUOHDh06dOjQoUOHDh06dOjQoUNfEXqsLvWHCH0t6IeP2w7Ql4/+AR06dOjQ
 oUNfJPpHBxr6WtB7/aFDhw4dOnTo0KFnhd4JOnTo0KFDhw4demro171W6KtB//f1vyVvoK8GfdxM
 Dx06dOjQoUPPB704/LySh75Q9I4mdOjQoUOHDh069N7+CzAAEK0Kk5vmtLkAAAAASUVORK5CYII=
-" width="500" height="400" alt="The first frame of the gif." id="toast">
+" alt="The first frame of the gif." id="toast">
 
 <script>
 var toast_img = document.getElementById('toast');
@@ -68,7 +68,7 @@ Here’s the code:
     html:
      1:  <img src="data:image/png;base64,
      2:  … base64 data …
-     3:  " width="500" height="400" alt="The first frame of the gif." id="toast">
+     3:  " alt="The first frame of the gif." id="toast">
      4:  
      5:  <script>
      6:  var toast_img = document.getElementById('toast');
@@ -86,7 +86,7 @@ Here’s the code:
     17:  <noscript>
     18:    <p>
     19:      Sorry, you don’t have JavaScript enabled.
-    20:      Here’s <a href="gif URL">a link to the gif</a>.
+    20:      Here’s <a href="/images/2015…gif">a link to the gif</a>.
     21:    </p>
     22:  </noscript>
 
