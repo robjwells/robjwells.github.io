@@ -26,7 +26,7 @@ And is now:
     sh:
     grep ":: $KMVAR_dir$"
 
-So that it only matches the exact directory chosen in the list prompt, and not one of its parents.
+So that it only matches the exact directory chosen in the list prompt, and not one of its children.
 
 I’ve updated [the Keyboard Maestro macro file][macro-file] too.
 
