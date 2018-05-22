@@ -12,6 +12,9 @@ You’d hit it if:
 * You have more than one notebook server running.
 * The working directory of one is beneath another.
 * The subdirectory server was started more recently.
+* You tried to open the parent server with the macro.
+
+The shorter path of the parent would match part of the child’s path.
 
 The original `grep` pattern was:
 
