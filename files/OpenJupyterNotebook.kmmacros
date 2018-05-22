@@ -116,7 +116,7 @@
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>jupyter-notebook list | grep "$KMVAR_dir" | awk '{ print $1 }'</string>
+						<string>jupyter-notebook list | grep ":: $KMVAR_dir$" | awk '{ print $1 }'</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -146,7 +146,7 @@
 				<key>CreationDate</key>
 				<real>532199684.98580599</real>
 				<key>ModificationDate</key>
-				<real>548274697.14896297</real>
+				<real>548671450.13810205</real>
 				<key>Name</key>
 				<string>Open Jupyter Notebook</string>
 				<key>Triggers</key>

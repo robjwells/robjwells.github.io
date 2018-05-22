@@ -49,9 +49,14 @@ Our +2 argument to `tail` gets the output from the second line, chopping off the
 The third step fetches the corresponding URL for a directory:
 
     zsh:
-    jupyter-notebook list | grep "$KMVAR_dir" | awk '{ print $1 }'
+    jupyter-notebook list | grep ":: $KMVAR_dir$" | awk '{ print $1 }'
 
 Since the user has specified a directory already, we use `grep` with the Keyboard Maestro variable to find just that one line, and use `awk` again to extract the URL field.
+
+<div class="flag" id="update-20180522">
+  <p><strong>Update: <time>2018-05-22</time></strong></p>
+  <p>There was a bug in the original version of this snippet of shell script, where a parent path could match a child path (as it was only looking for the path itself without an anchor on either side). It was only luck that had me miss this with my example, with the more recently started home directory notebook server being listed ahead of one in a subdirectory, which <code>grep</code> would have also matched. The code above and the macro file have been fixed.</p>
+</div>
 
 Obviously, this won’t work if you have more than one notebook server running from the same directory. (But you wouldn’t do that, right?)
 
