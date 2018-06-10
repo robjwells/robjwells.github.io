@@ -45,6 +45,6 @@ It’s difficult to know what to do. My gut feeling is to rush out and buy a bas
 
 But my head says that I should see if I can crack on using my iPad for now, enquire about getting the iMac serviced as soon as possible, and then make a more considered decision at a later time.
 
-It’s not a comfortable position for me, since this machine has been a fixture in my live for over six-and-a-half years. When the graphics card went last time, it was calming to know that it was a problem that Apple had committed to take care of (even if I almost missed the cutoff and had to drag the heavy thing all the way to Chafford Hundred on the train). Not such luck this time.
+It’s not a comfortable position for me, since this machine has been a fixture in my life for over six-and-a-half years. When the graphics card went last time, it was calming to know that it was a problem that Apple had committed to take care of (even if I almost missed the cutoff and had to drag the heavy thing all the way to Chafford Hundred on the train). No such luck this time.
 
 (On a, er, positive note, I guess this will finally force me to work out a way of blogging from iPad that isn’t as painful as I’m sure it will be to get this post up.)
