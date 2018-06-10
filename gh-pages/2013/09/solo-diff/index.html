@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – Solo diff</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2013/09/solo-diff/">Solo diff</a></h2>
+      <p><time datetime="2013-09-13T20:39">Friday, September 13 2013</time></p>
+    </header>
+    <p>At work we edit the reporters’ copy in plain text files using <a href="http://barebones.com/products/textwrangler/">TextWrangler</a>, duplicating their original at the bottom of the file before we start subbing.
+It’s a nice, quick way of having something to refer back to without the hassle of using (and training people to use) a real <a href="http://en.wikipedia.org/wiki/Revision_control">VCS</a>.</p>
+<p>It began as a loose convention, with different people having their own way of marking off the original copy. To make it completely painless, and to bring in a standard method, I wrote this short Python script a couple of months ago:</p>
+<pre><code>#!/usr/bin/env python3
+from sys import stdin
+orig = stdin.read()
+dupe = &quot;{0}\n\n\n\n#### Original Copy ####\n\n\n\n{0}&quot;.format(orig)
+print(dupe)</code></pre>
+
+
+<p>I installed it to everyone’s text filters folder — TextWrangler provides the document’s text (or the selection) to text filters via stdin — and people tend to use it.</p>
+<p>We hired two new subs over the summer and I got into the habit of using the “Compare Two Front Windows” command to check their subbed copy against the original, so I could offer them specific advice.</p>
+<p>But manually creating two new windows and pasting in the text can be a pain — you end up juggling lots of windows and it’s easy to mix up the copy so that the “older” pane is showing the subbed text.</p>
+<p>Thankfully both of the new people use the duplication script consistently, so it’s easy to use a regular expression to split the file into original and subbed versions. Armed with this knowledge, I wrote a script to automate the comparison, using TextWrangler’s <code>twdiff</code> command-line tool.</p>
+<div class="flag">
+    <p>The code below is written for BBEdit, which I use at home. Except for <code>BB_DOC_PATH</code>, I swap out <code>bb</code> for <code>tw</code> in the script used at work.</p>
+</div>
+
+<pre><code>#!/usr/bin/env python3
+
+import os
+import re
+import subprocess
+
+os.chdir('/tmp')
+with open(os.environ['BB_DOC_PATH']) as full_file:
+  sub_copy, orig_copy = re.split(r'#{2,} original copy #{2,}',
+                                 full_file.read(), flags=re.I)
+
+with open('bb_orig_copy', 'w') as orig_file:
+  orig_copy = orig_copy.strip() + '\n'
+  orig_file.write(orig_copy)
+
+with open('bb_subbed_copy', 'w') as sub_file:
+  sub_copy = sub_copy.strip() + '\n'
+  sub_file.write(sub_copy)
+
+subprocess.call(['bbdiff', 'bb_orig_copy', 'bb_subbed_copy'])</code></pre>
+
+
+<p>The entire file is split into subbed and original sections in lines 9 &amp; 10, and on lines 14 &amp; 18 each of those is written to a file (in <code>/tmp</code> — line 7). The leading and trailing whitespace is stripped from each and a newline added in order to clean up the comparison.</p>
+<p>The regex on lines 9 &amp; 10 uses a variable number of hash marks and the case-insensitivity flag because on occasion I forget to duplicate the copy first, edit the story, and then go back and fill in the separator by hand.</p>
+<p>All of the file interaction is handled in <code>with</code> blocks (context managers), which automatically close the files once the block’s statements are executed. Not a big issue in a script this size, but good practice.</p>
+<p>Finally we call the diff utility with the names of the two temporary files.</p>
+<p>I’ve got this saved in TextWrangler’s scripts folder. Initially I wrote it as a text filter, splitting the contents provided on stdin. But since filters replace the document (or selection) the text had to be written to stdout at the end of the script so that TextWrangler didn’t delete everything.</p>
+<p>And it’s also <em>not a filter</em>, so I was pleased to find out that several environment variables are set when a script is invoked, one of which is the path to the file that the script was called on.</p>
+<p>I’ve tested the script with Python 2.7.5 and it seems to work fine, but with the differences in its Unicode handling I can’t say for certain that some nasty encoding gremlin won’t raise its head.</p>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – Manhandled</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2014/04/manhandled/">Manhandled</a></h2>
+      <p><time datetime="2014-04-13T09:03">Sunday, April 13 2014</time></p>
+    </header>
+    <p><a href="http://www.leancrew.com/all-this/2014/04/oh-man/">Dr Drang</a> and <a href="http://nathangrigg.net/2014/04/zsh-push-line-or-edit/">Nathan</a> have both written recently about bringing up a man page for reference while typing a command in the terminal. I’ve two approaches to share, but unlike Nathan I can’t claim that they’re superior — just alternatives.</p>
+<p>I prefer them over the right-click method because I don’t like to take my hands off the keyboard unless absolutely necessary, and moving to Zsh is a bit much for me right now.</p>
+<p>First is <a href="http://www.obdev.at/products/launchbar/index.html">LaunchBar’s</a> built-in man page search (found under UTF-8 search templates in the index), which uses the <code>x-man-page://</code> URL scheme to bring up a new Terminal window. Here’s what you type:</p>
+<pre><code>⌘-Space man Space `command` ↩</code></pre>
+
+
+<p>The second approach layers the wonderful <a href="http://kapeli.com/dash">Dash</a> on top of LaunchBar, bringing up the man page in Dash’s interface instead of the Terminal.</p>
+<pre><code>⌘-Space dash Space `command` ↩</code></pre>
+
+
+<p>This gives you all the usual Dash goodies, including a section list and inline links to other man pages (if you decide, after all, to take your hands off the keyboard).</p>
+<p>You can prepend <code>man:</code> to the command name to restrict the search to man pages only, or even add a search template of the form <code>dash://man:*</code> to LaunchBar’s index — in place of the first man page search if you like.</p>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

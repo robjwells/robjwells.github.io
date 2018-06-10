@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – Promptless Mercurial</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2013/08/promptless-mercurial/">Promptless Mercurial</a></h2>
+      <p><time datetime="2013-08-24T13:04">Saturday, August 24 2013</time></p>
+    </header>
+    <p>My time-wasting with Git and Mercurial continues apace — although I think I’m largely done learning how to use each — and I’m at the point where I start fussing over trivial details.</p>
+<p>This time it’s prompts. I’ve had <a href="https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh">Git’s status</a> in my prompt for quite a while, since it comes bundled, but as I’ve been spending so much time mucking about with Mercurial I decided to give Steve Losh’s <a href="https://bitbucket.org/sjl/hg-prompt/src">hg-prompt</a> a try.</p>
+<p>It’s nice and you use it in a similar way to <a href="http://selenic.com/hg/help/templates">Mercurial’s own templates</a>, which are very powerful. But it does introduce a slight delay at the command line, which I haven’t noticed with the Git prompt. Maybe I’ll decide this isn’t a big deal and change my mind in the future, but at the moment it was just enough to put me off.</p>
+<p>I also like to keep my prompt nice and short. Right now it’s just the basename of the working directory and the dollar sign (or hash if root). The prompt in my home directory is just:</p>
+<pre><code>~ $</code></pre>
+
+
+<p>So I’ve decided to go promptless and ditch the additions for both Git and Mercurial. This should help get me in the habit of checking each kind of repository in a similar way, instead of glancing at the prompt for Git and typing commands for Mercurial.</p>
+<p>If you use the <code>-sb</code> options with Git’s <code>status</code> command it gives you a short status with the current branch on top, which is adequate for my needs.</p>
+<p>By default there isn’t a Mercurial command to do this, but it’s trivial to create one using an alias — and one that’s superior to <code>git status -sb</code>. Here’s what I’ve got in my .hgrc file (line breaks added for clarity):</p>
+<pre><code>now = !$HG log -r . --template
+      &quot;{label('log.changeset', rev)}
+      {label('branches.active', '    {branch}')}
+      {label('bookmarks.current', '    {bookmarks}')}\n&quot; ; $HG status</code></pre>
+
+
+<p>The exclamation mark at the start tells Mercurial to interpret it as a shell alias — this lets us call <code>hg status</code> at the end. The alias calls <code>hg log</code> for the parent of the working directory (the commit you currently have checked out).</p>
+<p>Using the template system we ask for that changeset’s revision number, branch and any bookmarks associated with it. The <code>label</code> stuff surrounding <code>rev</code>, <code>branch</code> and <code>bookmarks</code> colours the output — you can otherwise ignore it.</p>
+<p><a href="http://mercurial.selenic.com/wiki/RevisionNumber">Revision numbers</a> are a convenient but <em>strictly local</em> way of referring to changesets. I include the branch name and bookmarks because you can use either (or both) to branch your work; there’s no point just printing the named branch if you’re using bookmarks, and vice versa.</p>
+<p>When called inside a repository, <code>hg now</code> prints something like this:</p>
+<pre><code>hgrepo $ hg now
+20    experimental    super-duper</code></pre>
+
+
+<p>If there are any changes in the working directory that’s followed by the usual output of <code>hg status</code>, like so:</p>
+<p><img src="/images/2013-08-24_hgnow.png" alt="Image of the output of hg now when there are changes in the working directory."></p>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

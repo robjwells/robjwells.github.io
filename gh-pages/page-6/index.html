@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – page 6</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2017/03/assuming-traffic/">Assuming traffic</a></h2>
+      <p><time datetime="2017-03-02T22:40">Thursday, March 2 2017</time></p>
+    </header>
+    <p>As a journalist and a socialist, one of my interests is looking into and understanding the beliefs that underpin journalistic output.</p>
+<p>By far the best way of understanding the mass media in capitalist democracies is the Propaganda Model from Herman and Chomsky’s Manufacturing Consent. Its greatest strength is that:</p>
+<blockquote>
+<p>We do not use any kind of “conspiracy” hypothesis to explain mass-media performance.</p>
+</blockquote>
+<p>Crucially when we come to the role of individuals in this system:</p>
+<blockquote>
+<p>Most biased choices in the media arise from the pre-selection of right-thinking people, internalized preconceptions, and the adaptation of personnel to the constraints of ownership, organization, market, and political power.</p>
+</blockquote>
+<p>I think the idea of <em>internalised preconceptions</em> is powerful and portable. It is the idea that things “must” be as they are because “that’s the way the world works” or whatever phrase you want to use.</p>
+<p>Switching from politics (of a sort), one thing that we see time and again is hostility to provision of cycling infrastructure because, obviously, mass unrestricted motoring is “the way the world works.” Any infringement on that — perhaps by redistributing road space — is in essence an affront to the natural order of things to benefit an out-group.</p>
+<p>Again, this isn’t because the media are in hock to the Road Haulage Association or whoever else, but it is the natural conclusion in a society where transport policy has been focused on the motor vehicle for nearly a century.</p>
+<p>An even more extreme case exists in the United States, where the motor vehicle has been so dominant that it’s not unknown for roads in built-up areas to lack pavements.</p>
+<p>Which, finally, brings me to what sparked this post: a Los Angeles Times story about the <a href="http://www.latimes.com/projects/la-me-freeway-pollution/">health risks of living near LA’s many motorways</a>. It’s actually a good story and pulls together all of the health and development stuff well.</p>
+<p>However, it has a blind spot that reveals the <em>internalised preconception</em> that motor vehicle use must remain dominant. This paragraph sums up the avenues for change that the authors see:</p>
+<blockquote>
+<p>Cities could re-zone areas near heavy traffic to exclude new residential development or change their general plans to prohibit such uses, planning experts say. Officials could adopt ordinances or moratoriums on new residential development. Or they could strengthen building standards — as they have for seismic reasons — forcing developers to design buildings in a way that reduces residents’ exposure to polluted air.</p>
+</blockquote>
+<p>In short: stop building homes near motorways or build them better.</p>
+<p>At no point is this flipped on its head to tackle the source: the motorway and the cars on it. There is no suggestion that that motorway is the thing that should be stopped, be narrowed or ripped out.</p>
+<p>“10% of land currently zoned for residential construction” is “within 1,000 feet” of LA’s motorways so banning such construction would be problematic. But, again, the motorways are treated as unchangeable facts about our world that we must live with and cannot challenge — to the point that it is not even raised, just assumed.</p>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2017/03/setting-os-xs-environment/">Setting OS X’s environment</a></h2>
+      <p><time datetime="2017-03-02T14:30">Thursday, March 2 2017</time></p>
+    </header>
+    <div class="flag">
+  <p><strong>Warning: The contents of this post may not be up to date!</strong></p>
+  <p>Sorry, but if you’re searching for answers about why you can’t reliably set environment variables in OS X (particularly <code>PATH</code>), the information below may be out of date.</p>
+  <p>Apple has changed the system so many times in so many different ways it’s difficult to find <em>anything</em> on the internet about this that is correct and up-to-date, so I’ve placed this warning on the top of every post I’ve written about it.</p>
+  <p>As of 2017-03-02 it appears that the best collection of information is <a href="https://github.com/ersiner/osx-env-sync">the osx-env-sync project on GitHub</a> and its associated issues.</p>
+  <p>Be wary of anything that you find on StackOverflow: the answers there may well have been correct at the time but incorrect now.</p>
+  <p>For reference, my own posts on this problem (newest first) are:</p>
+  <ul>
+    <li><a href="/2017/03/setting-os-xs-environment/">Setting OS X’s environment</a></li>
+    <li><a href="/2014/12/locale-in-os-x-whats-the-current-situation/">Locale in OS X — what’s the current situation?</a></li>
+    <li><a href="/2014/12/locale-in-os-x-and-launch-agents/">Locale in OS X and Launch Agents</a></li>
+    <li><a href="/2013/09/get-your-us-ascii-out-of-my-face/">Get your US-ASCII out of my face</a></li>
+  </ul>
+</div>
+
+<p>Trying to set a consistent environment in OS X is the single most frustrating thing I’ve ever tried to do on a Mac.</p>
+<p>I’ve written three posts (<a href="/2013/09/get-your-us-ascii-out-of-my-face/">1</a>, <a href="/2014/12/locale-in-os-x-and-launch-agents/">2</a>, <a href="/2014/12/locale-in-os-x-whats-the-current-situation/">3</a>) in the past few years trying to get to the bottom of this but <em>still</em> I have problems. (That’s why that giant disclaimer is on the top of this post!)</p>
+<p>This bit me again the other day when using a Jupyter notebook to <a href="/2017/03/textexpander-to-launchbar-snippets/">export from TextExpander</a>, with my favourite UnicodeDecodeError. Here’s an example:</p>
+<pre><code>-----------------------------------------------------------------
+UnicodeEncodeError              Traceback (most recent call last)
+&lt;ipython-input-8-c4b3c1d6f2e6&gt; in &lt;module&gt;()
+      1 with open('/Users/robjwells/Desktop/testfile', 'w') as f:
+----&gt; 2     f.write('☃')
+
+UnicodeEncodeError: 'ascii' codec can't encode character
+'\u2603' in position 0: ordinal not in range(128)</code></pre>
+
+
+<p>Now, this machine has been upgraded all the way from 10.7 and my understanding is that if you’ve a fresh install of a more recent version then you should be OK as far as the encoding-related environment variables (<code>LANG</code>, <code>LC_CTYPE</code>, <code>LC_ALL</code>). <a href="https://www.python.org/dev/peps/pep-0538/#background">A recent Python enhancement proposal</a> includes the paragraph:</p>
+<blockquote>
+<p>On Apple platforms (including both Mac OS X and iOS), this [ensuring Python is set to use UTF-8] is straightforward, as Apple guarantees that these [Python start-up] operations will always use UTF-8 to do the conversion.</p>
+</blockquote>
+<p>If you’ve ready my posts linked above, particularly <a href="/2014/12/locale-in-os-x-and-launch-agents/">Locale in OS X and Launch Agents</a>, a good question arises: “I thought you’d figured this out!”</p>
+<p>Well, yeah, me too! I have a script that runs at start-up designed to set my environment up. But it’s not reliable — I think because it may run after other start-up items (both Launch Agents &amp; Daemons, and the Login Items listed in System Preferences). One of those is my Jupyter notebook server, hence the problem above.</p>
+<p>Having the environment script run as the root user doesn’t solve the problem — in fact it means it has no effect at all.</p>
+<p>(My way of checking whether a program has inherited my script-set environment variables is to define <code>RJWENVSET</code> as well.)</p>
+<p>And then there’s the <code>PATH</code>, which I used to set in the same script using <code>launchctl setenv</code> like my other environment variables. Which doesn’t work. There’s a suggestion on <a href="https://github.com/ersiner/osx-env-sync/issues/1#issuecomment-230053839">a GitHub issue for a tool meant to resolve this problem</a> that the following command could reliably set the path:</p>
+<pre><code>sudo launchctl config user path $PATH</code></pre>
+
+
+<p>But that doesn’t work for me. You can swap <code>user</code> for <code>system</code> but I’m wary of doing that.</p>
+<p>This problem is ludicrously frustrating. Apple deprecated /etc/launchd.conf “for security considerations” but it means there’s no reliable way of setting variables that will be inherited by your programs, and so no way of having a consistent environment.</p>
+<p>What a pain in the arse.</p>
+<p>Right now, I’m doing the following:</p>
+<ul>
+<li>I have my environment.sh file set <code>LANG</code>, <code>LC_ALL</code>, <code>LC_CTYPE</code>, <code>PYTHONPATH</code>, <code>RJWENVSET</code> when it is run at start-up by <a href="https://www.peterborgapps.com/lingon/">Lingon</a> (for “all users”, though I’m not sure if this is any more effective than using “me” — I’m the only user on this machine).</li>
+<li>My Lingon start-up items have environment variables and their <code>PATH</code> set explicitly.</li>
+<li>I currently restart other start-up items that don’t pick up the variables set by environment.sh — but that doesn’t solve the <code>PATH</code> problem so you’ll want to <a href="http://leancrew.com/all-this/2017/03/the-keyboard-maestro-scripting-environment/">set that explicitly</a>.</li>
+</ul>
+<p>But for Pete’s sake I wish I could just define variables in ~/.launchd.conf and be done with it.</p>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2017/03/textexpander-to-launchbar-snippets/">TextExpander to LaunchBar snippets</a></h2>
+      <p><time datetime="2017-03-01T17:00">Wednesday, March 1 2017</time></p>
+    </header>
+    <p>Catching up on my RSS feeds, I’ve just been through Dr Drang’s posts from nearly a year ago about switching away from TextExpander (<a href="http://leancrew.com/all-this/2016/04/the-new-textexpander/">1</a>, <a href="http://leancrew.com/all-this/2016/04/importing-textexpander-snippets-to-keyboard-maestro/">2</a>, <a href="http://leancrew.com/all-this/2016/04/a-little-more-textexpander/">3</a>, <a href="http://leancrew.com/all-this/2016/06/final-thoughts-on-switching-from-textexpander/">4</a>). I’m a bit behind.</p>
+<p>And since everything on here is effectively hero-worship to Dr Drang, it’s time to catch up. Well, that, or it’s actually sensible to think about switching away from TextExpander; the last update to the non-subscription version (5.1.4) was on February 21 2016.</p>
+<p>There isn’t anything in the subscription version for me. I barely use the features of TextExpander 5, rarely create new snippets, and generally am bad at using it.</p>
+<p class="full-width">
+    <img
+        src="/images/2017-03-01-reminder.png"
+        alt="A TextExpander reminder notification."
+        class="no-border"
+        />
+</p>
+
+<p>I get the snippet reminder notification <em>all the time</em>, to the point where it’s frustrating. I am not good at remembering snippet abbreviations. That’s not necessarily helped by TextExpander encouraging me to create snippets for things that I type frequently for a short amount of time, only to then not type the phrase and forget the snippet exists entirely. Then we’re back to the snippet reminder again the next time I do type the phrase.</p>
+<p class="full-width">
+    <img
+        src="/images/2017-03-01-inline-search.png"
+        alt="TextExpander’s inline search."
+        class="no-border"
+        />
+</p>
+
+<p>For a while I was using the inline search, which is really good. And then I forgot the shortcut for that and would periodically open the menubar — where of course the shortcut for inline search is not listed — and get frustrated each time.</p>
+<p>I am bad at using TextExpander and I feel bad.</p>
+<p class="full-width">
+    <img
+        src="/images/2017-03-01-suggestion-1.png"
+        alt="A TextExpander suggestion notification."
+        class="no-border"
+        />
+</p>
+
+<p>Because of this, I didn’t really want to switch snippets to Keyboard Maestro or one of the TextExpander-alikes.</p>
+<p>Instead I settled on using <a href="https://help.obdev.at/resources/launchbar/help/Snippets.html">LaunchBar’s snippets</a>, which you search in exactly the same way that you search the main LaunchBar catalogue. Setting a keyboard shortcut for snippets and enabling “sub-search only” means that they’re not cluttering up your usual results either: they’re available when I type <span class="osx-menu">⌃⌥⌘Space</span> but otherwise out the way.</p>
+<p>It’s a similar advantage to when <a href="/2013/11/die-bookmarks-bar-die/">I moved my Safari bookmarklets to LaunchBar</a>: if I forget the shortcut I can just type what I want.</p>
+<p class="full-width">
+    <img
+        src="/images/2017-03-01-star-search.png"
+        alt="A search for ‘star’ in LaunchBar’s snippets."
+        class="no-border"
+        />
+</p>
+
+<p>But so far this is just like TextExpander’s own inline search. And because snippets are part of LaunchBar there are some restrictions in using them <em>with LaunchBar</em>. Why bother?</p>
+<p>Well, the overriding reason is still that TextExpander 5 is done. Sooner or later it’s going to stop working. It’s not a matter of whether I should switch but what to.</p>
+<p>LaunchBar is a good fit because I use it everywhere, all the time. The snippets are just text files on disk, and so can be deleted or renamed directly from LaunchBar like any other file. They can be created too by sending items to the Add Snippet action.</p>
+<p>Honestly I was a bit dismissive when snippets appeared in LaunchBar (“Why wouldn’t you just use TextExpander?”) but as a long-standing LaunchBar user they slot into my workflow seamlessly.</p>
+<p>The placeholders are more limited than in TextExpander, which is fine, and snippets are plain-text only, which is again fine as I had very few script snippets and fewer that I used. Anything I keep around will find a new home in Keyboard Maestro or FastScripts.</p>
+<p>As with Keyboard Maestro, the snippet dates are formatted with Unicode patterns rather than strftime — which is a bit uncomfortable for me but never mind.</p>
+<p>I do have one major criticism of LaunchBar though. If you followed the link to its <a href="https://help.obdev.at/resources/launchbar/help/Snippets.html">snippet documentation</a> you’ll perhaps notice the old-style LaunchBar interface. Why?</p>
+<blockquote>
+<h4><a href="https://help.obdev.at/products/launchbar/documentation.html">Help not yet available</a></h4>
+<p>The Help for LaunchBar 6 is already in the works and will be available soon. In the meantime you might take a look at the Help of LaunchBar 5. Most of the information found there is still valid for LaunchBar 6.</p>
+</blockquote>
+<p>LaunchBar 6 was released in June 2014. Maybe the docs will be in LaunchBar 7? In the meantime, time to actually read that copy of <a href="https://www.takecontrolbooks.com/launchbar">Take Control of LaunchBar</a>.</p>
+<h3>Exporting your bookmarks from TextExpander</h3>
+<p>TextExpander doesn’t actually have an export option but it’s pretty easy to get your snippets out of the settings file, which for me was a single XML plist file Settings.textexpander.</p>
+<p>As a warning, at the end of this I still had to do some manual work to tidy the snippets up, and none of the placeholders (where applicable) are converted. Excluding spelling correction snippets, I only have about 120 (many of which I deleted), but if you have many more this could be a problem.</p>
+<p>But with that in mind hopefully it shows how simple it is to get at the actual data and reconfigure it into something useful for you. It’s broken up into parts and isn’t the most refined because it’s the result of mucking about in a Jupyter notebook until I got something that worked well enough.</p>
+<p>First, the set-up (with the TextExpander settings file copied to my desktop):</p>
+<pre><code>import plistlib
+import json
+
+with open('/Users/robjwells/Desktop/Settings.textexpander',
+          mode='rb') as plist_file:
+    plist_data = plistlib.load(plist_file)
+snippets = plist_data['snippetsTE2']</code></pre>
+
+
+<p>If we then pretty-print the first snippet you can get an idea of the format:</p>
+<pre><code>{'abbreviation': ';rjw',
+ 'abbreviationMode': 0,
+ 'creationDate': datetime.datetime(2014, 1, 13, 9, 33, 41),
+ 'label': '',
+ 'lastUsed': datetime.datetime(2017, 2, 28, 18, 56, 15),
+ 'modificationDate': datetime.datetime(2014, 1, 13, 9, 33, 47),
+ 'plainText': 'robjwells',
+ 'snippetType': 0,
+ 'useCount': 11,
+ 'uuidString': '87B39A64-B704-46CC-A82D-C3BB07A9C9B4'}</code></pre>
+
+
+<p>It’s fairly trivial to then pick out the fields you want:</p>
+<pre><code>export_snippets = [
+    {
+        'abbr': snip['abbreviation'],
+        'label': snip['label'],
+        'text': snip['plainText'],
+        'type': snip['snippetType']
+    }
+    for snip in snippets
+]</code></pre>
+
+
+<p>The type field represents whether the snippet is plain text (0), AppleScript (2) or (3) a “shell” script (or Python or whatever). I imagine that type 1 is rich text, but I don’t have any rich text snippets. We’re keeping it around for use later.</p>
+<p>And that first snippet is now:</p>
+<pre><code>{'abbr': ';rjw', 'label': '', 'text': 'robjwells', 'type': 0}</code></pre>
+
+
+<p>At this point, before doing any further processing, I wanted to get rid of the spelling correction snippets. The ordering of my snippets meant that I could just find the “header” snippet and exclude everything that follows.</p>
+<pre><code>for idx, snip in enumerate(export_snippets):
+    if snip['text'] == '\u00bb Auto Correct - Spelling':
+        # Start of spelling correction snippets
+        break
+export_snippets = export_snippets[:idx]</code></pre>
+
+
+<p>For those that remain we now create a filename where the snippet text will be saved:</p>
+<pre><code>import string
+
+def make_safe_filename(text):
+    invalid_chars = set('/:\t\n\\;')
+    text = text.replace('/', '-')
+    return ''.join(char for char in text
+                   if char not in invalid_chars).strip()
+
+for snip in export_snippets:
+    abbr = make_safe_filename(snip['abbr'])
+    label = make_safe_filename(snip['label'])
+    if not label and len(snip['text']) &lt; 20:
+        label = make_safe_filename(snip['text'])
+    if label and abbr:
+        name = f'{abbr} - {label}'
+    elif abbr:
+        name = abbr
+    snip['file'] = name.strip()</code></pre>
+
+
+<p>The way I strip the abbreviation and label down is fairly arbitrary, but I exclude characters that may cause problems on the file system and also the semicolon — my no-longer-needed snippet prefix.</p>
+<p>The code above is not what I actually used last night to name the snippets, but it could have saved me some work in Name Mangler. The important thing to note is that, in TextExpander, if a snippet doesn’t have a label the snippet content is shown instead. That’s what the length check is doing: if there’s no label and the snippet text is short, use the snippet text itself to name the file.</p>
+<p>Now we finally deal with the snippet type. The “shell” snippets aren’t necessarily <em>shell</em> scripts so the “shell-rename” extension is to prompt me to change it to something more appropriate (.py, .sh).</p>
+<pre><code>snippet_types = {
+    0: 'txt',
+    2: 'applescript',
+    3: 'shell-rename',
+    }
+for snip in export_snippets:
+    snip['file'] = '.'.join(
+        [snip['file'], snippet_types[snip['type']]])</code></pre>
+
+
+<p>Printing that first snippet again:</p>
+<pre><code>{'abbr': ';rjw', 'label': '', 'text': 'robjwells',
+ 'type': 0, 'file': 'rjw.txt'}</code></pre>
+
+
+<p>And lastly writing the snippets out:</p>
+<pre><code>from pathlib import Path
+
+snippets_folder = Path('/Users/robjwells/Desktop/te-snippets/')
+snippets_folder.mkdir(exist_ok=True)
+for snip in export_snippets:
+    file_path = snippets_folder.joinpath(snip['file'])
+    file_path.write_text(snip['text'])</code></pre>
+
+
+<p>I then went through each snippet to clear out ones that wouldn’t work in LaunchBar (shell and AppleScript snippets), ones I don’t use, and ones that needed placeholders updating. I also renamed many snippets to tidy things up.</p>
+<p>I have left the abbreviation for several snippets in the filename, so that any snippet-typing habits aren’t completely wasted, and trained LaunchBar for a couple of snippets where I don’t want an old abbreviation hanging off the front (for example, “iso” gets me “Current Date (ISO Format)”).</p>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2017/02/ss-gb/">SS-GB</a></h2>
+      <p><time datetime="2017-02-23T23:00">Thursday, February 23 2017</time></p>
+    </header>
+    <p>I’ve just watched the first episode of <a href="http://www.bbc.co.uk/programmes/b08ghxqb">SS-GB</a>, the BBC’s new alternative-history drama based on <a href="https://en.wikipedia.org/wiki/SS-GB">Len Deighton’s novel</a>. It’s fine, I’ll watch the next episode on Sunday night but, er, there’s a problem.</p>
+<p class="full-width">
+    <img
+        src="/images/2017-02-23-ss-gb.jpg"
+        alt="A still from the first episode of SS-GB shows a banner bearing Karl Marx’s image alongside Nazi banners superimposed with a hammer and sickle."
+        />
+</p>
+
+<p>I mean come on.</p>
+<p>In the plot, those banners are up to mark “German-Soviet Friendship Week”. Apparently in the novel, the Nazis also grant the Soviets bases in Britain. This I imagine all stands on top of the Nazi-Soviet non-aggression pact, transformed in the fiction into a close relationship.</p>
+<p>What worries me is the depth of misunderstanding that allows someone to get even close to this point. After all, the focus is on the Nazis after they conquer Britain yet the understanding of Nazism is fatally flawed. Where else is this going to manifest itself in the story?</p>
+<p>What does the man himself have to say?</p>
+<blockquote>
+<p>the problem of how the future of the German nation can be
+secured is the problem of how Marxism can be exterminated</p>
+</blockquote>
+<p>(Lines 6587 &amp; 6588 of the <a href="http://gutenberg.net.au/ebooks02/0200601.txt">Gutenberg Australia version of Mein Kampf</a>.)</p>
+<p>Nazism in great part succeeded in Germany due to an alliance with wealthy reactionary sectors, who backed the fascists in the face of a threat from socialists who would have expropriated them materially and politically.</p>
+<p>To suggest there could be a lasting, strong and cordial alliance between the two is absurd, no matter what you think about the state of socialism in the Soviet Union.</p>
+<p>And none of this even touches on the virulent Nazi hatred of the Slavs!</p>
+<p>This is dangerous stuff. An understanding of fascism is absolutely vital if we’re to have any chance of confronting and stopping it — and we must always be ready to confront and stop it, whether it’s some “<a href="/images/2017-02-23-blood-swastika-pillock.jpg">blood swastika pillock</a>” or someone in a suit and tie.</p>
+<p>And, frankly, it is a disgusting slur against the Soviet Union, whose people <a href="https://en.wikipedia.org/wiki/World_War_II_casualties#USSR">paid the highest price</a> for defeating fascism in Europe.</p>
+<p>(The BBC are also currently repeating <a href="http://www.bbc.co.uk/programmes/b01kkxvd/episodes/player">The Nazis: A Warning from History</a>, for which <a href="https://en.wikipedia.org/wiki/Ian_Kershaw">Ian Kershaw</a> was the historical consultant. The first episode’s online for about another week.)</p>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2017/01/all-brexit-all-the-time/">All Brexit, all the time</a></h2>
+      <p><time datetime="2017-01-14T22:30">Saturday, January 14 2017</time></p>
+    </header>
+    <p>When a news story aligns with your views it can be difficult to critically assess how meaningful it is. An excellent example is today’s story that <a href="https://www.theguardian.com/politics/2017/jan/14/netherlands-will-block-eu-deal-with-uk-without-tax-avoidance-measures">the Netherlands “will block UK-EU deal without tax avoidance measures.”</a></p>
+<p>In particular, this story shows how the focus on Brexit in political reporting warps the discussion of important matters in potentially dangerous ways.</p>
+<p>In certain regards it’s almost the perfect story for the Guardian and Observer, aligning with certain opinions which I will unfairly caricature:</p>
+<ul>
+<li>If Britain leaves the EU everything will undoubtedly be worse;</li>
+<li>The Europeans know much better than we do and we must heed their wisdom;</li>
+<li>“Radical” leftwingers live in a fantasy world and only “sensible” centre-left politicians can lead us out of this crisis.</li>
+</ul>
+<p>My point is not to criticise these views even though I may disagree with them in part or in whole. The point is to lay out, with perhaps a few quibbles, the papers’ view of the “Brexit mess.”</p>
+<p>This tax-dodging story hits all the right notes: a “sensible” European centre-left leader has vowed to stop the Tories from turning Britain into a tax haven. Great! What’s to disagree with?</p>
+<p>Well, the story is meaningless. It means nothing. Its picture of our current situation is false and the threat has no chance of being carried out.</p>
+<p>To caricature again, a better summary would be: “Man with no power vows to prevent something that is already the case.” Let’s go through my claims in turn.</p>
+<p>To start, it’s unfair to say that Dutch Labour Party (PvdA) leader Lodewijk Asscher has no power. He’s currently the deputy PM! But, like the Guardian’s favourite Liberal Democrats, his party got into bed with the country’s rightwingers (VVD) and, like the Lib Dems, <a href="https://en.wikipedia.org/wiki/Opinion_polling_for_the_Dutch_general_election,_2017">could be annihilated at this year’s election</a>.</p>
+<p>Once Britain formally declares its intention to leave the EU a two-year timer starts ticking down. The PvdA are unlikely to be in a position to influence Dutch national policy at that point. So the threat is meaningless.</p>
+<p>OK, what about the mischaracterisation of the current tax situation? Asscher writes:</p>
+<blockquote>
+<p>Let’s fight the race to the bottom for profits taxation together which <em>threatens to come into existence</em> if it is up to the Conservative UK government. [Emphasis added]</p>
+</blockquote>
+<p>It’s true, the Tories are bent on slashing (primarily) corporation tax. But the current schedule of cuts was <a href="http://www.bbc.co.uk/news/business-35823970">set by George Osborne</a>, who backed a Remain vote in the EU membership referendum. The main rate of corporation tax <a href="https://www.ifs.org.uk/tools_and_resources/fiscal_facts/">has already been cut significantly</a> from 28% when the Con-Dem coalition was cobbled together in 2010 to 20% today. The plan is to take it <a href="http://www.independent.co.uk/news/business/news/philip-hammond-ditches-george-osbornes-15-corporation-tax-cut-target-a7342771.html">down to at least 17%</a>.</p>
+<p>We’re already most of the way to 17%, so it’s wrong to say that “the race to the bottom … threatens to come into existence.”</p>
+<p>And further tax cuts are even more irrelevant when you consider that tax-dodgers can legally avoid British rates by using Britain as a tax haven. Britain sits at the centre of a vast web of “secrecy jurisdictions” — starting in the City of London, reaching out to Jersey, Guernsey and the Isle of Man, and then further to the 14 overseas territories (including the notorious Cayman and British Virgin Islands) and to a certain extent the Commonwealth countries.</p>
+<p>The compilers of the <a href="http://www.financialsecrecyindex.com/introduction/introducing-the-fsi">Financial Secrecy Index</a> write of <a href="http://www.financialsecrecyindex.com/PDF/UnitedKingdom.pdf">Britain (PDF)</a>:</p>
+<blockquote>
+<p>Overall, the City of London and these offshore satellites constitute by far the most important part of the global offshore world of secrecy jurisdictions. Had we lumped them together, the British network would be at the top of our index, above Switzerland.</p>
+</blockquote>
+<p>Government policy over decades to support the City of London as a financial centre has enabled the growth of this tax haven network. (For more on all this, I highly recommend <a href="http://treasureislands.org/">Nick Shaxson’s book Treasure Islands</a>.)</p>
+<p>And then there’s the other, unmentioned, side of this accusation: <a href="http://www.financialsecrecyindex.com/PDF/Netherlands.pdf">the Netherlands as a tax haven (PDF)</a>. While it accounts for “less than 1% of the global market for offshore financial services,” an ocean of money flows through it:</p>
+<blockquote>
+<p>The Netherlands hosts around 12,000 ‘special financial institutions’ used by foreign parent companies to route €4,000 billion through the Netherlands every year — roughly 10 times the Netherlands’ gross national product.</p>
+</blockquote>
+<p>Further tax giveaways have led to “91 of the 100 largest” transnational corporations setting up financing firms in the Netherlands.</p>
+<p>The point of this is absolutely not to say that Dutch politicians should get their own house in order before they start lecturing Britain, it’s to put Asscher’s remarks in context.</p>
+<p>He made a fuss of Britain becoming a tax haven when it leaves the EU and a pro-EU paper here has given his views prominence — but the briefest examination shows that everything he says might happen has <em>already happened</em>.</p>
+<p>My worry is that the obsession with the decision to leave the EU in almost all areas of policy is causing people (deliberately or not) to focus on it to the exclusion of other factors.</p>
+<p>And since the Brexit negotiations are such a nebulous mess the danger is that people ascribe their fears or hopes to them when they should be taking action in more concrete ways that might actually make a difference.</p>
+<hr />
+<p>(Just in case you think I’m being anti-Remain with the tax example, here’s one from the other side. Both left- and right-wing pro-Leave groups have criticised the EU common fisheries policy for harming small fishers. The EU does set quotas for each country, but national governments divvy up the quota between companies and Westminster gives most of Britain’s quota to giant firms.)</p>
+  </article>
+  <div class="pagination">
+<p class="pagination-older"><a href="https://robjwells.github.io/page-7/">Older posts</a></p><p class="pagination-newer"><a href="https://robjwells.github.io/page-5/">Newer posts</a></p>  </div>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

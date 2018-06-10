@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – page 7</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2016/12/plot-problems-in-the-rss-feed/">Plot problems in the RSS feed</a></h2>
+      <p><time datetime="2016-12-12T11:30">Monday, December 12 2016</time></p>
+    </header>
+    <p>The SVG plots I use seem to be problematic in some RSS readers. Reeder on my phone just displays a white bar, while Reeder on my Mac displays the image properly.</p>
+<p>The URLs in the feed are valid and the feed is valid as a whole, so I’m not sure what’s causing this.</p>
+<p>If you’ve got any ideas what the problem is, I’d love to hear from you <a href="/about">by email</a> or <a href="https://twitter.com/robjwells">on Twitter</a>.</p>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2016/12/trains-home-and-away/">Trains home and away</a></h2>
+      <p><time datetime="2016-12-11T23:20">Sunday, December 11 2016</time></p>
+    </header>
+    <p>When <a href="/2016/12/escape-to-the-country/">I moaned about trains last week</a>, I did you a disservice. Plonking in those train departures as a table really wasn’t the best way to go about it. What I really should’ve done is make a pretty plot to show just how bad the situation was.</p>
+<p>Well, I have one for you today. Not only that, but I’ve taken the chance to look at other countries too.</p>
+<p>To recap, I need to travel from London to Leicester on the night of Friday December 23 along with just about everyone else, using <a href="https://en.wikipedia.org/wiki/East_Midlands_Trains">East Midlands Trains</a>, but the cost of tickets is extortionate.</p>
+<p>In the plot below, this London-Leicester journey appears labelled as East Mids. For comparison I’ve looked to the Netherlands (Amsterdam-Eindhoven, <a href="https://en.wikipedia.org/wiki/Nederlandse_Spoorwegen">NS</a>), Germany (Berlin-Leipzig, <a href="https://en.wikipedia.org/wiki/Deutsche_Bahn">DB</a>) and France (Paris-Amiens, <a href="https://en.wikipedia.org/wiki/SNCF">SNCF</a>)</p>
+<p>Now, I should say that I know next to nothing about train services in those three countries so I don’t know if they’re the best comparisons that I could have chosen. They were picked because the distance (as the crow flies) is roughly similar to the 90 miles between London and Leicester, and journey times are all roughly between an hour and a bit to not quite two hours.</p>
+<p>Only direct journeys on the continent were considered, as St Pancras to Leicester is (almost always) a direct train. All the costs are in euros, with sterling converted.</p>
+<p>With that out the way, let’s return to the basic question: <em>It’s the Friday before Christmas Eve and you need to leave the capital for a city 90-ish miles away. How much does a single train fare cost you?</em></p>
+<p class="full-width">
+    <a href="/images/2016-12-11-trains.svg">
+        <img alt="A chart showing single train fares for selected journeys in England, France, Germany and the Netherlands on Friday December 23. English fares are high and erratic, whereas the others are relatively low and consistent."
+             src="/images/2016-12-11-trains.svg"
+             class="no-border">
+    </a>
+</p>
+
+<p>This is not the prettiest plot I’ve ever drawn and I blame railway privatisation. What shocks me the most about this is not the extremely high fares on British railways (although it is ridiculous!) but how erratic the fares are.</p>
+<p>I’ve drawn a one-hour moving average for East Midlands Trains to give some shape to the individual fares, and the fact that I haven’t bothered for the other three tells you a lot about the underlying fares: they’re so consistent that drawing a line through them just makes it harder to read.</p>
+<p>Dutch fares are absolutely consistent (€19.20 for Amsterdam-Eindhoven), whereas in France and Germany there’s a basic price but occasionally you can get a ticket few euros cheaper. That is the only deviation.</p>
+<p>What I think is happening on East Mids is the private operator is trying to gouge travellers by increasing fares at popular times. But even that’s a mess. When I wrote a week ago, it would’ve cost £58.50 to travel at 21:30. Now it’s £17.50! I picked a ticket an hour later to get that price, when I would’ve much preferred to travel earlier.</p>
+<p>Should I have waited? Who knows? The train I’m on is now more expensive. What will the price of these services be in a week’s time, higher or lower? There’s no way to tell.</p>
+<p>These countries — whose publicly owned train operators all make money from running shoddy services in Britain — provide an essential public service on the railways and it’s priced as such. Yet train travel in Britain is not a service but a commodity to be sold for as high a price as the “market” will bear.</p>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2016/12/everything-is-wrong/">Everything is wrong</a></h2>
+      <p><time datetime="2016-12-10T22:20">Saturday, December 10 2016</time></p>
+    </header>
+    <p>Oh Claudio. Oh mate. I know, we’ve all been there pet. You’ve got your head down, working hard, but still, “<a href="http://www.bbc.co.uk/sport/football/38197572">everything is wrong</a>.”</p>
+<p>You just want to pull the duvet over your head and just hope it goes away. But when “everything is wrong” the best bet is often to take a good look.</p>
+<p>Shall we? Let’s.</p>
+<p class="full-width">
+    <a href="/images/2016-17_lcfc-first_15_games.svg">
+        <img alt="A chart showing Leicester City’s points in the first 15 games, 2014-15 to 2016-17 seasons"
+             src="/images/2016-17_lcfc-first_15_games.svg"
+             class="no-border">
+    </a>
+</p>
+
+<p>Claudio, mate, I know you want to prove that <a href="https://en.wikipedia.org/wiki/Nigel_Pearson">old Nige</a> isn’t the only one who can summon a Christmas miracle for the Foxes, but this is a little too close for comfort.</p>
+<p>I really was joking <a href="/2016/09/leicesters-start-to-the-season/">last time</a>, there was no need to kick off a 2014-15 tribute band.</p>
+<p>Good news, though; let’s think positive. We are more or less on trend for safety:</p>
+<p class="full-width">
+    <a href="/images/2016-12-10_lcfc-points_over_time.svg">
+        <img alt="A chart showing Leicester City’s points over time in the 2014-15 to 2016-17 seasons as of 2016-12-10"
+             src="/images/2016-12-10_lcfc-points_over_time.svg"
+             class="no-border">
+    </a>
+</p>
+
+<p>But that’s not exactly what I’d call <a href="https://bicycledutch.wordpress.com/2012/01/02/sustainable-safety/">sustainable safety</a> (<em>ahem</em>). As ever those flat periods representing losses are misleading, giving the impression that you’re treading water when you’re really sinking below the surface. Reorienting the plot around the safety line gives a more realistic view:</p>
+<p class="full-width">
+    <a href="/images/2016-12-10_lcfc-points_adrift.svg">
+        <img alt="A chart showing Leicester City’s distance from the safety trend, 2014-15 to 2016-17 seasons as of 2016-12-10"
+             src="/images/2016-12-10_lcfc-points_adrift.svg"
+             class="no-border">
+    </a>
+</p>
+
+<p>That’s a lot of losses, occasionally topped up with wins. There aren't many draws in there, and there need to be more of them. The safety trend line is only just over 1 point per match. Keeping up with it by losing two and winning one has an obvious flaw: if you’re losing most of the time it’s unlikely you’ll bag the wins you need. Fighting out for draws and a single point means you can chip away at that total and hopefully spare yourself the need for any heroics.</p>
+<p>After last season, boring conservative play is a come down, but we all know what the other option is.</p>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2016/12/roads-a-laypersons-guide/">Roads: a layperson’s guide</a></h2>
+      <p><time datetime="2016-12-06T14:30">Tuesday, December 6 2016</time></p>
+    </header>
+    <p><em>This originally appeared in <a href="http://morningstaronline.co.uk/a-f284-The-Tories-will-abandon-us-all-on-the-road-to-nowhere">the Morning Star of Tuesday December 6 2016</a>.</em></p>
+<hr />
+<p>WHEN Theresa May became prime minister, she signalled an intention to back away from austerity. In that spirit, new Chancellor Philip Hammond announced extra cash for infrastructure in his Autumn Statement, the centrepiece being <a href="http://www.bbc.co.uk/news/uk-politics-38041466">£1.3 billion for new and “improved” roads</a>.</p>
+<p>Naturally with the Conservatives, all is not as it seems. The government isn’t really ditching austerity and the extra roads cash comes on top of huge amounts set aside by George Osborne. While there was supposedly “no money left” — to the point that it had to be taken from the pockets (and often the mouths) of disabled people, civil servants, firefighters, health workers, children… just about everyone — Osborne somehow found enough underneath the sofa cushions for a £15bn roads programme (<a href="https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/209279/PU1524_IUK_new_template.pdf">announced first in June 2013</a> and reannounced, <a href="http://www.telegraph.co.uk/finance/personalfinance/tax/11220636/Business-backs-David-Cameron-on-road-revolution.html">er</a>, <a href="http://www.telegraph.co.uk/news/uknews/road-and-rail-transport/11264202/Billions-of-pounds-for-road-schemes-in-Tory-and-LibDem-areas-ahead-of-election.html">twice</a> in late 2014).</p>
+<p>How much exactly has been budgeted for capital spending on roads isn’t clear, but Transport Secretary Chris Grayling recently said that Hammond’s extra roads cash “<a href="https://www.gov.uk/government/news/english-regions-to-benefit-from-transport-investment-worth-3-billion">is over and above the £23bn</a>” already being spent on roads — I’d be amazed if anyone knows the true total.</p>
+<p>It’s a huge wodge of cash when <a href="https://www.ifs.org.uk/uploads/publications/bns/BN160.pdf">the Con-Dem coalition cut £25bn from the welfare budget between 2010 and 2015</a>. This is major support for roadbuilding — Hammond said he would “<a href="http://www.telegraph.co.uk/news/7720644/Coalition-will-end-war-on-the-motorist-Transport-Secretary-pledges.html">end the war on motorists</a>” when he was made transport secretary in 2010.</p>
+<p><a href="https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/209279/PU1524_IUK_new_template.pdf">Osborne promised</a> “the biggest investment in our roads since the 1970s,” to build “all available Highways Agency road projects to tackle the most congested parts of the network” including by “adding extra lanes to the busiest motorways” and “upgrading the national non-motorway network … with a large proportion moved to dual-lane and grade-separated road standard to ensure free-flowing traffic nationwide.” And <a href="https://www.gov.uk/government/news/english-regions-to-benefit-from-transport-investment-worth-3-billion">Grayling recently reiterated</a> that the road schemes are “focused on congestion.”</p>
+<p>There’s a problem with all this: new roads and road “improvements” — code for wider and faster — tend to make congestion worse. It’s counterintuitive but proven: more roads mean more cars in the extra space, not extra space for the existing cars.</p>
+<p>It’s been established since at least the 1930s, when the roads engineer <a href="http://stopcityairportmasterplan.tumblr.com/post/19513243412/induced-traffic-again-and-again-and-again">Charles Bressey noted</a> “the remarkable manner in which new roads generate new traffic.” In New York, Robert Moses was opening the Triborough Bridge, which quickly smashed traffic forecasts — congestion which Moses used to justify other bridges and urban motorways, which were soon jammed, needing more roads, and on and on.</p>
+<p><a href="https://www.youtube.com/watch?v=R3ajdFIgD54&amp;t=1470">The reasons are straightforward</a>. People see the new road, think it’ll be faster and easier, and switch from other routes (which suffer a similar fate). Or switch to the car from public transport. Or make journeys they wouldn’t have made. Or make longer journeys. Or make journeys at the busiest times. Or move further away, dependent on the new road.</p>
+<p>This is called induced traffic — traffic that wouldn’t have otherwise existed were it not for the new or wider road. Transport expert <a href="http://stopcityairportmasterplan.tumblr.com/post/19513243412/induced-traffic-again-and-again-and-again">Phil Goodwin remarked 10 years ago</a> that “for 80 years, every eight years on average, there has been the same experience, the same conclusions — even, for goodness sake, more or less the same figures” showing that when a road is built or widened it fills up with traffic.</p>
+<p>Over 20 years ago the then Department of Transport accepted this principle after a major report (“<a href="http://www.bettertransport.org.uk/sites/default/files/trunk-roads-traffic-report.pdf">Trunk roads and the generation of traffic</a>”). This was important because for decades planners had put out inflated traffic forecasts and insisted vast tracts of new Tarmac be laid down to cope (known as “predict and provide”).</p>
+<p>It appears we’re back to that, building for more cars when we must slash car use for the sake of our health and environment. Meanwhile everyday maintenance suffers as council budgets are cut; <a href="http://www.asphaltuk.org/alarm-survey-page/">an industry survey</a> predicts that £12bn is needed to get local roads up to scratch.</p>
+<p>It’s no use moaning at people for driving when government policy has for decades been to provide for cars. For many people there are no other options — public transport is patchy and expensive when it’s there at all, and walking and cycling is frequently indirect, unpleasant and hazardous.</p>
+<p>This isn’t inevitable and final. Reversing decades of decline and privatisation of our buses, trams and trains would take up many journeys made by car.</p>
+<p>Look at London to see how much decent public transport can handle (though <a href="http://www.standard.co.uk/news/transport/tube-network-to-be-put-out-of-action-within-15-years-due-to-soaring-population-a3269481.html">the Tube is increasingly overcrowded</a>).</p>
+<p>This obviously greatly benefits the quarter of households with no car — often the poorest who also most suffer from others’ car use.</p>
+<p>But we absolutely must make best use of our road space and it’s here that the quickest, cheapest and often most beneficial changes can be made.</p>
+<p><a href="https://www.gov.uk/government/statistics/national-travel-survey-2015">Two thirds of trips are shorter than five miles</a> — under 30 minutes slow cycling, yet 77 per cent of trips of two to five miles are done by car. It’s easy to see why: <a href="https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/481877/british-social-attitudes-survey-2014.pdf">64 per cent of people think cycling on the road is too dangerous</a>.</p>
+<p>When good, safe cycleways are built people flock to them. In London, cycling on roads with new high-quality tracks has <a href="http://content.tfl.gov.uk/pic-161130-07-cycle-quietways.pdf">increased by half</a> — when Blackfriars Bridge is busiest people on cycles make up 70 per cent of all traffic but in the space of just a single motor vehicle lane, next to a four-lane road.</p>
+<p>It’s an incredibly efficient use of road space for moving people and great value, with <a href="http://therantyhighwayman.blogspot.co.uk/2016/04/cost-invest-value.html">a mile of protected cycleway costing £2-3 million</a>. For comparison, <a href="http://www.transport.gov.scot/project/a9-dualling-perth-inverness">turning the A9 from Perth to Inverness into a dual carriageway</a> costs £37m per mile.</p>
+<p>That’s also a narrow view of the value. Reducing car use reduces pollution, which each year <a href="https://www.rcplondon.ac.uk/projects/outputs/every-breath-we-take-lifelong-impact-air-pollution">causes 40,000 deaths and costs the NHS and businesses £20bn</a>. Meanwhile walking and cycling improve people’s health and help to tackle obesity, which <a href="https://www.theguardian.com/society/2014/nov/20/obesity-bigger-cost-than-war-and-terror">costs the economy £47bn a year</a> with direct costs to the NHS of about £16bn from obesity and diabetes.</p>
+<p>And of course, <a href="https://www.theccc.org.uk/charts-data/ukemissions-by-sector/transport/">road transport accounts for a quarter of the UK’s greenhouse gas emissions</a>, which we must cut drastically to avoid roasting the planet.</p>
+<p>Cycling offers greater independence for disabled people too, as the wonderful <a href="http://www.wheelsforwellbeing.org.uk">Wheels for Wellbeing</a> has shown. Dedicated safe cycle infrastructure makes it possible for people of all ages and abilities to get around under their own steam.</p>
+<p>A nationwide road modernisation programme that provides space for walking and cycling would pay for itself many times over and is an ideal candidate for a chunk of <a href="https://www.morningstaronline.co.uk/a-9c5a-Corbyns-plan-to-rebuild-Britain">Labour’s proposed £500bn of public investment</a>. It would greatly improve our transport where the Tories’ <a href="https://en.wikipedia.org/wiki/Mr._Toad">Mr Toad</a> roadbuilding fantasy would leave us stranded on <a href="https://en.wikipedia.org/wiki/Concrete_Island">JG Ballard’s Concrete Island</a>.</p>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2016/12/escape-to-the-country/">Escape to the country</a></h2>
+      <p><time datetime="2016-12-04T01:20">Sunday, December 4 2016</time></p>
+    </header>
+    <p>Every year I leave London for Christmas and go back to Leicester. Usually I get Christmas Eve off, as there’s no Christmas Day paper, and get out of the city a day ahead of many others.</p>
+<p>No such luck this year as Christmas Eve is on the Saturday, so I’m going back with everyone else after work on the Friday night. Right, time to book the train tickets.</p>
+<p><img src="/images/2016-12-03-train-tickets.gif"
+     alt="An edited screenshot showing return tickets all costing £59.50."
+     ></p>
+<p>(This screenshot is heavily edited to condense the information, but you can <a href="http://ojp.nationalrail.co.uk/service/timesandfares/STP/LEI/231216/2000/dep/271216/1200/dep">see the tickets for yourself</a>.)</p>
+<p>Hmm. That’s a bit dear. What about singles… oh. “From £71.” Really?</p>
+<p>Yes, really. Here’s a selection of single tickets for trains leaving St Pancras the night before Christmas Eve:</p>
+<div class="flag">
+  <p><strong>Update <time>2016-12-04</time>:</strong> I’ve tidied up the tables to make things clearer since I first published this post.</p>
+</div>
+
+<table>
+  <caption>Single train tickets (selected) leaving St Pancras for Leicester, Friday December 23 2016</caption>
+  <thead>
+    <tr>
+      <th>Depart</th> <th>Duration</th> <th>Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>17:57</td> <td>1:03</td> <td>£79.50</td>
+    </tr>
+    <tr>
+      <td>18:25</td> <td>1:15</td> <td>£55.00</td>
+    </tr>
+    <tr>
+      <td>18:30</td> <td>1:22</td> <td>£71.00</td>
+    </tr>
+    <tr>
+      <td>19:15</td> <td>1:08</td> <td>£58.50</td>
+    </tr>
+    <tr>
+      <td>19:32</td> <td>1:21</td> <td>£42.50</td>
+    </tr>
+    <tr>
+      <td>19:55</td> <td>1:06</td> <td>£55.00</td>
+    </tr>
+    <tr>
+      <td>20:15</td> <td>1:07</td> <td>£55.00</td>
+    </tr>
+    <tr>
+      <td>20:26</td> <td>1:03</td> <td>£42.50</td>
+    </tr>
+    <tr>
+      <td>20:55</td> <td>1:07</td> <td>£42.50</td>
+    </tr>
+    <tr>
+      <td>21:00</td> <td>1:26</td> <td>£28.50</td>
+    </tr>
+    <tr>
+      <td>21:30</td> <td>1:45</td> <td>£58.50</td>
+    </tr>
+    <tr>
+      <td>22:00</td> <td>1:44</td> <td>£21.00</td>
+    </tr>
+    <tr>
+      <td>22:25</td> <td>1:32</td> <td>£17.50</td>
+    </tr>
+    <tr>
+      <td>23:15</td> <td>2:35</td> <td>£14.50</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Looking at these prices, there’s an obvious tailing off as it gets later. But there’s a wild fluctuation even between adjacent services.</p>
+<p>Why does it cost £30 more to travel at 21:30 instead of 21:00, on a service that calls at the same stops (not shown) but takes 19 minutes longer?</p>
+<p>Why does it cost £79.50 to travel at 17:57? £79.50! That’s £6.40 more than <a href="https://www.gov.uk/jobseekers-allowance/overview">the weekly dole</a> for over-25s. 11 hours’ work at <a href="https://www.gov.uk/national-minimum-wage-rates">the minimum wage</a> for over-25s. This is mad.</p>
+<p>What’s the situation abroad? Let’s pick on the Netherlands, going from Amsterdam to Eindhoven as the journey times are similar (prices converted from euros).</p>
+<table>
+  <caption>Single train tickets leaving Amsterdam for Eindhoven, Friday December 23 2016</caption>
+  <thead>
+    <tr>
+      <th>Depart</th> <th>Duration</th> <th>Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>19:55</td> <td>1:21</td> <td>£16.00</td>
+    </tr>
+    <tr>
+      <td>20:10</td> <td>1:18</td> <td>£16.00</td>
+    </tr>
+    <tr>
+      <td>20:25</td> <td>1:21</td> <td>£16.00</td>
+    </tr>
+    <tr>
+      <td>20:40</td> <td>1:18</td> <td>£16.00</td>
+    </tr>
+    <tr>
+      <td>20:55</td> <td>1:21</td> <td>£16.00</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>It’s Friday night, the night before Christmas Eve, thousands are leaving the capital to spend Christmas with their families. You plan to leave any time from just before 20:00 to just after 21:00. How much do you pay for your ticket?</p>
+<p>In England, about £50. The Netherlands, £16 — the same as you’d pay tomorrow, or the day after, the same as you’d pay in the morning peak.</p>
+<p>Leaving aside the much higher price in England — a function of our railways being run by <a href="https://en.wikipedia.org/wiki/Brian_Souter">billionaire bigots</a> — the huge variation in pricing says something important about the way our country’s railways are thought of.</p>
+<p>Train journeys are not an essential service to be provided to all, but a scarce commodity to be sold for the most profit. There’s nothing inherently different about these services — they travel the same distance along the same tracks and serve similar stations along the way.</p>
+<p>But there’s more demand at certain times, so the price goes up — to make the most amount of money out of people able to pay it or who absolutely must travel at those times.</p>
+<p>In contrast, to use our Netherlands example, a journey costs a certain amount of money, determined approximately by the distance travelled. It’s a service, not a commodity. If the train’s full then the train’s full, get the next one in 15 minutes.</p>
+<p>This nonsense can be pinned to the door of privatisation. Britain now has the highest rail fares in Europe — and rising much faster than real wages — yet subsidies to private operators are four times what were paid to British Rail before it was broken up. And there has been little investment, as private operators extract profits, so while passenger numbers are up since 1994, rail’s modal share (the proportion of people travelling by train) hasn’t budged. Action for Rail have a good report on the “<a href="http://actionforrail.wpengine.com/wp-content/uploads/2015/06/Four_Big_Myths_Rail_Privatisation_Report_2015_LR.pdf">four big myths</a>” of privatisation.</p>
+<p>But it looks like I’m having a late one on Friday December 23.</p>
+  </article>
+  <div class="pagination">
+<p class="pagination-older"><a href="https://robjwells.github.io/page-8/">Older posts</a></p><p class="pagination-newer"><a href="https://robjwells.github.io/page-6/">Newer posts</a></p>  </div>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

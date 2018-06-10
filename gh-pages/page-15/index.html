@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – page 15</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2014/01/misbehaving-single-column-nstableview/">Misbehaving single-column NSTableView</a></h2>
+      <p><time datetime="2014-01-26T19:24">Sunday, January 26 2014</time></p>
+    </header>
+    <p>This is mostly a note for myself, as I was ready to pull my hair out earlier.</p>
+<p>Interface Builder can get in your way when you want to create a single-column <code>NSTableView</code> where the column fills the entire width available.</p>
+<p>Setting the column count to 1 doesn’t automatically resize it, and extending the column using its resize handle or by setting its width to the width of the view can cause a horizontal scrollbar to appear.</p>
+<p>The solution is to <strong>resize the view itself</strong> — so that you eat into the space occupied by the single column, and then expand back to your desired width. It is incredibly stupid. Here’s a video:</p>
+<video src="/images/2014-01-26_tableview.m4v" poster="/images/2014-01-26_tableview_poster.png" controls preload="metadata">
+  Sorry if you can’t see it. <a href="/images/2014-01-26_tableview.m4v">Here’s a link to the file itself.</a>
+</video>
+
+<p>There’s a <a href="http://stackoverflow.com/questions/7545490/how-can-i-have-the-only-column-of-my-nstableview-take-all-the-width-of-the-table">Stack Overflow question</a> where the accepted answer recommends this method. Handily I misread it — only realising what it was saying after I’d stumbled across the resizing trick myself (after trying many other things).</p>
+<p>In related news, I’m almost done with the excellent <a href="http://www.bignerdranch.com/book/cocoa_programming_for_mac_os_x_th_edition_">Big Nerd Ranch Cocoa book</a> after getting sidetracked for two months.</p>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2014/01/scraping-entourage/">Scraping Entourage</a></h2>
+      <p><time datetime="2014-01-22T13:32">Wednesday, January 22 2014</time></p>
+    </header>
+    <p>Early last year myself and my flatmate got into <a href="http://en.wikipedia.org/wiki/Entourage_(TV_series)">Entourage</a>, which is incredible. We devoured all eight seasons in a few weeks. One thing that I love about it is the soundtrack. It’s a mix of older and newer stuff and, frankly, I have no idea about music so it’s nice to have a pool of well-picked tracks to dip in to.</p>
+<p>In December, when my flatmate rewatched the series, I decided to do something with the soundtrack. Getting the music (for 96 episodes) wasn’t as easy as downloading an album — it took some programming, a few headaches, and a bit of tedium. What follows was ultimately successful, but I’d hesitate to call it a success story.</p>
+<h3>Sourcing the music</h3>
+<p>HBO’s website <em>does</em> list the tracks used in each episode, but you can’t get at them as it’s all Flash. However, <a href="http://www.tunefind.com">Tunefind</a> has <a href="http://www.tunefind.com/show/entourage">good data</a>, which I imagine some industrious person has transcribed from the official list. In some cases it’s more complete.</p>
+<p>But the advantages of having users assemble such data are weighed against the mistakes they may make and inconsistencies that creep in. I’ll address the practical implications later. First we need to extract the track details from the website.</p>
+<div class="flag">
+  <p>
+    The programs in this post are incredibly rough. I share them in the hope they’ll help others and spark ideas, <em>not</em> as good examples.</p>
+  <p>
+    All of the code is collected in <a href="https://gist.github.com/robjwells/f26569278cd0d4bc49ed">a multi-file Gist</a>.
+  </p>
+</div>
+
+<pre><code>#!/usr/local/bin/python3
+
+import re
+import json
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
+
+base_url = 'http://www.tunefind.com'
+seasons_index = '/show/entourage'
+response = urlopen(base_url + seasons_index)
+response_text = response.read().decode()
+soup = BeautifulSoup(response_text)
+
+seasons_div = soup.find('div', class_='lefttext sidebarIndent')
+seasons_urls = [(base_url + a_tag['href'])
+                for a_tag in seasons_div.find_all('a')]
+
+tracks_list = []
+
+for s in seasons_urls:
+  season = BeautifulSoup(urlopen(s).read().decode())
+  episode_urls = [(base_url + a_tag['href']) for a_tag
+                  in season.find_all('a',
+                    {'name': re.compile(r'episode\d+')})]
+
+  for e in episode_urls:
+    episode = BeautifulSoup(urlopen(e).read().decode())
+
+    for raw in episode.find_all(class_='tf-songevent-text'):
+      match = re.search(r'(.+)\n\s+by (.+)', raw.text.strip())
+      if match:
+        tracks_list.append(match.groups())
+
+for track in tracks_list:
+  # filter list for duplicates
+  if tracks_list.count(track) &gt; 1:
+    tracks_list.remove(track)
+
+with open('/Users/robjwells/Desktop/tracks.json', 'w') as tracks_json:
+  json.dump(tracks_list, tracks_json)</code></pre>
+
+
+<p>Tunefind’s website has index pages for each series with links to each of their seasons, which link to pages for each episode that contain track details. The scraping code iterates over the seasons (lines 14–24), then the episodes (lines 26–32).</p>
+<p>The loop starting on line 20 appends a tuple of the track title and artist name, found in line 30, to <code>tracks_list</code>. This is bluntly weeded for exact duplicates in lines 34–37. (Subtly different entries for the same track aren’t affected, so they have to be picked out when adding the tracks to Spotify, detailed below.)</p>
+<p>Lastly the list is written to a file; I chose JSON because I wasn’t sure what I was going to do next. The tuples are converted to lists, which is fine for our purposes.</p>
+<h3>Doing something with it</h3>
+<p>We’ve now got a nice file of titles and artists — 789 tracks in total. The next question is how to use it. My goal was to construct a Spotify playlist, as the service has a large catalogue of tracks available for free and it would take no effort to use once set up.</p>
+<p>Initially I considered using the <a href="https://developer.spotify.com">Spotify API</a>, but it appeared too daunting and the quality of the data would derail attempts to add tracks programmatically. Instead I settled on scripting the desktop client. That’s easier said than done, as its AppleScript support is poor.</p>
+<div class="flag">
+  <p>
+    When I publish I always check the post’s links. Thank god I did, because Spotify has recently overhauled its developer site. The <a href="https://developer.spotify.com/technologies/web-api/">metadata API</a> looks far more approachable.
+  </p>
+  <p>
+    However, discrepancies between the Tunefind data and Spotify’s catalogue would still likely cause headaches. Also, adding tracks to a playlist is still reserved for its <a href="https://developer.spotify.com/technologies/libspotify/">C API</a>.
+  </p>
+</div>
+
+<p>After mulling over how much manual work I was willing to do, I came up with the idea for an AppleScript scaffold that, since I couldn’t script Spotify directly, would script around Spotify: using its URL scheme to search for tracks and a dialog box with controls to move through the list.</p>
+<p>Underneath that would be Python that managed the track list, assembled the URL and handled the controls:</p>
+<pre><code>#!/usr/local/bin/python3
+
+import json
+import subprocess
+
+position = open('/Users/robjwells/Desktop/position', 'r+')
+reported = open('/Users/robjwells/Desktop/reported', 'a')
+
+
+def asrun(script):
+  &quot;Run the given AppleScript and return the standard output and error.&quot;
+
+  osa = subprocess.Popen(['osascript', '-'],
+                         stdin=subprocess.PIPE,
+                         stdout=subprocess.PIPE)
+  return osa.communicate(script.encode())[0]
+
+
+with open('/Users/robjwells/Desktop/tracks.json') as tracks_json:
+  tracks_list = json.load(tracks_json)
+
+ascript = '''
+tell application &quot;LaunchBar&quot;
+   perform action &quot;Open Location&quot; with string &quot;spotify:search:{0}&quot;
+end tell
+
+tell application &quot;Finder&quot;
+   set dialog_result to display dialog &quot;Ready for next track?&quot; ¬
+       buttons {{&quot;Report&quot;, &quot;Stop&quot;, &quot;Next&quot;}} default button &quot;Next&quot;
+   return button returned of dialog_result
+end tell
+'''
+
+
+def prep_track(t):
+  joint = ' '.join(t)
+  return joint.replace(' ', '+')
+
+
+def prompt(t):
+  script = ascript.format(prep_track(t))
+  result = asrun(script).decode().strip()
+  if result == 'Stop':
+    return False
+  elif result == 'Report':
+    reported.write(json.dumps(t))
+    reported.write('\n')
+  position.seek(0)
+  position.write(str(tracks_list.index(t) + 1))
+  return True
+
+
+raw_pos = position.read()
+if raw_pos:
+  pos = int(raw_pos)
+else:
+  pos = 0
+
+for track in tracks_list[pos:]:
+  if not prompt(track):
+    break
+
+position.close()
+reported.close()</code></pre>
+
+
+<p>According to the file metadata, I created this script at 12.50am. Some of it is hilariously bad. I haven’t tidied up these scripts but I had to change a bit where I trampled all over my own global names. It’s in desperate need of re-ordering so I’m going to work through the script in the order parts are used, not in which they’re written.</p>
+<p>At its core, it’s a little Python engine that uses <a href="http://www.leancrew.com/all-this/2013/03/combining-python-and-applescript/">Dr Drang’s <code>asrun</code> function</a> to run an AppleScript via <code>osascript</code>.</p>
+<p>We start by opening a position file to store our place in the track list and a reported file to store any tracks which aren’t in the Spotify catalogue (lines 6 &amp; 7). Next we open and parse the JSON track list (lines 19 &amp; 20).</p>
+<p>Lines 53–57 determine from the position file where to begin in the track list, with <code>pos</code> used to slice it in line 59. The selected part of the list is iterated over and each track tuple fed to the <code>prompt</code> function (lines 40–50).</p>
+<p>This formats the track (using <code>prep_track</code> to join the artist and title, and replace spaces with plus signs) and inserts it into the AppleScript (line 41), which is then run.</p>
+<p>The AppleScript opens the Spotify search URL and displays a dialog box:</p>
+<p class="full-width">
+  <img alt="Screenshot of the dialog box on top of the Spotify search results" src="/images/2014-01-22_entprompt.png">
+</p>
+
+<p>The chosen button is returned and assigned to <code>result</code>. If the searched-for track couldn’t be found, the “Report” button adds it to the reported file (lines 46 &amp; 47) and proceeds as if “Next” had also been clicked: writing the index of the next track to the position file and returning <code>True</code> to cause the loop in lines 59–61 to continue. “Stop” returns false and ends the loop — and so the script.</p>
+<p>Within the AppleScript itself (lines 22–32), LaunchBar is used to open the Spotify. This is holdover from when I was trying to use LaunchBar’s “Browse in Spotify” action (select Spotify and press space) instead of the search URL. It didn’t work. There’s no reason to use LaunchBar anymore, this would work fine:</p>
+<pre><code>open location &quot;search:spotify:{0}&quot;</code></pre>
+
+
+<p>Where <code>{0}</code> is a <a href="http://docs.python.org/3/library/string.html#formatstrings">replacement field</a>.</p>
+<p>Once the sliced list has been iterated over, we clean up by closing the position and reported files (lines 63 &amp; 64).</p>
+<p>The script does a decent job of working around the inability to directly control Spotify. It leaves me to pick an appropriate track from the search results shown, drag it to a playlist and chose the appropriate next action from the dialog. It turned a mountain of tedious work into a reasonably-sized hill.</p>
+<p>Being human, though, I occasionally picked the wrong button in the dialog, meaning some tracks weren’t reported or were reported in error. Ah well. I was still left with a playlist of about 570 tracks.</p>
+<h3>A musical interlude</h3>
+<div class="flag">
+  <p>
+    Here’s <a href="http://open.spotify.com/user/rjwells/playlist/6ddbHbP6pf8bHQ0CuvEowP">the link to the Entourage playlist</a>.
+  </p>
+</div>
+
+<p>Since creating it in mid-December, I’ve been listening to the playlist and marking my favourite tracks so I could buy them on iTunes. There’s too many to do by hand, so a bit of automation is called for.</p>
+<p>Dragging a track from the Spotify client gives you an <code>http://open.spotify.com/track/…</code> URL. Opening it in a browser will likely get you the newfangled web player, which isn’t much use, but tools such as <code>curl</code> still return the source to the detail view you used to get. We’ll use this to turn the URLs back into track titles and artist names, and from there into iTunes links.</p>
+<pre><code>#!/usr/local/bin/python3
+
+import os
+import sys
+import requests
+from bs4 import BeautifulSoup as bs
+
+spot_path = os.path.join(os.getcwd(), sys.argv[1])
+itunes_search = 'https://itunes.apple.com/search?term={}&amp;country=gb'
+
+with open(spot_path) as spot_file:
+  spot_links = spot_file.read().splitlines()
+
+
+def spotify_to_itunes(link):
+  spot_soup = bs((requests.get(link)).text)
+  title = spot_soup.h1.text
+  artist = spot_soup.h2.a.text
+  plussed = '+'.join([title, artist]).replace(' ', '+')
+  itunes_response = requests.get(itunes_search.format(plussed))
+  if itunes_response.json()['resultCount']:
+    return itunes_response.json()['results'][0]['trackViewUrl']
+  else:
+    return ' '.join([artist, title])
+
+for line in spot_links:
+  print(spotify_to_itunes(line))</code></pre>
+
+
+<p>Dragging several tracks from Spotify gives you URLs separated by newlines, which I saved to a file that is read and split in lines 11 &amp; 12. We iterate over each URL at the end of the script, printing the result of passing the URL to <code>spotify_to_itunes</code>, which does the hard work.</p>
+<p>We get the source for the track’s detail view in line 16 and pull out the title and artist, which are joined and the spaces replaced with plus signs in line 19 to make the string URL safe — like in the previous script.</p>
+<p>This combined string is used to search the iTunes catalogue (line 20, with the URL in line 9). If there are any results we return the URL for the top hit, otherwise we return the artist name and track title so it can be looked up manually.</p>
+<p>Taking the URL for the top iTunes result is potentially hazardous, but here I’m happy enough to put my faith in its search. Also the script takes two requests to process each track (lines 16 &amp; 20) so it is slow, but as it only needs to be run once so I don’t think it really matters.</p>
+<p>I decided not to rig up the AppleScript side here, because in my mind it doesn’t require the same kind of industrial processing. At this point it’s a matter of taking time to listen to the track previews and decide which to buy.</p>
+<p>Also in contrast to the previous scripts, I print to stdout here instead of writing directly to a file. I don’t have reason for this but I guess partly it’s because there’s no data structure to preserve, just a set of lines to transform.</p>
+<p>At this point I’ve run the script and redirected the output to a file. My plan is open it in BBEdit and use <code>⌘L</code> to select each, send it to LaunchBar (using the Instant Send feature) and open the URLs in Safari and the leftover tracks in iTunes’s search. Thankfully the iTunes links just load a web preview and don’t activate iTunes itself.</p>
+<p>I’ve done this already with the tracks in the reported file, run through a modified version of the above script. It works reasonably well.</p>
+<h3>Wrapping up</h3>
+<p>While writing (and <a href="/images/2014-01-22_entcommits.png">re-writing</a>) this post I began to doubt its value. These aren’t polished scripts and this shouldn’t be taken as a guide, but at the same time it is how I solved the problem. Examining the choices made — however little thought went into them — has been instructive for me and hopefully will give people facing similar problems something to think about.</p>
+<p>And while I’d hesitate to call this a <em>real</em> problem, the cobbled-together solution has at least <a href="http://open.spotify.com/user/rjwells/playlist/6ddbHbP6pf8bHQ0CuvEowP">produced something</a> I’m still listening to after two months.</p>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2014/01/my-one-ios-7-problem/">My one iOS 7 problem</a></h2>
+      <p><time datetime="2014-01-16T12:25">Thursday, January 16 2014</time></p>
+    </header>
+    <p>I don’t want to get into the business of critiquing Apple’s OS releases — there are plenty of people better placed to do that. But I have <em>one</em> major criticism of iOS 7. One that irritated me on the day of release and irritates me today. It’s time to share.</p>
+<p><em>I’m Rob and I’m an addict (of changing the screen brightness).</em></p>
+<p>I don’t always second-guess the automatic setting, but I frequently do. Before iOS 7, you had to stop what you were doing, jump to Settings.app, go to the brightness page and adjust the slider. But we’ve now got <a href="http://www.imore.com/ios-7-review#control">Control Centre</a>, which you swipe up from the bottom of the screen and it has a brightness slider <em>right there</em>. Sorted?</p>
+<p>Not quite. Adjusting the brightness before iOS 7 was slow and a bit haphazard since the settings screen wasn’t always representative of what you were looking at. But you got a decent idea.</p>
+<p>Control Centre, however, flat-out lies to you about the brightness:</p>
+<p class="full-width">
+    <img alt="Side-by-side image showing the difference in brightness when the iOS7 Control Centre is shown and hidden" src="/images/2014-01-16_controlcentre.png">
+</p>
+
+<p>Now, this is by design — Control Centre’s a giant grey panel that covers the screen. But it means that the only elements at the “true” brightness are filled sections of enabled buttons and sliders.</p>
+<p>The <a href="http://arstechnica.com/apple/2013/10/os-x-10-9/">article in the background</a> of the image above has a white background. If you use an eyedropper, the image on the right scores 100% brightness on a greyscale slider. On the left, with Control Centre shown, it’s just 53%.</p>
+<style>
+.post2014-01-16_grey {
+    background-color: #999;
+    color: white;
+    text-align: center;
+    padding: 1.375em;
+}
+</style>
+
+<p class="post2014-01-16_grey">Does this background look white to you?</p>
+
+<p>Despite using iOS 7 since its release in September, I still can’t set the brightness to my desired level in a single attempt because of this.</p>
+<p>Yes, this is trivial, but let’s try a thought experiment. Imagine the only way you can set the playback volume is through Settings.app or the Control Centre. It’d be way more convenient to use Control Centre, right? How about if it <a href="http://en.wikipedia.org/wiki/Ducking">ducked</a> the volume by half?</p>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2014/01/next-and-last-weekdays/">Next and last weekdays</a></h2>
+      <p><time datetime="2014-01-11T16:08">Saturday, January 11 2014</time></p>
+    </header>
+    <p>I was recently reminded of David Sparks’s <a href="http://macsparky.com/blog/2013/5/text-expander-snippets-date-and-time">TextExpander date snippets</a>, the most interesting of which use AppleScript to insert the date for the next occurrence of a certain weekday. (And were <a href="http://www.tuaw.com/2013/01/21/mac-productivity-ten-textexpander-date-snippets/">written by Ben Waldie</a>.)</p>
+<p>Out of curiosity, I wrote a Python command-line tool called dayshift that does something similar. Its main differences are that it doesn’t have to be set up for specific days like the AppleScript snippets, and that it can find the date for a past weekday (“last Monday”) as well as a future one (“next Monday”).</p>
+<pre><code>#!/usr/local/bin/python3
+&quot;&quot;&quot;
+Print the date of the next or last specified weekday.
+
+Usage:
+  dayshift next &lt;weekday&gt; [--format=&lt;fmt&gt; --inline]
+  dayshift last &lt;weekday&gt; [--format=&lt;fmt&gt; --inline]
+
+Options:
+  --format=&lt;fmt&gt;, -f &lt;fmt&gt;  A strftime format string
+                            [default: %Y-%m-%d]
+  --inline, -i              Omit trailing newline
+
+&quot;&quot;&quot;
+from docopt import docopt
+from datetime import date, timedelta
+
+WEEKDAYS = {'mon': 0, 'tue': 1, 'wed': 2, 'thu': 3,
+            'fri': 4, 'sat': 5, 'sun': 6}
+
+args = docopt(__doc__)
+starting_offset = 2 if args['next'] else -2
+start_date = date.today() + timedelta(starting_offset)
+start_integer = start_date.weekday()
+target_integer = WEEKDAYS[args['&lt;weekday&gt;'][:3].lower()]
+
+if args['next']:
+  offset = target_integer - start_integer
+elif args['last']:
+  offset = start_integer - target_integer
+
+if offset &lt;= 0:
+  offset += 7
+
+if args['last']:
+  offset /= -1    # Make the offset negative
+
+target_date = start_date + timedelta(offset)
+ending = '' if args['--inline'] else '\n'
+print(target_date.strftime(args['--format']), end=ending)</code></pre>
+
+
+<div class="flag" id="update_2014-01-13">
+  <p><strong>Update <time>2014-01-13</time></strong></p>
+  <p>I’ve added an offset to the starting day (lines 22 & 23) to skip past the two days before and after the current date. The line numbers in the explanation below have been altered to match.</p>
+  <p>You might like to look at the <a href="https://gist.github.com/robjwells/8370699">corresponding Gist</a> in case I’ve made any further changes.</p>
+</div>
+
+<p>The interface is created by <a href="http://docopt.org">docopt</a> in line 21 from the script’s docstring (lines 2–14).</p>
+<p>After parsing the arguments we reduce the given weekday to its integer representation in line 25 by getting its first three characters, converting them to lowercase and using that string to key into the <code>WEEKDAYS</code> dictionary (lines 18 &amp; 19).</p>
+<p>On line 24 we get the integer for a starting date which is offset forward or backward by two days (lines 22 &amp; 23). You can adjust the forward and backward offsets separately, depending on where you draw the line.</p>
+<p>Now the <code>next</code> and <code>last</code> commands come into play, deciding how we compare the two weekday integers (lines 27–30). In both instances we can end up with 0 or a negative number so we add 7 to the offset (line 33).</p>
+<p>But surely we want a negative number if we’re after the “last” weekday? Yes, but not just yet — at this point it tells us that we’ve passed the given weekday in the current week (if <code>next</code>) or the given weekday is still to come (if <code>last</code>). We add 7 to move outside of the current week.</p>
+<p>To ensure we go back in time we specifically invert the offset in line 36, before adding it to the starting date in line 38 to reach the target date.</p>
+<p>Now the two options shown in the docstring come into play. Line 39 uses the <code>--inline</code> flag to determine whether the printed string ends in a newline or not — handy when the script is called by a snippet inserted in the middle of some text.</p>
+<p>The other option, <code>--format</code>, determines how the date is printed. I use docopt’s ability to have default values (see line 11) to print an <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 date</a> if another format isn’t given. This lets me pass the argument directly to <code>strftime</code> in line 40.</p>
+<h3>Using the script in TextExpander</h3>
+<p>The script works great as a command-line utility:</p>
+<pre><code>$ dayshift next Wednesday
+2014-01-15
+$ dayshift last Wednesday
+2014-01-08</code></pre>
+
+
+<p>But, returning to the original use case, I recommend two approaches.</p>
+<p>You can set up individual snippets to find the next or last occurrence of a certain weekday. Add a new shell script snippet, with code similar to this:</p>
+<pre><code>#!/bin/bash
+/path/to/dayshift next Monday -i</code></pre>
+
+
+<p>Or you can use TextExpander’s fill-in feature to let you pick the options on the fly (line breaks inserted for readability):</p>
+<pre><code>#!/bin/bash
+/path/to/dayshift %fillpopup:name=Next/Last:default=next:last%
+%fillpopup:name=Weekday:default=Monday:Tuesday:
+Wednesday:Thursday:Friday:Saturday:Sunday% -i</code></pre>
+
+
+<p>That looks pretty gross there, and it doesn’t look good in use either:</p>
+<p><img alt="Screenshot of the dayshift fill-in TextExpander snippet" src="/images/2014-01-11_weekdaysfillin.png" /></p>
+<p>But it gives you a lot of control and you can tab between the fields.</p>
+<div class="flag" id="update_2014-01-12">
+  <p><strong>Update <time>2014-01-12</time></strong></p>
+  <p>Shortly after posting this yesterday, <a href="http://leancrew.com/all-this/">Dr Drang</a> sent me a nice email pointing out a <a href="http://www.leancrew.com/all-this/2012/09/eight-days-a-week/#comment-24659">comment by Dave Cross</a> on how to use the <code>date</code> utility in Unix to similar effect, which in its simplest form is <code>date -v+weds</code> (to get next Wednesday’s date).</p>
+  <p>I recommend reading <a href="http://www.leancrew.com/all-this/2012/09/eight-days-a-week/">the entire post</a> that comment is in reply to as it addresses a very similar situation to the one above, but with an illuminating look at working with weekdays as integers.</p>
+</div>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2014/01/hijacking-the-bbc/">Hijacking the BBC</a></h2>
+      <p><time datetime="2014-01-08T15:56">Wednesday, January 8 2014</time></p>
+    </header>
+    <p>In December I started using <a href="http://rogueamoeba.com/audiohijackpro/">Audio Hijack Pro</a> to record <a href="http://www.bbc.co.uk/programmes/b006tt0y">Jazz on 3</a>, initially from the <a href="http://www.bbc.co.uk/radio/player/bbc_radio_three">Radio 3 live stream</a>. I soon realised this wasn’t a great idea: live streaming, Flash and an occasionally patchy internet connection don’t make for reliable recording.</p>
+<p>A bit of searching turned up <a href="http://www.leancrew.com/all-this/2009/07/bbc-radio-2-and-audio-hijack-pro-scripts/">a blog post</a> and <a href="https://github.com/drdrang/radio2">GitHub repository</a> by Dr Drang — who else! His approach was to record programmes from the BBC website after they’ve been broadcast. This is more reliable, allows for repeated tries if the recording fails for any reason, and makes it easier to handle longer-than-usual episodes.</p>
+<p>The logic is straightforward: find the unique ID for the programme’s most recent episode, use that to construct the player URL, and feed that to Audio Hijack.</p>
+<p>Most of the work is done in Python, with Audio Hijack running bridging AppleScripts when a recording starts and finishes — the latter used by Dr Drang to add a track list to the recording’s lyrics field and add the file to iTunes.</p>
+<p>This sounded ideal, but I couldn’t use the Doc’s work straight away as the scripts focus on Radio 2, use a player URL that doesn’t work (at least at home in Blighty) and need a few tweaks to fit my Python environment. It gave me an excuse to tinker with the wheel, if not <a href="http://www.leancrew.com/all-this/2014/01/reinventing-the-wheel/">reinvent it</a>.</p>
+<p>If you want to follow along at home, all the code is <a href="https://bitbucket.org/robjwells/beeb-hijack/src/">in a Bitbucket repository</a>.</p>
+<p>Before we dig in, there are two practical things to note:</p>
+<ul>
+<li>It’s all written for Python 3, but it wouldn’t take much to work on 2.</li>
+<li>You’ll need to install <a href="http://www.crummy.com/software/BeautifulSoup/">Beautiful Soup 4</a> and <a href="http://docopt.org">docopt</a>.
+    (Use <a href="http://www.pip-installer.org/en/latest/">pip</a>.)</li>
+</ul>
+<p>I initially wanted to consolidate the Python scripts into one file but that turned out to be stupid, so I (eventually) settled on having a module similar to Dr Drang’s that did most of the work and another script that acted as the command-line interface.</p>
+<p>(That partly explains why <a href="https://bitbucket.org/robjwells/beeb-hijack/src/">my repo</a> has fewer files — the other being that I add the artwork in Audio Hijack’s tags tab, not a script.)</p>
+<h3>Python module: bbcradio</h3>
+<p>A look at the programme info dictionaries at the top of our modules reveals the differences in our methods:</p>
+<pre><code># Dr Drang’s
+showinfo = {'70s': (6, re.compile(r&quot;Sounds of the '?70s&quot;)),
+            '60s': (5, re.compile(r&quot;Sounds of the '?60s&quot;)),
+            'soul':(2, re.compile(r&quot;Trevor Nelson&quot;)),
+            'at':  (3, re.compile(r&quot;At the BBC&quot;))}
+# Mine:
+PROG_DICT = {'jazz on 3': 'b006tt0y',
+             'jazz line-up': 'b006tnmw'}</code></pre>
+
+
+<p>Each entry in the Doc’s dictionary is a tuple of the weekday as an integer — used to construct a URL for a daily schedule — and a regular expression to pick out the programme from the scraped schedule.</p>
+<p>In mine I go after the programmes directly, as they all have a unique ID similar to the ones given to individual episodes. With this ID we can go to <a href="http://www.bbc.co.uk/programmes/b006tt0y/episodes/player">a list of the programme’s available episodes</a> and pluck out the most recent one.</p>
+<p>This has two benefits: we don’t need to care about the broadcast day and don’t have to search the schedule page. All you need is the programme ID, which you can grab from the end of <a href="http://www.bbc.co.uk/programmes/b006tt0y">a programme’s home page</a> URL.</p>
+<p>All the work is done in <code>latest_episode_code</code> in lines <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/bbcradio.py?at=default#cl-17">17–29</a>, which fetches the available episodes page and pulls the episode code for the first episode listed.</p>
+<p>For weekly programmes only one episode is listed, but this technique also works for programmes which are broadcast more often — like <a href="http://www.bbc.co.uk/programmes/b006qj9z">Today</a>, which Dr Drang has <a href="http://www.leancrew.com/all-this/2009/10/adapting-bbc-radio-recording-scripts/">addressed specifically</a>. In such cases just make sure to record an episode while it’s the most recent on the available episodes page.</p>
+<p>I’ve kept Dr Drang’s <a href="https://github.com/drdrang/radio2/blob/master/radio2.py#L37">episodeInfo</a> function — used to fetch the episode title, date and track list — <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/bbcradio.py?at=default#cl-38">largely intact</a>. I’ve added the time a track was played (if available — it’s often not) and I use a simpler method to fetch the broadcast date (pulling an <a href="http://tools.ietf.org/html/rfc3339#section-5.8">RFC 3339 date</a> from an attribute).</p>
+<p>But there is one important difference: the use of Beautiful Soup’s <code>select</code> function, which allows for a liberal search for multiple class names, instead of <code>find_all</code>, which only returns elements which <em>exactly</em> match a given class string. This is important because every other track listing has an <code>alt</code> class.</p>
+<h3>Command-line interface: beebhijack</h3>
+<p>By itself bbcradio is inert, with the moving parts contained in <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/beebhijack?at=default">a single interface script</a> that has two modes which return an episode’s streaming URL or its details and track list. (Originally these were separate scripts, but there was a lot of duplicate code.)</p>
+<p>At the command line you just pick a mode and supply a programme name. Here’s the help message:</p>
+<pre><code>$ beebhijack -h
+Usage:
+    beebhijack url &lt;programme&gt;
+    beebhijack details [--clean] &lt;programme&gt;
+
+Options:
+    --clean     Use two newlines instead of a pipe
+                to separate the episode details
+
+Accepted programmes:
+    jazz on 3
+    jazz line-up</code></pre>
+
+
+<p>And, because I’m still blown away how simple <a href="http://docopt.org">docopt</a> is, here’s all the code needed to produce that interface:</p>
+<pre><code>programmes = '''\
+Accepted programmes:
+    {}'''.format('\n    '.join(bbcradio.PROG_DICT.keys()))
+
+usage = '''\
+Usage:
+    {name} url &lt;programme&gt;
+    {name} details [--clean] &lt;programme&gt;
+
+Options:
+    --clean     Use two newlines instead of a pipe
+                to separate the episode details
+
+{prog_list}'''.format(name='beebhijack', prog_list=programmes)
+
+args = docopt(usage)</code></pre>
+
+
+<p>If you haven’t used it before, take 20 minutes to watch the <a href="http://docopt.org">docopt video</a>. It’s wonderful: give it a usage message and it hands you back a dictionary. Mine above is a little complicated because it tacks the list of accepted programmes onto the end of the usage message, in case you need a reminder at the command line. (I also print the list if you ask for a programme that’s not in the dictionary, in lines <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/beebhijack#cl-24">24–27</a>).</p>
+<p>In the dictionary docopt returns, commands (url, details) get a boolean value, so the mode switch is a simple if-else if.</p>
+<p>Unless given the <code>--clean</code> argument, the details mode prints the three parts of the tuple it gets from <code>episode_details</code> separated by pipes, which you can split up in AppleScript by changing the text item delimiters.</p>
+<p>It’s important to note that I don’t exactly <code>print</code> the details — instead I encode the string into UTF-8 and <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/beebhijack#cl-38">write it as bytes</a> to <code>sys.stdout.buffer</code>. (<a href="https://github.com/drdrang/radio2/blob/master/radio2-tracklist#L44">Dr Drang’s script does something similar</a>.) The shell invoked by AppleScript’s <code>do shell script</code> command defaults to <a href="/2013/09/get-your-us-ascii-out-of-my-face/"><code>US-ASCII</code></a>, causing a UnicodeEncodeError if you try to <code>print</code> a string containing non-Ascii characters.</p>
+<p>Generally, I think the key distinction between beebhijack and Dr Drang’s four scripts is that I keep all of the “real work” in the module.</p>
+<p>For example, we both fetch the episode ID in our modules, but I also construct the streaming URL there (lines <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/bbcradio.py#cl-32">32–35</a>) while the Doc does that in <a href="https://github.com/drdrang/radio2/blob/master/radio2-stream">a separate script</a>.</p>
+<p>This isn’t a big deal either way but I think it reveals my thinking about the beebhijack script: it’s a bridge between what you want to achieve and the program that actually does the work. The heaviest lifting done by beebhijack (joining the details) controls how the information is output, not what the information is.</p>
+<h3>Putting it all together</h3>
+<p>With the Python code sorted, all that’s left to do is to create individual pre- and post-recording AppleScripts that you get Audio Hijack to run (on the input and recording tabs, respectively).</p>
+<p>The <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/Jazz%20Line-Up%20URL.applescript">pre-recording script</a> just calls beebhijack’s url mode and pass a programme name. I’ve copied Dr Drang’s, but separated out the programme name and path to the script into properties to make them easier to spot and change.</p>
+<p>The same applies to <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/Process%20Jazz%20Line-Up.applescript">the post-recording script</a>, which I stole off the Doc, who adapted one by Rogue Amoeba.</p>
+<p>The biggest change I made was to use text-item delimiters to split up the episode date, title and track list as I don’t just put them all into the lyrics field, instead using the title and date to rename the track. (The date is necessary because, although I have Audio Hijack name the files with the date, the recording takes place at least the day after the broadcast day.)</p>
+<p>I also don’t use a try block to handle errors fetching the episode details, because I prefer have an error message in the morning to prompt me to sort out the recording by hand.</p>
+<p>Once you’ve got the scripts in place, just set an appropriate schedule in Audio Hijack. I have it set to record for much longer than the usual episode length, just in case a longer episode airs that I don’t expect. This doesn’t inflate the file size, because Audio Hijack doesn’t add silence when nothing is output from your source.</p>
+  </article>
+  <div class="pagination">
+<p class="pagination-older"><a href="https://robjwells.github.io/page-16/">Older posts</a></p><p class="pagination-newer"><a href="https://robjwells.github.io/page-14/">Newer posts</a></p>  </div>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

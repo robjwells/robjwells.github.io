@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – page 17</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2013/08/promptless-mercurial/">Promptless Mercurial</a></h2>
+      <p><time datetime="2013-08-24T13:04">Saturday, August 24 2013</time></p>
+    </header>
+    <p>My time-wasting with Git and Mercurial continues apace — although I think I’m largely done learning how to use each — and I’m at the point where I start fussing over trivial details.</p>
+<p>This time it’s prompts. I’ve had <a href="https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh">Git’s status</a> in my prompt for quite a while, since it comes bundled, but as I’ve been spending so much time mucking about with Mercurial I decided to give Steve Losh’s <a href="https://bitbucket.org/sjl/hg-prompt/src">hg-prompt</a> a try.</p>
+<p>It’s nice and you use it in a similar way to <a href="http://selenic.com/hg/help/templates">Mercurial’s own templates</a>, which are very powerful. But it does introduce a slight delay at the command line, which I haven’t noticed with the Git prompt. Maybe I’ll decide this isn’t a big deal and change my mind in the future, but at the moment it was just enough to put me off.</p>
+<p>I also like to keep my prompt nice and short. Right now it’s just the basename of the working directory and the dollar sign (or hash if root). The prompt in my home directory is just:</p>
+<pre><code>~ $</code></pre>
+
+
+<p>So I’ve decided to go promptless and ditch the additions for both Git and Mercurial. This should help get me in the habit of checking each kind of repository in a similar way, instead of glancing at the prompt for Git and typing commands for Mercurial.</p>
+<p>If you use the <code>-sb</code> options with Git’s <code>status</code> command it gives you a short status with the current branch on top, which is adequate for my needs.</p>
+<p>By default there isn’t a Mercurial command to do this, but it’s trivial to create one using an alias — and one that’s superior to <code>git status -sb</code>. Here’s what I’ve got in my .hgrc file (line breaks added for clarity):</p>
+<pre><code>now = !$HG log -r . --template
+      &quot;{label('log.changeset', rev)}
+      {label('branches.active', '    {branch}')}
+      {label('bookmarks.current', '    {bookmarks}')}\n&quot; ; $HG status</code></pre>
+
+
+<p>The exclamation mark at the start tells Mercurial to interpret it as a shell alias — this lets us call <code>hg status</code> at the end. The alias calls <code>hg log</code> for the parent of the working directory (the commit you currently have checked out).</p>
+<p>Using the template system we ask for that changeset’s revision number, branch and any bookmarks associated with it. The <code>label</code> stuff surrounding <code>rev</code>, <code>branch</code> and <code>bookmarks</code> colours the output — you can otherwise ignore it.</p>
+<p><a href="http://mercurial.selenic.com/wiki/RevisionNumber">Revision numbers</a> are a convenient but <em>strictly local</em> way of referring to changesets. I include the branch name and bookmarks because you can use either (or both) to branch your work; there’s no point just printing the named branch if you’re using bookmarks, and vice versa.</p>
+<p>When called inside a repository, <code>hg now</code> prints something like this:</p>
+<pre><code>hgrepo $ hg now
+20    experimental    super-duper</code></pre>
+
+
+<p>If there are any changes in the working directory that’s followed by the usual output of <code>hg status</code>, like so:</p>
+<p><img src="/images/2013-08-24_hgnow.png" alt="Image of the output of hg now when there are changes in the working directory."></p>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2013/08/terminal-countdown/">Terminal countdown</a></h2>
+      <p><time datetime="2013-08-17T14:36">Saturday, August 17 2013</time></p>
+    </header>
+    <p>I’ve got some annual leave booked for the very end of September, which is pretty far away still — but I wanted to know exactly how many days I have to go before my break.</p>
+<p>Usually I would just query <a href="http://www.wolframalpha.com/input/?i=Days+until+December+25+2013">Wolfram Alpha</a> but, since I’ve been spending a fair amount of time at the command line, I wondered if <code>date</code> in Unix could give me the answer.</p>
+<p>It’s easy to ask <code>date</code> to add or subtract an amount of time:</p>
+<pre><code>$ date -v +2w   # Now plus two weeks
+Sat 31 Aug 2013 13:14:20 BST</code></pre>
+
+
+<p>However there’s no built-in way to find the difference between two dates. So I wrote one. Now originally I was going to walk through that shell script but there were enough problems that I rewrote it in Python this morning.</p>
+<p>But before I get to the Python code I want to discuss the shell script.</p>
+<p>It took a date in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO format</a> (<a href="http://www.xkcd.com/1179/">because</a>) and ran it through <code>date</code> to get back a <a href="http://en.wikipedia.org/wiki/Unix_time">Unix timestamp</a>. This was then subtracted from the timestamp for the current date and divided by the number of seconds in a day to give the number of days difference.</p>
+<p>Unfortunately writing the script gave me a few headaches:</p>
+<ul>
+<li>Unix timestamps can break.
+    Passing a date before 1902 caused <code>date</code> to choke on my machine, and this varies from system to system.</li>
+<li>Commands you expect to be reliable can differ wildly between systems.
+    I used <code>egrep</code> to check the format of the provided date and used <code>\d</code> as the digit wildcard. But on my work machine, which runs Mac OS 10.6, you can only use <code>\d</code> with <code>grep -P</code>. That breaks <code>grep</code> on 10.8 at home.
+    The nasty solution was to use an explicit range: <code>[0-9]</code>. Gross.</li>
+<li>The bash scripting syntax is insane.
+    Want to check if stdin is connected to an interactive terminal, so you know you won’t be getting data on stdin? Use <code>-t 0</code>.
+    Meanwhile in Python: <code>sys.stdin.isatty()</code>.</li>
+</ul>
+<p>The timestamp problem is an edge case as days aren’t a useful measure of time past a certain, short distance, so it was mainly the reliability and syntax complaints that pushed me to rewrite the script. I don’t consider <code>\d</code> to be exotic and with the removal of the <code>-P</code> option in newer versions of <code>grep</code> how can you expect to use it in portable code?</p>
+<p>As for the syntax, while I was pleased I’d managed to lump together enough parts to make a working program, it’s not clear by any means — and this is just a 45-line wrapper around <code>date</code>! String comparisons in bash get to use <code>!=</code> and <code>==</code> but numbers are stuck with <code>-ne</code> and <code>-eq</code>? Oh god it’s <em>horrible</em>.</p>
+<p>Anyway, let’s move on to the Python script:</p>
+<pre><code>#!/usr/bin/env python3
+
+from __future__ import print_function
+import sys
+import os
+import re
+from datetime import datetime
+
+if len(sys.argv) == 2:
+  date = sys.argv[1]
+elif not sys.stdin.isatty():
+  # Called in a pipeline
+  date = sys.stdin.read().rstrip('\n')
+else:
+  # Print usage message if no date is supplied
+  script = os.path.basename(sys.argv[0])
+  print('Usage:  {0} YYYY-MM-DD\n'
+        '        prints number of days until or since the given date'
+        .format(script))
+  sys.exit(64)
+
+if not re.match(r'\d{4}-\d{2}-\d{2}', date):
+  print('Abort:  your date is not in YYYY-MM-DD format')
+  sys.exit(65)
+else:
+  then = datetime.strptime(date, '%Y-%m-%d').date()
+now = datetime.now().date()
+days = (then - now).days
+
+if days == 0:
+  print(&quot;That's today!&quot;)
+  sys.exit(0)
+
+msg = str(days) + ' day'
+if days not in [1, -1]:
+  msg += 's'
+
+if days &lt; 0:
+  msg = msg.lstrip('-') + ' ago'
+else:
+  msg += ' ahead'
+print(msg)</code></pre>
+
+
+<p>It works in much the same way as the shell script. (In case anyone’s wondering, the <code>print_function</code> import is for Python 2 compatibility — just change the shebang line to plain <code>python</code>.)</p>
+<p>Lines 9–13 handle input from an argument or stdin, and a usage message is printed (lines 14–20) if nothing is passed.</p>
+<p>Next is the regular expression to check the date’s format (using <code>\d</code>! Yes!).
+A warning is printed and the script exits if it doesn’t match, otherwise a datetime object is created using a <code>strptime</code> format string in the same way you would with <code>date</code> at the terminal. <code>date()</code> is immediately called on the object (line 26) because we want to work with full days only.</p>
+<p>One nice thing about Python’s datetime module is timedelta, which lets you subtract one date from another and returns the difference — we do that in line 28 and extract the <code>days</code> attribute.</p>
+<p>From here we’re just constructing the message printed to the user, with a check for the current date and then whether “days” should be plural. If the date is in the past we trim the minus sign in line 39, then stick on an appropriate adverb and print.</p>
+<p>All told, we end up with this:</p>
+<pre><code>$ days 2013-12-25
+130 days ahead
+$ days 2013-01-01
+228 days ago</code></pre>
+
+
+<p>I’ve posted both the <a href="https://gist.github.com/robjwells/6256540">Python and shell versions as a gist</a> if you’d like to compare the two.</p>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2013/08/commit-summary-length-hooks/">Commit summary length hooks</a></h2>
+      <p><time datetime="2013-08-03T13:31">Saturday, August 3 2013</time></p>
+    </header>
+    <p>Despite planning to take a break from doing computer work in my spare time, I’ve haven’t stopped playing with Mercurial and Git.</p>
+<p>Right now I’m learning towards Mercurial (and am using it to track these blog posts) but I will still be using Git, not least because of <a href="https://github.com/robjwells">GitHub</a>.</p>
+<p>So when I wrote my first commit hook I did it in both flavours. It’s a simple Python script that rejects a commit if the first-line summary is too long (over 50 characters) or too short (10 characters). The idea is to make sure <code>hg log</code> and <code>git log (--oneline|--pretty=short)</code> are informative but brief.</p>
+<h3>Mercurial</h3>
+<pre><code>#!/usr/bin/env python3
+
+import os
+import sys
+from termtools import colour
+from subprocess import check_output
+
+node = os.environ[&quot;HG_NODE&quot;]
+message = check_output([&quot;hg&quot;, &quot;log&quot;, &quot;-r&quot;, node,
+                        &quot;--template&quot;, &quot;{desc}&quot;]).decode()
+summary_length = len(message.splitlines()[0])
+
+if summary_length &gt; 50:
+  print(colour(&quot;! Changeset summary is too long (&gt; 50c)&quot;, &quot;red&quot;))
+  sys.exit(1)
+elif summary_length &lt; 10:
+  print(colour(&quot;! Changeset summary is too short (&lt; 10c)&quot;, &quot;red&quot;))
+  sys.exit(1)</code></pre>
+
+
+<p>Many of <a href="http://www.selenic.com/mercurial/hgrc.5.html#hooks">Mercurial’s hook types</a> provide useful data as shell variables. In line 8 we get the node (hash) of the changeset about to be committed and use that on line 9 &amp; 10 to fetch the commit message.</p>
+<p>The call to check_output on those lines is a little confusing, but it’s essentially the equivalent of this terminal command:</p>
+<pre><code>hg log -r $HG_NODE --template {desc}</code></pre>
+
+
+<p>Line 11 finds the length of the first line of the commit message, and lines 13–18 checks its length. If the summary is too long or short a warning is printed and the script exits with a non-zero status to tell Mercurial to reject the commit.</p>
+<p>The colour function called on lines 14 and 17 is used to turn the warning text red. I’ll explain it below.</p>
+<h3>Git</h3>
+<pre><code>#!/usr/bin/env python3
+
+import sys
+from termtools import colour
+
+message = open(sys.argv[1])
+summary_length = len(message.readline().splitlines()[0])
+
+if summary_length &gt; 50:
+  print(colour(&quot;! Commit summary is too long (&gt; 50c)&quot;, &quot;red&quot;))
+  sys.exit(1)
+elif summary_length &lt; 10:
+  print(colour(&quot;! Commit summary is too short (&lt; 10c)&quot;, &quot;red&quot;))
+  sys.exit(1)</code></pre>
+
+
+<p><a href="http://git-scm.com/docs/githooks">Git’s hooks</a> include one specifically for the commit message, and when it is called Git feeds it a file containing the message — that’s what we open on line 6.</p>
+<p>We read a single line from the file on line 7, but still use the splitlines method as in the Mercurial version in order to gracefully handle newlines at the end — I don’t want to unconditionally chop the last character in case it’s actually part of the summary.</p>
+<p>The if block at the end is almost identical to the Mercurial version, save for the “commit” replacing “changeset”. This is just me trying to avoid blindly using Git terminology when discussing Mercurial.</p>
+<h3>Usage</h3>
+<p>I include the hook in my main Mercurial config file (<code>~/.hgrc</code>), which means it applies to all repositories:</p>
+<pre><code>[hooks]
+pretxncommit.summary_length = path/to/hook/file.py</code></pre>
+
+
+<p>The first part of the second line is the hook type, which sets when the script should be called, and the bit after the dot is a custom name — this lets you have multiple scripts attached to a certain hook type.</p>
+<p>With Git things are a little more tricky, as the script (or a link to it) must appear in each repository’s <code>.git/hooks/</code> directory. As far as I’m aware there isn’t a built-in way of setting global hooks. I’ve toyed with the idea of writing my own little program to help set up hooks but I’m not sure if I can be bothered. I guess it will come down to how often I use hooks (and Git itself).</p>
+<p>(Benjamin Meyer’s <a href="https://github.com/icefox/git-hooks">git-hooks</a> tool is designed to help with this, but it’s written as a shell script and I can’t quite get my head round it.)</p>
+<h3>Terminal colouring</h3>
+<p>In both scripts the printed warnings are run through a colour function, which is something I whipped up with exactly this situation in mind.</p>
+<pre><code>def colour(str, col, background=False):
+  COLOURS = {'black': &quot;30&quot;,
+             'red': &quot;31&quot;,
+             'green': &quot;32&quot;,
+             'yellow': &quot;33&quot;,
+             'blue': &quot;34&quot;,
+             'magenta': &quot;35&quot;,
+             'cyan': &quot;36&quot;,
+             'white': &quot;37&quot;}
+  escape = &quot;\x1b&quot;
+  reset = escape + &quot;[0m&quot;
+  reverse = &quot;;7&quot;
+
+  colour_code = COLOURS[col.lower()]
+  start = escape + &quot;[&quot; + colour_code
+  if background:
+    start += reverse
+  start += &quot;m&quot;
+
+  return (start + str + reset)</code></pre>
+
+
+<p>It wraps <a href="http://en.wikipedia.org/wiki/ANSI_escape_code#Colors">ANSI colour codes</a> around a string and returns it. The action occurs in lines 14-18, where control codes are concatenated with the colour number fetched from the dictionary on lines 2-9. There’s an option to colour the background instead of the text, using the reverse code. The colour codes get stuck on the front of the string and a reset code is put on the end.</p>
+<p>You could keep this function in the hook script itself, but I keep it inside a module in Python’s search path (hence the import statements in the hooks).</p>
+<p>If you want more features the <a href="https://pypi.python.org/pypi/termcolor">termcolor module on PyPI</a> allows for setting different foreground and background colours as well as bold text, underlines, etc.</p>
+<p>I decided against using termcolor as I wanted to write my own as a test and because most of those options end up looking very ugly or are unnecessary. Coloured and reversed text is enough for me.</p>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2013/07/hazel-gating-with-mercurial/">Hazel gating with Mercurial</a></h2>
+      <p><time datetime="2013-07-31T23:16">Wednesday, July 31 2013</time></p>
+    </header>
+    <p>Since I’ve been playing around with Mercurial I thought it would only be fair to write another version of <a href="/2013/06/more-precise-git-status-gating/">my Hazel gating snippet</a>.</p>
+<p>The basic mechanism is the same (parsing the status output) and the code is barely changed:</p>
+<pre><code>#!/bin/bash
+
+cd $(dirname $1)
+FILENAME=$(basename $1)
+HGSTATUS=$(hg status -c &quot;$FILENAME&quot;)
+if [ &quot;$HGSTATUS&quot; == &quot;&quot; ]; then
+  exit 1 # Dirty
+else
+  exit 0 # Clean
+fi</code></pre>
+
+
+<p>An important difference to note is that this script checks that the file is clean (through the <code>-c</code> flag on line 5), not that the file is <em>not dirty</em> as the Git version does. This requires the conditional to be reversed as an empty string means that the file has been modified in some way.</p>
+<p>As I mentioned previously in my post about <a href="/2013/07/easy-branch-comparison-with-mercurial/">branch comparison</a>, I’ve spent some time recently to learn more about Git and Mercurial. This was both to improve my pretty basic Git skills and see why <a href="http://www.red-sweater.com">Daniel Jalkut</a> keeps <a href="https://learn.thoughtbot.com/giantrobots/32">banging on about Mercurial</a> (go to the 28-minute mark).</p>
+<p>When I learnt about hooks (<a href="http://mercurial.selenic.com/wiki/Hook">Mercurial</a>, <a href="http://git-scm.com/book/en/Customizing-Git-Git-Hooks">Git</a>) I was a little worried they would invalidate the time I’d spent writing the status gating snippet. But while hooks are very handy and powerful, there’s plenty off actions that <a href="http://www.noodlesoft.com">Hazel</a> is more suited to or more convenient for — this just acts as a nice safety check so it doesn’t step on your toes while you’re working.</p>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2013/07/easy-branch-comparison-with-mercurial/">Easy branch comparison with Mercurial</a></h2>
+      <p><time datetime="2013-07-27T20:33">Saturday, July 27 2013</time></p>
+    </header>
+    <p>I’ve spent a lot of time recently learning <a href="http://git-scm.com">Git</a> and <a href="http://mercurial.selenic.com">Mercurial</a>, and trying to decide which one I prefer and want to keep using.
+Both are nice, but one thing I like about Git is how easy it is to quickly see which commits are on one branch but not another.</p>
+<p>The commands below show commits on the feature branch that aren’t present on master, and are all equivalent:</p>
+<pre><code>git log feature ^master
+git log ^master feature
+git log master..feature</code></pre>
+
+
+<p>Unfortunately doing the same with Mercurial requires a lot more typing:</p>
+<pre><code>hg log -r &quot;ancestors('feature') and not ancestors('master')&quot;
+hg log -r &quot;::'feature' and not ::'master'&quot;</code></pre>
+
+
+<p>Which is a shame, and a bit odd since Mercurial has the incoming and outgoing commands to see which commits are coming in from (or going out to) a remote repository.
+I like to think of the comparison above as a local equivalent, to see which commits are going to be pulled across branches in a merge.</p>
+<p>Thankfully this can be put right with a quick alias in your .hgrc file. This is what I’ve got in mine:</p>
+<pre><code>[alias]
+compare = log -r &quot;ancestors('$1') and not ancestors('$2')&quot;</code></pre>
+
+
+<p>It’s general enough to allow comparisons between any two commits. Named branches and bookmarks both work fine, as do revision numbers and commit hashes.</p>
+<p>What’s nice about this alias is that any <code>hg log</code> options you’d like to use can just be stuck on the end as usual, since it’s just a shortcut to that command. For example these work as you’d expect:</p>
+<pre><code>hg compare feature master
+hg compare feature master --graph
+hg compare feature master -l 20 -p</code></pre>
+  </article>
+  <div class="pagination">
+<p class="pagination-older"><a href="https://robjwells.github.io/page-18/">Older posts</a></p><p class="pagination-newer"><a href="https://robjwells.github.io/page-16/">Newer posts</a></p>  </div>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

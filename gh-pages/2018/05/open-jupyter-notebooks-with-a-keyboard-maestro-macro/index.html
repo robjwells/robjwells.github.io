@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – Open Jupyter notebooks with a Keyboard Maestro macro</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2018/05/open-jupyter-notebooks-with-a-keyboard-maestro-macro/">Open Jupyter notebooks with a Keyboard Maestro macro</a></h2>
+      <p><time datetime="2018-05-17T19:45">Thursday, May 17 2018</time></p>
+    </header>
+    <p>I have a startup item that launches a Jupyter notebook so that the server is always running in the background. It’s an attempt to reduce the friction of using the notebooks.</p>
+<p>By default, Jupyter starts the server on port 8888 on localhost, but expects a token (a long hexadecimal string) before it’ll let you in. If you list the currently running servers in the terminal you can see the token and also the server’s working directory.</p>
+<pre><code>% jupyter-notebook list
+Currently running servers:
+http://localhost:8889/?token=…hex… :: /Users/robjwells
+http://localhost:8888/?token=…hex… :: /Users/robjwells/jupyter-notebooks</code></pre>
+
+
+<p>We can use this to make finding and opening the particular notebook server you want a bit easier, using Keyboard Maestro.</p>
+<p>
+    <img
+        src="/images/2018-05-17-macro-overview.png"
+        alt="A screenshot showing the (minimised) Keyboard Maestro steps"
+        />
+</p>
+
+<p>The macro uses the <code>jupyter-notebook</code> command, so that’ll need to be in your <code>$PATH</code> as Keyboard Maestro sees it.</p>
+<p>The first and third steps both execute <code>jupyter-notebook list</code> and use Unix tools to extract parts from it.</p>
+<p>In between, if there’s more than one notebook server running, the macro prompts the user to choose one from a list of their working directories.</p>
+<p>
+    <img
+        src="/images/2018-05-17-notebook-list.png"
+        alt="A Keyboard Maestro list selection dialogue"
+        class="no-border"
+        width=534
+        height=464
+        />
+</p>
+
+<p>Here’s the first step, where we fetch the list of working directories.</p>
+<pre><code>jupyter-notebook list | tail -n +2 | awk '{print $3}'</code></pre>
+
+
+<p>Our +2 argument to <code>tail</code> gets the output from the second line, chopping off the “Currently running servers:” bit. Then <code>awk</code> prints the third field, which contains the directory. (The first is the URL, the second the double-colon separator.)</p>
+<p>The third step fetches the corresponding URL for a directory:</p>
+<pre><code>jupyter-notebook list | grep &quot;:: $KMVAR_dir$&quot; | awk '{ print $1 }'</code></pre>
+
+
+<p>Since the user has specified a directory already, we use <code>grep</code> with the Keyboard Maestro variable to find just that one line, and use <code>awk</code> again to extract the URL field.</p>
+<div class="flag" id="update-20180522">
+  <p><strong>Update: <time>2018-05-22</time></strong></p>
+  <p>There was a bug in the original version of this snippet of shell script, where a parent path could match a child path (as it was only looking for the path itself without an anchor on either side). It was only luck that had me miss this with my example, with the more recently started home directory notebook server being listed ahead of one in a subdirectory, which <code>grep</code> would have also matched. The code above and the macro file have been fixed.</p>
+</div>
+
+<p>Obviously, this won’t work if you have more than one notebook server running from the same directory. (But you wouldn’t do that, right?)</p>
+<p><a href="/files/OpenJupyterNotebook.kmmacros">Here’s the macro file</a> if you’d like to try it out.</p>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

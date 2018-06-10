@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – Gating Hazel with git status</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2013/06/gating-hazel-with-git-status/">Gating Hazel with git status</a></h2>
+      <p><time datetime="2013-06-25T00:52">Tuesday, June 25 2013</time></p>
+    </header>
+    <p>The JavaScript and CSS files for this site live on Amazon S3, but getting them up there can be a chore once you consider compression and uploading with the right headers.</p>
+<p>That wasn’t too difficult to sort out with AppleScript and Transmit but I wanted to avoid having to start the script manually as well.</p>
+<p><a href="http://www.noodlesoft.com/hazel.php">Hazel</a>, the housekeeper for your Mac, can keep watch and is ideal for this — except when you’re still working on the file. It’s going to get under your feet if you tell it to run its rules once the modification date is after the last match.</p>
+<p>If the files are under version control the commit status is an ideal way to signal whether or not a file is ready to go. Combine that with Hazel’s ability to use a shell script in its conditions and you end up with something like this:</p>
+<pre><code>cd ~/Sites/robjwells
+GITSTATUS=$(git status | head -n 2 | tail -n 1 | grep -o &quot;^nothing&quot;)
+if [ &quot;$GITSTATUS&quot; == &quot;nothing&quot; ]; then
+    exit 0
+else
+    exit 1
+fi</code></pre>
+
+
+<p>(This is my first time writing about a purely shell script, so please be gentle.)</p>
+<p>First it moves into the directory in question, which is a git repo.
+Next it calls <code>git status</code>, extracts the second line of the output (<code>head</code> and <code>tail</code>) and checks if it starts with “nothing”. That’s because the status command returns this on a clean repo:</p>
+<pre><code># On branch master
+nothing to commit, working directory clean</code></pre>
+
+
+<p>If <code>grep</code> finds “nothing” it gets stuck in <code>$GITSTATUS</code>, which is compared to the string you would expect from a clean repo. If it matches the script exits with a success status code, which tells Hazel that the file has passed the check.</p>
+<p>(The -o flag makes <code>grep</code> only return the match, instead of the whole line.)</p>
+<p>Initially I did this check in the AppleScript that was applied to the file once it passed date and extension checks. But this meant that Hazel considered it to have matched successfully and would not run the rules on the file until it triggered the date conditions again. The lesson here is that checks must be separate from actions. Thankfully Hazel makes it easy to do that.</p>
+<p>If you work with repositories which are rarely “all clear” as in this case, you could improve this snippet by <a href="/2013/06/more-precise-git-status-gating/">checking the status tool’s list of uncommitted modified files for the name of the file</a> (provided by Hazel as <code>$1</code>).</p>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

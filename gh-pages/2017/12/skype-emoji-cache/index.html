@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – Skype’s emoji cache</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2017/12/skype-emoji-cache/">Skype’s emoji cache</a></h2>
+      <p><time datetime="2017-12-19T11:31">Tuesday, December 19 2017</time></p>
+    </header>
+    <p>Skype, a 117MB application (as of right now, on macOS at least), keeps a 340MB stash of emojis on your computer. What?</p>
+<p>Clearing some space on my SSD today, I notice that Skype’s Application Support folder takes up over 600MB.</p>
+<p class="full-width">
+    <img
+        src="/images/2017-12-19-skype-application-support.png"
+        alt="A screenshot of Daisy Disk showing Skype’s Application Support folder taking up 603.6MB"
+        class="no-border"
+        width=720
+        height=540
+        />
+</p>
+
+<p>The Upgrade subfolder contains 230MB of old Skype versions, with the oldest dating back to late 2012. That’s a little odd, to keep a five-year-old version around, but fine.</p>
+<p>
+    <img
+        src="/images/2017-12-19-skype-upgrade.png"
+        alt="A screenshot showing Skype’s Upgrade folder, containing five previous versions, with the oldest dating back five years."
+        />
+</p>
+
+<p>How far we’ve come: Skype today is over five times the size it was five years ago.</p>
+<p>Drilling down into the robjwells subfolder we find emo_cache_v2, accounting for nearly all the 370MB size of its parents. What’s inside? 5,138 emojis and animations. Here’s a taste:</p>
+<p>
+  <video
+    controls
+    muted
+    preload="none"
+    playsinline
+    poster="/images/2017-12-19-skype-animation.jpg"
+    src="/images/2017-12-19-skype-animation.mp4"
+    >
+  </video>
+</p>
+
+<p>Except that, unlike the super-low-quality version above, the original is 2.4MB and has a delightful reggae soundtrack to accompany its 17-second length.</p>
+<p>5,000 of these things. There’s even a Forrest Gump one!</p>
+<p>And you’d think “cache” means that “you sent this before, you might need it again” — but as far as I can remember I’ve only ever sent “standard” emojis on Skype. 🤷‍♀️</p>
+<div class="flag">
+  <p><b>Postscript:</b> If you delete all the mp4 and png files in that directory and then relaunch Skype, it will refill it — but with 3.5MB of animated png emojis.</p>
+  <p><b>Post-postscript:</b> I changed the title to remove the emoji as some feed-reading services (like Feed Wrangler, the one I use), couldn’t handle
+  🤦‍♀️. Oh well 🤦‍♂️. (And, funnily enough, BBEdit doesn’t handle the “emoji + zero width joiner + modifier” as a single character. Unicode is hard.)</p>
+</div>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

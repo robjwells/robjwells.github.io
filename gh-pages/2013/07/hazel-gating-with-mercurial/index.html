@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – Hazel gating with Mercurial</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2013/07/hazel-gating-with-mercurial/">Hazel gating with Mercurial</a></h2>
+      <p><time datetime="2013-07-31T23:16">Wednesday, July 31 2013</time></p>
+    </header>
+    <p>Since I’ve been playing around with Mercurial I thought it would only be fair to write another version of <a href="/2013/06/more-precise-git-status-gating/">my Hazel gating snippet</a>.</p>
+<p>The basic mechanism is the same (parsing the status output) and the code is barely changed:</p>
+<pre><code>#!/bin/bash
+
+cd $(dirname $1)
+FILENAME=$(basename $1)
+HGSTATUS=$(hg status -c &quot;$FILENAME&quot;)
+if [ &quot;$HGSTATUS&quot; == &quot;&quot; ]; then
+  exit 1 # Dirty
+else
+  exit 0 # Clean
+fi</code></pre>
+
+
+<p>An important difference to note is that this script checks that the file is clean (through the <code>-c</code> flag on line 5), not that the file is <em>not dirty</em> as the Git version does. This requires the conditional to be reversed as an empty string means that the file has been modified in some way.</p>
+<p>As I mentioned previously in my post about <a href="/2013/07/easy-branch-comparison-with-mercurial/">branch comparison</a>, I’ve spent some time recently to learn more about Git and Mercurial. This was both to improve my pretty basic Git skills and see why <a href="http://www.red-sweater.com">Daniel Jalkut</a> keeps <a href="https://learn.thoughtbot.com/giantrobots/32">banging on about Mercurial</a> (go to the 28-minute mark).</p>
+<p>When I learnt about hooks (<a href="http://mercurial.selenic.com/wiki/Hook">Mercurial</a>, <a href="http://git-scm.com/book/en/Customizing-Git-Git-Hooks">Git</a>) I was a little worried they would invalidate the time I’d spent writing the status gating snippet. But while hooks are very handy and powerful, there’s plenty off actions that <a href="http://www.noodlesoft.com">Hazel</a> is more suited to or more convenient for — this just acts as a nice safety check so it doesn’t step on your toes while you’re working.</p>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

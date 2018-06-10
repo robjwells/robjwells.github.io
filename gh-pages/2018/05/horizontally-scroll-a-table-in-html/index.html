@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – Horizontally scroll a table in HTML</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2018/05/horizontally-scroll-a-table-in-html/">Horizontally scroll a table in HTML</a></h2>
+      <p><time datetime="2018-05-11T23:35">Friday, May 11 2018</time></p>
+    </header>
+    <p>After I published <a href="https://www.robjwells.com/2018/05/table-manipulation-with-r/">my post about manipulating tables (of data) in R</a>, I noticed that there was something amiss with the HTML table in that post showing an example section of our newsroom rota.</p>
+<p class="full-width">
+    <img
+        src="/images/2018-05-11-table-fixed.png"
+        alt="A screenshot showing a table laid out with table-layout: fixed in CSS, with many cells wrapping with scrollbars in an unreadable fashion."
+        />
+</p>
+
+<p>When I first wrote the CSS for this site, <a href="https://www.robjwells.com/2013/07/five-different-kinds-of-grey/">roughly five years ago</a>, I had HTML tables set so that the whole table would scroll were it to be too wide for its containing column. At least, I’m pretty sure it worked like that.</p>
+<p>Anyway, as you can see above, it doesn’t work like that now. The table there is laid out with the following CSS:</p>
+<pre><code>table {
+  table-layout: fixed;
+  width: 100%;
+}</code></pre>
+
+
+<p>Which has the effect of restricting the table size to 100%, and doing odd things to the cells if there’s too much to fit in whatever width 100% happens to be.</p>
+<p>As an attempted quick fix, I removed the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout"><code>table-layout</code></a> property so that it would inherit the default, <code>auto</code>. The width is still 100% to provide some consistency, rather than having an odd assortment of table widths.</p>
+<p>So the CSS is now this:</p>
+<pre><code>table {
+  width: 100%;
+}</code></pre>
+
+
+<p>This has the effect of having the table overflow the container horizontally if the content is too wide, like so:</p>
+<p class="full-width">
+    <img
+        src="/images/2018-05-11-table-auto.png"
+        alt="A screenshot showing a table laid out with table-layout: auto in CSS, with the table overflowing its container horizontally."
+        />
+</p>
+
+<p>Which is perhaps more readable if pretty ugly. And not what I wanted: to scroll the entire table within its container.</p>
+<p>I said attempted earlier because I, er, never deployed the change on the site (it’s been a busy couple of weeks, contrary to the post tempo).</p>
+<p>In the meantime, I stumbled across a fix by opening Safari’s reader mode, in which tables scroll horizontally within their container! The secret? The table is wrapped in an enclosing <code>div</code>, which has its <code>overflow-x</code> property set to <code>auto</code>, and then the table scrolls within the div.</p>
+<p>Here’s what that looks like when rendered:</p>
+<p class="full-width">
+    <img
+        src="/images/2018-05-11-table-div.png"
+        alt="A screenshot showing a table laid out and scrolling within a containing div with its overflow-x property set to auto."
+        />
+</p>
+
+<p>Here’s the HTML:</p>
+<pre><code>&lt;div class=&quot;table-container&quot;&gt;
+  &lt;table&gt;
+  …
+  &lt;/table&gt;
+&lt;/div&gt;</code></pre>
+
+
+<p>And here’s the CSS:</p>
+<pre><code>table {
+  width: 100%;
+}
+
+.table-container {
+  overflow-x: auto;
+}</code></pre>
+
+
+<p>You want <code>auto</code> instead of <code>scroll</code> as the latter shows the scrollbar all the time. </p>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

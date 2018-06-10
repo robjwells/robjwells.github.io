@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – page 20</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2012/10/restart-in-windows-revenge-of-the-script/">Restart in Windows: Revenge of the Script</a></h2>
+      <p><time datetime="2012-10-06T18:14">Saturday, October 6 2012</time></p>
+    </header>
+    <div class="flag">
+<strong>UPDATE 2013-05-25</strong>
+<p>I’ve changed the script to fix the fiddliness on Leopard. Please <a href="/2013/05/restart-in-windows-the-script-strikes-back/">see my new post</a> for details. I’ve left the rest of this post mainly intact, but please bear in mind that the code has changed slightly.</p>
+</div>
+
+<p>Want to quickly restart your Mac in your Windows Bootcamp partition, without having to hold down option/alt as the computer starts?</p>
+<p><del>Click this link</del>, which will open an AppleScript in your default editor, and replace “YourBootcampPartition” in the first line with your Windows partition’s actual name (making sure that is exactly the same, as it’s case sensitive). Then save it as a .scpt file in your user scripts folder, which you can access through the system-wide script menu (which is turned on in AppleScript Editor’s preferences).</p>
+<p>Then, to restart, just pick it from that script menu.</p>
+<h3>Extra, extra</h3>
+<p><del><em>Using Leopard (10.5) or earlier?</em> You’ll have to change the first line as “diskutil info” doesn’t work with volume names. Try this:</del></p>
+<pre><code>set deviceID to (do shell script &quot;diskutil list | ¬
+  grep YourBootcampPartition | awk '{print $8}'&quot;)</code></pre>
+
+
+<p><del>That should return something like "disk0s4". If it doesn’t change “print $8” to a different number, probably 7. (I recommend you try this in the Terminal until you’ve got it right, then adjust the AppleScript. The number refers to the column of the information.)</del></p>
+<p><ins>The above isn’t true anymore. <a href="/2013/05/restart-in-windows-the-script-strikes-back/">Please see my latest post about it.</a></ins></p>
+<p><em>Don’t want to have to type your password in every time?</em> Add “password "YourPassword" ” after “ -nextonly" ” on the second line, then save your script as run-only. <strong>I do not recommend this.</strong> Your password will not be encrypted. It is only slightly less insecure than keeping your password in a text file. Please, <em>do not do this</em>.</p>
+<h3>Using it</h3>
+<p>I’ve got it saved to my ~/Library/Scripts folder, and have <a href="http://www.obdev.at/products/launchbar/index.html">Launchbar</a> set to index that folder so I can just type "Restart in Windows" into the prompt, hit enter, type my password and then I’m set.</p>
+<p>You could also use <a href="http://www.red-sweater.com/fastscripts/">FastScripts</a>, a really nice replacement for the system script menu that you can use to give the script a keyboard shortcut.</p>
+<p>I don’t recommend that you save it as an application, which would let you add it to your dock. I did that once and got stuck in a restart loop, thanks to Lion’s ability to re-open applications that were running when you restarted. You can disable that feature in Mountain Lion, but I still strongly advise that you keep it as a plain old script file.</p>
+<h3>The code</h3>
+<pre><code>set deviceID to (do shell script &quot;diskutil info ¬
+YourBootcampPartition | grep Identifier | awk '{print $3}'&quot;)
+
+do shell script &quot;bless -device /dev/&quot; &amp; deviceID &amp; ¬
+&quot; -legacy -setBoot -nextonly&quot; with administrator privileges
+
+tell application &quot;Finder&quot; to restart</code></pre>
+
+
+<h3>The story</h3>
+<p>Basically, holding down option on my keyboard was unreliable because the computer had booted up too fast for the Bluetooth connection. I’d been using <a href="http://www.kainjow.com">Bootchamp</a>, a menubar utility, for a while but you couldn’t trigger a restart from Launchbar and had to mount the partition first.</p>
+<p>The first version relied on the disk identifier never changing. You can’t rely on a partition having the same identifier after a restart, so the script would silently fail.</p>
+<p>The next version relied on the disk identifier being in a certain character position, which (aside from being a dirty hack) was also unreliable if you had more than 10 disks connected.</p>
+<p>The most recent (and probably final) version uses grep and awk on the command line to fetch the disk identifier after pulling up the information for the partition. (In Leopard it has to get the identifier from the list of every partition, as “diskutil info [PartitionName]” only works in Snow Leopard and later. As such it’s a little less reliable and needs a bit more tweaking by users.)</p>
+<p>For such a simple script (three whole lines!) this has taken more work than I originally anticipated. But it’s also taught me a fair bit about the command line and how to retrieve information from it.</p>
+<p>So, yeah. I think it’s done now. If you have any questions or comments please <a href="http://www.twitter.com/robjwells">message me on Twitter</a> or add a comment to <a href="https://gist.github.com/3681949">the script’s gist</a>.</p>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2012/10/whats-in-the-box/">What’s in the box!?</a></h2>
+      <p><time datetime="2012-10-05T00:00">Friday, October 5 2012</time></p>
+    </header>
+    <p class="full-width">
+    <img src="/images/2012-10-05-SevenBox.jpg"
+         alt="Become vengeance, David. Become wrath."
+         >
+</p>
+
+<h3>Accessing AppleScript records using a variable</h3>
+<p>AppleScript gets a lot of stick for being a rubbish language. And it is. But before last night there wasn’t anything that really threw me and made me think “wow, that’s incredibly, impressively, mind-meltingly dumb”. (Admittedly, I’m not a programmer.)</p>
+<p>But it happened. Here’s the example code:</p>
+<pre><code>set myRecords to {Abc:&quot;1&quot;, Def:&quot;2&quot;, Ghi:&quot;3&quot;}
+set myVar to &quot;Abc&quot;
+get myVar of myRecords</code></pre>
+
+
+<p>Try that and you’ll get a big fat error message. Why? Because there’s no property in myRecords that’s literally called myVar.</p>
+<p>“But it’s a variable,” I hear you sob quietly into <a href="http://www.latenightsw.com">Script Debugger</a>. I know, I know. You were after the value of property “Abc”. Unfortunately AppleScript doesn’t let you access records in this way. If you want to access that property you need to refer to its “real” name directly in the code.</p>
+<p>Even to me this is ridiculous. I’ve learnt a little JavaScript with <a href="http://www.codecademy.com/">Codecademy</a> recently and you can do this very easily:</p>
+<pre><code>var theRecords = {
+    Abc: 1,
+    Def: 2,
+    Ghi: 3
+};
+var theVar = &quot;Abc&quot;;
+console.log(theRecords[theVar]);</code></pre>
+
+
+<p>This becomes important when you want to do something else and then refer back to the record.</p>
+<p>What I wanted to do is store a simple name for a more complex string, and then later pass the simple name to the record and have it return the longer, hard-to-remember string. But there was no way I could hard-code the property name without defeating the entire purpose of the script I was writing. I just wanted to pass a variable containing the simple name string.</p>
+<p>But no. Not in AppleScript.</p>
+<p>Well, not quite. The language does not support doing this, true. But the language does let you contain a script within a script — which allows us to get past the “no variables to records” rubbish.</p>
+<p>Thanks go to the heroic <a href="http://macscripter.net/viewtopic.php?pid=64151#p64151">jobu on the MacScripter forums</a>, who posted this code in 2006. (Despite being so long ago, this technique doesn’t seem to have gotten much attention, as looking at many, many forum posts about this issue has shown.)</p>
+<p>Let’s have a look:</p>
+<pre><code>set myRecords to {Abc:&quot;1&quot;, Def:&quot;2&quot;, Ghi:&quot;3&quot;}
+set myVar to &quot;Abc&quot;
+
+return (searchRecord(myVar, myRecords))
+
+to searchRecord(theKey, theRecord)
+    run script &quot;on run{theKey,theRecord}
+        return (&quot; &amp; theKey &amp; &quot; of theRecord )
+        end&quot; with parameters {theKey, theRecord}
+end searchRecord</code></pre>
+
+
+<p>The important thing to note is that when the variable (in this case, myVar) is passed to the <code>run script</code> code, the variable’s contents are passed. That’s what you’d expect it to do, but what that means is that the variable is essentially hard-coded into this new script — you’re not recreating myVar, you’re just passing along myVar’s contents.</p>
+<p>Boom. A regular “get value of property x of the record.” And that data is then returned from the internal script to the parent, containing script. You can then call this as you would a subroutine handler, whenever you need to get a value for an unknown-at-compile-time property.</p>
+<p>Essentially, the shopkeeper won’t sell to you in person, but if you step outside and ring him then you’re set.</p>
+<p>Yeah. It’s a hack. Thankfully a short, understandable one, but a hack nonetheless. It’s crazy and this should be built into the language. Here’s JavaScript’s way again, for reference:</p>
+<pre><code>objectName[myVariable];</code></pre>
+
+
+<p>Why is this missing? God knows.</p>
+<p>I’m pretty sympathetic towards AppleScript. It’s the first language I’ve ever done any kind of programming in, and it’s been — and continues to be — useful at home and essential at work. I do like it, and there’s things you can’t do without it — for better and for worse.</p>
+<p>I plan to learn Python at some point so I may end up leaning towards “for worse” quite heavily in the future, but at the moment I’m happy using AppleScript to accomplish the (mostly work-related) things I need to do, even with all of its oddities.</p>
+<p>(My “favourite” weird things are:</p>
+<ul>
+    <li>
+        <p>Getting the wrong tell target (generally)</p>
+        <p>In BBEdit (for example) do I target “text window 1” or “text of text window 1”? It seems to be “text of” but I’m sure there are situations where the other is needed. The reasons why they’re two separate things aren’t clear.</p>
+    </li>
+    <li>
+        <p>Bizarrely-scoped InDesign properties</p>
+        <p>Did you know that “page range,” used when you export a .pdf, is an application-wide setting that you have to specify beforehand, not when you <em>actually export the .pdf</em>? Yeah.</p>
+    </li>
+    <li>
+        <p>Setting page-item InDesign properties</p>
+        <p>Let’s create a new frame. When we make it we can give it a bunch of properties, such as its position, size, stroke, fill, layer. How about object style? It’s listed in the options! Let’s set it alongside the position and size. Nope! It fails silently and you’re left with an unstyled frame. The way around this is to assign your new frame to a variable, and then apply the object style after you create it.</p>
+    </li>
+</ul>
+
+<p>There’s a bunch more, like slash-separated paths being treated differently from colon-separated paths — often requiring a line of code to convert them, because in many cases you can only get one type. But whatever. I’m a little worried that “proper” programming languages won’t be masochistic enough.)</p>
+<p class="full-width">
+    <img src="/images/2012-10-05-SevenEnd.jpg"
+         alt="Jesus Christ. Somebody call somebody. Call somebody."
+         >
+</p>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2012/09/everyday-automation/">Everyday automation</a></h2>
+      <p><time datetime="2012-09-18T18:23">Tuesday, September 18 2012</time></p>
+    </header>
+    <p>Learning AppleScript can really pay off.</p>
+<p>It isn’t always the easiest language to work with, as anyone who’s ever used it will tell you. Commands that look like they should work sometimes don’t, you occasionally have to use bizarre methods to refer to <em>that thing right there</em>. It’s not a picnic.</p>
+<p>But I’ve been using it for a little while and am pretty comfortable with it. I’ve ended up using it more and more for everyday tasks, or one-off situations that would usually require a lot of donkey work.</p>
+<p>Let me share one that’s just happened.</p>
+<p>I was browsing <a href="http://www.condenaststore.com/-se/newyorkerstore.htm">the New Yorker’s print shop</a> and — I thought — was opening up the individual pages for covers I liked and wanted to go back to after I’d finished browsing.</p>
+<p>It turns out that I was just opening up the preview images in tabs. Whoops. And their URLs don’t contain a unique code that’s shared with their purchase pages. Ah. And there are 10 of them. Erm.</p>
+<p>The one similarity they do have is that the filename is kinda sorta repeated on the purchase page, but it’s hyphen-separated so (<em>I thought, wrongly</em>) you can’t just copy and paste it into a search field.</p>
+<p>So I cooked up this little script in about a minute:</p>
+<pre><code>tell application &quot;Safari&quot;
+    set theURL to (get the URL of the front document)
+end tell
+
+set printsOffset to (get the offset of &quot;/prints/&quot; in theURL)
+set jpgOffset to (get the offset of &quot;.jpg&quot; in theURL)
+
+set hyphenString to characters (printsOffset + 8) ¬
+through (jpgOffset - 1) of theURL as text
+set AppleScript's text item delimiters to &quot;-&quot;
+set theWords to (get the text items of hyphenString)
+set AppleScript's text item delimiters to &quot; &quot;
+set searchString to theWords as string
+set AppleScript's text item delimiters to &quot;&quot; -- return to default
+
+tell application &quot;Safari&quot;
+    tell the front document
+        search the web for searchString
+    end tell
+end tell</code></pre>
+
+
+<p>Then I saved it, gave it a shortcut in <a href="http://www.red-sweater.com/fastscripts/">FastScripts</a>, opened up the first tab in Safari, hit the shortcut, tabbed to select the first URL in the search results, then hit enter to load it. Rinse, repeat.</p>
+<p>As I was writing this I tried just pasting the filename into Google and — shocker — that works. Which makes me look a little dumb.</p>
+<p>And the script isn’t even that sophisticated; I could have used a repeat command to loop through each tab, for example.</p>
+<p>However my wider point about getting your teeth into automation still stands. I’ve written loads of little scripts like this over the past few months and, combined, they’ve saved me bags of time and plenty of frustration.</p>
+<p>Hell, the InDesign script I wrote to set a text frame’s name (≥CS5) to its script label (≤CS4) alone saved me half an hour.</p>
+<p>The problem of AppleScript being frustrating to learn — and continually frustrating with certain applications’ opaque AppleScript dictionaries and command parsing — does stand in the way of more people using it (which is why Automator exists, as limited as it is).</p>
+<p>But if you’re tempted, even a little, give it a go. If you don’t have any programming experience I recommend <a href="http://www.amazon.co.uk/AppleScript-1-2-3-Self-Paced-Learning-Training/dp/0321149319/ref=sr_1_1?ie=UTF8&amp;qid=1347986804&amp;sr=8-1">AppleScript 1-2-3</a>. (Don’t buy the Kindle edition. You want the paper copy.)</p>
+<p>Also make sure to check out <a href="http://www.latenightsw.com">Script Debugger 5</a>, which at $199 (about £170 including VAT) is a bit pricey if you’re just starting but makes things so much easier it’s a joke. It’s like switching from MSPaint to Photoshop. You’ll never go back to (Apple)Script Editor.</p>
+<div class="flag">
+  <p><strong>Update 2012-09-12</p></strong>
+  <p>“Learning AppleScript can really pay off. Once you’ve suffered through its oddities enough to be able to write it without weeping, you’ll be tempted to write scripts that achieve things you can do with copy and paste, like this one.”</p>
+  <p>Maybe I should have thought harder about that first line.</p>
+</div>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2012/02/the-call-of-the-weird/">The Call of the Weird</a></h2>
+      <p><time datetime="2012-02-01T15:18">Wednesday, February 1 2012</time></p>
+    </header>
+    <p><img src="/images/2012-02-01-call-of-the-weird.jpg" class="pull-right"/></p>
+<p>Louis Theroux’s first and so far only book, published in 2005, is the funniest thing I’ve read in a long, <em>long</em> time. We’re talking out-loud laughs. The kind of laughs that make you not want to read it on the Tube because other people will think you’re crazy and stare at you but you can’t put it down and end up looking mental anyway.</p>
+<p>It’s great. Really great.</p>
+<p>Theroux goes back to the US to catch up with people that he’d interviewed in his Weird Weekends series and stand-alone documentaries, calling it a “reunion tour”.</p>
+<p>Each fairly short, breezy chapter covers one person or group — UFO nuts, American Nazis, Ike Turner, gangsta rappers, prostitutes, and more. Each is brilliant and “just one more page” quickly becomes “just one more story”.</p>
+<p>Half of that is the writing — done in a very similar way to Theroux’s voice-over bits in his films. It feels very human, very honest — reinforced by him being upfront about parts of his “reunion tour” that aren’t going as he’d hoped.</p>
+<p>That’s one of the best things about the book, that he’s very open, and has changed my view of Theroux in a subtle but substantial way. He always came across as smart but also that he was putting on a persona for interviews, and behind it was sort of a cold calculation of how to get the most out of people.</p>
+<p>But The Call of the Weird makes it clear that what you see in the documentaries is <em>him</em>, that he’s being genuine with his interviewees. Rather than naive-sounding questions being asked in an attempt to squeeze people for shocking or funny responses, he asks the simple questions because often they’re the best ones you can ask.</p>
+<blockquote>
+<p>‘Jerry, Jerry, Jerry,’ I interrupted.
+‘Jerry, Jerry, Jerry, Jerry, Jerry, Jerry, Jerry, Jerry, Jerry, Jerry, Jerry, Jerry.’</p>
+</blockquote>
+<p>Even though there are ten chapters, I blazed through the book in about a week and couldn’t bear finishing it — I just wanted more stories. Highly recommended.</p>
+  </article>
+  <div class="pagination">
+<p class="pagination-newer"><a href="https://robjwells.github.io/page-19/">Newer posts</a></p>  </div>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

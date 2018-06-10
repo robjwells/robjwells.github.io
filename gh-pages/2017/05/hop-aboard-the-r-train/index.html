@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – Hop aboard the R train</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2017/05/hop-aboard-the-r-train/">Hop aboard the R train</a></h2>
+      <p><time datetime="2017-05-21T16:27">Sunday, May 21 2017</time></p>
+    </header>
+    <p>I quite enjoy turning out little plots for posts on here. Admittedly I’m not great at it, but I like to have a go.</p>
+<p>However, <a href="https://matplotlib.org">matplotlib</a> really is not my favourite. It feels like there’s a lot of boilerplate to write and a lot of work to do before you get make something reasonably approaching what you had envisioned in your head.</p>
+<p>So I thought I’d give <a href="https://www.r-project.org">R</a> a try, and learn some things about visualisation along the way with <a href="http://vissoc.co">Kieran Healey’s data visualisation course notes</a>, which was fun.</p>
+<p>But mostly in this post I wanted to show how ludicrously straightforward using <a href="http://ggplot2.tidyverse.org">ggplot2</a> can be compared with what you have to do in matplotlib. Let’s pick on <a href="https://www.robjwells.com/2016/12/trains-home-and-away/">my plot of train ticket prices</a> from just before Christmas.</p>
+<p>The Python code for that is quite long so I’m not going to include it, but <a href="https://github.com/robjwells/primaryunit/blob/master/posts/2016/12/2016-12-23-trains/plot_trains.py">it is available to view online</a>. I’m not being completely fair because part of that involves getting the data into shape, and I’m sure there’s things I could’ve done to cut out a few lines.</p>
+<p>That said, it took me a while to figure out exactly how to go about doing the plot in matplotlib, exactly how to, say, parse the dates and label the axis.</p>
+<p>There was some of that with R and ggplot2, but mostly me looking things up in the documentation as I’ve not used them much. But mostly it was pretty straightforward to figure out how to build up the plot.</p>
+<p>Anyway, here’s the plot:</p>
+<p class="full-width">
+    <a href="/images/2017-05-21-r-trains.svg">
+        <img alt="A chart showing single train fares for selected journeys in England, France, Germany and the Netherlands on Friday December 23. This plot was made with R and ggplot2 instead of matplotlib."
+             src="/images/2017-05-21-r-trains.svg"
+             class="no-border"
+             width=720>
+    </a>
+</p>
+
+<p>And here’s the code that produced it:</p>
+<pre><code>library(ggplot2)
+
+# Read in and convert string times to datetimes
+trains &lt;- read.csv('collected.csv')
+trains$Time &lt;- as.POSIXct(trains$Time, format = '%Y-%m-%dT%H:%M:%S')
+
+# Get the data onto the plot
+p &lt;- ggplot(trains, aes(x = Time, y = Cost))
+
+# 'Reveal' the data with points and show the
+# East Mids price trend with a smoother
+completed &lt;- p + geom_point(aes(color = Operator)) +
+  geom_smooth(data = subset(trains, Operator == 'East Midlands Trains'),
+              aes(group = Operator, color = Operator),
+              method = 'loess', se = FALSE,
+              size = 0.75, show.legend = FALSE) +
+
+  # Let's adjust the scales
+  scale_x_datetime(date_breaks = '1 hour',
+                   date_labels = '%H:%M') +
+  scale_y_continuous(limits = c(0, 100),
+                     breaks = seq(10, 100, 10),
+                     expand = c(0, 0)) +
+
+  # Set some labels and adjust the look
+  labs(title = paste('Cost of single train tickets',
+                     'leaving European\ncapital cities',
+                     'on Friday December 23 2016'),
+       y = 'Ticket cost (€)',
+       color = 'Train operator') +
+  theme_bw(base_family = 'Trebuchet MS') +
+  theme(plot.title = element_text(hjust = 0.5))
+
+ggsave('plot.svg', plot = completed, device = 'svg',
+     width = 8, height = 4, units = 'in')</code></pre>
+
+
+<p>I’m still figuring things out with R and ggplot so I’m not exactly blazing through. (I still haven’t figured out how to export transparent SVGs without editing them by hand.)</p>
+<p>But I love the way that plots are built up out of individual pieces, which makes far more sense to me than trying to wrangle matplotlib’s figures and axes.</p>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

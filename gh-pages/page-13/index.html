@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – page 13</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2015/01/audio-hijack-3-and-scripts/">Audio Hijack 3 and scripts</a></h2>
+      <p><time datetime="2015-01-21T21:03">Wednesday, January 21 2015</time></p>
+    </header>
+    <p>Rogue Amoeba released <a href="http://rogueamoeba.com/audiohijack/">their upgrade to Audio Hijack Pro</a> <a href="http://weblog.rogueamoeba.com/2015/01/20/audio-hijack-3-has-arrived/">yesterday</a>, and it looks superb. I haven’t had a chance to do any recording with it yet, but I just did a quick test to see how it handles <a href="/2014/01/hijacking-the-bbc/">scripted recordings</a>.</p>
+<p>The short answer is that, if you have Audio Hijack Pro run an AppleScript at the start of a recording or process the finished recording using a script, you won’t be able to easily migrate to Audio Hijack 3.</p>
+<p>In Audio Hijack 3, application blocks can be set to open a URL. If you have the path to an AppleScript in that field it’ll treat it as a file to be saved. (So, in my case, Chrome “downloaded” the .scpt file.) There aren’t any blocks that offer more exotic input methods, nor outputs that pass the file off for processing.</p>
+<p>I’ve got a good idea for solving the latter (having Hazel watch a directory and run a script when files come in) but providing the right URL to begin with is more tricky. Perhaps a local web server that redirects to the correct URL? I haven’t done any web programming but I imagine that it would be fairly easy to rig up <a href="/2014/01/hijacking-the-bbc/">my existing Python scripts</a> with <a href="http://flask.pocoo.org">Flask</a> or <a href="http://webpy.org">web.py</a> or something. Or you could schedule a script to run after Audio Hijack wakes your machine and begins recording that hands the correct address directly to the browser?</p>
+<p>Who knows — maybe the removed functionality will be reintroduced down the line? Audio Hijack Pro still works fine so there’s no great rush to get off that and on to Audio Hijack 3.</p>
+<p>On a separate but related matter, there’s no AppleScript dictionary for Audio Hijack 3 (as with <a href="http://rogueamoeba.com/fission/">Fission</a>).</p>
+<div class="flag">
+  <p>
+    <strong>Update: 2015-01-28</strong><br>
+    In <a href="http://weblog.rogueamoeba.com/2015/01/28/audio-hijack-3-is-a-hit-and-audio-hijack-3-0-1-is-here/">a new post about Audio Hijack 3’s first week</a>, scripting is explicitly noted as an area that might get some attention.
+  </p>
+</div>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2015/01/interruptions/">Interruptions</a></h2>
+      <p><time datetime="2015-01-17T22:13">Saturday, January 17 2015</time></p>
+    </header>
+    <p><a href="http://www.leancrew.com/all-this/2015/01/open-and-shut/">Like Dr Drang</a>, I’ve noticed some stuff doing the rounds about open offices, with the odd article cropping up now and again on <a href="http://news.ycombinator.com">Hacker News</a>. At most I’ve skimmed them, because it really seemed like a really straightforward situation.</p>
+<p>Not <em>open = bad</em>, <em>private = good</em> or the other way around, but that selecting an office environment should consider both the kind of work people will be doing and the culture of worker interaction.</p>
+<p>People can get solid, thoughtful, involved work done in open offices, like the engineers or journalists Dr Drang mentions. I’ve worked in a newsroom for the last four and half years, and we manage to crank out a whole paper with all of us jammed into the same space.</p>
+<p>Would we do a better job if we had private offices? For most workers, I’d wager <em>probably not</em>. But a lot of that is down to what we perceive to be important to completing our tasks — communication and collaboration — and the culture around that — talking to people across the office, asking questions loud enough that almost anyone can hear and answer. When you're dealing with relatively small chunks of work — a story, part of a page — your concentration never gets deep enough for the chatter around you to be a significant problem.</p>
+<p>There are certain jobs, such as proofing pages, that do require deeper concentration and I'll admit that I struggle to proof while sat at my desk near the centre of the newsroom (I often retreat into the office that practicality has so far prevented me from moving in to). But the noise that distracts me in this case has two roots (three if you count the reporters): the open-plan office and the culture (of frequent, relatively loud verbal communication).</p>
+<p>Let's take Dr Drang's other example: engineers. (I don't mean to pick on him with these references, but his post was a neat framing and response to the open office argument that I can hang my own views on.) It's difficult to tell from <a href="https://www.flickr.com/photos/drdrang/16110332970/in/photostream/">the photo of Bell Labs workers</a>, but I imagine that the culture there was different from ours that I've just described. I imagine that there was less loud verbal communication across the room, and also less of an expectation that anyone could interrupt them at any time for any reason. (Or maybe they just had their heads down for the camera.)</p>
+<p>You can get work done in an open office; it doesn't fatally undermine productivity. The biggest problem with open offices is that they provide an environment in which a noisy, distracting culture <em>can arise</em>. Not necessarily, not certainly, but possibly. Giving people private offices, on the other hand, limits that — the residents can determine what is an acceptable culture in their office (the person who's happy for anyone to drop by, the person who tolerates no visitors) rather than potentially letting the loudest person in the office determine the conditions.</p>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2015/01/updated-date-suffix-script/">Updated date suffix script</a></h2>
+      <p><time datetime="2015-01-17T18:56">Saturday, January 17 2015</time></p>
+    </header>
+    <p>One of my favourite scripts is <a href="/2013/10/date-suffixes-in-python/">a snippet of Python that produces a date with an ordinal suffix</a>. It’s <a href="http://stilldrinking.org/programming-sucks">short, simple</a>, and was probably the first thing I did in Python that made me sit back and smile.</p>
+<p>But it contains a hack to prevent the day of the month from being prefixed with a zero (<code>%d</code>) or a space (<code>%e</code>). I recently <a href="http://www.leancrew.com/all-this/2013/02/new-flexible-timestamps-in-drafts/">discovered</a> that you can use a hyphen in the format specifier to prevent this: <code>%-d</code>.</p>
+<p>Also, the method of inserting the suffixed day just uses <code>str.replace</code> to replace a hash mark. But what if you need a hash mark in your date string? Not ideal, and easily solved with Python’s <code>str.format</code>.</p>
+<p>Here’s the new code:</p>
+<pre><code>from datetime import date
+
+def ordinal_suffix(day):
+  if 3 &lt; day &lt; 21 or 23 &lt; day &lt; 31:
+    return 'th'
+  else:
+    return {1: 'st', 2: 'nd', 3: 'rd'}[day % 10]
+
+today = date.today()
+date_string = today.strftime('%A, %B %-d{suffix}, %Y')
+print(date_string.format(suffix=ordinal_suffix(today.day)))</code></pre>
+
+
+<p>Starting with the date string on line 10, <code>%-d</code> surpasses the prefix, and we include a replacement field (<code>{suffix}</code>). That gets formatted with the output of the <code>ordinal_suffix</code> function.</p>
+<p>The logic there is largely the same as <a href="/2013/10/date-suffixes-in-python/">before</a> <del datetime="2015-01-17">except that I’m treating the 1x numbers as a special case in line 4 (which I appreciate is a bit silly given the range 1-31, but 0x, 2x and 3x days all conform)</del>. <ins datetime="2015-01-17">Given a bit more thought, it makes sense to handle all <code>th</code> suffixes in the True part of the conditional.</ins> Everything else, as before, gets reduced to the final digit and is used to index into the dictionary in line 7 <del datetime="2015-01-17">— using <code>get</code> to supply <code>th</code> as a default</del>.</p>
+<p>It may seem silly to revisit this — this may as well be <a href="https://en.wikipedia.org/wiki/Fizz_buzz">fizzbuzz</a> — but I really don’t like leaving blog posts that I <em>know</em> are incorrect in some way. I hate the idea that someone may stumble across a post and take away an idea that isn’t the best that I could provide them. And really this is a learning process for me: I think something is one way, write about it, come to a better conclusion, and write about it again.</p>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2014/12/locale-in-os-x-whats-the-current-situation/">Locale in OS X — what’s the current situation?</a></h2>
+      <p><time datetime="2014-12-22T10:16">Monday, December 22 2014</time></p>
+    </header>
+    <div class="flag">
+  <p><strong>Warning: The contents of this post may not be up to date!</strong></p>
+  <p>Sorry, but if you’re searching for answers about why you can’t reliably set environment variables in OS X (particularly <code>PATH</code>), the information below may be out of date.</p>
+  <p>Apple has changed the system so many times in so many different ways it’s difficult to find <em>anything</em> on the internet about this that is correct and up-to-date, so I’ve placed this warning on the top of every post I’ve written about it.</p>
+  <p>As of 2017-03-02 it appears that the best collection of information is <a href="https://github.com/ersiner/osx-env-sync">the osx-env-sync project on GitHub</a> and its associated issues.</p>
+  <p>Be wary of anything that you find on StackOverflow: the answers there may well have been correct at the time but incorrect now.</p>
+  <p>For reference, my own posts on this problem (newest first) are:</p>
+  <ul>
+    <li><a href="/2017/03/setting-os-xs-environment/">Setting OS X’s environment</a></li>
+    <li><a href="/2014/12/locale-in-os-x-whats-the-current-situation/">Locale in OS X — what’s the current situation?</a></li>
+    <li><a href="/2014/12/locale-in-os-x-and-launch-agents/">Locale in OS X and Launch Agents</a></li>
+    <li><a href="/2013/09/get-your-us-ascii-out-of-my-face/">Get your US-ASCII out of my face</a></li>
+  </ul>
+</div>
+
+<p>One thing that I didn’t but meant to mention in <a href="/2014/12/locale-in-os-x-and-launch-agents/">my post about setting the locale correctly in OS X</a> is a <a href="http://www.curiousefficiency.org/posts/2014/08/multilingual-programming.html">recent post by Python core developer Nick Coghlan</a>, where he talks generally about locales and languages.</p>
+<p>One of the points he makes is about getting OS vendors to transition to using Unicode. Nick writes:</p>
+<blockquote>
+<p>For POSIX systems, there are still a lot of systems that don’t use UTF-8 as the preferred encoding and the assumption of ASCII as the preferred encoding in the default <code>C</code> locale is positively archaic.</p>
+</blockquote>
+<p>Which has been my experience with OS X (see <a href="/2014/12/locale-in-os-x-and-launch-agents/">my recent locales post</a> and also parts of <a href="/2013/09/get-your-us-ascii-out-of-my-face/">last year’s</a>). But then he writes (emphasis mine):</p>
+<blockquote>
+<p>Mac OS X is the platform most tightly controlled by any one entity (Apple), and they’re actually in the best position out of all of the current major platforms when it comes to handling multilingual computing correctly.</p>
+<p>They’ve been one of the major drivers of Unicode since the beginning … and <em>were able to force the necessary configuration changes on all their systems</em></p>
+</blockquote>
+<p>Which brings me back to something I noted in my last post: <em>I don’t have a clean install of OS X</em>. It’s been upgraded from 10.7 up through 10.10. Same story with the machines at work (which are even older).</p>
+<p>So is Apple correctly setting the locale now? If any readers have a new machine or a clean install of OS X, could you please check and let me know? (A quick way to test would be to open Script Editor and run <code>do shell script "locale"</code>.)</p>
+  </article>
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2014/12/locale-in-os-x-and-launch-agents/">Locale in OS X and Launch Agents</a></h2>
+      <p><time datetime="2014-12-20T15:46">Saturday, December 20 2014</time></p>
+    </header>
+    <div class="flag">
+  <p><strong>Warning: The contents of this post may not be up to date!</strong></p>
+  <p>Sorry, but if you’re searching for answers about why you can’t reliably set environment variables in OS X (particularly <code>PATH</code>), the information below may be out of date.</p>
+  <p>Apple has changed the system so many times in so many different ways it’s difficult to find <em>anything</em> on the internet about this that is correct and up-to-date, so I’ve placed this warning on the top of every post I’ve written about it.</p>
+  <p>As of 2017-03-02 it appears that the best collection of information is <a href="https://github.com/ersiner/osx-env-sync">the osx-env-sync project on GitHub</a> and its associated issues.</p>
+  <p>Be wary of anything that you find on StackOverflow: the answers there may well have been correct at the time but incorrect now.</p>
+  <p>For reference, my own posts on this problem (newest first) are:</p>
+  <ul>
+    <li><a href="/2017/03/setting-os-xs-environment/">Setting OS X’s environment</a></li>
+    <li><a href="/2014/12/locale-in-os-x-whats-the-current-situation/">Locale in OS X — what’s the current situation?</a></li>
+    <li><a href="/2014/12/locale-in-os-x-and-launch-agents/">Locale in OS X and Launch Agents</a></li>
+    <li><a href="/2013/09/get-your-us-ascii-out-of-my-face/">Get your US-ASCII out of my face</a></li>
+  </ul>
+</div>
+
+<p>I really dislike <a href="/2013/09/get-your-us-ascii-out-of-my-face/">last year’s post about ASCII and UTF-8</a>. It’s one of those posts that, when you look back, reveals how little you know about a topic. The stuff in there isn’t all wrong but as a whole it’s not correct.</p>
+<p>Towards the end I say that the way to make sure that the locale isn’t <code>C</code> is to export <code>LANG</code> in a bunch of profile/rc files. But that doesn’t work if those files aren’t sourced — quite common when scripts get run on your behalf.</p>
+<p>At some point I got bitten again and fixed it using <a href="http://en.wikipedia.org/wiki/Launchd">launchd</a>. By modifying the /etc/launchd.conf configuration file (as suggested <a href="http://www.digitaledgesw.com/node/31">here</a> and <a href="http://stackoverflow.com/questions/135688/setting-environment-variables-in-os-x/">here</a>), you could make launchd set environment variables at startup:</p>
+<pre><code># /etc/launchd.conf
+setenv LANG en_GB.UTF-8</code></pre>
+
+
+<p>Dead simple, and ensures that <code>LANG</code> is always correct. But unfortunately useless in Yosemite. From the launchctl man page:</p>
+<blockquote>
+<p>The /etc/launchd.conf file is no longer consulted for subcommands to run during early boot time; this functionality was removed for security considerations.</p>
+</blockquote>
+<p>(I should note that I don’t have a clean install of Yosemite, so maybe Apple has fixed the default locale to something <code>*.UTF-8</code> and my carried-over files have got in the way. But I don’t think so: the guest account defaults to the <code>C</code> locale.)</p>
+<p>There’s a <a href="http://stackoverflow.com/questions/25385934/setting-environment-variables-via-launchd-conf-no-longer-works-in-os-x-yosemite">thread on Stack Overflow</a> containing some discussion about how to handle the change. It’s a bit of a muddle, but the common theme is to use a real launchd job to set environment variables on startup.</p>
+<p>Launchd agents are registered using .plist files (XML), which are a pain to work with by hand, so I recommend <a href="https://www.peterborgapps.com/lingon/">Lingon</a> (nicer to use) or <a href="http://www.soma-zone.com/LaunchControl/">LaunchControl</a> (exposes more settings). The most basic setup is to call launchctl directly:</p>
+<p><img alt="Lingon set to run launchctl at startup with the arguments 'setenv LANG en_GB.UTF-8'" src="/images/2014-12-19_locales-lingon-basic.png" /></p>
+<p>That’ll save a .plist file in ~/Library/LaunchAgents/ — a job that gets run by launchd when you log in (for your user only). And we’re done!</p>
+<p>Setting the locale in this way means that it will be set correctly for any process that follows (even something like <code>do shell script</code> in AppleScript).</p>
+<h3>But wait</h3>
+<p>Since we’re mucking around with Launch Agents and using launchctl at boot, we can set up the environment however we like. Rather than use launchctl directly, I run my own script that does several things:</p>
+<pre><code># Launch Agent to set environment variables on boot
+
+set -e
+
+date=$(date +&quot;%Y-%m-%d %H:%M:%S&quot;)
+echo -e &quot;$date\tSetting environment variables with $0&quot;
+
+# Locale
+launchctl setenv LANG en_GB.UTF-8
+launchctl setenv LC_ALL en_GB.UTF-8
+
+# Python
+launchctl setenv PYTHONPATH &quot;/Users/robjwells/Dropbox/bin&quot;
+
+# Path
+if [ -x /usr/libexec/path_helper ]; then
+  export PATH=&quot;&quot;
+  eval $(/usr/libexec/path_helper -s)
+  launchctl setenv PATH $PATH
+fi</code></pre>
+
+
+<p>It’s largely straightforward: setting the locale correctly, then <code>PYTHONPATH</code> (searched for Python modules), then something more involved for the <code>PATH</code>.</p>
+<p>By default, OS X sets <code>PATH</code> to something that’s pretty sparse:</p>
+<pre><code>/usr/bin:/bin:/usr/sbin:/sbin</code></pre>
+
+
+<p>(You can check this with <code>do shell script "echo $PATH"</code> in AppleScript.)</p>
+<p>That can make some things pretty difficult, particularly if you want to use scripts you’ve written through some kind of intermediary that doesn’t source your setup files.</p>
+<p><a href="https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man8/path_helper.8.html">path_helper</a> constructs a path from the contents of /etc/paths and files in /etc/paths.d — giving you a much more expansive path than by default (and one you can add to by placing a file of your own in the latter directory). And again, by setting this at boot through launchctl it’s available widely afterwards.</p>
+<p>Not everywhere, though. For instance, <a href="http://smilesoftware.com/TextExpander/index.html">TextExpander</a> <a href="http://www.smilesoftware.com/help/TextExpander/applescript.html">ensures UTF-8 support</a> by setting <code>LANG</code>, but <code>PATH</code> is still restricted to the short one listed above. I get the feeling TextExpander is doing more than just inheriting the environment and tweaking <code>LANG</code>.</p>
+<h3>‘Legacy subcommands’</h3>
+<p>The language in the launchctl man page refers to “the previous implementation of launchd” and Yosemite brings with it a new (painful) interface, with the previous interface listed under the heading “legacy subcommands”. Some of the commands listed there don’t have equivalents in the new interface — including the vital <code>setenv</code>.</p>
+<p>I don’t know whether to be worried by the “legacy” description. If these commands go away without similar ones being introduced we could be left without a way to set vital environment variables (fixing Apple’s oversights). But it sounds that launchd has undergone major surgery, so reimplementing the previous interface does suggest some kind of commitment to it, at least in the interim.</p>
+  </article>
+  <div class="pagination">
+<p class="pagination-older"><a href="https://robjwells.github.io/page-14/">Older posts</a></p><p class="pagination-newer"><a href="https://robjwells.github.io/page-12/">Newer posts</a></p>  </div>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

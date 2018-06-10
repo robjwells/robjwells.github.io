@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – JSON Feed</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2017/05/json-feed/">JSON Feed</a></h2>
+      <p><time datetime="2017-05-20T00:02">Saturday, May 20 2017</time></p>
+    </header>
+    <p>I added support for <a href="https://jsonfeed.org">JSON Feed</a> to my homemade static site generator <a href="https://github.com/robjwells/majestic">Majestic</a> today, and thought I’d note it because funnily enough the two implementations <a href="https://daringfireball.net/linked/2017/05/19/json-feed-jekyll">mentioned by John Gruber</a> (by <a href="https://github.com/hafniatimes/hafniatimes.github.io/blob/master/_layouts/jsonfeed.html">Niclas Darville</a> and <a href="https://github.com/jmacdotorg/plerd/blob/master/templates/jsonfeed.tt">Jason McIntosh</a>) used the approach I’d taken for <a href="https://github.com/robjwells/majestic/blob/master/majestic/default_templates/majestic-rss.xml">generating my RSS feed</a> and wanted to avoid.</p>
+<p>Basically all three of those define a document template and pass in the posts and other required bits, and you’re done. I’m really not knocking this — again, I do this with the RSS feed and it validates fine. It’s all good.</p>
+<p>But I ended up templating my RSS feed like this because I looked at the <a href="https://pypi.python.org/pypi/feedgenerator/1.9">feedgenerator</a> module and ran away. Majestic was my first Python project of any real size and I wanted to keep things as straightforward as I could. While it looks (with hindsight) <a href="https://github.com/getpelican/pelican/blob/master/pelican/writers.py">reasonably OK in use</a>, it doesn’t have any documentation, has been pulled out of Django, and has funky class names (<code>Rss201rev2Feed</code>) that didn’t fill me with confidence that I could implement an RSS feed quickly.</p>
+<p>I was using <a href="http://jinja.pocoo.org">Jinja</a> templating for the site and since HTML and XML are cousins just did that. But you can probably tell that I didn’t really know what I’m doing (still don’t!) with escaping as any field that might contain non-Ascii characters is wrapped in <code>&lt;![CDATA[…]]&gt;</code> tags.</p>
+<p>But hey, it works. Feed’s valid.</p>
+<p>With JSON, everything just feels much more obvious. In Python you hand off basic types to the built-in <a href="https://docs.python.org/3/library/json.html">json</a> module and you get back a string, all the encoding taken care of. And if I make a mistake Python will complain at me, instead of just dumping out a file of questionable worth.</p>
+<p>I think this is what all the people complaining on the Hacker News thread missed. Working in JSON is comfortable and familiar — the tools are good and you get told when something goes wrong. Working with XML can be unclear and a bit of a pain, and creating an invalid document is a risk.</p>
+<p>So my super-duper advanced JSON Feed implementation is… constructing a <code>dict</code>, adding things to it and passing it off to the json module that I use <em>all the time</em>. Taken care of. The code’s so boring I’m not even going to include it here (but <a href="https://github.com/robjwells/majestic/blob/d88aabba2dc0059814955802408fb46dc452c0de/majestic/collections.py#L130">it’s online to view</a>).</p>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

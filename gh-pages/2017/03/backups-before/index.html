@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – Backups: before</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2017/03/backups-before/">Backups: before</a></h2>
+      <p><time datetime="2017-03-14T15:00">Tuesday, March 14 2017</time></p>
+    </header>
+    <p>At <a href="https://www.morningstaronline.co.uk">work</a> I’m responsible for our office file server, which is mostly used for storing the InDesign pages and related files we need to produce the paper every day.</p>
+<p>At the end of 2016 we replaced the server, which was a 2010 or 2011 Mac Mini, with a “current” Mac Mini — the 2014 release. That wasn’t ideal and part of the reason why I hadn’t replaced it sooner was because I was waiting for Apple to at least refresh the specs.</p>
+<p>In any case, we got to a point where the machine needed swapping. The final straw for me was being unable to trust that the backups would run reliably.</p>
+<p>Ever since I got my current post (in mid-2014) I’d been meaning to overhaul our backup strategy but it was always a case of “I’ll do it when we replace the server.” It’s worth sketching out what we were doing before moving on to what caused concern and what I’ve replaced it with now.</p>
+<p>In this, I’m going to include <a href="https://en.wikipedia.org/wiki/RAID">RAID</a> because the redundancy side of things also changes. For context, our working day is roughly 10am-7pm Sunday–Friday:</p>
+<ul>
+<li>Two 500GB drives in the Mini itself, in <a href="https://en.wikipedia.org/wiki/Standard_RAID_levels#RAID_1">RAID 1 (mirrored)</a>.</li>
+<li><a href="http://www.shirt-pocket.com">SuperDuper!</a> copies (newer files) to two drives (in RAID 1) at — if I remember correctly — 9am, 12pm, 3pm, 5pm, 9pm, Sunday–Friday.</li>
+<li>Daily SuperDuper copies (newer files) to two drives (in RAID 1) at about 9pm, Sunday–Friday.</li>
+<li>Weekly SuperDuper erase-and-copy on Saturday to both the three-ish-hourly mirrors and the daily mirrors.</li>
+<li><a href="https://www.arqbackup.com">Arq</a> backups to (old-style) <a href="https://aws.amazon.com/glacier/">Glacier</a> vaults, once a day.</li>
+</ul>
+<p>The SuperDuper copies were done to a set of USB 2 disk enclosures, containing ordinary 3.5″ drives.</p>
+<p>You’ll have noticed some fuzziness in my recollections just there, for an important reason: the machine’s performance was so poor everything bled into each other. It was totally competent serving files over <a href="https://en.wikipedia.org/wiki/Apple_Filing_Protocol">AFP</a> but trying to work on the machine itself was a nightmare.</p>
+<p>And this is the point where it gets concerning. It wasn’t rare to log in to the server to find a SuperDuper copy having run for 12 hours and still going, or that Arq had hung and needed its agent restarted. Both are solid pieces of software (though it was an older version of Arq, v3 I think) so the blame does lie with the machine.</p>
+<p>Which is odd, really, because its only tasks were:</p>
+<ul>
+<li>Serve files on the local network over AFP (to fewer than 25 users).</li>
+<li>Run OS X Server to handle user log-in (for access to files only).</li>
+<li>Host our internal (unloved and little-used) wiki.</li>
+<li>Perform backups (of its own drives).</li>
+</ul>
+<p>Hopefully you can spot the problems — both the ones inherent in the strategy and the ones that result from poor performance:</p>
+<ul>
+<li>
+<p>Local backups were relatively infrequent and could result in hours of data loss.</p>
+<p>This is a bit dicey when our business relies on getting all pages to the printers by the early evening. Each page takes about an hour of work to create.</p>
+</li>
+<li>
+<p>Local backups may not complete in a timely fashion.</p>
+<p>This exacerbates the point above, and the cause wasn’t readily apparent.</p>
+</li>
+<li>
+<p>Local backups, as copies, don’t allow for the recovery of older versions of a file.</p>
+<p>So if you accidentally erase everything off a page, save it, and it’s backed up, you can’t recover the previous state unless it was picked up by the previous daily backup. (That’s an unlikely event, since most pages are created, finished and published between daily backups.) </p>
+</li>
+<li>
+<p>Remote backups, because they were stored in Glacier, would take several hours even to reach the point where files could begin to be restored.</p>
+<p>Even if they were hourly (not our case), if you lose a page an hour before deadline and it’s not backed-up locally your only option is to recreate the page because there’s no chance you’ll get it out of Glacier fast enough.</p>
+</li>
+</ul>
+<p>Let’s walk through perhaps the most likely example of data loss during our working day, when a user accidentally deletes a file (taking an InDesign page as our file):</p>
+<p>Because of the way deletes work over <a href="https://en.wikipedia.org/wiki/Apple_Filing_Protocol">AFP</a> &amp; <a href="https://en.wikipedia.org/wiki/Server_Message_Block">SMB</a>, the deleted file is removed <em>immediately</em>, in contrast to a local delete requiring two steps to complete (usually): the file is moved to the trash, the trash is emptied.</p>
+<p>First, the local backups are checked. In the lucky case, a backup has run recently (and completed timely!), otherwise you could face up to three hours’ data loss, which could be all of the work on that page.</p>
+<p>If the page was created on a previous day (uncommon) then you’d also check the daily local backups, hoping that the page was substantially complete at that point.</p>
+<p>Then you’d check the remote backups, hoping that (like above) the page was substantially complete at the point that the backup ran and that you have the three-to-five hours needed for the restore to begin.</p>
+<p>It’s perhaps clear that the chances of recovering your work are <em>not good</em>. It gets even worse when you consider the next common case: that a user modifies a complete page, destroying the original work, and that modified version replaces the original on the more-frequent local backups.</p>
+<p>(When I was very new at the Star I did something similar. I was asked to work on a features page for the following day. I opened up the corresponding page for edition to save a copy but for whatever reason didn’t — and began to work <em>on the “live” page for edition</em>. When this was noticed — close to deadline! — I was thankfully able to undo my way back to the original state, as I hadn’t closed InDesign since opening it. It was an <em>incredibly</em> close call that still makes me feel queasy when I think about it.)</p>
+<p>So while we did have a strategy that included both local and remote backups, it was effectively useless. That everything locally was in RAID 1 — meaning that if one drive of a mirror fails, you don’t lose data — I think just shows that when it was set up, the core purpose of backing up our data was misunderstood. </p>
+<p>We had copies of our business-critical data, but constructed in such a way that protection against drive failure was far, far more important that the much more common case of restoring fast-changing files. In this system, you could have five drives die and still have a copy of our server data locally, or all six die (perhaps in a fire) and be able to recover remotely.</p>
+<p>To sum up, it was reasonable protection for a rare event but little protection for a common event.</p>
+<p>It is, of course, possible to have both. In <a href="https://www.robjwells.com/2017/03/backups-the-change/">my next post</a> I’ll go into what’s changed, why, and what that means for protecting our data in both the common and rare cases.</p>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

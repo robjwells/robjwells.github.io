@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – Blackjack!</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2013/02/blackjack/">Blackjack!</a></h2>
+      <p><time datetime="2013-02-25T14:58">Monday, February 25 2013</time></p>
+    </header>
+    <p>For the last few months I’ve been working, on and off, on a little web project — <a href="http://robjwells.github.com/veintiuno">a basic blackjack game you can play in your browser</a>. It’s not going to win any awards but it was a fun exercise to teach myself some JavaScript, HTML and CSS.</p>
+<p>I got the idea for it after finishing <a href="http://www.codecademy.com/tracks/javascript-original">Codecademy’s original JavaScript course</a>, where you spend some time working on the basics behind such a game. At the very end of the course, once you’ve put all the pieces together, you’re encouraged to keep working on it to see what you can improve.</p>
+<p>One of the leads is to improve the way the players’ hands are displayed by printing a more human-friendly message to the console. But I thought perhaps there was a way to improve the interface further, by breaking the game out of the console and hooking it up to a visual display in the browser proper. And, well, <a href="http://robjwells.github.com/veintiuno">this is what I’ve got</a> — and I encourage you to <a href="https://github.com/robjwells/veintiuno">poke around the code</a> as well.</p>
+<p>The core game logic is more or less the same, though I’ve taken time to improve certain aspects — dealing cards from a depleting deck, having the dealer hit on “soft” 17 (mostly for the challenge), better feedback, hiding the dealer’s hole card, and a few other bits.</p>
+<p>Since it hasn’t changed radically, I was surprised to find that the JavaScript file is now over four times longer than what I had when I finished the <a href="http://www.codecademy.com">Codecademy</a> track.</p>
+<p>I think that mirrors my surprise at how much work it actually was to get everything hooked up, working right and looking good enough to put out into the world without me dying of embarrassment. (And most of the extra JavaScript lines are related to connecting with HTML &amp; CSS.)</p>
+<p>Man, web design is <em>hard</em>. Well, it was hard for me — I guess because what little I did know was all geared towards making “regular” web pages, where you’ve got some text and maybe some images and maybe a list or two and <em>not</em> enough moving parts to construct a <a href="http://en.wikipedia.org/wiki/Rube_Goldberg_machine">Rube Goldberg Machine</a>.</p>
+<p>I actually would have been finished a little while ago but I decided to junk my original design, which looked like the layout you get now when using a wider window, because cutting off screens thinner than 800px was just an enormous cop-out and I couldn’t stand it. It was made worse by the fact I’d started reading <a href="http://www.abookapart.com/products/responsive-web-design">Ethan Marcotte’s Responsive Web Design</a>.</p>
+<p>So now you’ll see a “narrow” layout with devices thinner than 800px, and a luxuriously spacious design on anything wider. If you have an iPad you can see both very easily: thin design in portrait, wide in landscape.</p>
+<p>Speaking of the iPad, one of my goals was to not use any images that would get pixellated on high-DPI (retina) displays. I also wanted to keep the total file size as low as possible — one of the reasons I didn’t use jQuery and instead wrote my own helper functions.</p>
+<p>So step in <a href="http://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG</a>. The seven images used are all SVG files, weighing in at a whopping 12KB (and just 6KB when compressed).</p>
+<p>The biggest file by far is the <a href="http://www.theleagueofmoveabletype.com/league-gothic">League Gothic</a> web font file, which I like a lot and wouldn’t change but it has caused me some headaches. It can display oddly, appearing overly bold in Chrome for example. And finding a fallback font was basically impossible, though the new designs get around that by not including fragile elements designed around the font’s particular shape and size.</p>
+<p>The about button, styled as a red casino chip, is the only thing left of those fragile elements. Originally I had <a href="/images/2013-02-25_bjchips.png">two other chips</a>, with the number on their faces displaying the number of hands won and lost. I liked the look but they were ultimately so fiddly I ditched them for the simpler, clearer text-only counters.</p>
+<p>These also display better in Firefox, as the tabs around the chips’ outside — originally faked using a dashed border — displayed as a solid ring (because of how Firefox handles high border-radius values).</p>
+<p>Having said that, compatibility was not a priority for me. That would be stupid in the real world but I think I can get away with it here. This freed me up to use recent CSS features such as transforms, transitions, shadows, animation, new units, etc. (Since I mention animation, the overlays’ bounce effects come from <a href="http://daneden.me/animate/">Daniel Eden’s awesome animate.css</a>.)</p>
+<p>While this has been liberating, it’s also made clear that there are some oddities in CSS and browsers’ implementations of it that can sometimes trip you up, with problems seemingly coming out of nowhere.</p>
+<p>But practice looks to be the best way to clear up any confusion and I’m eager to learn and do more. I’ll probably make my own theme for this blog next, though I’m going to work through <a href="http://learningwebdesign.com">Jennifer Robbins’s Learning Web Design</a> first to make sure I have a firm footing.</p>
+<p>I think that’s about it, so thanks for reading and if you have any questions or comments I’m <a href="http://twitter.com/robjwells">@robjwells on Twitter</a>.</p>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

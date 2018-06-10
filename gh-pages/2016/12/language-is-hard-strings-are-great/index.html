@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – Language is hard, strings are great</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2016/12/language-is-hard-strings-are-great/">Language is hard, strings are great</a></h2>
+      <p><time datetime="2016-12-01T23:40">Thursday, December 1 2016</time></p>
+    </header>
+    <p><a href="https://alexwlchan.net/2016/12/strings-are-terrible/">Alex Chan wrote a short post today</a> dealing with an oddity with Python’s <code>.lower()</code> string method, which converts a string to all lower case.</p>
+<p>In short, the problem is this:</p>
+<pre><code>&gt;&gt;&gt; print('\u0130',
+...       len('\u0130'))
+İ 1
+&gt;&gt;&gt; print('\u0130'.lower(),
+...       len('\u0130'.lower()))
+i̇  2</code></pre>
+
+
+<p>(Print is used because I was having trouble with the closing quote disappearing in the second case and didn’t want to mislead you over the output — this is a hint as to the problem! That said, I inserted an extra space to get the second case to display properly for me, which you may or may not see.)</p>
+<p>So you have an upper-case dotted i (İ), <a href="https://en.wikipedia.org/wiki/Dotted_and_dotless_I">used in a few alphabets but mainly Turkish</a>, which is of length 1 in Python, but lowercase is length 2.</p>
+<p>Why’s this happening? The first answer is that the length of Python strings is the number of Unicode code points — not the number of perceived characters. In the lower case we have a small latin i with a combining dot afterwards.</p>
+<p>Swift is a language that seems to handle the characters or code points split very well:</p>
+<pre><code>1&gt; print(&quot;\u{0130}&quot;,
+         &quot;\u{0130}&quot;.unicodeScalars.count,
+         &quot;\u{0130}&quot;.characters.count)
+İ 1 1
+
+2&gt; print(&quot;\u{0130}&quot;.lowercased(),
+         &quot;\u{0130}&quot;.lowercased().unicodeScalars.count,
+         &quot;\u{0130}&quot;.lowercased().characters.count)
+i̇  2 1</code></pre>
+
+
+<p>(Extra space again!)</p>
+<p>Here, both consist of a single character but different numbers of code points. I’ve barely used Swift so I don’t know if it has any Unicode gotchas, but this seems to be the right way to handle it and something I’d like in Python (4?).</p>
+<p>So that’s the first answer. The second is that İ is a special case in Unicode: literally the second entry in the <a href="http://www.unicode.org/Public/UNIDATA/SpecialCasing.txt">Unicode special cases document</a>.</p>
+<p>In the Turkish alphabet, a lowercase İ is i — the standard latin small letter i. But if that’s what you got from <code>.lower()</code> you’d end up with a totally different letter if you were to then call <code>.upper()</code>:</p>
+<pre><code>İ -&gt; i -&gt; I     # Wrong at the end</code></pre>
+
+
+<p>In the Turkish alphabet, I is the capital form of ı — a small dot-less i. So a round trip would destroy the original character. That’s why in Unicode the decision was made to turn it into i̇, a small latin i with an additional dot above. It seems to be a character that only exists to allow for round-tripping İ:</p>
+<pre><code>İ -&gt; i̇ -&gt; İ    # Sort-of wrong in the middle</code></pre>
+
+
+<p>The latter is, yes, incorrect. Turkish-specific casing functions would handle this differently. There’s two arguments to made here: it’s a practical decision based on <code>i -&gt; I</code> being the most common in languages using Latin script; or it shows how Latin script-centric computing is.</p>
+<p>The way to handle this would be locale-specific case transformations, the conclusion of <a href="http://bugs.python.org/issue17252">a Python bug discussion about this very issue</a>. As is mentioned at the end of that thread, you’ll want to look at <a href="https://github.com/ovalhub/pyicu">PyICU</a> if you have to deal with these kinds of differences.</p>
+<p>So, where does that leave us? First, it should be a caution that certain language properties that we take for granted may not be universal.</p>
+<p>In Alex’s case, the assumption was that a mixed- or upper-case string has a lower-case transformation that is of the same length. (Although, as we’ve seen, if <code>.lower()</code> did what would be ideal for Turkish alphabet users then it would be the same length.)</p>
+<p>That point can be expanded out when you find out that <a href="https://en.wikipedia.org/wiki/Letter_case#Bicameral_script">many scripts are <em>unicameral</em> and don’t have case distinctions</a>.</p>
+<p>The second is that the representation of a string does not necessarily match the perceived length of a string. Swift exposing both <code>characters</code> and <code>unicodeScalars</code> makes that plain: characters are what you expect, Unicode scalars are how those characters are stored. And just look to Python 2’s <code>str</code> type for yet another example — a bag of bytes that may or may not be text.</p>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

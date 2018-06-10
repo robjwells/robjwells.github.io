@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – Broken Mercurial dummy cacerts</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2014/04/broken-mercurial-dummy-cacerts/">Broken Mercurial dummy cacerts</a></h2>
+      <p><time datetime="2014-04-13T09:37">Sunday, April 13 2014</time></p>
+    </header>
+    <p>When I tried to push <a href="/2014/04/manhandled/">my last post</a> to Bitbucket I received this ugly error:</p>
+<pre><code>abort: error: _ssl.c:507: error:14090086:SSL
+routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed</code></pre>
+
+
+<p>Gross as it is, the message is straightforward: the SSL certificate failed to verify. I imagine the root cause is the whole <a href="http://heartbleed.com">OpenSSL mess</a> and everyone reissuing their certificates, but it posed an immediate practical local problem: I couldn’t push to my source control.</p>
+<p>Git(hub) seemed to be fine, but any Mercurial commands involving the network — either trying to connect to Bitbucket or Kiln — would fail.</p>
+<p>The culprit turned out to be this line in my <code>~/.hgrc</code>:</p>
+<pre><code>[web]
+cacerts = /etc/hg-dummy-cert.pem</code></pre>
+
+
+<p>Which, as dumb as it looks, is the <a href="http://mercurial.selenic.com/wiki/CACertificates#Mac_OS_X_10.6_and_higher">recommended way</a> to enable certificate checking through the system keychain.</p>
+<p>Regenerating the permissions file didn’t help. Maybe this approach will work again in the future, once the wave of reissued certificates has broken, but for now there’s a straightforward solution:</p>
+<ol>
+<li>Remove the <code>cacerts</code> line from your <code>hgrc</code>;</li>
+<li>Use a Mercurial command such as <code>hg incoming</code> that causes it to wail about
+    a server’s certificate not being verified;</li>
+<li>Using the details from that message, add a <a href="http://www.selenic.com/mercurial/hgrc.5.html#hostfingerprints"><code>hostfingerprints</code></a>
+    section to your <code>hgrc</code>;</li>
+<li>Repeat with each server you connect to.</li>
+</ol>
+<p>You should end up with something like this:</p>
+<pre><code>[hostfingerprints]
+bitbucket.org = 45:AD:AE:1A:CF:0E:73:47…
+robjwells.kilnhg.com = c3:83:2c:5a:2d:0…</code></pre>
+
+
+<p>See <a href="http://blog.bitbucket.org/2014/04/08/bitbuckets-ssl-certificates-are-changing/">Bitbucket’s post</a> for a few more details.</p>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

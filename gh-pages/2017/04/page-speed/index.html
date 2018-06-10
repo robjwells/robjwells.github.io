@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – Page speed</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2017/04/page-speed/">Page speed</a></h2>
+      <p><time datetime="2017-04-10T10:40">Monday, April 10 2017</time></p>
+    </header>
+    <p>Since I moved the blog off Tumblr, I’ve tried to make it reasonably quick. Reasonably because it’s come in waves — waves of me saying: “Oh, that’s fine” and then deciding that whatever it is isn’t fine and needs to go.</p>
+<p>Tumblr used to whack in about 1MB of extra guff for its own purposes. If you’re posting endless gifs then that’s not something you’ll notice, but when you’re mostly dealing in text it’s pretty obvious.</p>
+<p>When I <a href="/2013/07/five-different-kinds-of-grey/">redesigned the site</a> almost four years ago I remember chafing at this, but it wasn’t until I settled on <a href="https://github.com/robjwells/majestic/">my own site generator</a> that I had the chance to really whittle things down.</p>
+<p>Much of that was lopping off unneeded stuff such as jQuery. It did succeed in getting the size down — to about 150–200kB for an average post. But I’ve recently made a few changes to speed things up that I wanted to talk about.</p>
+<p>Much of this has come about after reading Jacques Mattheij’s <a href="https://jacquesmattheij.com/the-fastest-blog-in-the-world">The Fastest Blog in the World</a> and Dan Luu’s two excellent posts <a href="https://danluu.com/octopress-speedup/">Speeding up this blog by 25x-50x</a> and <a href="https://danluu.com/web-bloat/">Most of the web really sucks if you have a slow connection</a>. (And, well, of course, <a href="http://idlewords.com/talks/website_obesity.htm">Maciej</a>. You should really read that one.)</p>
+<h3>Fonts</h3>
+<p>For ages this site used <a href="https://typekit.com/fonts/rooney">Rooney</a> served by Typekit as its main font. I <em>love</em> Rooney, it’s great. But using web fonts always means sending lots of data.</p>
+<p>Despite thinning down the included characters (Typekit allows you to choose language support) and forgoing the use of double emphasis (<code>&lt;em&gt;&lt;strong&gt;</code>), serving up three weights of Rooney still clocked in at over 100kB.</p>
+<p>I’m looking at Rooney now and it is gorgeous, but there’s no way I could or can justify it — the fonts collectively would usually outweigh anything else on a page. So it went, in favour of Trebuchet MS, which I’ve long had a soft spot for.</p>
+<h3>DNS</h3>
+<p>Not related to the bytes served up but switching my registrar’s (<a href="https://www.hover.com">Hover</a>’s) name servers for <a href="https://www.cloudflare.com">Cloudflare</a> helped cut about 100ms in DNS response times (from about 150ms).</p>
+<p>You can host your DNS with Cloudflare for free without using any of their other caching services (I don’t), and Cloudflare is consistently <a href="http://www.dnsperf.com">one of the fastest DNS hosts in the world</a>.</p>
+<h3>Syntax highlighting</h3>
+<p>Up until now I’d been using <a href="https://highlightjs.org">highlighting.js</a> to colour code snippets, and I’d been very happy with it. It’s a nice library that’s easy to work with and easy to download a customised version for your own use.</p>
+<p>But I’d been handing out a 10kB JavaScript library to everyone who visited — whether there was code to be highlighted or not. Had I included more than a handful of languages in my library it would have been even more.</p>
+<p>My first decision was to use my <a href="https://github.com/robjwells/majestic/">blog generator</a>’s extensions mechanism to mark every post or page that included code and would need highlighting — so if you visited a page without code, you didn’t receive the JavaScript library.</p>
+<p>But really that wasn’t enough for me. A few things annoyed me:</p>
+<ul>
+<li>Syntax highlighting had to be performed on every view on the client device at readers’ expense.</li>
+<li>I could only highlight those languages I’d included in my library.</li>
+<li>The library included all of my selected languages no matter what was on the page.</li>
+</ul>
+<p>This wasn’t ideal.</p>
+<p>The <a href="https://pythonhosted.org/Markdown/">Markdown module</a> I use has support for syntax highlighting, but there were <a href="http://www.leancrew.com/all-this/2010/12/new-syntax-highlighting-for-markdown/">some deficiencies</a> with it that had led me to pick the client-side highlighter in the first place, several years ago.</p>
+<p>It wasn’t difficult to fix that, however. Taking inspiration from <a href="https://alexwlchan.net/2017/03/extensions-in-python-markdown/">Alex Chan</a>, I modified the included Codehilite extension to match my requirements, which were to handle a “natural-looking” language line and line numbers in the Markdown source. You can <a href="https://github.com/robjwells/primaryunit/blob/master/extensions/rjw_highlight.py">see the source online</a>, but it’s pretty rough and I need to tidy it up. (It also uses Pygments’s inline line numbers, instead of the table approach which I’ve seen out of alignment on occasion.)</p>
+<p>The tradeoff here was serving a slightly inflated HTML file but a much-reduced JavaScript file (I kept a <a href="https://github.com/robjwells/primaryunit/blob/master/frontend/js/robjwells.js">barebones script</a> of a tenth of the size to show the plain source) — but the increase in HTML size is much smaller than the original JavaScript was.</p>
+<p>In all, I’ve gone from a baseline of roughly 160kB to 10-15kB per image-free post. It’s not <a href="https://jacquesmattheij.com/the-fastest-blog-in-the-world">the fastest blog in the world</a>, especially if you’re far away from Linode’s London datacentre, but it should be pretty nippy.</p>
+<h3>What else?</h3>
+<p>There are some things which I’ve rejected so far.</p>
+<ul>
+<li>
+<p>Inlining JavaScript and CSS.</p>
+<p>This could make the page render faster, at the expense of transferring data that would otherwise be cached when viewing other pages. (But, assuming the blog is like most others, most will only visit a single page.)</p>
+<p>But I feel a bit icky about munging separate resources together, and in mitigation the site is served over HTTP/2 (<a href="http://caniuse.com/#feat=http2">which most of the world supports</a>) and <a href="https://blog.cloudflare.com/http-2-for-web-developers/">inlining is an anti-pattern</a>.</p>
+</li>
+<li>
+<p>Sack off the traditional front page.</p>
+<p>Yeah, I felt this one acutely recently after posting all those dodgy but massive <a href="/2017/03/tube-crowding/">Tube heat maps</a>, sitting towards the bottom of the front page and inflating its size.</p>
+<p><a href="https://danluu.com">Dan Luu</a> has his archives as the front page, which is svelte but extreme for my tastes. We’ll see about this one.</p>
+</li>
+<li>
+<p>Ditch your CSS.</p>
+<p><a href="http://motherfuckingwebsite.com">Yeah, I know</a>. (<a href="http://bettermotherfuckingwebsite.com">Well</a>.) But I like pretty things. And it’s only about 2.5kB.</p>
+</li>
+</ul>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

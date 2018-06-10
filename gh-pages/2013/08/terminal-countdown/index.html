@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – Terminal countdown</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2013/08/terminal-countdown/">Terminal countdown</a></h2>
+      <p><time datetime="2013-08-17T14:36">Saturday, August 17 2013</time></p>
+    </header>
+    <p>I’ve got some annual leave booked for the very end of September, which is pretty far away still — but I wanted to know exactly how many days I have to go before my break.</p>
+<p>Usually I would just query <a href="http://www.wolframalpha.com/input/?i=Days+until+December+25+2013">Wolfram Alpha</a> but, since I’ve been spending a fair amount of time at the command line, I wondered if <code>date</code> in Unix could give me the answer.</p>
+<p>It’s easy to ask <code>date</code> to add or subtract an amount of time:</p>
+<pre><code>$ date -v +2w   # Now plus two weeks
+Sat 31 Aug 2013 13:14:20 BST</code></pre>
+
+
+<p>However there’s no built-in way to find the difference between two dates. So I wrote one. Now originally I was going to walk through that shell script but there were enough problems that I rewrote it in Python this morning.</p>
+<p>But before I get to the Python code I want to discuss the shell script.</p>
+<p>It took a date in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO format</a> (<a href="http://www.xkcd.com/1179/">because</a>) and ran it through <code>date</code> to get back a <a href="http://en.wikipedia.org/wiki/Unix_time">Unix timestamp</a>. This was then subtracted from the timestamp for the current date and divided by the number of seconds in a day to give the number of days difference.</p>
+<p>Unfortunately writing the script gave me a few headaches:</p>
+<ul>
+<li>Unix timestamps can break.
+    Passing a date before 1902 caused <code>date</code> to choke on my machine, and this varies from system to system.</li>
+<li>Commands you expect to be reliable can differ wildly between systems.
+    I used <code>egrep</code> to check the format of the provided date and used <code>\d</code> as the digit wildcard. But on my work machine, which runs Mac OS 10.6, you can only use <code>\d</code> with <code>grep -P</code>. That breaks <code>grep</code> on 10.8 at home.
+    The nasty solution was to use an explicit range: <code>[0-9]</code>. Gross.</li>
+<li>The bash scripting syntax is insane.
+    Want to check if stdin is connected to an interactive terminal, so you know you won’t be getting data on stdin? Use <code>-t 0</code>.
+    Meanwhile in Python: <code>sys.stdin.isatty()</code>.</li>
+</ul>
+<p>The timestamp problem is an edge case as days aren’t a useful measure of time past a certain, short distance, so it was mainly the reliability and syntax complaints that pushed me to rewrite the script. I don’t consider <code>\d</code> to be exotic and with the removal of the <code>-P</code> option in newer versions of <code>grep</code> how can you expect to use it in portable code?</p>
+<p>As for the syntax, while I was pleased I’d managed to lump together enough parts to make a working program, it’s not clear by any means — and this is just a 45-line wrapper around <code>date</code>! String comparisons in bash get to use <code>!=</code> and <code>==</code> but numbers are stuck with <code>-ne</code> and <code>-eq</code>? Oh god it’s <em>horrible</em>.</p>
+<p>Anyway, let’s move on to the Python script:</p>
+<pre><code>#!/usr/bin/env python3
+
+from __future__ import print_function
+import sys
+import os
+import re
+from datetime import datetime
+
+if len(sys.argv) == 2:
+  date = sys.argv[1]
+elif not sys.stdin.isatty():
+  # Called in a pipeline
+  date = sys.stdin.read().rstrip('\n')
+else:
+  # Print usage message if no date is supplied
+  script = os.path.basename(sys.argv[0])
+  print('Usage:  {0} YYYY-MM-DD\n'
+        '        prints number of days until or since the given date'
+        .format(script))
+  sys.exit(64)
+
+if not re.match(r'\d{4}-\d{2}-\d{2}', date):
+  print('Abort:  your date is not in YYYY-MM-DD format')
+  sys.exit(65)
+else:
+  then = datetime.strptime(date, '%Y-%m-%d').date()
+now = datetime.now().date()
+days = (then - now).days
+
+if days == 0:
+  print(&quot;That's today!&quot;)
+  sys.exit(0)
+
+msg = str(days) + ' day'
+if days not in [1, -1]:
+  msg += 's'
+
+if days &lt; 0:
+  msg = msg.lstrip('-') + ' ago'
+else:
+  msg += ' ahead'
+print(msg)</code></pre>
+
+
+<p>It works in much the same way as the shell script. (In case anyone’s wondering, the <code>print_function</code> import is for Python 2 compatibility — just change the shebang line to plain <code>python</code>.)</p>
+<p>Lines 9–13 handle input from an argument or stdin, and a usage message is printed (lines 14–20) if nothing is passed.</p>
+<p>Next is the regular expression to check the date’s format (using <code>\d</code>! Yes!).
+A warning is printed and the script exits if it doesn’t match, otherwise a datetime object is created using a <code>strptime</code> format string in the same way you would with <code>date</code> at the terminal. <code>date()</code> is immediately called on the object (line 26) because we want to work with full days only.</p>
+<p>One nice thing about Python’s datetime module is timedelta, which lets you subtract one date from another and returns the difference — we do that in line 28 and extract the <code>days</code> attribute.</p>
+<p>From here we’re just constructing the message printed to the user, with a check for the current date and then whether “days” should be plural. If the date is in the past we trim the minus sign in line 39, then stick on an appropriate adverb and print.</p>
+<p>All told, we end up with this:</p>
+<pre><code>$ days 2013-12-25
+130 days ahead
+$ days 2013-01-01
+228 days ago</code></pre>
+
+
+<p>I’ve posted both the <a href="https://gist.github.com/robjwells/6256540">Python and shell versions as a gist</a> if you’d like to compare the two.</p>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

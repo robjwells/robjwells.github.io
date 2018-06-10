@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – Restart in Windows: The script strikes back</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2013/05/restart-in-windows-the-script-strikes-back/">Restart in Windows: The script strikes back</a></h2>
+      <p><time datetime="2013-05-25T17:47">Saturday, May 25 2013</time></p>
+    </header>
+    <p>A quick and hopefully final update on my short AppleScript to restart from Mac OS X into your Bootcamp partition.</p>
+<p><a href="/2012/10/restart-in-windows-revenge-of-the-script/">The last time we looked at this</a> I had cobbled together some AppleScript, <code>grep</code> and <code>awk</code> for a fairly reliable script, but it required some fiddling if you were still using Leopard (10.5).</p>
+<p>I’ve revised the script again, this time relying on the <code>$NF</code> variable in <code>awk</code> to extract the last field. That makes using <code>diskutil list</code> easy, and so I now recommend the following for all users, including those on Leopard or Tiger:</p>
+<pre><code>set deviceID to (do shell script &quot;diskutil list ¬
+  | awk '/YourBootcampPartition/ {print $NF}'&quot;)
+do shell script &quot;bless -device /dev/&quot; &amp; deviceID &amp; ¬
+  &quot; -legacy -setBoot -nextonly&quot; ¬
+  with administrator privileges
+tell application &quot;Finder&quot; to restart</code></pre>
+
+
+<p>Here’s the shell part to get the identifier on its own:</p>
+<pre><code>diskutil list | awk '/YourBootcampPartition/ {print $NF}'</code></pre>
+
+
+<p>To be clear, the name of the partition <strong>must go between the two slashes</strong>.</p>
+<p>Aside from making it a purely shell script, which causes problems with prompting for the user’s credentials, I can’t see how this can get any simpler and so I fully expect this to be the last time I write about it.</p>
+<p>I’ve uploaded <a href="https://gist.github.com/robjwells/3681949">the script as a Gist</a>, if you’d like to star or fork it.</p>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

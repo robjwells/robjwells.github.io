@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – More precise git status gating</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2013/06/more-precise-git-status-gating/">More precise git status gating</a></h2>
+      <p><time datetime="2013-06-25T22:18">Tuesday, June 25 2013</time></p>
+    </header>
+    <p>At the end of my post about having <a href="http://www.noodlesoft.com">Hazel</a> <a href="/2013/06/gating-hazel-with-git-status/">check a file’s commit status</a> before running rules on it, I suggested that the script could be made better by not requiring the entire repository be committed and clean:</p>
+<blockquote>
+<p>If you work with repositories which are rarely
+“all clear” as in this case, you could improve
+this snippet by checking the status tool’s list
+of uncommitted modified files for the name of
+the file (provided by Hazel as <code>$1</code>).</p>
+</blockquote>
+<p>It has been on my mind all day, so I decided to have a crack at it:</p>
+<pre><code>cd $(dirname $1)
+FILENAME=$(basename $1)
+GITSTATUS=$(git status -s &quot;$FILENAME&quot;)
+if [ &quot;$GITSTATUS&quot; == &quot;&quot; ]; then
+  exit 0 # Clean
+else
+  exit 1 # Dirty
+fi</code></pre>
+
+
+<div class="flag">
+    <strong>Update 2013-06-27</strong>
+    <p>I’ve slightly revised the code and have rewritten the explanation to be clearer.</p>
+    <strong>Update 2013-07-31</strong>
+    <p>I’ve tweaked the script to make it simpler and more reliable, with the explanation below rewritten again. There is now also <a href="/2013/07/hazel-gating-with-mercurial/">a version for Mercurial users</a>.</p>
+</div>
+
+<p>The script is largely the same <a href="/2013/06/gating-hazel-with-git-status/">as in my original post</a>, but with a few tweaks and a different method of action.</p>
+<p>In line 1 the directory is not hard-coded as it was before, instead using the built-in <code>dirname</code> command to extract it from the path Hazel hands off as <code>$1</code>.</p>
+<p>Next the script grabs the filename from <code>$1</code> and provides it to the short form of <code>git status</code>, which returns a single line of output if the file is modified in any way. By moving into the file’s directory on the first line we can reliably avoid modified identically-named files in subfolders causing false negatives.</p>
+<p>Older versions of the script parsed the long <code>git status</code> output with a regular expression, which wasn’t ideal: a false negative could result if a file had the same name as a branch or the last word on a line of boilerplate output.</p>
+<p>Lastly the script checks if <code>git status</code> returned anything. An empty string counts as success since it would only contain characters if the file was dirty.</p>
+<p>The two exit lines tell Hazel whether the file passed the script’s check (<code>exit 0</code>) or failed (<code>exit 1</code>).</p>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

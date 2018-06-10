@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – You should be using docopt</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2015/06/you-should-be-using-docopt/">You should be using docopt</a></h2>
+      <p><time datetime="2015-06-30T12:21">Tuesday, June 30 2015</time></p>
+    </header>
+    <p>If you write any command-line tools that have a need for a help message, then you should really try <a href="http://docopt.org">docopt</a>, which gets you out of having to write argument-parsing code yourself. I’ve mentioned it before, <a href="/2014/01/hijacking-the-bbc/">briefly</a>, and I wouldn’t want to be without it.</p>
+<p>For an example I’m going to pick on Dr Drang, who was unfortunate enough to <a href="http://leancrew.com/all-this/2015/06/weather-history-without-the-web/">post such a script recently</a>. Sorry!</p>
+<p>Take a look at his original help message, and then check out the following:</p>
+<pre><code>Return NCDC weather report for the given date.
+
+Usage: ncdc [options] DATE
+
+Options:
+    -a, --ascii        : return ASCII file instead of HTML
+    -d, --daily        : return daily summary instead of hourly reports
+    -m, --month        : entire month, not just a single day
+    -p, --precip       : precipitation (hourly only, overrides -d)
+    -s, --station STA  : the station abbreviation [default: ORD]
+                         O'Hare     ORD
+                         Midway     MDW
+                         Palwaukee  PWK
+                         Aurora     ARR
+                         Waukegan   UGN
+                         Lewis      LOT
+                         DuPage     DPA
+                         Lansing    IGQ
+                         Joliet     JOT
+                         Kankakee   IKK
+                         Gary       GYY
+    -h, --help         : print this message</code></pre>
+
+
+<p>It’s essentially the same, but with a couple of minor changes:</p>
+<ul>
+<li>The description of the script comes before the usage.</li>
+<li>The date argument is now in upper case.</li>
+<li>I've added long options to make things a little more readable.</li>
+<li>The description of the station option gains <code>[default: ORD]</code>,
+    which specifies — shocker — the default value for that option.</li>
+</ul>
+<p>And here’s the new argument-handling code, to replace lines 54–87 in his script (there’s also the new line <code>from docopt import docopt</code> earlier on):</p>
+<pre><code># Handle options.
+args = docopt(help)
+sta = args['--station'].upper()
+ascii = args['--ascii']
+month = args['--month']
+precip = args['--precip']
+daily = False if precip else args['--daily']
+
+d = parse(args['DATE'], dayfirst=False)</code></pre>
+
+
+<p>Provide <code>docopt</code> with your help message and you get back a dictionary. Options that take an argument give you back the argument, the default or None (if you don’t set a default). The switch-type options are booleans, being False if they’re not used.</p>
+<p>Calling the script incorrectly prints the basic usage pattern, and <code>docopt</code> gives you the help options for free. (You don’t have to include them in the help message, even, but you should.)</p>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

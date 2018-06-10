@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – Date suffixes in Python</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2013/10/date-suffixes-in-python/">Date suffixes in Python</a></h2>
+      <p><time datetime="2013-10-07T22:51">Monday, October 7 2013</time></p>
+    </header>
+    <p>A little while ago I wrote about <a href="/2013/03/setting-a-date-with-textexpander/">using TextExpander to write dates</a>, the bulk of which was given over to an Applescript that returned a long date complete with date suffixes.</p>
+<p>Since I’ve been writing more and more Python, I thought it would be fun to rewrite it to see the difference between the two.</p>
+<p>First, here’s my original Applescript:</p>
+<pre><code>set theDate to the day of the (current date)
+set theDay to the weekday of the (current date)
+set theMonth to the month of the (current date)
+set theYear to the year of the (current date)
+
+set lastChar to (the last character of (theDate as string)) as number
+
+if lastChar &gt; 3 or lastChar is 0 or (theDate &gt; 10 and theDate &lt; 21) then
+  set theDate to (theDate as string) &amp; &quot;th&quot;
+else
+  set theSuffixes to {&quot;st&quot;, &quot;nd&quot;, &quot;rd&quot;}
+  set theDate to (theDate as string) &amp; (item lastChar of theSuffixes)
+end if
+
+return (theDay &amp; &quot;, &quot; &amp; theMonth &amp; &quot; &quot; &amp; theDate &amp; &quot;, &quot; &amp; theYear) as string</code></pre>
+
+
+<p>And now the Python:</p>
+<pre><code>#!/usr/local/bin/python3
+
+from datetime import date
+
+today = date.today()
+date_string = today.strftime('%A, %B #, %Y')
+day = today.day
+
+if (3 &lt; day &lt; 21) or (23 &lt; day &lt; 31):
+  day = str(day) + 'th'
+else:
+  suffixes = {1: 'st', 2: 'nd', 3: 'rd'}
+  day = str(day) + suffixes[day % 10]
+
+print(date_string.replace('#', day), end='')</code></pre>
+
+
+<div class="flag">
+    <p>
+        <strong>Update: <time>2015-01-17</time></strong>
+    </p>
+    <p>
+        <a href="/2015/01/updated-date-suffix-script/">I’ve improved the Python code.</a> Please use the more recent code and not that above.
+    </p>
+</div>
+
+<p>A date object, kind of similar to Applescript’s <code>current date</code>, is constructed on line 5. This is used to build a formatted date on line 6, which is complete bar the day of the month. I swap it out for a # placeholder because both <code>strftime</code> options for the day fall short: <code>%d</code> is padded with a zero, and <code>%e</code> is padded with a space. So instead I pull out the day separately in line 7.</p>
+<p>The date-testing logic on line 9 is simpler and more explicit in this version, testing first for any date that takes a -th. Those dates that require a different suffix get dumped to the else clause.</p>
+<p>A bit of modulo arithmetic on line 13 reduces the date integer to the units digit, which is used to key into a dictionary holding the suffixes.</p>
+<p>The day and its suffix are concatenated, and are inserted into the formatted date on line 15 using the <code>replace</code> string method (god I love Python’s string methods) and printed, with <code>end=''</code> suppressing the standard newline.</p>
+<p>Though the line count is the same between the two, the Python version has about half the characters of the Applescript. I think the Applescript’s verbosity — which I don’t help with that conditional — makes it harder to understand at a glance, while the Python is very clear, excepting the <code>strftime</code> format string.</p>
+<p>As a side note, I don’t actually use either of these scripts for my long date, having given in to “Weekday month day year” without a suffix or any commas. This can be constructed using TextExpander’s own date macros, which mirror <code>strftime</code> formatting: <code>%A %B %e %Y</code>. Still, a fun exercise.</p>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>

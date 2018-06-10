@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Primary Unit mirror on GitHub – Redundant publishing</title>
+
+  <!-- Load my combined stylesheet -->
+  <link rel="stylesheet" href="/resources/all.min.css">
+
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for Primary Unit" href="/rss">
+  <link rel="alternate" type="application/json" title="JSON feed for Primary Unit" href="/feed.json">
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mirror of https://www.robjwells.com hosted on GitHub">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header class="site-header">
+
+  <div class="site-title-container mute-links">
+    <h1 class="site-title"><a href="https://robjwells.github.io">Primary Unit mirror on GitHub</a></h1>
+    <p class="site-byline"><i>by</i> Rob Wells</p>
+  </div>
+
+  <div class="site-menu-container">
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/archives/">Archives</a></li>
+        <li><a href="/feed.json">JSON&nbsp;feed</a></li>
+        <li><a href="/rss">RSS&nbsp;feed</a></li>
+      </ul>
+    </nav>
+
+    <label for="search-field" class="site-search-label">
+      Site search
+    </label>
+    <form id="site-search" class="site-search" method="get" action="https://duckduckgo.com/">
+      <input name="q" type="text" id="search-field" class="search-field" placeholder="via DuckDuckGo">
+      <input name="sites" value="https://robjwells.github.io" hidden>
+      <button type="submit" class="search-button">Search</button>
+    </form>
+
+  </div> <!-- .site-menu-container -->
+
+</header> <!-- .site-header -->
+
+<main role="main">
+
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2017/04/redundant-publishing/">Redundant publishing</a></h2>
+      <p><time datetime="2017-04-16T22:39">Sunday, April 16 2017</time></p>
+    </header>
+    <p>In my previous post about <a href="/2017/04/page-speed/">page speed</a>, I mentioned that I’d written <a href="https://github.com/robjwells/majestic">my own site generator</a>. I’m not quite ready to talk specifically about it — I want to write some documentation first — and really I doubt that anyone but me <em>should</em> be using it.</p>
+<p>But, having set up <a href="https://s3.robjwells.com">publishing to Amazon S3</a> today, I wanted to write up how I publish this blog to multiple places so that it’ll be around whatever (within reason) might happen.</p>
+<p><a href="https://github.com/robjwells/majestic">Majestic</a>’s configuration files are set up in such a way that you have have a default settings file in a directory — <code>settings.json</code> — and you can specify others that make adjustments to that.</p>
+<p>In my case the main settings file contains the configuration for publishing to my own server (hosted at Linode) — not the nitty gritty of how to get it on to the server, but what the URLs, site title, etc should be. (It’s online if you want to <a href="https://github.com/robjwells/primaryunit/blob/master/settings.json">have a nose around</a>.)</p>
+<p>Then I have two extra JSON files: <code>robjwells.github.io.json</code> and <code>s3.robjwells.com.json</code>, which contain the customisations for publishing for those domains. Here’s the config for GitHub in full:</p>
+<pre><code>{
+  &quot;site&quot;: {
+    &quot;url&quot;: &quot;https://robjwells.github.io&quot;,
+    &quot;title&quot;: &quot;Primary Unit mirror on GitHub&quot;,
+    &quot;description&quot;: &quot;A mirror of https://www.robjwells.com hosted on GitHub&quot;
+  },
+
+  &quot;paths&quot;: {
+    &quot;output root&quot;: &quot;gh-pages&quot;
+  }
+}</code></pre>
+
+
+<p>Setting <code>site.url</code> is important because of the way my templates render article links (though my markdown source contains only relative links that work anywhere). And <code>paths.output root</code> just specifies the build directory where the HTML files get written.</p>
+<p>All the moving parts are contained in <a href="https://github.com/robjwells/primaryunit/blob/master/makefile">a makefile</a> which can build all three of my destinations. Here it is in full:</p>
+<pre><code>NOW = $(shell date +'%Y-%m-%d %H:%M')
+DISTID = $(shell cat cloudfront-distribution-id)
+
+
+define upload-robjwells
+rsync -zv -e ssh www.robjwells.com.conf
+    rick@deckard:/srv/www/www.robjwells.com/
+rsync -azv --delete -e ssh site/
+    rick@deckard:/srv/www/www.robjwells.com/html/
+endef
+
+
+define upload-github
+cd gh-pages ; git add . ; git commit -m &quot;$(NOW)&quot; ; git push
+endef
+
+
+define upload-aws
+aws s3 sync s3 s3://s3.robjwells.com --delete
+aws cloudfront create-invalidation
+    --distribution-id=&quot;$(DISTID)&quot; --paths=/index.html
+endef
+
+
+all: robjwells github aws
+
+force-all: force-robjwells force-github force-aws
+
+robjwells:
+  majestic
+  $(upload-robjwells)
+
+force-robjwells:
+  majestic --force-write
+  $(upload-robjwells)
+
+github:
+  majestic --settings=robjwells.github.io.json
+  $(upload-github)
+
+force-github:
+  majestic --settings=robjwells.github.io.json --force-write
+  $(upload-github)
+
+aws:
+  majestic --settings=s3.robjwells.com.json
+  $(upload-aws)
+
+force-aws:
+  majestic --settings=s3.robjwells.com.json --force-write
+  $(upload-aws)</code></pre>
+
+
+<p>(The <code>force-*</code> options rebuild the whole site, not just files which have changed.)</p>
+<p>And, really, that’s all it takes to publish to multiple hosts (once you’re set up at each one, of course).</p>
+<p>My own server is just a vanilla rsync command, with an extra one because I keep my Nginx server config locally too.</p>
+<p>For GitHub pages the <code>gh-pages</code> folder is a git repository, so <code>make github</code> regenerates the site into that folder, commits the changes with a timestamp as the message, and pushes the changes to GitHub. (It’s all on the same line with semicolons because the <code>cd</code> into the directory doesn’t hold across lines in the makefile.) Because the GitHub repository is set up to publish, the rest is sorted out on their end.</p>
+<p>And for S3 I just use the official AWS tool (<code>brew install awscli</code> if you’re on macOS) — the CloudFront line is because I use it to speed up the S3 version and I want to make sure an updated front page is available reasonably quickly, if not anything else.</p>
+<p>There’s a bit of overhead setting all of these up but once you do it doesn’t have to be any more work to keep each host updated. For me it’s just a <code>make all</code> away.</p>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> <!-- .site-footer -->
+
+</div> <!-- .wrapper -->
+
+</body>
+
+</html>
