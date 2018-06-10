@@ -5,7 +5,7 @@
         <link>https://robjwells.github.io</link>
         <atom:link href="https://robjwells.github.io/rss.xml" rel="self" type="application/rss+xml" />
         <description><![CDATA[A mirror of https://www.robjwells.com hosted on GitHub]]></description>
-        <lastBuildDate>Sun, 10 Jun 2018 21:59:26 +0000</lastBuildDate>
+        <lastBuildDate>Sun, 10 Jun 2018 22:04:03 +0000</lastBuildDate>
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <generator>majestic (https://github.com/robjwells/majestic)</generator>
         <item>
@@ -32,7 +32,7 @@
 <p>It’s difficult to know what to do. My gut feeling is to rush out and buy a basic Air immediately so as to not interrupt my life too much (particularly, I need to change jobs before the course starts as the hours don’t fit; this is not a secret to my boss or colleagues).</p>
 <p>But my head says that I should see if I can crack on using my iPad for now, enquire about getting the iMac serviced as soon as possible, and then make a more considered decision at a later time.</p>
 <p>It’s not a comfortable position for me, since this machine has been a fixture in my life for over six-and-a-half years. When the graphics card went last time, it was calming to know that it was a problem that Apple had committed to take care of (even if I almost missed the cutoff and had to drag the heavy thing all the way to Chafford Hundred on the train). No such luck this time.</p>
-<p>(On a, er, positive note, I guess this will finally force me to work out a way of blogging from iPad that isn’t as painful as I’m sure it will be to get this post up.)</p>]]></description>
+<p>(On a, er, positive note, I guess this will finally force me to work out a way of blogging from my iPad that isn’t as painful as I’m sure it will be to get this post up. [Later: It took some faffing about and too much manual work, but having (an old version of) Coda and shell access to my Linode server did the trick fine.])</p>]]></description>
             <pubDate>Sun, 10 Jun 2018 21:50:00 +0100</pubDate>
             <guid>https://robjwells.github.io/2018/06/hardware-choices/</guid>
         </item>
