@@ -8,6 +8,8 @@
   <!-- Load my combined stylesheet -->
   <link rel="stylesheet" href="/resources/all.min.css">
 
+  <!-- Load my combined JavaScript -->
+  <script src="/resources/all.min.js" async></script>
 
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
 
@@ -62,6 +64,67 @@
 
   <article>
     <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2015/02/my-email-nightmare/">My email nightmare</a></h2>
+      <p><time datetime="2015-02-25T12:35">Wednesday, February 25 2015</time></p>
+    </header>
+    <p>At work we have about 40 employees. A couple of weeks ago I moved our email to a new provider (<a href="https://fastmail.com">FastMail</a>). It took a while to get to but most of the activity was extremely concentrated, and that led me to make some mistakes. However, the move was successful, and hopefully my experience can smooth the way for people in a similar situation.</p>
+<h3>Background</h3>
+<p>From what I can tell, we’d been running our email through cPanel on a <a href="https://ukwebsolutionsdirect.co.uk">shared host</a> since 2003. (I was hired in 2010 and this became my responsibility in May 2014.)</p>
+<p>It wasn’t really an appropriate choice for a business. We had a small amount of space (9GB) shared between all employees. When users (or the entire account) exceeded their quota, the software would bounce incoming emails and send a shaming email to senders. Lots of simple things (holiday automatic replies) required my involvement.</p>
+<p>In addition, our domain’s DNS records were also managed through cPanel, tying the settings for our domain to our host (who were also our registrar at this point, so not totally unreasonable).</p>
+<p>The host wasn’t great either.</p>
+<ul>
+<li>To use SSL encryption, our email clients had to point to their server (not our own domain). This isn't a problem, except that one weekday afternoon in November they moved us to a different server without warning, breaking our email clients.</li>
+<li>Our contacts, using major webmail services, would sometimes have their provider refuse to send mail to us because our shared server had been placed on a <a href="https://en.wikipedia.org/wiki/DNSBL">blackhole list</a>.</li>
+<li>Five failed login attempts within two minutes would trigger an IP block. Starting an email client and, wondering why nothing’s happening, pressing the check mail button twice would shut down one of our two office lines. (POP/IMAP &amp; SMTP authentication counted as separate attempts.)</li>
+</ul>
+<p>That last one was really fun in combination with the November server move, as I went round the office changing people’s email settings. Their support workers, however, were helpful.</p>
+<p>And about two-thirds of our employees were accessing their email over POP, with nothing stored on our server.</p>
+<p>We were in a pretty bad state. (Hopefully little of this sounds familiar to you.)</p>
+<h3>Preparation</h3>
+<p>The biggest task before the switch itself was to move everyone using POP to access their mail to IMAP, otherwise when it came time to do the migration there’d be nothing to move across. They’d have to keep the old POP account in their client forever to be able to access old mail (one remote worker has had to do this because they couldn’t manage to set up IMAP access to their account in <a href="https://en.wikipedia.org/wiki/Microsoft_Entourage">Entourage</a>, their version of which is <a href="https://en.wikipedia.org/wiki/Microsoft_Office#Microsoft_Office_2001_and_v._X">old and busted</a>).</p>
+<p>For machines you can access personally this is fairly straightforward but dull. You generally can’t convert a client account from POP to IMAP, so set up a parallel account in the client and move messages into the IMAP version’s folders. If you have people using Entourage X or 2004 beware that moving messages between accounts will not preserve the original received date. I was moving everyone to Apple Mail — the only OS X client I’m going to support — and had to change the date column to use <em>date sent</em>.</p>
+<p>With remote workers you’re reliant on their technical skills and your ability to give instructions. For non-technical users think seriously about having them keep a disabled POP account as an archive (as mentioned above) as it may not be worth hours of your time trying to guide them on to IMAP.</p>
+<p>Ensure that your DNS settings are in a state where all that’s needed to do is to flip the MX records during the transition. You want to be able to pull the plug on your old provider without the world stopping. In our case, I transferred our domain to <a href="https://www.hover.com">Hover</a> and recreated the records. (cPanel stores MX and other records separately.)</p>
+<p>You’ll obviously need to draw up a list of accounts that’ll need creating at the new provider, which will give you a chance to rationalise your usage. This is particularly important when moving to a provider that charges per account (as FastMail and seemingly everyone else does). FastMail has a CSV import feature which will let you create many accounts in one step. (I just used regex in BBEdit to transform a simple list into the required format.)</p>
+<p>In our case, the biggest change was the ability to create aliases. So instead of five separate arts desk accounts we now have one main account, with aliases filing mail into subfolders. Combined with pruning unnecessary accounts, this meant I was able to almost halve the number we needed.</p>
+<p>Aliases also let me clean up our unpredictable account names, so that everyone is now firstnamesurname@, while ensuring that all mail sent to the old addresses ends up in the right place.</p>
+<p>You can get started on this list at any point, and it was one of the first things that I did after getting approval. But as you approach D-Day you need to <em>make sure that the list is up to date</em>. I failed to do this and, while it didn't cause major problems, it caused me to panic a bit as I scrambled to get the missing accounts up and running.</p>
+<h3>Transition</h3>
+<p>It will benefit you greatly if you draw up a plan for the transition. That includes choosing a D-Day, and detailing what actions you are going to perform and in which order. My biggest mistake was to let a worsening of the problems detailed above force my hand and act hastily. Do everything you can to avoid this and work according to plan.</p>
+<p>Your D-Day list should include:</p>
+<ol>
+<li>Business sign-up and payment. (You may be ready but is the person with the company card?)</li>
+<li>User account creation. (Double-check you're not missing any.)</li>
+<li>User migration and client settings switch. (You can’t split these.)</li>
+<li>MX record switch.</li>
+</ol>
+<p>1 &amp; 2 are straightforward, although after the second you may want to spend some time cleaning up autofilled names for non-personal accounts (Ms Acme C Department) and corresponding global address book entries.</p>
+<p>You’ll need to decide on a migration strategy. <a href="https://www.fastmail.com/help/business/migrate.html">The FastMail help</a> for this is very good. For any sizeable number of accounts you’ll want the second option: set up the accounts then for each user set up forwarding at the old provider, migrate existing mail and then change the user’s settings.</p>
+<p>As soon as you enable forwarding for a user the clock is ticking for you to change the user’s settings. Perform the IMAP migration and the clock ticks faster. The longer you wait the more the user’s new account will diverge from the old one.</p>
+<p>This is where I made <em>by far my biggest mistake</em>, one which forced me to work through the night to complete the switchover. I set up forwarding for and migrated each user in one block, without changing any client settings. If I hadn’t then spent hours changing everyone’s client settings I would have had to purge the accounts and start over with the IMAP migration. That’s a pain because after each import  for each account you’ll probably have to do some housekeeping (moving sent mail into FastMail’s sent folder, junk to junk, and so on).</p>
+<p>Note the order of actions on <a href="https://www.fastmail.com/help/business/migrate.html">the FastMail help page</a>:</p>
+<ol>
+<li>Forward the user’s new mail,</li>
+<li>Migrate the user’s existing mail,</li>
+<li>Change the user’s settings,</li>
+<li>Then <em>and only then</em> move on to the next user.</li>
+</ol>
+<p>Completely moving a user allows you to take as long as you need to complete the whole transition. Given other pressures on me at work, it’s likely that it would’ve taken weeks to move everyone. Making this mistake at least forced me to complete the entire thing quickly, even if it meant working a 19-hour shift. (I started working on the emails in earnest after a full day working on edition.)</p>
+<p>If you have remote workers you’ll need a strategy for them too. Mine was to send them all emails (to their personal accounts) containing a warning that their mail clients would be broken, new settings if they felt comfortable enough changing them, and instructions on how to access the web interface.</p>
+<p>Once you’ve got everyone moved over, flip the switch on the MX records so that new mail flows directly to the new provider.</p>
+<h4>Aside: hosting your DNS with FastMail</h4>
+<p>FastMail encourages you to host your DNS with them. I haven’t done it for <code>robjwells.com</code> or work because I feel that there should be a separation there (DNS settings stay with <a href="https://www.hover.com">the registrar</a>) and I’m not intimidated by DNS records (although they’re a massive pain).</p>
+<p>But if, say, <a href="http://daveplummer.net">my stepdad</a> wanted email for <a href="http://daveplummer.net">his business</a> I’d tell him to let FastMail handle his DNS settings. If I leave the Star I may switch the DNS to FastMail if there’s no-one sufficiently technical to take over from me.</p>
+<p>I did briefly switch work to use FastMail’s DNS two nights ago, to see if it enabled automatic configuration in Apple Mail or Thunderbird. No difference. (Our domain publishes SRV records that are meant to help with this and I thought I might have made a mistake, but no dice with either. Outlook may be a different story, but as we’re a mostly Mac office who cares?)</p>
+<h3>Afterwards</h3>
+<p>The actual change in email provider should largely be invisible to your users. Your biggest problem is going to be what I’ll call user education. Some of this will be straightforward. In our case, an example was to get people to check their spam folder (we previously had daily quarantine emails).</p>
+<p>But some will be more personal and political. That you won’t set up or support their <a href="https://en.wikipedia.org/wiki/Microsoft_Entourage">terrible email client</a>. That email aliases really do work. That, no, their emails are not mysteriously disappearing.</p>
+<p>A nice bonus for me is that I’m now not responsible for fixing whole categories of problems, and I’m <a href="http://blog.fastmail.com/2014/12/01/fastmail-advent-2014/">very confident in the FastMail staff</a>.</p>
+<p>But frankly this whole thing has been a nightmare (including writing this damn post, which has taken forever) and it’s a huge relief to have it sorted.</p>
+  </article>
+  <article>
+    <header>
       <h2 class="mute-links"><a href="https://robjwells.github.io/2015/01/audio-hijack-3-and-scripts/">Audio Hijack 3 and scripts</a></h2>
       <p><time datetime="2015-01-21T21:03">Wednesday, January 21 2015</time></p>
     </header>
@@ -100,17 +163,18 @@
 <p>But it contains a hack to prevent the day of the month from being prefixed with a zero (<code>%d</code>) or a space (<code>%e</code>). I recently <a href="http://www.leancrew.com/all-this/2013/02/new-flexible-timestamps-in-drafts/">discovered</a> that you can use a hyphen in the format specifier to prevent this: <code>%-d</code>.</p>
 <p>Also, the method of inserting the suffixed day just uses <code>str.replace</code> to replace a hash mark. But what if you need a hash mark in your date string? Not ideal, and easily solved with Python’s <code>str.format</code>.</p>
 <p>Here’s the new code:</p>
-<pre><code>from datetime import date
-
-def ordinal_suffix(day):
-  if 3 &lt; day &lt; 21 or 23 &lt; day &lt; 31:
-    return 'th'
-  else:
-    return {1: 'st', 2: 'nd', 3: 'rd'}[day % 10]
-
-today = date.today()
-date_string = today.strftime('%A, %B %-d{suffix}, %Y')
-print(date_string.format(suffix=ordinal_suffix(today.day)))</code></pre>
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">date</span>
+<span class="lineno"> 2 </span>
+<span class="lineno"> 3 </span><span class="k">def</span> <span class="nf">ordinal_suffix</span><span class="p">(</span><span class="n">day</span><span class="p">):</span>
+<span class="lineno"> 4 </span>  <span class="k">if</span> <span class="mi">3</span> <span class="o">&lt;</span> <span class="n">day</span> <span class="o">&lt;</span> <span class="mi">21</span> <span class="ow">or</span> <span class="mi">23</span> <span class="o">&lt;</span> <span class="n">day</span> <span class="o">&lt;</span> <span class="mi">31</span><span class="p">:</span>
+<span class="lineno"> 5 </span>    <span class="k">return</span> <span class="s1">&#39;th&#39;</span>
+<span class="lineno"> 6 </span>  <span class="k">else</span><span class="p">:</span>
+<span class="lineno"> 7 </span>    <span class="k">return</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;st&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;nd&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;rd&#39;</span><span class="p">}[</span><span class="n">day</span> <span class="o">%</span> <span class="mi">10</span><span class="p">]</span>
+<span class="lineno"> 8 </span>
+<span class="lineno"> 9 </span><span class="n">today</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+<span class="lineno">10 </span><span class="n">date_string</span> <span class="o">=</span> <span class="n">today</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%A, %B </span><span class="si">%-d{suffix}</span><span class="s1">, %Y&#39;</span><span class="p">)</span>
+<span class="lineno">11 </span><span class="nb">print</span><span class="p">(</span><span class="n">date_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="n">ordinal_suffix</span><span class="p">(</span><span class="n">today</span><span class="o">.</span><span class="n">day</span><span class="p">)))</span>
+</pre></div>
 
 
 <p>Starting with the date string on line 10, <code>%-d</code> surpasses the prefix, and we include a replacement field (<code>{suffix}</code>). That gets formatted with the output of the <code>ordinal_suffix</code> function.</p>
@@ -149,80 +213,6 @@ print(date_string.format(suffix=ordinal_suffix(today.day)))</code></pre>
 </blockquote>
 <p>Which brings me back to something I noted in my last post: <em>I don’t have a clean install of OS X</em>. It’s been upgraded from 10.7 up through 10.10. Same story with the machines at work (which are even older).</p>
 <p>So is Apple correctly setting the locale now? If any readers have a new machine or a clean install of OS X, could you please check and let me know? (A quick way to test would be to open Script Editor and run <code>do shell script "locale"</code>.)</p>
-  </article>
-  <article>
-    <header>
-      <h2 class="mute-links"><a href="https://robjwells.github.io/2014/12/locale-in-os-x-and-launch-agents/">Locale in OS X and Launch Agents</a></h2>
-      <p><time datetime="2014-12-20T15:46">Saturday, December 20 2014</time></p>
-    </header>
-    <div class="flag">
-  <p><strong>Warning: The contents of this post may not be up to date!</strong></p>
-  <p>Sorry, but if you’re searching for answers about why you can’t reliably set environment variables in OS X (particularly <code>PATH</code>), the information below may be out of date.</p>
-  <p>Apple has changed the system so many times in so many different ways it’s difficult to find <em>anything</em> on the internet about this that is correct and up-to-date, so I’ve placed this warning on the top of every post I’ve written about it.</p>
-  <p>As of 2017-03-02 it appears that the best collection of information is <a href="https://github.com/ersiner/osx-env-sync">the osx-env-sync project on GitHub</a> and its associated issues.</p>
-  <p>Be wary of anything that you find on StackOverflow: the answers there may well have been correct at the time but incorrect now.</p>
-  <p>For reference, my own posts on this problem (newest first) are:</p>
-  <ul>
-    <li><a href="/2017/03/setting-os-xs-environment/">Setting OS X’s environment</a></li>
-    <li><a href="/2014/12/locale-in-os-x-whats-the-current-situation/">Locale in OS X — what’s the current situation?</a></li>
-    <li><a href="/2014/12/locale-in-os-x-and-launch-agents/">Locale in OS X and Launch Agents</a></li>
-    <li><a href="/2013/09/get-your-us-ascii-out-of-my-face/">Get your US-ASCII out of my face</a></li>
-  </ul>
-</div>
-
-<p>I really dislike <a href="/2013/09/get-your-us-ascii-out-of-my-face/">last year’s post about ASCII and UTF-8</a>. It’s one of those posts that, when you look back, reveals how little you know about a topic. The stuff in there isn’t all wrong but as a whole it’s not correct.</p>
-<p>Towards the end I say that the way to make sure that the locale isn’t <code>C</code> is to export <code>LANG</code> in a bunch of profile/rc files. But that doesn’t work if those files aren’t sourced — quite common when scripts get run on your behalf.</p>
-<p>At some point I got bitten again and fixed it using <a href="http://en.wikipedia.org/wiki/Launchd">launchd</a>. By modifying the /etc/launchd.conf configuration file (as suggested <a href="http://www.digitaledgesw.com/node/31">here</a> and <a href="http://stackoverflow.com/questions/135688/setting-environment-variables-in-os-x/">here</a>), you could make launchd set environment variables at startup:</p>
-<pre><code># /etc/launchd.conf
-setenv LANG en_GB.UTF-8</code></pre>
-
-
-<p>Dead simple, and ensures that <code>LANG</code> is always correct. But unfortunately useless in Yosemite. From the launchctl man page:</p>
-<blockquote>
-<p>The /etc/launchd.conf file is no longer consulted for subcommands to run during early boot time; this functionality was removed for security considerations.</p>
-</blockquote>
-<p>(I should note that I don’t have a clean install of Yosemite, so maybe Apple has fixed the default locale to something <code>*.UTF-8</code> and my carried-over files have got in the way. But I don’t think so: the guest account defaults to the <code>C</code> locale.)</p>
-<p>There’s a <a href="http://stackoverflow.com/questions/25385934/setting-environment-variables-via-launchd-conf-no-longer-works-in-os-x-yosemite">thread on Stack Overflow</a> containing some discussion about how to handle the change. It’s a bit of a muddle, but the common theme is to use a real launchd job to set environment variables on startup.</p>
-<p>Launchd agents are registered using .plist files (XML), which are a pain to work with by hand, so I recommend <a href="https://www.peterborgapps.com/lingon/">Lingon</a> (nicer to use) or <a href="http://www.soma-zone.com/LaunchControl/">LaunchControl</a> (exposes more settings). The most basic setup is to call launchctl directly:</p>
-<p><img alt="Lingon set to run launchctl at startup with the arguments 'setenv LANG en_GB.UTF-8'" src="/images/2014-12-19_locales-lingon-basic.png" /></p>
-<p>That’ll save a .plist file in ~/Library/LaunchAgents/ — a job that gets run by launchd when you log in (for your user only). And we’re done!</p>
-<p>Setting the locale in this way means that it will be set correctly for any process that follows (even something like <code>do shell script</code> in AppleScript).</p>
-<h3>But wait</h3>
-<p>Since we’re mucking around with Launch Agents and using launchctl at boot, we can set up the environment however we like. Rather than use launchctl directly, I run my own script that does several things:</p>
-<pre><code># Launch Agent to set environment variables on boot
-
-set -e
-
-date=$(date +&quot;%Y-%m-%d %H:%M:%S&quot;)
-echo -e &quot;$date\tSetting environment variables with $0&quot;
-
-# Locale
-launchctl setenv LANG en_GB.UTF-8
-launchctl setenv LC_ALL en_GB.UTF-8
-
-# Python
-launchctl setenv PYTHONPATH &quot;/Users/robjwells/Dropbox/bin&quot;
-
-# Path
-if [ -x /usr/libexec/path_helper ]; then
-  export PATH=&quot;&quot;
-  eval $(/usr/libexec/path_helper -s)
-  launchctl setenv PATH $PATH
-fi</code></pre>
-
-
-<p>It’s largely straightforward: setting the locale correctly, then <code>PYTHONPATH</code> (searched for Python modules), then something more involved for the <code>PATH</code>.</p>
-<p>By default, OS X sets <code>PATH</code> to something that’s pretty sparse:</p>
-<pre><code>/usr/bin:/bin:/usr/sbin:/sbin</code></pre>
-
-
-<p>(You can check this with <code>do shell script "echo $PATH"</code> in AppleScript.)</p>
-<p>That can make some things pretty difficult, particularly if you want to use scripts you’ve written through some kind of intermediary that doesn’t source your setup files.</p>
-<p><a href="https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man8/path_helper.8.html">path_helper</a> constructs a path from the contents of /etc/paths and files in /etc/paths.d — giving you a much more expansive path than by default (and one you can add to by placing a file of your own in the latter directory). And again, by setting this at boot through launchctl it’s available widely afterwards.</p>
-<p>Not everywhere, though. For instance, <a href="http://smilesoftware.com/TextExpander/index.html">TextExpander</a> <a href="http://www.smilesoftware.com/help/TextExpander/applescript.html">ensures UTF-8 support</a> by setting <code>LANG</code>, but <code>PATH</code> is still restricted to the short one listed above. I get the feeling TextExpander is doing more than just inheriting the environment and tweaking <code>LANG</code>.</p>
-<h3>‘Legacy subcommands’</h3>
-<p>The language in the launchctl man page refers to “the previous implementation of launchd” and Yosemite brings with it a new (painful) interface, with the previous interface listed under the heading “legacy subcommands”. Some of the commands listed there don’t have equivalents in the new interface — including the vital <code>setenv</code>.</p>
-<p>I don’t know whether to be worried by the “legacy” description. If these commands go away without similar ones being introduced we could be left without a way to set vital environment variables (fixing Apple’s oversights). But it sounds that launchd has undergone major surgery, so reimplementing the previous interface does suggest some kind of commitment to it, at least in the interim.</p>
   </article>
   <div class="pagination">
 <p class="pagination-older"><a href="https://robjwells.github.io/page-14/">Older posts</a></p><p class="pagination-newer"><a href="https://robjwells.github.io/page-12/">Newer posts</a></p>  </div>

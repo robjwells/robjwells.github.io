@@ -8,6 +8,8 @@
   <!-- Load my combined stylesheet -->
   <link rel="stylesheet" href="/resources/all.min.css">
 
+  <!-- Load my combined JavaScript -->
+  <script src="/resources/all.min.js" async></script>
 
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
 
@@ -62,6 +64,37 @@
 
   <article>
     <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2013/06/gating-hazel-with-git-status/">Gating Hazel with git status</a></h2>
+      <p><time datetime="2013-06-25T00:52">Tuesday, June 25 2013</time></p>
+    </header>
+    <p>The JavaScript and CSS files for this site live on Amazon S3, but getting them up there can be a chore once you consider compression and uploading with the right headers.</p>
+<p>That wasn’t too difficult to sort out with AppleScript and Transmit but I wanted to avoid having to start the script manually as well.</p>
+<p><a href="http://www.noodlesoft.com/hazel.php">Hazel</a>, the housekeeper for your Mac, can keep watch and is ideal for this — except when you’re still working on the file. It’s going to get under your feet if you tell it to run its rules once the modification date is after the last match.</p>
+<p>If the files are under version control the commit status is an ideal way to signal whether or not a file is ready to go. Combine that with Hazel’s ability to use a shell script in its conditions and you end up with something like this:</p>
+<div class="syntax"><pre><span></span><span class="nb">cd</span> ~/Sites/robjwells
+<span class="nv">GITSTATUS</span><span class="o">=</span><span class="k">$(</span>git status <span class="p">|</span> head -n <span class="m">2</span> <span class="p">|</span> tail -n <span class="m">1</span> <span class="p">|</span> grep -o <span class="s2">&quot;^nothing&quot;</span><span class="k">)</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$GITSTATUS</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s2">&quot;nothing&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">exit</span> <span class="m">0</span>
+<span class="k">else</span>
+    <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+</pre></div>
+
+
+<p>(This is my first time writing about a purely shell script, so please be gentle.)</p>
+<p>First it moves into the directory in question, which is a git repo.
+Next it calls <code>git status</code>, extracts the second line of the output (<code>head</code> and <code>tail</code>) and checks if it starts with “nothing”. That’s because the status command returns this on a clean repo:</p>
+<pre><code># On branch master
+nothing to commit, working directory clean</code></pre>
+
+
+<p>If <code>grep</code> finds “nothing” it gets stuck in <code>$GITSTATUS</code>, which is compared to the string you would expect from a clean repo. If it matches the script exits with a success status code, which tells Hazel that the file has passed the check.</p>
+<p>(The -o flag makes <code>grep</code> only return the match, instead of the whole line.)</p>
+<p>Initially I did this check in the AppleScript that was applied to the file once it passed date and extension checks. But this meant that Hazel considered it to have matched successfully and would not run the rules on the file until it triggered the date conditions again. The lesson here is that checks must be separate from actions. Thankfully Hazel makes it easy to do that.</p>
+<p>If you work with repositories which are rarely “all clear” as in this case, you could improve this snippet by <a href="/2013/06/more-precise-git-status-gating/">checking the status tool’s list of uncommitted modified files for the name of the file</a> (provided by Hazel as <code>$1</code>).</p>
+  </article>
+  <article>
+    <header>
       <h2 class="mute-links"><a href="https://robjwells.github.io/2013/06/a-new-look-and-name/">A new look and name</a></h2>
       <p><time datetime="2013-06-24T17:36">Monday, June 24 2013</time></p>
     </header>
@@ -84,16 +117,18 @@
     <p>A quick and hopefully final update on my short AppleScript to restart from Mac OS X into your Bootcamp partition.</p>
 <p><a href="/2012/10/restart-in-windows-revenge-of-the-script/">The last time we looked at this</a> I had cobbled together some AppleScript, <code>grep</code> and <code>awk</code> for a fairly reliable script, but it required some fiddling if you were still using Leopard (10.5).</p>
 <p>I’ve revised the script again, this time relying on the <code>$NF</code> variable in <code>awk</code> to extract the last field. That makes using <code>diskutil list</code> easy, and so I now recommend the following for all users, including those on Leopard or Tiger:</p>
-<pre><code>set deviceID to (do shell script &quot;diskutil list ¬
-  | awk '/YourBootcampPartition/ {print $NF}'&quot;)
-do shell script &quot;bless -device /dev/&quot; &amp; deviceID &amp; ¬
-  &quot; -legacy -setBoot -nextonly&quot; ¬
-  with administrator privileges
-tell application &quot;Finder&quot; to restart</code></pre>
+<div class="syntax"><pre><span></span><span class="k">set</span> <span class="nv">deviceID</span> <span class="k">to</span> <span class="p">(</span><span class="nb">do shell script</span> <span class="s2">&quot;diskutil list ¬</span>
+<span class="s2">  | awk &#39;/YourBootcampPartition/ {print $NF}&#39;&quot;</span><span class="p">)</span>
+<span class="nb">do shell script</span> <span class="s2">&quot;bless -device /dev/&quot;</span> <span class="o">&amp;</span> <span class="nv">deviceID</span> <span class="o">&amp;</span> <span class="se">¬</span>
+  <span class="s2">&quot; -legacy -setBoot -nextonly&quot;</span> <span class="se">¬</span>
+  <span class="nv">with</span> <span class="nv">administrator</span> <span class="nv">privileges</span>
+<span class="k">tell</span> <span class="nb">application</span> <span class="s2">&quot;Finder&quot;</span> <span class="k">to</span> <span class="nv">restart</span>
+</pre></div>
 
 
 <p>Here’s the shell part to get the identifier on its own:</p>
-<pre><code>diskutil list | awk '/YourBootcampPartition/ {print $NF}'</code></pre>
+<div class="syntax"><pre><span></span>diskutil list <span class="p">|</span> awk <span class="s1">&#39;/YourBootcampPartition/ {print $NF}&#39;</span>
+</pre></div>
 
 
 <p>To be clear, the name of the partition <strong>must go between the two slashes</strong>.</p>
@@ -135,50 +170,55 @@ tell application &quot;Finder&quot; to restart</code></pre>
 <p>Since this is implicitly not the format to use when you’re counting characters and one that’s explicit enough to avoid confusion, there’s quite a bit of personal freedom here.</p>
 <p>This one’s going to be more complicated than the previous two, as I want to use date suffixes (March 2nd, April 21st, etc). But TextExpander doesn't include a suffix placeholder, so let’s take advantage of its script support.</p>
 <p>AppleScript’s built-in <code>current date</code> command returns an object from which we can extract all the pieces we need to construct a date, like so:</p>
-<pre><code>set theDate to the day of the (current date)
-set theDay to the weekday of the (current date)
-set theMonth to the month of the (current date)
-set theYear to the year of the (current date)</code></pre>
+<div class="syntax"><pre><span></span><span class="k">set</span> <span class="nv">theDate</span> <span class="k">to</span> <span class="nb">the</span> <span class="nb">day</span> <span class="k">of</span> <span class="nb">the</span> <span class="p">(</span><span class="nb">current date</span><span class="p">)</span>
+<span class="k">set</span> <span class="nv">theDay</span> <span class="k">to</span> <span class="nb">the</span> <span class="nv">weekday</span> <span class="k">of</span> <span class="nb">the</span> <span class="p">(</span><span class="nb">current date</span><span class="p">)</span>
+<span class="k">set</span> <span class="nv">theMonth</span> <span class="k">to</span> <span class="nb">the</span> <span class="nb">month</span> <span class="k">of</span> <span class="nb">the</span> <span class="p">(</span><span class="nb">current date</span><span class="p">)</span>
+<span class="k">set</span> <span class="nv">theYear</span> <span class="k">to</span> <span class="nb">the</span> <span class="nb">year</span> <span class="k">of</span> <span class="nb">the</span> <span class="p">(</span><span class="nb">current date</span><span class="p">)</span>
+</pre></div>
 
 
 <p>Now to build the suffix. Most dates have the suffix “th”, so we want to focus on the special cases: 1, 2, 3, 21, 22, and 31. We could check for each of these but there’s a smarter way.</p>
 <p>We need to pull the date’s <strong>last</strong> character, which determines the suffix, so we can work with both single and double-digit dates:</p>
-<pre><code>set lastChar to (the last character of (theDate as string))¬
- as number</code></pre>
+<div class="syntax"><pre><span></span><span class="k">set</span> <span class="nv">lastChar</span> <span class="k">to</span> <span class="p">(</span><span class="nb">the</span> <span class="nb">last</span> <span class="nb">character</span> <span class="k">of</span> <span class="p">(</span><span class="nv">theDate</span> <span class="k">as </span><span class="nc">string</span><span class="p">))</span><span class="se">¬</span>
+ <span class="k">as</span> <span class="nv">number</span>
+</pre></div>
 
 
 <p>Now we check for the most common situation (“th”) by testing <code>lastChar</code> against a range:</p>
-<pre><code>if lastChar is 0 or lastChar &gt; 3 or (theDate &gt; 10 and¬
- theDate &lt; 21) then
-    set theDate to (theDate as string) &amp; &quot;th&quot;</code></pre>
+<div class="syntax"><pre><span></span><span class="k">if</span> <span class="nv">lastChar</span> <span class="ow">is</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nv">lastChar</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="ow">or</span> <span class="p">(</span><span class="nv">theDate</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="ow">and</span><span class="se">¬</span>
+ <span class="nv">theDate</span> <span class="o">&lt;</span> <span class="mi">21</span><span class="p">)</span> <span class="k">then</span>
+    <span class="k">set</span> <span class="nv">theDate</span> <span class="k">to</span> <span class="p">(</span><span class="nv">theDate</span> <span class="k">as </span><span class="nc">string</span><span class="p">)</span> <span class="o">&amp;</span> <span class="s2">&quot;th&quot;</span>
+</pre></div>
 
 
 <p>If we put the other suffixes in order and in a list, we can use the last character of the date itself to extract the correct suffix:</p>
-<pre><code>set theSuffixes to {&quot;st&quot;, &quot;nd&quot;, &quot;rd&quot;}
-set theDate to (theDate as string) &amp; (item lastChar¬
- of theSuffixes)</code></pre>
+<div class="syntax"><pre><span></span><span class="k">set</span> <span class="nv">theSuffixes</span> <span class="k">to</span> <span class="p">{</span><span class="s2">&quot;st&quot;</span><span class="p">,</span> <span class="s2">&quot;nd&quot;</span><span class="p">,</span> <span class="s2">&quot;rd&quot;</span><span class="p">}</span>
+<span class="k">set</span> <span class="nv">theDate</span> <span class="k">to</span> <span class="p">(</span><span class="nv">theDate</span> <span class="k">as </span><span class="nc">string</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="nb">item</span> <span class="nv">lastChar</span><span class="se">¬</span>
+ <span class="k">of</span> <span class="nv">theSuffixes</span><span class="p">)</span>
+</pre></div>
 
 
 <p>Now let’s roll it up and <code>return</code> a constructed date:</p>
-<pre><code>set theDate to the day of the (current date)
-set theDay to the weekday of the (current date)
-set theMonth to the month of the (current date)
-set theYear to the year of the (current date)
+<div class="syntax"><pre><span></span><span class="k">set</span> <span class="nv">theDate</span> <span class="k">to</span> <span class="nb">the</span> <span class="nb">day</span> <span class="k">of</span> <span class="nb">the</span> <span class="p">(</span><span class="nb">current date</span><span class="p">)</span>
+<span class="k">set</span> <span class="nv">theDay</span> <span class="k">to</span> <span class="nb">the</span> <span class="nv">weekday</span> <span class="k">of</span> <span class="nb">the</span> <span class="p">(</span><span class="nb">current date</span><span class="p">)</span>
+<span class="k">set</span> <span class="nv">theMonth</span> <span class="k">to</span> <span class="nb">the</span> <span class="nb">month</span> <span class="k">of</span> <span class="nb">the</span> <span class="p">(</span><span class="nb">current date</span><span class="p">)</span>
+<span class="k">set</span> <span class="nv">theYear</span> <span class="k">to</span> <span class="nb">the</span> <span class="nb">year</span> <span class="k">of</span> <span class="nb">the</span> <span class="p">(</span><span class="nb">current date</span><span class="p">)</span>
 
-set lastChar to (the last character of (theDate as string))¬
- as number
+<span class="k">set</span> <span class="nv">lastChar</span> <span class="k">to</span> <span class="p">(</span><span class="nb">the</span> <span class="nb">last</span> <span class="nb">character</span> <span class="k">of</span> <span class="p">(</span><span class="nv">theDate</span> <span class="k">as </span><span class="nc">string</span><span class="p">))</span><span class="se">¬</span>
+ <span class="k">as</span> <span class="nv">number</span>
 
-if lastChar &gt; 3 or lastChar is 0 or (theDate &gt; 10 and¬
- theDate &lt; 21) then
-    set theDate to (theDate as string) &amp; &quot;th&quot;
-else
-    set theSuffixes to {&quot;st&quot;, &quot;nd&quot;, &quot;rd&quot;}
-    set theDate to (theDate as string) &amp; (item lastChar¬
-     of theSuffixes)
-end if
+<span class="k">if</span> <span class="nv">lastChar</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="ow">or</span> <span class="nv">lastChar</span> <span class="ow">is</span> <span class="mi">0</span> <span class="ow">or</span> <span class="p">(</span><span class="nv">theDate</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="ow">and</span><span class="se">¬</span>
+ <span class="nv">theDate</span> <span class="o">&lt;</span> <span class="mi">21</span><span class="p">)</span> <span class="k">then</span>
+    <span class="k">set</span> <span class="nv">theDate</span> <span class="k">to</span> <span class="p">(</span><span class="nv">theDate</span> <span class="k">as </span><span class="nc">string</span><span class="p">)</span> <span class="o">&amp;</span> <span class="s2">&quot;th&quot;</span>
+<span class="k">else</span>
+    <span class="k">set</span> <span class="nv">theSuffixes</span> <span class="k">to</span> <span class="p">{</span><span class="s2">&quot;st&quot;</span><span class="p">,</span> <span class="s2">&quot;nd&quot;</span><span class="p">,</span> <span class="s2">&quot;rd&quot;</span><span class="p">}</span>
+    <span class="k">set</span> <span class="nv">theDate</span> <span class="k">to</span> <span class="p">(</span><span class="nv">theDate</span> <span class="k">as </span><span class="nc">string</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="nb">item</span> <span class="nv">lastChar</span><span class="se">¬</span>
+     <span class="k">of</span> <span class="nv">theSuffixes</span><span class="p">)</span>
+<span class="k">end</span> <span class="k">if</span>
 
-return (theDay &amp; &quot;, &quot; &amp; theMonth &amp; &quot; &quot; &amp; theDate &amp; &quot;, &quot; &amp;¬
- theYear) as string</code></pre>
+<span class="no">return</span> <span class="p">(</span><span class="nv">theDay</span> <span class="o">&amp;</span> <span class="s2">&quot;, &quot;</span> <span class="o">&amp;</span> <span class="nv">theMonth</span> <span class="o">&amp;</span> <span class="s2">&quot; &quot;</span> <span class="o">&amp;</span> <span class="nv">theDate</span> <span class="o">&amp;</span> <span class="s2">&quot;, &quot;</span> <span class="o">&amp;</span><span class="se">¬</span>
+ <span class="nv">theYear</span><span class="p">)</span> <span class="k">as </span><span class="nc">string</span>
+</pre></div>
 
 
 <h3>End result</h3>
@@ -218,85 +258,6 @@ return (theDay &amp; &quot;, &quot; &amp; theMonth &amp; &quot; &quot; &amp; the
 <p>While this has been liberating, it’s also made clear that there are some oddities in CSS and browsers’ implementations of it that can sometimes trip you up, with problems seemingly coming out of nowhere.</p>
 <p>But practice looks to be the best way to clear up any confusion and I’m eager to learn and do more. I’ll probably make my own theme for this blog next, though I’m going to work through <a href="http://learningwebdesign.com">Jennifer Robbins’s Learning Web Design</a> first to make sure I have a firm footing.</p>
 <p>I think that’s about it, so thanks for reading and if you have any questions or comments I’m <a href="http://twitter.com/robjwells">@robjwells on Twitter</a>.</p>
-  </article>
-  <article>
-    <header>
-      <h2 class="mute-links"><a href="https://robjwells.github.io/2012/10/dishonored-by-the-numbers/">Dishonored by the numbers</a></h2>
-      <p><time datetime="2012-10-14T16:20">Sunday, October 14 2012</time></p>
-    </header>
-    <p>Dishonored is so good. So incredibly good. It’s really fantastic. It came out (here, at least) on Friday and I’ve already completed it, with my first playthrough taking about 22 hours.</p>
-<p>It’s so good I was playing it until <em>5am</em> yesterday morning and until <em>4am</em> this morning. I just couldn’t stop, I couldn’t put it down.</p>
-<p>I can’t really think of a comparison, as in “If you liked game X then you’ll love Dishonored” or “It’s like the lovechild of game X and game Y”. At one point I thought: “This really does feel like <a href="http://www.rockpapershotgun.com/2012/07/06/from-the-shadows-hands-on-with-dishonored/">Thief with a knife</a>.” But it is so much more and really any simple comparison like that does a great disservice to what Arkane have created.</p>
-<p>Simply put: you should <a href="http://store.steampowered.com/app/205100/">buy Dishonored right now</a>.</p>
-<table>
-  <caption>Dishonored mission stats</caption>
-
-  <tbody>
-    <tr>
-      <th>Hostiles killed</th>
-      <td class="table-figures">1</td>
-    </tr>
-    <tr>
-      <th>Civilians killed</th>
-      <td class="table-figures">2</td>
-    </tr>
-    <tr>
-      <th>Alarms rung</th>
-      <td class="table-figures">0</td>
-    </tr>
-    <tr>
-      <th>Bodies found</th>
-      <td class="table-figures">7</td>
-    </tr>
-    <tr>
-      <th>No kills</th>
-      <td class="table-figures">6/9</td>
-    </tr>
-    <tr>
-      <th>Not detected</th>
-      <td class="table-figures">6/9</td>
-    </tr>
-    <tr>
-      <th>Chaos</th>
-      <td class="table-figures">Low</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>After each mission you get a stats screen but unfortunately there’s not one for the entire game. I went through and totted up the figures for my first playthrough.</p>
-<table>
-  <caption>Assassination target status</caption>
-  <tbody>
-    <tr>
-      <th>High Overseer Campbell</th>
-      <td>Dead</td>
-    </tr>
-    <tr>
-      <th>The Pendleton Twins</th>
-      <td>Alive</td>
-    </tr>
-    <tr>
-      <th>Lady Boyle</th>
-      <td>Dead</td>
-    </tr>
-    <tr>
-      <th>Lord Regent</th>
-      <td>Alive</td>
-    </tr>
-    <tr>
-      <th>Daud</th>
-      <td>Alive</td>
-    </tr>
-    <tr>
-      <th>Spoilerific last target</th>
-      <td>Alive</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>I was always surprised to see bodies found, because I was always fairly careful. However what I think happened is that when you take out a guard the AI seems to compensate by rotating another guard into that position. So if you take someone out and leave them where they were, there’s a chance they’ll be found.</p>
-<p>Looking back, I’m surprised how many of the main targets I left alive. There are non-lethal options for all of them and I was planning to do that every time. However, I had to ditch my plan for Campbell as things sort of got out of hand and Lady Boyle’s non-lethal option seemed a bit too creepy for me. (So I stabbed her instead. I’m such a gentleman.) And the last target in the low-chaos ending is optional, though it looks like the high-chaos ending requires you to go after more targets.</p>
-<p>Man, what a game.</p>
   </article>
   <div class="pagination">
 <p class="pagination-older"><a href="https://robjwells.github.io/page-20/">Older posts</a></p><p class="pagination-newer"><a href="https://robjwells.github.io/page-18/">Newer posts</a></p>  </div>

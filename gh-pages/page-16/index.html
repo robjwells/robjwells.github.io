@@ -8,6 +8,8 @@
   <!-- Load my combined stylesheet -->
   <link rel="stylesheet" href="/resources/all.min.css">
 
+  <!-- Load my combined JavaScript -->
+  <script src="/resources/all.min.js" async></script>
 
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
 
@@ -62,6 +64,97 @@
 
   <article>
     <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2014/01/hijacking-the-bbc/">Hijacking the BBC</a></h2>
+      <p><time datetime="2014-01-08T15:56">Wednesday, January 8 2014</time></p>
+    </header>
+    <p>In December I started using <a href="http://rogueamoeba.com/audiohijackpro/">Audio Hijack Pro</a> to record <a href="http://www.bbc.co.uk/programmes/b006tt0y">Jazz on 3</a>, initially from the <a href="http://www.bbc.co.uk/radio/player/bbc_radio_three">Radio 3 live stream</a>. I soon realised this wasn’t a great idea: live streaming, Flash and an occasionally patchy internet connection don’t make for reliable recording.</p>
+<p>A bit of searching turned up <a href="http://www.leancrew.com/all-this/2009/07/bbc-radio-2-and-audio-hijack-pro-scripts/">a blog post</a> and <a href="https://github.com/drdrang/radio2">GitHub repository</a> by Dr Drang — who else! His approach was to record programmes from the BBC website after they’ve been broadcast. This is more reliable, allows for repeated tries if the recording fails for any reason, and makes it easier to handle longer-than-usual episodes.</p>
+<p>The logic is straightforward: find the unique ID for the programme’s most recent episode, use that to construct the player URL, and feed that to Audio Hijack.</p>
+<p>Most of the work is done in Python, with Audio Hijack running bridging AppleScripts when a recording starts and finishes — the latter used by Dr Drang to add a track list to the recording’s lyrics field and add the file to iTunes.</p>
+<p>This sounded ideal, but I couldn’t use the Doc’s work straight away as the scripts focus on Radio 2, use a player URL that doesn’t work (at least at home in Blighty) and need a few tweaks to fit my Python environment. It gave me an excuse to tinker with the wheel, if not <a href="http://www.leancrew.com/all-this/2014/01/reinventing-the-wheel/">reinvent it</a>.</p>
+<p>If you want to follow along at home, all the code is <a href="https://bitbucket.org/robjwells/beeb-hijack/src/">in a Bitbucket repository</a>.</p>
+<p>Before we dig in, there are two practical things to note:</p>
+<ul>
+<li>It’s all written for Python 3, but it wouldn’t take much to work on 2.</li>
+<li>You’ll need to install <a href="http://www.crummy.com/software/BeautifulSoup/">Beautiful Soup 4</a> and <a href="http://docopt.org">docopt</a>.
+    (Use <a href="http://www.pip-installer.org/en/latest/">pip</a>.)</li>
+</ul>
+<p>I initially wanted to consolidate the Python scripts into one file but that turned out to be stupid, so I (eventually) settled on having a module similar to Dr Drang’s that did most of the work and another script that acted as the command-line interface.</p>
+<p>(That partly explains why <a href="https://bitbucket.org/robjwells/beeb-hijack/src/">my repo</a> has fewer files — the other being that I add the artwork in Audio Hijack’s tags tab, not a script.)</p>
+<h3>Python module: bbcradio</h3>
+<p>A look at the programme info dictionaries at the top of our modules reveals the differences in our methods:</p>
+<div class="syntax"><pre><span></span><span class="c1"># Dr Drang’s</span>
+<span class="n">showinfo</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;70s&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Sounds of the &#39;?70s&quot;</span><span class="p">)),</span>
+            <span class="s1">&#39;60s&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Sounds of the &#39;?60s&quot;</span><span class="p">)),</span>
+            <span class="s1">&#39;soul&#39;</span><span class="p">:(</span><span class="mi">2</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Trevor Nelson&quot;</span><span class="p">)),</span>
+            <span class="s1">&#39;at&#39;</span><span class="p">:</span>  <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;At the BBC&quot;</span><span class="p">))}</span>
+<span class="c1"># Mine:</span>
+<span class="n">PROG_DICT</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;jazz on 3&#39;</span><span class="p">:</span> <span class="s1">&#39;b006tt0y&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;jazz line-up&#39;</span><span class="p">:</span> <span class="s1">&#39;b006tnmw&#39;</span><span class="p">}</span>
+</pre></div>
+
+
+<p>Each entry in the Doc’s dictionary is a tuple of the weekday as an integer — used to construct a URL for a daily schedule — and a regular expression to pick out the programme from the scraped schedule.</p>
+<p>In mine I go after the programmes directly, as they all have a unique ID similar to the ones given to individual episodes. With this ID we can go to <a href="http://www.bbc.co.uk/programmes/b006tt0y/episodes/player">a list of the programme’s available episodes</a> and pluck out the most recent one.</p>
+<p>This has two benefits: we don’t need to care about the broadcast day and don’t have to search the schedule page. All you need is the programme ID, which you can grab from the end of <a href="http://www.bbc.co.uk/programmes/b006tt0y">a programme’s home page</a> URL.</p>
+<p>All the work is done in <code>latest_episode_code</code> in lines <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/bbcradio.py?at=default#cl-17">17–29</a>, which fetches the available episodes page and pulls the episode code for the first episode listed.</p>
+<p>For weekly programmes only one episode is listed, but this technique also works for programmes which are broadcast more often — like <a href="http://www.bbc.co.uk/programmes/b006qj9z">Today</a>, which Dr Drang has <a href="http://www.leancrew.com/all-this/2009/10/adapting-bbc-radio-recording-scripts/">addressed specifically</a>. In such cases just make sure to record an episode while it’s the most recent on the available episodes page.</p>
+<p>I’ve kept Dr Drang’s <a href="https://github.com/drdrang/radio2/blob/master/radio2.py#L37">episodeInfo</a> function — used to fetch the episode title, date and track list — <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/bbcradio.py?at=default#cl-38">largely intact</a>. I’ve added the time a track was played (if available — it’s often not) and I use a simpler method to fetch the broadcast date (pulling an <a href="http://tools.ietf.org/html/rfc3339#section-5.8">RFC 3339 date</a> from an attribute).</p>
+<p>But there is one important difference: the use of Beautiful Soup’s <code>select</code> function, which allows for a liberal search for multiple class names, instead of <code>find_all</code>, which only returns elements which <em>exactly</em> match a given class string. This is important because every other track listing has an <code>alt</code> class.</p>
+<h3>Command-line interface: beebhijack</h3>
+<p>By itself bbcradio is inert, with the moving parts contained in <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/beebhijack?at=default">a single interface script</a> that has two modes which return an episode’s streaming URL or its details and track list. (Originally these were separate scripts, but there was a lot of duplicate code.)</p>
+<p>At the command line you just pick a mode and supply a programme name. Here’s the help message:</p>
+<pre><code>$ beebhijack -h
+Usage:
+    beebhijack url &lt;programme&gt;
+    beebhijack details [--clean] &lt;programme&gt;
+
+Options:
+    --clean     Use two newlines instead of a pipe
+                to separate the episode details
+
+Accepted programmes:
+    jazz on 3
+    jazz line-up</code></pre>
+
+
+<p>And, because I’m still blown away how simple <a href="http://docopt.org">docopt</a> is, here’s all the code needed to produce that interface:</p>
+<div class="syntax"><pre><span></span><span class="lineno"> 7 </span><span class="n">programmes</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span><span class="se">\</span>
+<span class="lineno"> 8 </span><span class="s1">Accepted programmes:</span>
+<span class="lineno"> 9 </span><span class="s1">    </span><span class="si">{}</span><span class="s1">&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">    &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">bbcradio</span><span class="o">.</span><span class="n">PROG_DICT</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="lineno">10 </span>
+<span class="lineno">11 </span><span class="n">usage</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span><span class="se">\</span>
+<span class="lineno">12 </span><span class="s1">Usage:</span>
+<span class="lineno">13 </span><span class="s1">    </span><span class="si">{name}</span><span class="s1"> url &lt;programme&gt;</span>
+<span class="lineno">14 </span><span class="s1">    </span><span class="si">{name}</span><span class="s1"> details [--clean] &lt;programme&gt;</span>
+<span class="lineno">15 </span>
+<span class="lineno">16 </span><span class="s1">Options:</span>
+<span class="lineno">17 </span><span class="s1">    --clean     Use two newlines instead of a pipe</span>
+<span class="lineno">18 </span><span class="s1">                to separate the episode details</span>
+<span class="lineno">19 </span>
+<span class="lineno">20 </span><span class="si">{prog_list}</span><span class="s1">&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;beebhijack&#39;</span><span class="p">,</span> <span class="n">prog_list</span><span class="o">=</span><span class="n">programmes</span><span class="p">)</span>
+<span class="lineno">21 </span>
+<span class="lineno">22 </span><span class="n">args</span> <span class="o">=</span> <span class="n">docopt</span><span class="p">(</span><span class="n">usage</span><span class="p">)</span>
+</pre></div>
+
+
+<p>If you haven’t used it before, take 20 minutes to watch the <a href="http://docopt.org">docopt video</a>. It’s wonderful: give it a usage message and it hands you back a dictionary. Mine above is a little complicated because it tacks the list of accepted programmes onto the end of the usage message, in case you need a reminder at the command line. (I also print the list if you ask for a programme that’s not in the dictionary, in lines <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/beebhijack#cl-24">24–27</a>).</p>
+<p>In the dictionary docopt returns, commands (url, details) get a boolean value, so the mode switch is a simple if-else if.</p>
+<p>Unless given the <code>--clean</code> argument, the details mode prints the three parts of the tuple it gets from <code>episode_details</code> separated by pipes, which you can split up in AppleScript by changing the text item delimiters.</p>
+<p>It’s important to note that I don’t exactly <code>print</code> the details — instead I encode the string into UTF-8 and <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/beebhijack#cl-38">write it as bytes</a> to <code>sys.stdout.buffer</code>. (<a href="https://github.com/drdrang/radio2/blob/master/radio2-tracklist#L44">Dr Drang’s script does something similar</a>.) The shell invoked by AppleScript’s <code>do shell script</code> command defaults to <a href="/2013/09/get-your-us-ascii-out-of-my-face/"><code>US-ASCII</code></a>, causing a UnicodeEncodeError if you try to <code>print</code> a string containing non-Ascii characters.</p>
+<p>Generally, I think the key distinction between beebhijack and Dr Drang’s four scripts is that I keep all of the “real work” in the module.</p>
+<p>For example, we both fetch the episode ID in our modules, but I also construct the streaming URL there (lines <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/bbcradio.py#cl-32">32–35</a>) while the Doc does that in <a href="https://github.com/drdrang/radio2/blob/master/radio2-stream">a separate script</a>.</p>
+<p>This isn’t a big deal either way but I think it reveals my thinking about the beebhijack script: it’s a bridge between what you want to achieve and the program that actually does the work. The heaviest lifting done by beebhijack (joining the details) controls how the information is output, not what the information is.</p>
+<h3>Putting it all together</h3>
+<p>With the Python code sorted, all that’s left to do is to create individual pre- and post-recording AppleScripts that you get Audio Hijack to run (on the input and recording tabs, respectively).</p>
+<p>The <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/Jazz%20Line-Up%20URL.applescript">pre-recording script</a> just calls beebhijack’s url mode and pass a programme name. I’ve copied Dr Drang’s, but separated out the programme name and path to the script into properties to make them easier to spot and change.</p>
+<p>The same applies to <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/Process%20Jazz%20Line-Up.applescript">the post-recording script</a>, which I stole off the Doc, who adapted one by Rogue Amoeba.</p>
+<p>The biggest change I made was to use text-item delimiters to split up the episode date, title and track list as I don’t just put them all into the lyrics field, instead using the title and date to rename the track. (The date is necessary because, although I have Audio Hijack name the files with the date, the recording takes place at least the day after the broadcast day.)</p>
+<p>I also don’t use a try block to handle errors fetching the episode details, because I prefer have an error message in the morning to prompt me to sort out the recording by hand.</p>
+<p>Once you’ve got the scripts in place, just set an appropriate schedule in Audio Hijack. I have it set to record for much longer than the usual episode length, just in case a longer episode airs that I don’t expect. This doesn’t inflate the file size, because Audio Hijack doesn’t add silence when nothing is output from your source.</p>
+  </article>
+  <article>
+    <header>
       <h2 class="mute-links"><a href="https://robjwells.github.io/2013/11/die-bookmarks-bar-die/">Die, bookmarks bar, die</a></h2>
       <p><time datetime="2013-11-18T13:15">Monday, November 18 2013</time></p>
     </header>
@@ -80,11 +173,12 @@
 <p>Back to that horrid bookmark bar, though. How do we construct a <a href="http://www.obdev.at/products/launchbar/index.html">Launchbar</a>-style, search-based panel to get at those bookmarks? We’ll use Launchbar itself. (I guess you can do this in Quicksilver or Alfred, but I haven’t tried.)</p>
 <p>Safari’s AppleScript support is fairly poor — it doesn’t expose your bookmarks to scripts. But it does have a handy <code>do JavaScript</code> command, which is all that those bookmarklets do: run JavaScript.</p>
 <p>Grab the code (stored as the bookmark’s address) and — importantly — <a href="http://meyerweb.com/eric/tools/dencoder/">decode</a> it to turn entities such as <code>%7B</code> into <code>{</code>. Lop off the leading <code>javascript:</code> and insert it into this tiny AppleScript:</p>
-<pre><code>tell application &quot;Safari&quot;
-  set bookmarklet to &quot;your_bookmarklet_code_here&quot;
-  set current_tab to the current tab of the front window
-  do JavaScript bookmarklet in current_tab
-end tell</code></pre>
+<div class="syntax"><pre><span></span><span class="k">tell</span> <span class="nb">application</span> <span class="s2">&quot;Safari&quot;</span>
+  <span class="k">set</span> <span class="nv">bookmarklet</span> <span class="k">to</span> <span class="s2">&quot;your_bookmarklet_code_here&quot;</span>
+  <span class="k">set</span> <span class="nv">current_tab</span> <span class="k">to</span> <span class="nb">the</span> <span class="nv">current</span> <span class="no">tab</span> <span class="k">of</span> <span class="nb">the</span> <span class="nb">front</span> <span class="na">window</span>
+  <span class="nv">do</span> <span class="nv">JavaScript</span> <span class="nv">bookmarklet</span> <span class="k">in</span> <span class="nv">current_tab</span>
+<span class="k">end</span> <span class="k">tell</span>
+</pre></div>
 
 
 <p>Save that script into a new folder — mine’s in <code>~/Library/Scripts/Applications/Safari/Bookmarklets/</code></p>
@@ -103,39 +197,41 @@ end tell</code></pre>
     <p>A little while ago I wrote about <a href="/2013/03/setting-a-date-with-textexpander/">using TextExpander to write dates</a>, the bulk of which was given over to an Applescript that returned a long date complete with date suffixes.</p>
 <p>Since I’ve been writing more and more Python, I thought it would be fun to rewrite it to see the difference between the two.</p>
 <p>First, here’s my original Applescript:</p>
-<pre><code>set theDate to the day of the (current date)
-set theDay to the weekday of the (current date)
-set theMonth to the month of the (current date)
-set theYear to the year of the (current date)
-
-set lastChar to (the last character of (theDate as string)) as number
-
-if lastChar &gt; 3 or lastChar is 0 or (theDate &gt; 10 and theDate &lt; 21) then
-  set theDate to (theDate as string) &amp; &quot;th&quot;
-else
-  set theSuffixes to {&quot;st&quot;, &quot;nd&quot;, &quot;rd&quot;}
-  set theDate to (theDate as string) &amp; (item lastChar of theSuffixes)
-end if
-
-return (theDay &amp; &quot;, &quot; &amp; theMonth &amp; &quot; &quot; &amp; theDate &amp; &quot;, &quot; &amp; theYear) as string</code></pre>
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="k">set</span> <span class="nv">theDate</span> <span class="k">to</span> <span class="nb">the</span> <span class="nb">day</span> <span class="k">of</span> <span class="nb">the</span> <span class="p">(</span><span class="nb">current date</span><span class="p">)</span>
+<span class="lineno"> 2 </span><span class="k">set</span> <span class="nv">theDay</span> <span class="k">to</span> <span class="nb">the</span> <span class="nv">weekday</span> <span class="k">of</span> <span class="nb">the</span> <span class="p">(</span><span class="nb">current date</span><span class="p">)</span>
+<span class="lineno"> 3 </span><span class="k">set</span> <span class="nv">theMonth</span> <span class="k">to</span> <span class="nb">the</span> <span class="nb">month</span> <span class="k">of</span> <span class="nb">the</span> <span class="p">(</span><span class="nb">current date</span><span class="p">)</span>
+<span class="lineno"> 4 </span><span class="k">set</span> <span class="nv">theYear</span> <span class="k">to</span> <span class="nb">the</span> <span class="nb">year</span> <span class="k">of</span> <span class="nb">the</span> <span class="p">(</span><span class="nb">current date</span><span class="p">)</span>
+<span class="lineno"> 5 </span>
+<span class="lineno"> 6 </span><span class="k">set</span> <span class="nv">lastChar</span> <span class="k">to</span> <span class="p">(</span><span class="nb">the</span> <span class="nb">last</span> <span class="nb">character</span> <span class="k">of</span> <span class="p">(</span><span class="nv">theDate</span> <span class="k">as </span><span class="nc">string</span><span class="p">))</span> <span class="k">as</span> <span class="nv">number</span>
+<span class="lineno"> 7 </span>
+<span class="lineno"> 8 </span><span class="k">if</span> <span class="nv">lastChar</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="ow">or</span> <span class="nv">lastChar</span> <span class="ow">is</span> <span class="mi">0</span> <span class="ow">or</span> <span class="p">(</span><span class="nv">theDate</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="ow">and</span> <span class="nv">theDate</span> <span class="o">&lt;</span> <span class="mi">21</span><span class="p">)</span> <span class="k">then</span>
+<span class="lineno"> 9 </span>  <span class="k">set</span> <span class="nv">theDate</span> <span class="k">to</span> <span class="p">(</span><span class="nv">theDate</span> <span class="k">as </span><span class="nc">string</span><span class="p">)</span> <span class="o">&amp;</span> <span class="s2">&quot;th&quot;</span>
+<span class="lineno">10 </span><span class="k">else</span>
+<span class="lineno">11 </span>  <span class="k">set</span> <span class="nv">theSuffixes</span> <span class="k">to</span> <span class="p">{</span><span class="s2">&quot;st&quot;</span><span class="p">,</span> <span class="s2">&quot;nd&quot;</span><span class="p">,</span> <span class="s2">&quot;rd&quot;</span><span class="p">}</span>
+<span class="lineno">12 </span>  <span class="k">set</span> <span class="nv">theDate</span> <span class="k">to</span> <span class="p">(</span><span class="nv">theDate</span> <span class="k">as </span><span class="nc">string</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="nb">item</span> <span class="nv">lastChar</span> <span class="k">of</span> <span class="nv">theSuffixes</span><span class="p">)</span>
+<span class="lineno">13 </span><span class="k">end</span> <span class="k">if</span>
+<span class="lineno">14 </span>
+<span class="lineno">15 </span><span class="no">return</span> <span class="p">(</span><span class="nv">theDay</span> <span class="o">&amp;</span> <span class="s2">&quot;, &quot;</span> <span class="o">&amp;</span> <span class="nv">theMonth</span> <span class="o">&amp;</span> <span class="s2">&quot; &quot;</span> <span class="o">&amp;</span> <span class="nv">theDate</span> <span class="o">&amp;</span> <span class="s2">&quot;, &quot;</span> <span class="o">&amp;</span> <span class="nv">theYear</span><span class="p">)</span> <span class="k">as </span><span class="nc">string</span>
+</pre></div>
 
 
 <p>And now the Python:</p>
-<pre><code>#!/usr/local/bin/python3
-
-from datetime import date
-
-today = date.today()
-date_string = today.strftime('%A, %B #, %Y')
-day = today.day
-
-if (3 &lt; day &lt; 21) or (23 &lt; day &lt; 31):
-  day = str(day) + 'th'
-else:
-  suffixes = {1: 'st', 2: 'nd', 3: 'rd'}
-  day = str(day) + suffixes[day % 10]
-
-print(date_string.replace('#', day), end='')</code></pre>
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="ch">#!/usr/local/bin/python3</span>
+<span class="lineno"> 2 </span>
+<span class="lineno"> 3 </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">date</span>
+<span class="lineno"> 4 </span>
+<span class="lineno"> 5 </span><span class="n">today</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+<span class="lineno"> 6 </span><span class="n">date_string</span> <span class="o">=</span> <span class="n">today</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%A, %B #, %Y&#39;</span><span class="p">)</span>
+<span class="lineno"> 7 </span><span class="n">day</span> <span class="o">=</span> <span class="n">today</span><span class="o">.</span><span class="n">day</span>
+<span class="lineno"> 8 </span>
+<span class="lineno"> 9 </span><span class="k">if</span> <span class="p">(</span><span class="mi">3</span> <span class="o">&lt;</span> <span class="n">day</span> <span class="o">&lt;</span> <span class="mi">21</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="mi">23</span> <span class="o">&lt;</span> <span class="n">day</span> <span class="o">&lt;</span> <span class="mi">31</span><span class="p">):</span>
+<span class="lineno">10 </span>  <span class="n">day</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">day</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;th&#39;</span>
+<span class="lineno">11 </span><span class="k">else</span><span class="p">:</span>
+<span class="lineno">12 </span>  <span class="n">suffixes</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;st&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;nd&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;rd&#39;</span><span class="p">}</span>
+<span class="lineno">13 </span>  <span class="n">day</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">day</span><span class="p">)</span> <span class="o">+</span> <span class="n">suffixes</span><span class="p">[</span><span class="n">day</span> <span class="o">%</span> <span class="mi">10</span><span class="p">]</span>
+<span class="lineno">14 </span>
+<span class="lineno">15 </span><span class="nb">print</span><span class="p">(</span><span class="n">date_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> <span class="n">day</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
 
 
 <div class="flag">
@@ -214,15 +310,16 @@ print(date_string.replace('#', day), end='')</code></pre>
 <p>That’s a horrible hack. Bytes! Yuck! So in my next attempt I explicitly opened the files with a UTF-8 encoding. Which was still gross. And totally unnecessary. This is Python 3, everything’s Unicode, all the defaults are UTF-8, why am I having to specify the encoding at every point?</p>
 <p>This was the point at which I found <a href="http://stackoverflow.com/questions/5981570/encoding-errors-running-python-from-within-bbedit?rq=1">a relevant Stack Overflow question</a>. Unfortunately the answer there was to tinker with Python’s start-up files in a way that was always discouraged and had since been removed from Python 3.</p>
 <p>Hm. But what’s this about <code>sys.setdefaultencoding</code>? So I started poking around with this terrible little script:</p>
-<pre><code>#!/usr/bin/env python3
-import os
-import sys
-import locale
-entire_file = open(os.environ['BB_DOC_PATH'], 'r')
-print(os.environ)
-print(entire_file.encoding)
-print(sys.getdefaultencoding())
-print(locale.getpreferredencoding())</code></pre>
+<div class="syntax"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">locale</span>
+<span class="n">entire_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;BB_DOC_PATH&#39;</span><span class="p">],</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">entire_file</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getdefaultencoding</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">getpreferredencoding</span><span class="p">())</span>
+</pre></div>
 
 
 <p>For the last three lines, which print the encodings used, I got:</p>
@@ -236,7 +333,8 @@ US-ASCII    # locale.getpreferredencoding</code></pre>
 <h3>WRONG.</h3>
 <p>As <a href="http://www.velocityreviews.com/forums/t695885-print-and-unicode-strings-python-3-1-a.html">this thread</a> eventually made me realise, I didn’t actually have <code>$LANG</code> set to anything — it was all smoke and mirrors that cleared away when I ran the script through BBEdit. (I also had a similar problem with Applescript’s <code>do shell script</code> and it looks like <a href="http://www.sublimetext.com/forum/viewtopic.php?t=13753">Sublime Text users</a> have also run into it.) Checking the <code>os.environ</code> output from the script above confirmed it: no <code>$LANG</code>.</p>
 <p>The root of the problem is that if a locale isn’t set it defaults to the C locale — meaning US-ASCII in OS&nbsp;X. <strong>The solution is to explicitly set $LANG in your .bash_profile</strong>:</p>
-<pre><code>export LANG=&quot;en_GB.UTF-8&quot;</code></pre>
+<div class="syntax"><pre><span></span><span class="nb">export</span> <span class="nv">LANG</span><span class="o">=</span><span class="s2">&quot;en_GB.UTF-8&quot;</span>
+</pre></div>
 
 
 <p>I’ve also got that line in ~/.bashrc for safety, but do bear in mind that <em>some shells will ignore both</em> ~/.bash_profile and ~/.bashrc.</p>
@@ -252,59 +350,6 @@ US-ASCII    # locale.getpreferredencoding</code></pre>
   <p>I’ve just re-watched <a href="http://nedbatchelder.com/text/unipain.html">Ned Batchelder’s great Pragmatic Unicode video</a> and while setting the <code>$LANG</code> environment variable is a handy solution on your own machines, it’s not a good fit when you’re writing a program that will run on systems where you can’t control the default encoding.</p>
   <p>In such cases it makes sense to adopt his “Unicode sandwich” approach of explicitly decoding I/O and then working on the resulting Unicode.</p>
 </div>
-  </article>
-  <article>
-    <header>
-      <h2 class="mute-links"><a href="https://robjwells.github.io/2013/09/solo-diff/">Solo diff</a></h2>
-      <p><time datetime="2013-09-13T20:39">Friday, September 13 2013</time></p>
-    </header>
-    <p>At work we edit the reporters’ copy in plain text files using <a href="http://barebones.com/products/textwrangler/">TextWrangler</a>, duplicating their original at the bottom of the file before we start subbing.
-It’s a nice, quick way of having something to refer back to without the hassle of using (and training people to use) a real <a href="http://en.wikipedia.org/wiki/Revision_control">VCS</a>.</p>
-<p>It began as a loose convention, with different people having their own way of marking off the original copy. To make it completely painless, and to bring in a standard method, I wrote this short Python script a couple of months ago:</p>
-<pre><code>#!/usr/bin/env python3
-from sys import stdin
-orig = stdin.read()
-dupe = &quot;{0}\n\n\n\n#### Original Copy ####\n\n\n\n{0}&quot;.format(orig)
-print(dupe)</code></pre>
-
-
-<p>I installed it to everyone’s text filters folder — TextWrangler provides the document’s text (or the selection) to text filters via stdin — and people tend to use it.</p>
-<p>We hired two new subs over the summer and I got into the habit of using the “Compare Two Front Windows” command to check their subbed copy against the original, so I could offer them specific advice.</p>
-<p>But manually creating two new windows and pasting in the text can be a pain — you end up juggling lots of windows and it’s easy to mix up the copy so that the “older” pane is showing the subbed text.</p>
-<p>Thankfully both of the new people use the duplication script consistently, so it’s easy to use a regular expression to split the file into original and subbed versions. Armed with this knowledge, I wrote a script to automate the comparison, using TextWrangler’s <code>twdiff</code> command-line tool.</p>
-<div class="flag">
-    <p>The code below is written for BBEdit, which I use at home. Except for <code>BB_DOC_PATH</code>, I swap out <code>bb</code> for <code>tw</code> in the script used at work.</p>
-</div>
-
-<pre><code>#!/usr/bin/env python3
-
-import os
-import re
-import subprocess
-
-os.chdir('/tmp')
-with open(os.environ['BB_DOC_PATH']) as full_file:
-  sub_copy, orig_copy = re.split(r'#{2,} original copy #{2,}',
-                                 full_file.read(), flags=re.I)
-
-with open('bb_orig_copy', 'w') as orig_file:
-  orig_copy = orig_copy.strip() + '\n'
-  orig_file.write(orig_copy)
-
-with open('bb_subbed_copy', 'w') as sub_file:
-  sub_copy = sub_copy.strip() + '\n'
-  sub_file.write(sub_copy)
-
-subprocess.call(['bbdiff', 'bb_orig_copy', 'bb_subbed_copy'])</code></pre>
-
-
-<p>The entire file is split into subbed and original sections in lines 9 &amp; 10, and on lines 14 &amp; 18 each of those is written to a file (in <code>/tmp</code> — line 7). The leading and trailing whitespace is stripped from each and a newline added in order to clean up the comparison.</p>
-<p>The regex on lines 9 &amp; 10 uses a variable number of hash marks and the case-insensitivity flag because on occasion I forget to duplicate the copy first, edit the story, and then go back and fill in the separator by hand.</p>
-<p>All of the file interaction is handled in <code>with</code> blocks (context managers), which automatically close the files once the block’s statements are executed. Not a big issue in a script this size, but good practice.</p>
-<p>Finally we call the diff utility with the names of the two temporary files.</p>
-<p>I’ve got this saved in TextWrangler’s scripts folder. Initially I wrote it as a text filter, splitting the contents provided on stdin. But since filters replace the document (or selection) the text had to be written to stdout at the end of the script so that TextWrangler didn’t delete everything.</p>
-<p>And it’s also <em>not a filter</em>, so I was pleased to find out that several environment variables are set when a script is invoked, one of which is the path to the file that the script was called on.</p>
-<p>I’ve tested the script with Python 2.7.5 and it seems to work fine, but with the differences in its Unicode handling I can’t say for certain that some nasty encoding gremlin won’t raise its head.</p>
   </article>
   <div class="pagination">
 <p class="pagination-older"><a href="https://robjwells.github.io/page-17/">Older posts</a></p><p class="pagination-newer"><a href="https://robjwells.github.io/page-15/">Newer posts</a></p>  </div>

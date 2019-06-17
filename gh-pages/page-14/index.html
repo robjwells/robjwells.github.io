@@ -8,6 +8,8 @@
   <!-- Load my combined stylesheet -->
   <link rel="stylesheet" href="/resources/all.min.css">
 
+  <!-- Load my combined JavaScript -->
+  <script src="/resources/all.min.js" async></script>
 
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
 
@@ -62,6 +64,82 @@
 
   <article>
     <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2014/12/locale-in-os-x-and-launch-agents/">Locale in OS X and Launch Agents</a></h2>
+      <p><time datetime="2014-12-20T15:46">Saturday, December 20 2014</time></p>
+    </header>
+    <div class="flag">
+  <p><strong>Warning: The contents of this post may not be up to date!</strong></p>
+  <p>Sorry, but if you’re searching for answers about why you can’t reliably set environment variables in OS X (particularly <code>PATH</code>), the information below may be out of date.</p>
+  <p>Apple has changed the system so many times in so many different ways it’s difficult to find <em>anything</em> on the internet about this that is correct and up-to-date, so I’ve placed this warning on the top of every post I’ve written about it.</p>
+  <p>As of 2017-03-02 it appears that the best collection of information is <a href="https://github.com/ersiner/osx-env-sync">the osx-env-sync project on GitHub</a> and its associated issues.</p>
+  <p>Be wary of anything that you find on StackOverflow: the answers there may well have been correct at the time but incorrect now.</p>
+  <p>For reference, my own posts on this problem (newest first) are:</p>
+  <ul>
+    <li><a href="/2017/03/setting-os-xs-environment/">Setting OS X’s environment</a></li>
+    <li><a href="/2014/12/locale-in-os-x-whats-the-current-situation/">Locale in OS X — what’s the current situation?</a></li>
+    <li><a href="/2014/12/locale-in-os-x-and-launch-agents/">Locale in OS X and Launch Agents</a></li>
+    <li><a href="/2013/09/get-your-us-ascii-out-of-my-face/">Get your US-ASCII out of my face</a></li>
+  </ul>
+</div>
+
+<p>I really dislike <a href="/2013/09/get-your-us-ascii-out-of-my-face/">last year’s post about ASCII and UTF-8</a>. It’s one of those posts that, when you look back, reveals how little you know about a topic. The stuff in there isn’t all wrong but as a whole it’s not correct.</p>
+<p>Towards the end I say that the way to make sure that the locale isn’t <code>C</code> is to export <code>LANG</code> in a bunch of profile/rc files. But that doesn’t work if those files aren’t sourced — quite common when scripts get run on your behalf.</p>
+<p>At some point I got bitten again and fixed it using <a href="http://en.wikipedia.org/wiki/Launchd">launchd</a>. By modifying the /etc/launchd.conf configuration file (as suggested <a href="http://www.digitaledgesw.com/node/31">here</a> and <a href="http://stackoverflow.com/questions/135688/setting-environment-variables-in-os-x/">here</a>), you could make launchd set environment variables at startup:</p>
+<div class="syntax"><pre><span></span><span class="c1"># /etc/launchd.conf</span>
+setenv LANG en_GB.UTF-8
+</pre></div>
+
+
+<p>Dead simple, and ensures that <code>LANG</code> is always correct. But unfortunately useless in Yosemite. From the launchctl man page:</p>
+<blockquote>
+<p>The /etc/launchd.conf file is no longer consulted for subcommands to run during early boot time; this functionality was removed for security considerations.</p>
+</blockquote>
+<p>(I should note that I don’t have a clean install of Yosemite, so maybe Apple has fixed the default locale to something <code>*.UTF-8</code> and my carried-over files have got in the way. But I don’t think so: the guest account defaults to the <code>C</code> locale.)</p>
+<p>There’s a <a href="http://stackoverflow.com/questions/25385934/setting-environment-variables-via-launchd-conf-no-longer-works-in-os-x-yosemite">thread on Stack Overflow</a> containing some discussion about how to handle the change. It’s a bit of a muddle, but the common theme is to use a real launchd job to set environment variables on startup.</p>
+<p>Launchd agents are registered using .plist files (XML), which are a pain to work with by hand, so I recommend <a href="https://www.peterborgapps.com/lingon/">Lingon</a> (nicer to use) or <a href="http://www.soma-zone.com/LaunchControl/">LaunchControl</a> (exposes more settings). The most basic setup is to call launchctl directly:</p>
+<p><img alt="Lingon set to run launchctl at startup with the arguments 'setenv LANG en_GB.UTF-8'" src="/images/2014-12-19_locales-lingon-basic.png" /></p>
+<p>That’ll save a .plist file in ~/Library/LaunchAgents/ — a job that gets run by launchd when you log in (for your user only). And we’re done!</p>
+<p>Setting the locale in this way means that it will be set correctly for any process that follows (even something like <code>do shell script</code> in AppleScript).</p>
+<h3>But wait</h3>
+<p>Since we’re mucking around with Launch Agents and using launchctl at boot, we can set up the environment however we like. Rather than use launchctl directly, I run my own script that does several things:</p>
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="c1"># Launch Agent to set environment variables on boot</span>
+<span class="lineno"> 2 </span>
+<span class="lineno"> 3 </span><span class="nb">set</span> -e
+<span class="lineno"> 4 </span>
+<span class="lineno"> 5 </span><span class="nv">date</span><span class="o">=</span><span class="k">$(</span>date +<span class="s2">&quot;%Y-%m-%d %H:%M:%S&quot;</span><span class="k">)</span>
+<span class="lineno"> 6 </span><span class="nb">echo</span> -e <span class="s2">&quot;</span><span class="nv">$date</span><span class="s2">\tSetting environment variables with </span><span class="nv">$0</span><span class="s2">&quot;</span>
+<span class="lineno"> 7 </span>
+<span class="lineno"> 8 </span><span class="c1"># Locale</span>
+<span class="lineno"> 9 </span>launchctl setenv LANG en_GB.UTF-8
+<span class="lineno">10 </span>launchctl setenv LC_ALL en_GB.UTF-8
+<span class="lineno">11 </span>
+<span class="lineno">12 </span><span class="c1"># Python</span>
+<span class="lineno">13 </span>launchctl setenv PYTHONPATH <span class="s2">&quot;/Users/robjwells/Dropbox/bin&quot;</span>
+<span class="lineno">14 </span>
+<span class="lineno">15 </span><span class="c1"># Path</span>
+<span class="lineno">16 </span><span class="k">if</span> <span class="o">[</span> -x /usr/libexec/path_helper <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+<span class="lineno">17 </span>  <span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+<span class="lineno">18 </span>  <span class="nb">eval</span> <span class="k">$(</span>/usr/libexec/path_helper -s<span class="k">)</span>
+<span class="lineno">19 </span>  launchctl setenv PATH <span class="nv">$PATH</span>
+<span class="lineno">20 </span><span class="k">fi</span>
+</pre></div>
+
+
+<p>It’s largely straightforward: setting the locale correctly, then <code>PYTHONPATH</code> (searched for Python modules), then something more involved for the <code>PATH</code>.</p>
+<p>By default, OS X sets <code>PATH</code> to something that’s pretty sparse:</p>
+<pre><code>/usr/bin:/bin:/usr/sbin:/sbin</code></pre>
+
+
+<p>(You can check this with <code>do shell script "echo $PATH"</code> in AppleScript.)</p>
+<p>That can make some things pretty difficult, particularly if you want to use scripts you’ve written through some kind of intermediary that doesn’t source your setup files.</p>
+<p><a href="https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man8/path_helper.8.html">path_helper</a> constructs a path from the contents of /etc/paths and files in /etc/paths.d — giving you a much more expansive path than by default (and one you can add to by placing a file of your own in the latter directory). And again, by setting this at boot through launchctl it’s available widely afterwards.</p>
+<p>Not everywhere, though. For instance, <a href="http://smilesoftware.com/TextExpander/index.html">TextExpander</a> <a href="http://www.smilesoftware.com/help/TextExpander/applescript.html">ensures UTF-8 support</a> by setting <code>LANG</code>, but <code>PATH</code> is still restricted to the short one listed above. I get the feeling TextExpander is doing more than just inheriting the environment and tweaking <code>LANG</code>.</p>
+<h3>‘Legacy subcommands’</h3>
+<p>The language in the launchctl man page refers to “the previous implementation of launchd” and Yosemite brings with it a new (painful) interface, with the previous interface listed under the heading “legacy subcommands”. Some of the commands listed there don’t have equivalents in the new interface — including the vital <code>setenv</code>.</p>
+<p>I don’t know whether to be worried by the “legacy” description. If these commands go away without similar ones being introduced we could be left without a way to set vital environment variables (fixing Apple’s oversights). But it sounds that launchd has undergone major surgery, so reimplementing the previous interface does suggest some kind of commitment to it, at least in the interim.</p>
+  </article>
+  <article>
+    <header>
       <h2 class="mute-links"><a href="https://robjwells.github.io/2014/12/start-and-end-of-line-shortcuts-in-bbedit/">Start and end of line shortcuts in BBEdit</a></h2>
       <p><time datetime="2014-12-18T00:34">Thursday, December 18 2014</time></p>
     </header>
@@ -69,22 +147,25 @@
 <p>However, I've been doing more work on the command line recently, and not having ⌃A and ⌃E to move to the start and end of the current line was starting to grate. The cursor keys are just too far away!</p>
 <p>So I whipped up some scripts to give me back those shortcuts while keeping the rest of the Emacs stuff disabled.</p>
 <h3>Start of line</h3>
-<pre><code>set line_start to the characterOffset of line (startLine of the selection)
-select insertion point before character line_start</code></pre>
+<div class="syntax"><pre><span></span><span class="k">set</span> <span class="nv">line_start</span> <span class="k">to</span> <span class="nb">the</span> <span class="nv">characterOffset</span> <span class="k">of</span> <span class="nv">line</span> <span class="p">(</span><span class="nv">startLine</span> <span class="k">of</span> <span class="nb">the</span> <span class="nv">selection</span><span class="p">)</span>
+<span class="nb">select</span> <span class="nv">insertion</span> <span class="nv">point</span> <span class="nb">before</span> <span class="nb">character</span> <span class="nv">line_start</span>
+</pre></div>
 
 
 <h3>End of line</h3>
-<pre><code>set current_line to line (startLine of the selection)
-set end_of_line to ((characterOffset of current_line) + (length of current_line))
-select insertion point before character end_of_line</code></pre>
+<div class="syntax"><pre><span></span><span class="k">set</span> <span class="nv">current_line</span> <span class="k">to</span> <span class="nv">line</span> <span class="p">(</span><span class="nv">startLine</span> <span class="k">of</span> <span class="nb">the</span> <span class="nv">selection</span><span class="p">)</span>
+<span class="k">set</span> <span class="nv">end_of_line</span> <span class="k">to</span> <span class="p">((</span><span class="nv">characterOffset</span> <span class="k">of</span> <span class="nv">current_line</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nv">length</span> <span class="k">of</span> <span class="nv">current_line</span><span class="p">))</span>
+<span class="nb">select</span> <span class="nv">insertion</span> <span class="nv">point</span> <span class="nb">before</span> <span class="nb">character</span> <span class="nv">end_of_line</span>
+</pre></div>
 
 
 <p>Wrap both of those in:</p>
-<pre><code>tell application &quot;BBEdit&quot;
-    tell the front text window
-        …
-    end
-end</code></pre>
+<div class="syntax"><pre><span></span><span class="k">tell</span> <span class="nb">application</span> <span class="s2">&quot;BBEdit&quot;</span>
+    <span class="k">tell</span> <span class="nb">the</span> <span class="nb">front</span> <span class="nb">text</span> <span class="na">window</span>
+        <span class="err">…</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
 
 
 <p>(omitted above to reduce the amount of scrolling), dump them in ~/Library/Application Support/BBEdit/Scripts/, assign them the ⌃A and ⌃E shortcuts in BBEdit's preferences, and you're all set.</p>
@@ -98,17 +179,18 @@ end</code></pre>
 <p>So towards the end of the day we have to go through nearly all the pages, strip out the headlines, standfirsts and copy, and input them into the site's backend. It's mindless, slow and frankly demoralising.</p>
 <p>A perfect candidate for automation then!</p>
 <p>Let's start with taking the text from the InDesign files, with an AppleScript I run through <a href="http://www.red-sweater.com/fastscripts/">FastScripts</a>:</p>
-<pre><code>tell application &quot;Adobe InDesign CS5.5&quot;
-  tell the front document
-    set the_text to get the contents of the selection
-  end tell
-end tell
-
-repeat with an_item in the_text
-  do shell script (&quot;echo '&quot; &amp; an_item &amp; &quot;' &gt;&gt; ~/Desktop/web_strip.txt&quot;)
-end repeat
-
-do shell script (&quot;echo '\\n\\n\\n\\n' &gt;&gt; ~/Desktop/web_strip.txt&quot;)</code></pre>
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="k">tell</span> <span class="nb">application</span> <span class="s2">&quot;Adobe InDesign CS5.5&quot;</span>
+<span class="lineno"> 2 </span>  <span class="k">tell</span> <span class="nb">the</span> <span class="nb">front</span> <span class="na">document</span>
+<span class="lineno"> 3 </span>    <span class="k">set</span> <span class="nv">the_text</span> <span class="k">to</span> <span class="k">get</span> <span class="nb">the</span> <span class="na">contents</span> <span class="k">of</span> <span class="nb">the</span> <span class="nv">selection</span>
+<span class="lineno"> 4 </span>  <span class="k">end</span> <span class="k">tell</span>
+<span class="lineno"> 5 </span><span class="k">end</span> <span class="k">tell</span>
+<span class="lineno"> 6 </span>
+<span class="lineno"> 7 </span><span class="k">repeat</span> <span class="nv">with</span> <span class="nv">an_item</span> <span class="k">in</span> <span class="nv">the_text</span>
+<span class="lineno"> 8 </span>  <span class="nb">do shell script</span> <span class="p">(</span><span class="s2">&quot;echo &#39;&quot;</span> <span class="o">&amp;</span> <span class="nv">an_item</span> <span class="o">&amp;</span> <span class="s2">&quot;&#39; &gt;&gt; ~/Desktop/web_strip.txt&quot;</span><span class="p">)</span>
+<span class="lineno"> 9 </span><span class="k">end</span> <span class="k">repeat</span>
+<span class="lineno">10 </span>
+<span class="lineno">11 </span><span class="nb">do shell script</span> <span class="p">(</span><span class="s2">&quot;echo &#39;\\n\\n\\n\\n&#39; &gt;&gt; ~/Desktop/web_strip.txt&quot;</span><span class="p">)</span>
+</pre></div>
 
 
 <p>Here we take the content of the selected InDesign frames and use a shell script snippet to append it to a file on the desktop, followed by a bunch of newlines to separate the appended text.</p>
@@ -120,77 +202,78 @@ do shell script (&quot;echo '\\n\\n\\n\\n' &gt;&gt; ~/Desktop/web_strip.txt&quot
 <p>But how to get the text from a file in BBEdit into the fields? We need to use AppleScript to tell Safari to execute JavaScript, but you do not want to do any kind of text processing in AppleScript — nor do you really want to do it by hand for tens of articles.</p>
 <p>I decided on a Python text filter. Not entirely appropriate — we don't transform and return the text — but it's a dead simple way of working with the selection and removing it once we're done.</p>
 <p>Using Python lets us do all sorts of wonderful things too other than just preparing the InDesign text to be entered into the fields. Here's the code, before I dive in any further:</p>
-<pre><code>#!/usr/local/bin/python3
-
-import sys
-import subprocess
-
-names = {'Morning Star': 4,
-         ...
-         'A Reporter': 1002,
-         }
-
-
-length_lambdas = {'lead': {'func': lambda l: 300 &lt;= l &lt; 400,
-                           'id': 1},
-                  '2ndlead': {'func': lambda l: 200 &lt;= l &lt; 300,
-                              'id': 2},
-                  '150word': {'func': lambda l: 0 &lt; l &lt; 200,
-                              'id': 4},
-                  'inbrief': {'func': lambda l: False,
-                              'id': 5},
-                  'splash': {'func': lambda l: 400 &lt;= l,
-                             'id': 6},
-                  }
-
-# Dr Drang's asrun function
-# http://www.leancrew.com/all-this/2013/03/combining-python-and-applescript/
-def asrun(ascript):
-  &quot;Run the given AppleScript and return the standard output and error.&quot;
-  osa = subprocess.Popen(['osascript', '-'],
-                          stdin=subprocess.PIPE,
-                          stdout=subprocess.PIPE,
-                          stderr=subprocess.DEVNULL)
-  return osa.communicate(ascript.encode())[0]
-
-
-text = sys.stdin.read().strip()
-head, standfirst, author, body = text.split('\n', maxsplit=3)
-if not standfirst:
-  standfirst = ' '           # Required. Don't ask
-if not author.strip():
-  author = 'Morning Star'
-else:
-  author = author.split('by ', maxsplit=1)[-1]
-name_id = names.get(author, 4)
-words = len(body.split())
-for v in length_lambdas.values():
-  if v['func'](words):
-    length_id = (v['id'])
-
-wrapped_body = '&lt;p&gt;' + '&lt;/p&gt;&lt;p&gt;'.join(body.splitlines()) + '&lt;/p&gt;'
-
-
-script = &quot;&quot;&quot;
-tell application &quot;Safari&quot;
-  tell the front document
-    set js_head to &quot;$('#articleInputTitle').val('{head}')&quot;
-    set js_standfirst to &quot;$('#articleTextareaSummery').val('{standfirst}')&quot;
-    set js_body to &quot;$('#articleTextareaContent_ifr').contents().find('#tinymce').html('{body}')&quot;
-    set js_length to &quot;$('#articleSelectPosition').val({length})&quot;
-    set js_author to &quot;$('#articleSelectAuthor').val({author})&quot;
-    do JavaScript js_head
-    do JavaScript js_standfirst
-    do JavaScript js_body
-    do JavaScript js_length
-    do JavaScript js_author
-  end tell
-end tell
-&quot;&quot;&quot;.format(head=head, standfirst=standfirst, body=wrapped_body,
-           length=length_id, author=name_id)
-
-asrun(script)
-print('', end='')</code></pre>
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="ch">#!/usr/local/bin/python3</span>
+<span class="lineno"> 2 </span>
+<span class="lineno"> 3 </span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="lineno"> 4 </span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="lineno"> 5 </span>
+<span class="lineno"> 6 </span><span class="n">names</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Morning Star&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+<span class="lineno"> 7 </span>         <span class="o">...</span>
+<span class="lineno"> 8 </span>         <span class="s1">&#39;A Reporter&#39;</span><span class="p">:</span> <span class="mi">1002</span><span class="p">,</span>
+<span class="lineno"> 9 </span>         <span class="p">}</span>
+<span class="lineno">10 </span>
+<span class="lineno">11 </span>
+<span class="lineno">12 </span><span class="n">length_lambdas</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;lead&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;func&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="mi">300</span> <span class="o">&lt;=</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="mi">400</span><span class="p">,</span>
+<span class="lineno">13 </span>                           <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+<span class="lineno">14 </span>                  <span class="s1">&#39;2ndlead&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;func&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="mi">200</span> <span class="o">&lt;=</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="p">,</span>
+<span class="lineno">15 </span>                              <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+<span class="lineno">16 </span>                  <span class="s1">&#39;150word&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;func&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="mi">200</span><span class="p">,</span>
+<span class="lineno">17 </span>                              <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
+<span class="lineno">18 </span>                  <span class="s1">&#39;inbrief&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;func&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="lineno">19 </span>                              <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
+<span class="lineno">20 </span>                  <span class="s1">&#39;splash&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;func&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="mi">400</span> <span class="o">&lt;=</span> <span class="n">l</span><span class="p">,</span>
+<span class="lineno">21 </span>                             <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span>
+<span class="lineno">22 </span>                  <span class="p">}</span>
+<span class="lineno">23 </span>
+<span class="lineno">24 </span><span class="c1"># Dr Drang&#39;s asrun function</span>
+<span class="lineno">25 </span><span class="c1"># http://www.leancrew.com/all-this/2013/03/combining-python-and-applescript/</span>
+<span class="lineno">26 </span><span class="k">def</span> <span class="nf">asrun</span><span class="p">(</span><span class="n">ascript</span><span class="p">):</span>
+<span class="lineno">27 </span>  <span class="s2">&quot;Run the given AppleScript and return the standard output and error.&quot;</span>
+<span class="lineno">28 </span>  <span class="n">osa</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s1">&#39;osascript&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">],</span>
+<span class="lineno">29 </span>                          <span class="n">stdin</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+<span class="lineno">30 </span>                          <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+<span class="lineno">31 </span>                          <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">)</span>
+<span class="lineno">32 </span>  <span class="k">return</span> <span class="n">osa</span><span class="o">.</span><span class="n">communicate</span><span class="p">(</span><span class="n">ascript</span><span class="o">.</span><span class="n">encode</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+<span class="lineno">33 </span>
+<span class="lineno">34 </span>
+<span class="lineno">35 </span><span class="n">text</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="lineno">36 </span><span class="n">head</span><span class="p">,</span> <span class="n">standfirst</span><span class="p">,</span> <span class="n">author</span><span class="p">,</span> <span class="n">body</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="lineno">37 </span><span class="k">if</span> <span class="ow">not</span> <span class="n">standfirst</span><span class="p">:</span>
+<span class="lineno">38 </span>  <span class="n">standfirst</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span>           <span class="c1"># Required. Don&#39;t ask</span>
+<span class="lineno">39 </span><span class="k">if</span> <span class="ow">not</span> <span class="n">author</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+<span class="lineno">40 </span>  <span class="n">author</span> <span class="o">=</span> <span class="s1">&#39;Morning Star&#39;</span>
+<span class="lineno">41 </span><span class="k">else</span><span class="p">:</span>
+<span class="lineno">42 </span>  <span class="n">author</span> <span class="o">=</span> <span class="n">author</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;by &#39;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="lineno">43 </span><span class="n">name_id</span> <span class="o">=</span> <span class="n">names</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">author</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="lineno">44 </span><span class="n">words</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+<span class="lineno">45 </span><span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">length_lambdas</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+<span class="lineno">46 </span>  <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;func&#39;</span><span class="p">](</span><span class="n">words</span><span class="p">):</span>
+<span class="lineno">47 </span>    <span class="n">length_id</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+<span class="lineno">48 </span>
+<span class="lineno">49 </span><span class="n">wrapped_body</span> <span class="o">=</span> <span class="s1">&#39;&lt;p&gt;&#39;</span> <span class="o">+</span> <span class="s1">&#39;&lt;/p&gt;&lt;p&gt;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span> <span class="o">+</span> <span class="s1">&#39;&lt;/p&gt;&#39;</span>
+<span class="lineno">50 </span>
+<span class="lineno">51 </span>
+<span class="lineno">52 </span><span class="n">script</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="lineno">53 </span><span class="s2">tell application &quot;Safari&quot;</span>
+<span class="lineno">54 </span><span class="s2">  tell the front document</span>
+<span class="lineno">55 </span><span class="s2">    set js_head to &quot;$(&#39;#articleInputTitle&#39;).val(&#39;</span><span class="si">{head}</span><span class="s2">&#39;)&quot;</span>
+<span class="lineno">56 </span><span class="s2">    set js_standfirst to &quot;$(&#39;#articleTextareaSummery&#39;).val(&#39;</span><span class="si">{standfirst}</span><span class="s2">&#39;)&quot;</span>
+<span class="lineno">57 </span><span class="s2">    set js_body to &quot;$(&#39;#articleTextareaContent_ifr&#39;).contents().find(&#39;#tinymce&#39;).html(&#39;</span><span class="si">{body}</span><span class="s2">&#39;)&quot;</span>
+<span class="lineno">58 </span><span class="s2">    set js_length to &quot;$(&#39;#articleSelectPosition&#39;).val(</span><span class="si">{length}</span><span class="s2">)&quot;</span>
+<span class="lineno">59 </span><span class="s2">    set js_author to &quot;$(&#39;#articleSelectAuthor&#39;).val(</span><span class="si">{author}</span><span class="s2">)&quot;</span>
+<span class="lineno">60 </span><span class="s2">    do JavaScript js_head</span>
+<span class="lineno">61 </span><span class="s2">    do JavaScript js_standfirst</span>
+<span class="lineno">62 </span><span class="s2">    do JavaScript js_body</span>
+<span class="lineno">63 </span><span class="s2">    do JavaScript js_length</span>
+<span class="lineno">64 </span><span class="s2">    do JavaScript js_author</span>
+<span class="lineno">65 </span><span class="s2">  end tell</span>
+<span class="lineno">66 </span><span class="s2">end tell</span>
+<span class="lineno">67 </span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">head</span><span class="o">=</span><span class="n">head</span><span class="p">,</span> <span class="n">standfirst</span><span class="o">=</span><span class="n">standfirst</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">wrapped_body</span><span class="p">,</span>
+<span class="lineno">68 </span>           <span class="n">length</span><span class="o">=</span><span class="n">length_id</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="n">name_id</span><span class="p">)</span>
+<span class="lineno">69 </span>
+<span class="lineno">70 </span><span class="n">asrun</span><span class="p">(</span><span class="n">script</span><span class="p">)</span>
+<span class="lineno">71 </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
 
 
 <p>I like to put data at the top of my scripts and the code beneath, so let's start on line 35, where we read in the text from BBEdit. Line 36 breaks that text apart: I use a four-part structure, where the first line is the headline, then the standfirst and byline (both of which can be blank) and then any remaining lines form the body.</p>
@@ -256,24 +339,6 @@ robjwells.kilnhg.com = c3:83:2c:5a:2d:0…</code></pre>
 
 
 <p>See <a href="http://blog.bitbucket.org/2014/04/08/bitbuckets-ssl-certificates-are-changing/">Bitbucket’s post</a> for a few more details.</p>
-  </article>
-  <article>
-    <header>
-      <h2 class="mute-links"><a href="https://robjwells.github.io/2014/04/manhandled/">Manhandled</a></h2>
-      <p><time datetime="2014-04-13T09:03">Sunday, April 13 2014</time></p>
-    </header>
-    <p><a href="http://www.leancrew.com/all-this/2014/04/oh-man/">Dr Drang</a> and <a href="http://nathangrigg.net/2014/04/zsh-push-line-or-edit/">Nathan</a> have both written recently about bringing up a man page for reference while typing a command in the terminal. I’ve two approaches to share, but unlike Nathan I can’t claim that they’re superior — just alternatives.</p>
-<p>I prefer them over the right-click method because I don’t like to take my hands off the keyboard unless absolutely necessary, and moving to Zsh is a bit much for me right now.</p>
-<p>First is <a href="http://www.obdev.at/products/launchbar/index.html">LaunchBar’s</a> built-in man page search (found under UTF-8 search templates in the index), which uses the <code>x-man-page://</code> URL scheme to bring up a new Terminal window. Here’s what you type:</p>
-<pre><code>⌘-Space man Space `command` ↩</code></pre>
-
-
-<p>The second approach layers the wonderful <a href="http://kapeli.com/dash">Dash</a> on top of LaunchBar, bringing up the man page in Dash’s interface instead of the Terminal.</p>
-<pre><code>⌘-Space dash Space `command` ↩</code></pre>
-
-
-<p>This gives you all the usual Dash goodies, including a section list and inline links to other man pages (if you decide, after all, to take your hands off the keyboard).</p>
-<p>You can prepend <code>man:</code> to the command name to restrict the search to man pages only, or even add a search template of the form <code>dash://man:*</code> to LaunchBar’s index — in place of the first man page search if you like.</p>
   </article>
   <div class="pagination">
 <p class="pagination-older"><a href="https://robjwells.github.io/page-15/">Older posts</a></p><p class="pagination-newer"><a href="https://robjwells.github.io/page-13/">Newer posts</a></p>  </div>

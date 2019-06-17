@@ -8,6 +8,8 @@
   <!-- Load my combined stylesheet -->
   <link rel="stylesheet" href="/resources/all.min.css">
 
+  <!-- Load my combined JavaScript -->
+  <script src="/resources/all.min.js" async></script>
 
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
 
@@ -223,22 +225,23 @@
 
 <p><a href="https://github.com/AlDanial/cloc">Cloc</a> tells me that the main Python file has a <em>whopping</em> 104 lines of code, and there are 264 lines of code in the related unit tests.</p>
 <p>Really all of the heavy lifting is done by BWIPP, a cut-down version of which is included in the <a href="https://github.com/ppps/ms-barcode">ms-barcode</a> repository (just ISSN, EAN-13 and EAN-2). The entirety of my “own” PostScript is this (where the parts in braces are Python string formatting targets):</p>
-<pre><code>%!PS
-({bwipp_location}) run
-
-11 5 moveto ({issn} {seq:02} {week:02}) (includetext height=1.07)
-  /issn /uk.co.terryburton.bwipp findresource exec
-
-% Print header line(s)
-/Courier findfont
-9 scalefont
-setfont
-
-newpath
-11 86 moveto
-({header}) show
-
-showpage</code></pre>
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="cp">%!PS</span>
+<span class="lineno"> 2 </span><span class="s">({bwipp_location})</span> <span class="nf">run</span>
+<span class="lineno"> 3 </span>
+<span class="lineno"> 4 </span><span class="mf">11</span> <span class="mf">5</span> <span class="nf">moveto</span> <span class="s">({issn} {seq:02} {week:02})</span> <span class="s">(includetext height=1.07)</span>
+<span class="lineno"> 5 </span>  <span class="nv">/issn</span> <span class="nv">/uk.co.terryburton.bwipp</span> <span class="nf">findresource</span> <span class="nf">exec</span>
+<span class="lineno"> 6 </span>
+<span class="lineno"> 7 </span><span class="c1">% Print header line(s)</span>
+<span class="lineno"> 8 </span><span class="nv">/Courier</span> <span class="nf">findfont</span>
+<span class="lineno"> 9 </span><span class="mf">9</span> <span class="nf">scalefont</span>
+<span class="lineno">10 </span><span class="nf">setfont</span>
+<span class="lineno">11 </span>
+<span class="lineno">12 </span><span class="nf">newpath</span>
+<span class="lineno">13 </span><span class="mf">11</span> <span class="mf">86</span> <span class="nf">moveto</span>
+<span class="lineno">14 </span><span class="s">({header})</span> <span class="nf">show</span>
+<span class="lineno">15 </span>
+<span class="lineno">16 </span><span class="nf">showpage</span>
+</pre></div>
 
 
 <p>The bits that you may need to fiddle with, if you want to produce a different-sized barcode, are the initial location the ISSN symbol is drawn at (line 4) and <code>height=1.07</code> on the same line.</p>

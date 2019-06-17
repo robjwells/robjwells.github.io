@@ -8,6 +8,8 @@
   <!-- Load my combined stylesheet -->
   <link rel="stylesheet" href="/resources/all.min.css">
 
+  <!-- Load my combined JavaScript -->
+  <script src="/resources/all.min.js" async></script>
 
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
 
@@ -62,6 +64,117 @@
 
   <article>
     <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2019/06/help-zip-is-eating-my-iterators-items/">Help, zip is eating my iterator’s items</a></h2>
+      <p><time datetime="2019-06-18T00:23">Tuesday, June 18 2019</time></p>
+    </header>
+    <p>Python’s <a href="https://docs.python.org/3.7/library/functions.html#zip"><code>zip</code></a> function, which knits together two iterables, is indispensable for me. It works like this:</p>
+<div class="syntax"><pre><span></span><span class="n">list_one</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">list_two</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">list_one</span><span class="p">,</span> <span class="n">list_two</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span>
+<span class="c1"># (1, &#39;a&#39;)</span>
+<span class="c1"># (2, &#39;b&#39;)</span>
+<span class="c1"># (3, &#39;c&#39;)</span>
+</pre></div>
+
+
+<p>If the two iterables differ in length, zip halts after the shortest is exhausted. If we add an additional element to one of the lists above, we get the same results:</p>
+<div class="syntax"><pre><span></span><span class="n">list_one</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">list_two</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">]</span>  <span class="c1"># Note extra item, &quot;d&quot;</span>
+<span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">list_one</span><span class="p">,</span> <span class="n">list_two</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span>
+<span class="c1"># (1, &#39;a&#39;)</span>
+<span class="c1"># (2, &#39;b&#39;)</span>
+<span class="c1"># (3, &#39;c&#39;)</span>
+</pre></div>
+
+
+<p>But the actual mechanics of this surprised me. Today I was working on the “chunked” problem from <a href="https://www.pythonmorsels.com">Python Morsels</a> (which is great and you should totally try out if you write Python), and was left scratching my head after elements of my iterable started disappearing.</p>
+<p>The basic problem for chunked is this: given some iterable, return its elements in <code>count</code>-length lists. <a href="https://treyhunner.com">Trey</a> likes you to think in terms of “any iterable” so you can’t depend on list-like behaviour, such as being able to index into the iterable or check its length without consuming it.</p>
+<p>It’s safer to assume you get one traversal. So, my solution starts like this, creating an <a href="https://treyhunner.com/2016/12/python-iterator-protocol-how-for-loops-work/">iterator from the iterable</a>.</p>
+<div class="syntax"><pre><span></span><span class="k">def</span> <span class="nf">chunked</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
+    <span class="n">iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
+    <span class="o">...</span>
+</pre></div>
+
+
+<p>Then (eliding the scaffolding) I build up a new <code>count</code>-length chunk using <code>zip</code> in a comprehension:</p>
+<div class="syntax"><pre><span></span><span class="n">temp</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">))]</span>
+</pre></div>
+
+
+<p>Here I use the “earliest finish” behaviour of <code>zip</code> paired with <code>range</code> — the amount of numbers in the range (<code>count</code>-many of them) determines how many items I fetch from the iterator.</p>
+<p>Let’s give this a try, using your imagination to flesh out the rest of <code>chunked</code>:</p>
+<div class="syntax"><pre><span></span><span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">chunked</span><span class="p">(</span><span class="n">iterable</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">count</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+<span class="c1"># [0, 1, 2, 3]</span>
+<span class="c1"># [5, 6, 7, 8]</span>
+</pre></div>
+
+
+<p>Er, hm. Not what I was expecting, which was:</p>
+<div class="syntax"><pre><span></span><span class="c1"># [0, 1, 2, 3]</span>
+<span class="c1"># [4, 5, 6, 7]</span>
+<span class="c1"># [8, 9]</span>
+</pre></div>
+
+
+<p>Somehow, the program is consuming an extra item from <code>iterator</code> each time I create a chunk. But that list comprehension is the only place where I touch <code>iterator</code>. What gives?</p>
+<p>Well, how does <code>zip</code> know when to terminate? If you take a look <a href="https://docs.python.org/3.7/library/functions.html#zip">in the documentation</a>, you’ll see a handy code sample that is “equivalent to” the implementation of <code>zip</code>. There we see that <code>zip</code> builds up a list of results by taking an item from each of the given iterables, but if any of those iterables are finished, it just returns — and discards the result list!</p>
+<p>So what happens with <code>zip(longer, shorter)</code> is that it takes from <code>longer</code>, stashes the item, discovers <code>shorter</code> is exhausted, and discards the item from <code>longer</code>. And thats what happens to the missing numbers in the example above.</p>
+<p>This situation arises because I’m zipping the same iterable repeatedly, until it’s empty, and because the iterator is the first argument to <code>zip</code>. This small change works fine:</p>
+<div class="syntax"><pre><span></span><span class="c1"># Old, broken</span>
+<span class="n">temp</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">))]</span>
+<span class="c1"># New, fixed</span>
+<span class="n">temp</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">),</span> <span class="n">iterator</span><span class="p">)]</span>
+</pre></div>
+
+
+<p>In the new version, <code>zip</code> discovers that the iterator over the range is exhausted <em>first</em>, before it takes an item from <code>iterator</code>, so no items are ever discarded.</p>
+<p>So, is this OK? Really, really not! This is <em>super</em>-fragile. It’s not obvious that switching the arguments will break the code. And really it just <em>looks</em> wrong, because surely the ignored tuple element (assigned to the underscore) should come after the item that we care about?</p>
+<p>Thankfully, the <a href="https://docs.python.org/3.7/library/itertools.html#module-itertools"><code>itertools</code></a> module has what we need (as always!). The reason I originally used the list comprehension-zip-range combo is because you can’t slice every iterable. For example:</p>
+<div class="syntax"><pre><span></span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))[:</span><span class="mi">4</span><span class="p">]</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># TypeError                                 Traceback (most recent call last)</span>
+<span class="c1"># &lt;ipython-input-2-17f2a627cc7c&gt; in &lt;module&gt;</span>
+<span class="c1"># ----&gt; 1 (x**2 for x in range(10))[:4]</span>
+<span class="c1">#</span>
+<span class="c1"># TypeError: &#39;generator&#39; object is not subscriptable</span>
+</pre></div>
+
+
+<p>But you can with <a href="https://docs.python.org/3.7/library/itertools.html#itertools.islice"><code>islice</code></a>:</p>
+<div class="syntax"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">islice</span><span class="p">((</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)),</span> <span class="mi">4</span><span class="p">))</span>
+<span class="c1"># [0, 1, 4, 9]</span>
+</pre></div>
+
+
+<p>And this works great with iterators where you care about the current state:</p>
+<div class="syntax"><pre><span></span><span class="n">to_10_sq</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">to_10_sq</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="c1"># [0, 1, 4, 9]</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">to_10_sq</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="c1"># [16, 25, 36, 49]</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">to_10_sq</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="c1"># [64, 81]</span>
+</pre></div>
+
+
+<p>Which leads us to the most straightforward way of building up those chunks.</p>
+<div class="syntax"><pre><span></span><span class="n">chunk</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">count</span><span class="p">))</span>
+</pre></div>
+
+
+<p>(The chunks have to be “concrete” sequences as the problem requires some length-checking for one of the bonus parts, hence the <code>list</code> call.)</p>
+<p>Thanks for reading. If I have some key messages, they’re these:</p>
+<ul>
+<li>Python is lovely, but it’s not magic!</li>
+<li><a href="https://docs.python.org/3.7/library/itertools.html#module-itertools"><code>itertools</code></a> might have solved your iteration problem already.</li>
+<li>Check out <a href="https://www.pythonmorsels.com">Python Morsels</a>. The problems are short, fun, and a nice way to improve your Python skills.</li>
+</ul>
+  </article>
+  <article>
+    <header>
       <h2 class="mute-links"><a href="https://robjwells.github.io/2018/06/hardware-choices/">Hard(ware) choices</a></h2>
       <p><time datetime="2018-06-10T21:50">Sunday, June 10 2018</time></p>
     </header>
@@ -105,11 +218,13 @@
 </ul>
 <p>The shorter path of the parent would match part of the child’s path.</p>
 <p>The original <code>grep</code> pattern was:</p>
-<pre><code>grep &quot;$KMVAR_dir&quot;</code></pre>
+<div class="syntax"><pre><span></span>grep <span class="s2">&quot;</span><span class="nv">$KMVAR_dir</span><span class="s2">&quot;</span>
+</pre></div>
 
 
 <p>And is now:</p>
-<pre><code>grep &quot;:: $KMVAR_dir$&quot;</code></pre>
+<div class="syntax"><pre><span></span>grep <span class="s2">&quot;:: </span><span class="nv">$KMVAR_dir</span>$<span class="s2">&quot;</span>
+</pre></div>
 
 
 <p>So that it only matches the exact directory chosen in the list prompt, and not one of its children.</p>
@@ -198,10 +313,11 @@
     </header>
     <p>I have a startup item that launches a Jupyter notebook so that the server is always running in the background. It’s an attempt to reduce the friction of using the notebooks.</p>
 <p>By default, Jupyter starts the server on port 8888 on localhost, but expects a token (a long hexadecimal string) before it’ll let you in. If you list the currently running servers in the terminal you can see the token and also the server’s working directory.</p>
-<pre><code>% jupyter-notebook list
+<div class="syntax"><pre><span></span>% jupyter-notebook list
 Currently running servers:
-http://localhost:8889/?token=…hex… :: /Users/robjwells
-http://localhost:8888/?token=…hex… :: /Users/robjwells/jupyter-notebooks</code></pre>
+http://localhost:8889/?token<span class="o">=</span>…hex… :: /Users/robjwells
+http://localhost:8888/?token<span class="o">=</span>…hex… :: /Users/robjwells/jupyter-notebooks
+</pre></div>
 
 
 <p>We can use this to make finding and opening the particular notebook server you want a bit easier, using Keyboard Maestro.</p>
@@ -226,12 +342,14 @@ http://localhost:8888/?token=…hex… :: /Users/robjwells/jupyter-notebooks</co
 </p>
 
 <p>Here’s the first step, where we fetch the list of working directories.</p>
-<pre><code>jupyter-notebook list | tail -n +2 | awk '{print $3}'</code></pre>
+<div class="syntax"><pre><span></span>jupyter-notebook list <span class="p">|</span> tail -n +2 <span class="p">|</span> awk <span class="s1">&#39;{print $3}&#39;</span>
+</pre></div>
 
 
 <p>Our +2 argument to <code>tail</code> gets the output from the second line, chopping off the “Currently running servers:” bit. Then <code>awk</code> prints the third field, which contains the directory. (The first is the URL, the second the double-colon separator.)</p>
 <p>The third step fetches the corresponding URL for a directory:</p>
-<pre><code>jupyter-notebook list | grep &quot;:: $KMVAR_dir$&quot; | awk '{ print $1 }'</code></pre>
+<div class="syntax"><pre><span></span>jupyter-notebook list <span class="p">|</span> grep <span class="s2">&quot;:: </span><span class="nv">$KMVAR_dir</span>$<span class="s2">&quot;</span> <span class="p">|</span> awk <span class="s1">&#39;{ print $1 }&#39;</span>
+</pre></div>
 
 
 <p>Since the user has specified a directory already, we use <code>grep</code> with the Keyboard Maestro variable to find just that one line, and use <code>awk</code> again to extract the URL field.</p>
@@ -242,74 +360,6 @@ http://localhost:8888/?token=…hex… :: /Users/robjwells/jupyter-notebooks</co
 
 <p>Obviously, this won’t work if you have more than one notebook server running from the same directory. (But you wouldn’t do that, right?)</p>
 <p><a href="/files/OpenJupyterNotebook.kmmacros">Here’s the macro file</a> if you’d like to try it out.</p>
-  </article>
-  <article>
-    <header>
-      <h2 class="mute-links"><a href="https://robjwells.github.io/2018/05/horizontally-scroll-a-table-in-html/">Horizontally scroll a table in HTML</a></h2>
-      <p><time datetime="2018-05-11T23:35">Friday, May 11 2018</time></p>
-    </header>
-    <p>After I published <a href="https://www.robjwells.com/2018/05/table-manipulation-with-r/">my post about manipulating tables (of data) in R</a>, I noticed that there was something amiss with the HTML table in that post showing an example section of our newsroom rota.</p>
-<p class="full-width">
-    <img
-        src="/images/2018-05-11-table-fixed.png"
-        alt="A screenshot showing a table laid out with table-layout: fixed in CSS, with many cells wrapping with scrollbars in an unreadable fashion."
-        />
-</p>
-
-<p>When I first wrote the CSS for this site, <a href="https://www.robjwells.com/2013/07/five-different-kinds-of-grey/">roughly five years ago</a>, I had HTML tables set so that the whole table would scroll were it to be too wide for its containing column. At least, I’m pretty sure it worked like that.</p>
-<p>Anyway, as you can see above, it doesn’t work like that now. The table there is laid out with the following CSS:</p>
-<pre><code>table {
-  table-layout: fixed;
-  width: 100%;
-}</code></pre>
-
-
-<p>Which has the effect of restricting the table size to 100%, and doing odd things to the cells if there’s too much to fit in whatever width 100% happens to be.</p>
-<p>As an attempted quick fix, I removed the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout"><code>table-layout</code></a> property so that it would inherit the default, <code>auto</code>. The width is still 100% to provide some consistency, rather than having an odd assortment of table widths.</p>
-<p>So the CSS is now this:</p>
-<pre><code>table {
-  width: 100%;
-}</code></pre>
-
-
-<p>This has the effect of having the table overflow the container horizontally if the content is too wide, like so:</p>
-<p class="full-width">
-    <img
-        src="/images/2018-05-11-table-auto.png"
-        alt="A screenshot showing a table laid out with table-layout: auto in CSS, with the table overflowing its container horizontally."
-        />
-</p>
-
-<p>Which is perhaps more readable if pretty ugly. And not what I wanted: to scroll the entire table within its container.</p>
-<p>I said attempted earlier because I, er, never deployed the change on the site (it’s been a busy couple of weeks, contrary to the post tempo).</p>
-<p>In the meantime, I stumbled across a fix by opening Safari’s reader mode, in which tables scroll horizontally within their container! The secret? The table is wrapped in an enclosing <code>div</code>, which has its <code>overflow-x</code> property set to <code>auto</code>, and then the table scrolls within the div.</p>
-<p>Here’s what that looks like when rendered:</p>
-<p class="full-width">
-    <img
-        src="/images/2018-05-11-table-div.png"
-        alt="A screenshot showing a table laid out and scrolling within a containing div with its overflow-x property set to auto."
-        />
-</p>
-
-<p>Here’s the HTML:</p>
-<pre><code>&lt;div class=&quot;table-container&quot;&gt;
-  &lt;table&gt;
-  …
-  &lt;/table&gt;
-&lt;/div&gt;</code></pre>
-
-
-<p>And here’s the CSS:</p>
-<pre><code>table {
-  width: 100%;
-}
-
-.table-container {
-  overflow-x: auto;
-}</code></pre>
-
-
-<p>You want <code>auto</code> instead of <code>scroll</code> as the latter shows the scrollbar all the time. </p>
   </article>
   <div class="pagination">
 <p class="pagination-older"><a href="https://robjwells.github.io/page-2/">Older posts</a></p>  </div>

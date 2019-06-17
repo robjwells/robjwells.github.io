@@ -8,6 +8,8 @@
   <!-- Load my combined stylesheet -->
   <link rel="stylesheet" href="/resources/all.min.css">
 
+  <!-- Load my combined JavaScript -->
+  <script src="/resources/all.min.js" async></script>
 
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
 
@@ -62,6 +64,61 @@
 
   <article>
     <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2013/09/solo-diff/">Solo diff</a></h2>
+      <p><time datetime="2013-09-13T20:39">Friday, September 13 2013</time></p>
+    </header>
+    <p>At work we edit the reporters’ copy in plain text files using <a href="http://barebones.com/products/textwrangler/">TextWrangler</a>, duplicating their original at the bottom of the file before we start subbing.
+It’s a nice, quick way of having something to refer back to without the hassle of using (and training people to use) a real <a href="http://en.wikipedia.org/wiki/Revision_control">VCS</a>.</p>
+<p>It began as a loose convention, with different people having their own way of marking off the original copy. To make it completely painless, and to bring in a standard method, I wrote this short Python script a couple of months ago:</p>
+<div class="syntax"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="kn">from</span> <span class="nn">sys</span> <span class="k">import</span> <span class="n">stdin</span>
+<span class="n">orig</span> <span class="o">=</span> <span class="n">stdin</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">dupe</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="se">\n\n\n\n</span><span class="s2">#### Original Copy ####</span><span class="se">\n\n\n\n</span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">orig</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dupe</span><span class="p">)</span>
+</pre></div>
+
+
+<p>I installed it to everyone’s text filters folder — TextWrangler provides the document’s text (or the selection) to text filters via stdin — and people tend to use it.</p>
+<p>We hired two new subs over the summer and I got into the habit of using the “Compare Two Front Windows” command to check their subbed copy against the original, so I could offer them specific advice.</p>
+<p>But manually creating two new windows and pasting in the text can be a pain — you end up juggling lots of windows and it’s easy to mix up the copy so that the “older” pane is showing the subbed text.</p>
+<p>Thankfully both of the new people use the duplication script consistently, so it’s easy to use a regular expression to split the file into original and subbed versions. Armed with this knowledge, I wrote a script to automate the comparison, using TextWrangler’s <code>twdiff</code> command-line tool.</p>
+<div class="flag">
+    <p>The code below is written for BBEdit, which I use at home. Except for <code>BB_DOC_PATH</code>, I swap out <code>bb</code> for <code>tw</code> in the script used at work.</p>
+</div>
+
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="ch">#!/usr/bin/env python3</span>
+<span class="lineno"> 2 </span>
+<span class="lineno"> 3 </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="lineno"> 4 </span><span class="kn">import</span> <span class="nn">re</span>
+<span class="lineno"> 5 </span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="lineno"> 6 </span>
+<span class="lineno"> 7 </span><span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s1">&#39;/tmp&#39;</span><span class="p">)</span>
+<span class="lineno"> 8 </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;BB_DOC_PATH&#39;</span><span class="p">])</span> <span class="k">as</span> <span class="n">full_file</span><span class="p">:</span>
+<span class="lineno"> 9 </span>  <span class="n">sub_copy</span><span class="p">,</span> <span class="n">orig_copy</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;#{2,} original copy #{2,}&#39;</span><span class="p">,</span>
+<span class="lineno">10 </span>                                 <span class="n">full_file</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+<span class="lineno">11 </span>
+<span class="lineno">12 </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;bb_orig_copy&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">orig_file</span><span class="p">:</span>
+<span class="lineno">13 </span>  <span class="n">orig_copy</span> <span class="o">=</span> <span class="n">orig_copy</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+<span class="lineno">14 </span>  <span class="n">orig_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">orig_copy</span><span class="p">)</span>
+<span class="lineno">15 </span>
+<span class="lineno">16 </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;bb_subbed_copy&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">sub_file</span><span class="p">:</span>
+<span class="lineno">17 </span>  <span class="n">sub_copy</span> <span class="o">=</span> <span class="n">sub_copy</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+<span class="lineno">18 </span>  <span class="n">sub_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sub_copy</span><span class="p">)</span>
+<span class="lineno">19 </span>
+<span class="lineno">20 </span><span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s1">&#39;bbdiff&#39;</span><span class="p">,</span> <span class="s1">&#39;bb_orig_copy&#39;</span><span class="p">,</span> <span class="s1">&#39;bb_subbed_copy&#39;</span><span class="p">])</span>
+</pre></div>
+
+
+<p>The entire file is split into subbed and original sections in lines 9 &amp; 10, and on lines 14 &amp; 18 each of those is written to a file (in <code>/tmp</code> — line 7). The leading and trailing whitespace is stripped from each and a newline added in order to clean up the comparison.</p>
+<p>The regex on lines 9 &amp; 10 uses a variable number of hash marks and the case-insensitivity flag because on occasion I forget to duplicate the copy first, edit the story, and then go back and fill in the separator by hand.</p>
+<p>All of the file interaction is handled in <code>with</code> blocks (context managers), which automatically close the files once the block’s statements are executed. Not a big issue in a script this size, but good practice.</p>
+<p>Finally we call the diff utility with the names of the two temporary files.</p>
+<p>I’ve got this saved in TextWrangler’s scripts folder. Initially I wrote it as a text filter, splitting the contents provided on stdin. But since filters replace the document (or selection) the text had to be written to stdout at the end of the script so that TextWrangler didn’t delete everything.</p>
+<p>And it’s also <em>not a filter</em>, so I was pleased to find out that several environment variables are set when a script is invoked, one of which is the path to the file that the script was called on.</p>
+<p>I’ve tested the script with Python 2.7.5 and it seems to work fine, but with the differences in its Unicode handling I can’t say for certain that some nasty encoding gremlin won’t raise its head.</p>
+  </article>
+  <article>
+    <header>
       <h2 class="mute-links"><a href="https://robjwells.github.io/2013/08/promptless-mercurial/">Promptless Mercurial</a></h2>
       <p><time datetime="2013-08-24T13:04">Saturday, August 24 2013</time></p>
     </header>
@@ -100,8 +157,9 @@
     <p>I’ve got some annual leave booked for the very end of September, which is pretty far away still — but I wanted to know exactly how many days I have to go before my break.</p>
 <p>Usually I would just query <a href="http://www.wolframalpha.com/input/?i=Days+until+December+25+2013">Wolfram Alpha</a> but, since I’ve been spending a fair amount of time at the command line, I wondered if <code>date</code> in Unix could give me the answer.</p>
 <p>It’s easy to ask <code>date</code> to add or subtract an amount of time:</p>
-<pre><code>$ date -v +2w   # Now plus two weeks
-Sat 31 Aug 2013 13:14:20 BST</code></pre>
+<div class="syntax"><pre><span></span>$ date -v +2w   <span class="c1"># Now plus two weeks</span>
+Sat <span class="m">31</span> Aug <span class="m">2013</span> <span class="m">13</span>:14:20 BST
+</pre></div>
 
 
 <p>However there’s no built-in way to find the difference between two dates. So I wrote one. Now originally I was going to walk through that shell script but there were enough problems that I rewrote it in Python this morning.</p>
@@ -121,48 +179,49 @@ Sat 31 Aug 2013 13:14:20 BST</code></pre>
 <p>The timestamp problem is an edge case as days aren’t a useful measure of time past a certain, short distance, so it was mainly the reliability and syntax complaints that pushed me to rewrite the script. I don’t consider <code>\d</code> to be exotic and with the removal of the <code>-P</code> option in newer versions of <code>grep</code> how can you expect to use it in portable code?</p>
 <p>As for the syntax, while I was pleased I’d managed to lump together enough parts to make a working program, it’s not clear by any means — and this is just a 45-line wrapper around <code>date</code>! String comparisons in bash get to use <code>!=</code> and <code>==</code> but numbers are stuck with <code>-ne</code> and <code>-eq</code>? Oh god it’s <em>horrible</em>.</p>
 <p>Anyway, let’s move on to the Python script:</p>
-<pre><code>#!/usr/bin/env python3
-
-from __future__ import print_function
-import sys
-import os
-import re
-from datetime import datetime
-
-if len(sys.argv) == 2:
-  date = sys.argv[1]
-elif not sys.stdin.isatty():
-  # Called in a pipeline
-  date = sys.stdin.read().rstrip('\n')
-else:
-  # Print usage message if no date is supplied
-  script = os.path.basename(sys.argv[0])
-  print('Usage:  {0} YYYY-MM-DD\n'
-        '        prints number of days until or since the given date'
-        .format(script))
-  sys.exit(64)
-
-if not re.match(r'\d{4}-\d{2}-\d{2}', date):
-  print('Abort:  your date is not in YYYY-MM-DD format')
-  sys.exit(65)
-else:
-  then = datetime.strptime(date, '%Y-%m-%d').date()
-now = datetime.now().date()
-days = (then - now).days
-
-if days == 0:
-  print(&quot;That's today!&quot;)
-  sys.exit(0)
-
-msg = str(days) + ' day'
-if days not in [1, -1]:
-  msg += 's'
-
-if days &lt; 0:
-  msg = msg.lstrip('-') + ' ago'
-else:
-  msg += ' ahead'
-print(msg)</code></pre>
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="ch">#!/usr/bin/env python3</span>
+<span class="lineno"> 2 </span>
+<span class="lineno"> 3 </span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="lineno"> 4 </span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="lineno"> 5 </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="lineno"> 6 </span><span class="kn">import</span> <span class="nn">re</span>
+<span class="lineno"> 7 </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span class="lineno"> 8 </span>
+<span class="lineno"> 9 </span><span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+<span class="lineno">10 </span>  <span class="n">date</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="lineno">11 </span><span class="k">elif</span> <span class="ow">not</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">isatty</span><span class="p">():</span>
+<span class="lineno">12 </span>  <span class="c1"># Called in a pipeline</span>
+<span class="lineno">13 </span>  <span class="n">date</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="lineno">14 </span><span class="k">else</span><span class="p">:</span>
+<span class="lineno">15 </span>  <span class="c1"># Print usage message if no date is supplied</span>
+<span class="lineno">16 </span>  <span class="n">script</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="lineno">17 </span>  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Usage:  </span><span class="si">{0}</span><span class="s1"> YYYY-MM-DD</span><span class="se">\n</span><span class="s1">&#39;</span>
+<span class="lineno">18 </span>        <span class="s1">&#39;        prints number of days until or since the given date&#39;</span>
+<span class="lineno">19 </span>        <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">script</span><span class="p">))</span>
+<span class="lineno">20 </span>  <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span>
+<span class="lineno">21 </span>
+<span class="lineno">22 </span><span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\d</span><span class="si">{4}</span><span class="s1">-\d</span><span class="si">{2}</span><span class="s1">-\d</span><span class="si">{2}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">date</span><span class="p">):</span>
+<span class="lineno">23 </span>  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Abort:  your date is not in YYYY-MM-DD format&#39;</span><span class="p">)</span>
+<span class="lineno">24 </span>  <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span>
+<span class="lineno">25 </span><span class="k">else</span><span class="p">:</span>
+<span class="lineno">26 </span>  <span class="n">then</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+<span class="lineno">27 </span><span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+<span class="lineno">28 </span><span class="n">days</span> <span class="o">=</span> <span class="p">(</span><span class="n">then</span> <span class="o">-</span> <span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">days</span>
+<span class="lineno">29 </span>
+<span class="lineno">30 </span><span class="k">if</span> <span class="n">days</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="lineno">31 </span>  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;That&#39;s today!&quot;</span><span class="p">)</span>
+<span class="lineno">32 </span>  <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="lineno">33 </span>
+<span class="lineno">34 </span><span class="n">msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">days</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; day&#39;</span>
+<span class="lineno">35 </span><span class="k">if</span> <span class="n">days</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+<span class="lineno">36 </span>  <span class="n">msg</span> <span class="o">+=</span> <span class="s1">&#39;s&#39;</span>
+<span class="lineno">37 </span>
+<span class="lineno">38 </span><span class="k">if</span> <span class="n">days</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="lineno">39 </span>  <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; ago&#39;</span>
+<span class="lineno">40 </span><span class="k">else</span><span class="p">:</span>
+<span class="lineno">41 </span>  <span class="n">msg</span> <span class="o">+=</span> <span class="s1">&#39; ahead&#39;</span>
+<span class="lineno">42 </span><span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</pre></div>
 
 
 <p>It works in much the same way as the shell script. (In case anyone’s wondering, the <code>print_function</code> import is for Python 2 compatibility — just change the shebang line to plain <code>python</code>.)</p>
@@ -189,24 +248,25 @@ $ days 2013-01-01
 <p>Right now I’m learning towards Mercurial (and am using it to track these blog posts) but I will still be using Git, not least because of <a href="https://github.com/robjwells">GitHub</a>.</p>
 <p>So when I wrote my first commit hook I did it in both flavours. It’s a simple Python script that rejects a commit if the first-line summary is too long (over 50 characters) or too short (10 characters). The idea is to make sure <code>hg log</code> and <code>git log (--oneline|--pretty=short)</code> are informative but brief.</p>
 <h3>Mercurial</h3>
-<pre><code>#!/usr/bin/env python3
-
-import os
-import sys
-from termtools import colour
-from subprocess import check_output
-
-node = os.environ[&quot;HG_NODE&quot;]
-message = check_output([&quot;hg&quot;, &quot;log&quot;, &quot;-r&quot;, node,
-                        &quot;--template&quot;, &quot;{desc}&quot;]).decode()
-summary_length = len(message.splitlines()[0])
-
-if summary_length &gt; 50:
-  print(colour(&quot;! Changeset summary is too long (&gt; 50c)&quot;, &quot;red&quot;))
-  sys.exit(1)
-elif summary_length &lt; 10:
-  print(colour(&quot;! Changeset summary is too short (&lt; 10c)&quot;, &quot;red&quot;))
-  sys.exit(1)</code></pre>
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="ch">#!/usr/bin/env python3</span>
+<span class="lineno"> 2 </span>
+<span class="lineno"> 3 </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="lineno"> 4 </span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="lineno"> 5 </span><span class="kn">from</span> <span class="nn">termtools</span> <span class="k">import</span> <span class="n">colour</span>
+<span class="lineno"> 6 </span><span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">check_output</span>
+<span class="lineno"> 7 </span>
+<span class="lineno"> 8 </span><span class="n">node</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;HG_NODE&quot;</span><span class="p">]</span>
+<span class="lineno"> 9 </span><span class="n">message</span> <span class="o">=</span> <span class="n">check_output</span><span class="p">([</span><span class="s2">&quot;hg&quot;</span><span class="p">,</span> <span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="s2">&quot;-r&quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span>
+<span class="lineno">10 </span>                        <span class="s2">&quot;--template&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{desc}</span><span class="s2">&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+<span class="lineno">11 </span><span class="n">summary_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="lineno">12 </span>
+<span class="lineno">13 </span><span class="k">if</span> <span class="n">summary_length</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">:</span>
+<span class="lineno">14 </span>  <span class="nb">print</span><span class="p">(</span><span class="n">colour</span><span class="p">(</span><span class="s2">&quot;! Changeset summary is too long (&gt; 50c)&quot;</span><span class="p">,</span> <span class="s2">&quot;red&quot;</span><span class="p">))</span>
+<span class="lineno">15 </span>  <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="lineno">16 </span><span class="k">elif</span> <span class="n">summary_length</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+<span class="lineno">17 </span>  <span class="nb">print</span><span class="p">(</span><span class="n">colour</span><span class="p">(</span><span class="s2">&quot;! Changeset summary is too short (&lt; 10c)&quot;</span><span class="p">,</span> <span class="s2">&quot;red&quot;</span><span class="p">))</span>
+<span class="lineno">18 </span>  <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
 
 
 <p>Many of <a href="http://www.selenic.com/mercurial/hgrc.5.html#hooks">Mercurial’s hook types</a> provide useful data as shell variables. In line 8 we get the node (hash) of the changeset about to be committed and use that on line 9 &amp; 10 to fetch the commit message.</p>
@@ -217,20 +277,21 @@ elif summary_length &lt; 10:
 <p>Line 11 finds the length of the first line of the commit message, and lines 13–18 checks its length. If the summary is too long or short a warning is printed and the script exits with a non-zero status to tell Mercurial to reject the commit.</p>
 <p>The colour function called on lines 14 and 17 is used to turn the warning text red. I’ll explain it below.</p>
 <h3>Git</h3>
-<pre><code>#!/usr/bin/env python3
-
-import sys
-from termtools import colour
-
-message = open(sys.argv[1])
-summary_length = len(message.readline().splitlines()[0])
-
-if summary_length &gt; 50:
-  print(colour(&quot;! Commit summary is too long (&gt; 50c)&quot;, &quot;red&quot;))
-  sys.exit(1)
-elif summary_length &lt; 10:
-  print(colour(&quot;! Commit summary is too short (&lt; 10c)&quot;, &quot;red&quot;))
-  sys.exit(1)</code></pre>
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="ch">#!/usr/bin/env python3</span>
+<span class="lineno"> 2 </span>
+<span class="lineno"> 3 </span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="lineno"> 4 </span><span class="kn">from</span> <span class="nn">termtools</span> <span class="k">import</span> <span class="n">colour</span>
+<span class="lineno"> 5 </span>
+<span class="lineno"> 6 </span><span class="n">message</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="lineno"> 7 </span><span class="n">summary_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="lineno"> 8 </span>
+<span class="lineno"> 9 </span><span class="k">if</span> <span class="n">summary_length</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">:</span>
+<span class="lineno">10 </span>  <span class="nb">print</span><span class="p">(</span><span class="n">colour</span><span class="p">(</span><span class="s2">&quot;! Commit summary is too long (&gt; 50c)&quot;</span><span class="p">,</span> <span class="s2">&quot;red&quot;</span><span class="p">))</span>
+<span class="lineno">11 </span>  <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="lineno">12 </span><span class="k">elif</span> <span class="n">summary_length</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+<span class="lineno">13 </span>  <span class="nb">print</span><span class="p">(</span><span class="n">colour</span><span class="p">(</span><span class="s2">&quot;! Commit summary is too short (&lt; 10c)&quot;</span><span class="p">,</span> <span class="s2">&quot;red&quot;</span><span class="p">))</span>
+<span class="lineno">14 </span>  <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
 
 
 <p><a href="http://git-scm.com/docs/githooks">Git’s hooks</a> include one specifically for the commit message, and when it is called Git feeds it a file containing the message — that’s what we open on line 6.</p>
@@ -247,26 +308,27 @@ pretxncommit.summary_length = path/to/hook/file.py</code></pre>
 <p>(Benjamin Meyer’s <a href="https://github.com/icefox/git-hooks">git-hooks</a> tool is designed to help with this, but it’s written as a shell script and I can’t quite get my head round it.)</p>
 <h3>Terminal colouring</h3>
 <p>In both scripts the printed warnings are run through a colour function, which is something I whipped up with exactly this situation in mind.</p>
-<pre><code>def colour(str, col, background=False):
-  COLOURS = {'black': &quot;30&quot;,
-             'red': &quot;31&quot;,
-             'green': &quot;32&quot;,
-             'yellow': &quot;33&quot;,
-             'blue': &quot;34&quot;,
-             'magenta': &quot;35&quot;,
-             'cyan': &quot;36&quot;,
-             'white': &quot;37&quot;}
-  escape = &quot;\x1b&quot;
-  reset = escape + &quot;[0m&quot;
-  reverse = &quot;;7&quot;
-
-  colour_code = COLOURS[col.lower()]
-  start = escape + &quot;[&quot; + colour_code
-  if background:
-    start += reverse
-  start += &quot;m&quot;
-
-  return (start + str + reset)</code></pre>
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="k">def</span> <span class="nf">colour</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="lineno"> 2 </span>  <span class="n">COLOURS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;black&#39;</span><span class="p">:</span> <span class="s2">&quot;30&quot;</span><span class="p">,</span>
+<span class="lineno"> 3 </span>             <span class="s1">&#39;red&#39;</span><span class="p">:</span> <span class="s2">&quot;31&quot;</span><span class="p">,</span>
+<span class="lineno"> 4 </span>             <span class="s1">&#39;green&#39;</span><span class="p">:</span> <span class="s2">&quot;32&quot;</span><span class="p">,</span>
+<span class="lineno"> 5 </span>             <span class="s1">&#39;yellow&#39;</span><span class="p">:</span> <span class="s2">&quot;33&quot;</span><span class="p">,</span>
+<span class="lineno"> 6 </span>             <span class="s1">&#39;blue&#39;</span><span class="p">:</span> <span class="s2">&quot;34&quot;</span><span class="p">,</span>
+<span class="lineno"> 7 </span>             <span class="s1">&#39;magenta&#39;</span><span class="p">:</span> <span class="s2">&quot;35&quot;</span><span class="p">,</span>
+<span class="lineno"> 8 </span>             <span class="s1">&#39;cyan&#39;</span><span class="p">:</span> <span class="s2">&quot;36&quot;</span><span class="p">,</span>
+<span class="lineno"> 9 </span>             <span class="s1">&#39;white&#39;</span><span class="p">:</span> <span class="s2">&quot;37&quot;</span><span class="p">}</span>
+<span class="lineno">10 </span>  <span class="n">escape</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\x1b</span><span class="s2">&quot;</span>
+<span class="lineno">11 </span>  <span class="n">reset</span> <span class="o">=</span> <span class="n">escape</span> <span class="o">+</span> <span class="s2">&quot;[0m&quot;</span>
+<span class="lineno">12 </span>  <span class="n">reverse</span> <span class="o">=</span> <span class="s2">&quot;;7&quot;</span>
+<span class="lineno">13 </span>
+<span class="lineno">14 </span>  <span class="n">colour_code</span> <span class="o">=</span> <span class="n">COLOURS</span><span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+<span class="lineno">15 </span>  <span class="n">start</span> <span class="o">=</span> <span class="n">escape</span> <span class="o">+</span> <span class="s2">&quot;[&quot;</span> <span class="o">+</span> <span class="n">colour_code</span>
+<span class="lineno">16 </span>  <span class="k">if</span> <span class="n">background</span><span class="p">:</span>
+<span class="lineno">17 </span>    <span class="n">start</span> <span class="o">+=</span> <span class="n">reverse</span>
+<span class="lineno">18 </span>  <span class="n">start</span> <span class="o">+=</span> <span class="s2">&quot;m&quot;</span>
+<span class="lineno">19 </span>
+<span class="lineno">20 </span>  <span class="k">return</span> <span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="nb">str</span> <span class="o">+</span> <span class="n">reset</span><span class="p">)</span>
+</pre></div>
 
 
 <p>It wraps <a href="http://en.wikipedia.org/wiki/ANSI_escape_code#Colors">ANSI colour codes</a> around a string and returns it. The action occurs in lines 14-18, where control codes are concatenated with the colour number fetched from the dictionary on lines 2-9. There’s an option to colour the background instead of the text, using the reverse code. The colour codes get stuck on the front of the string and a reset code is put on the end.</p>
@@ -281,52 +343,22 @@ pretxncommit.summary_length = path/to/hook/file.py</code></pre>
     </header>
     <p>Since I’ve been playing around with Mercurial I thought it would only be fair to write another version of <a href="/2013/06/more-precise-git-status-gating/">my Hazel gating snippet</a>.</p>
 <p>The basic mechanism is the same (parsing the status output) and the code is barely changed:</p>
-<pre><code>#!/bin/bash
-
-cd $(dirname $1)
-FILENAME=$(basename $1)
-HGSTATUS=$(hg status -c &quot;$FILENAME&quot;)
-if [ &quot;$HGSTATUS&quot; == &quot;&quot; ]; then
-  exit 1 # Dirty
-else
-  exit 0 # Clean
-fi</code></pre>
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="ch">#!/bin/bash</span>
+<span class="lineno"> 2 </span>
+<span class="lineno"> 3 </span><span class="nb">cd</span> <span class="k">$(</span>dirname <span class="nv">$1</span><span class="k">)</span>
+<span class="lineno"> 4 </span><span class="nv">FILENAME</span><span class="o">=</span><span class="k">$(</span>basename <span class="nv">$1</span><span class="k">)</span>
+<span class="lineno"> 5 </span><span class="nv">HGSTATUS</span><span class="o">=</span><span class="k">$(</span>hg status -c <span class="s2">&quot;</span><span class="nv">$FILENAME</span><span class="s2">&quot;</span><span class="k">)</span>
+<span class="lineno"> 6 </span><span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$HGSTATUS</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+<span class="lineno"> 7 </span>  <span class="nb">exit</span> <span class="m">1</span> <span class="c1"># Dirty</span>
+<span class="lineno"> 8 </span><span class="k">else</span>
+<span class="lineno"> 9 </span>  <span class="nb">exit</span> <span class="m">0</span> <span class="c1"># Clean</span>
+<span class="lineno">10 </span><span class="k">fi</span>
+</pre></div>
 
 
 <p>An important difference to note is that this script checks that the file is clean (through the <code>-c</code> flag on line 5), not that the file is <em>not dirty</em> as the Git version does. This requires the conditional to be reversed as an empty string means that the file has been modified in some way.</p>
 <p>As I mentioned previously in my post about <a href="/2013/07/easy-branch-comparison-with-mercurial/">branch comparison</a>, I’ve spent some time recently to learn more about Git and Mercurial. This was both to improve my pretty basic Git skills and see why <a href="http://www.red-sweater.com">Daniel Jalkut</a> keeps <a href="https://learn.thoughtbot.com/giantrobots/32">banging on about Mercurial</a> (go to the 28-minute mark).</p>
 <p>When I learnt about hooks (<a href="http://mercurial.selenic.com/wiki/Hook">Mercurial</a>, <a href="http://git-scm.com/book/en/Customizing-Git-Git-Hooks">Git</a>) I was a little worried they would invalidate the time I’d spent writing the status gating snippet. But while hooks are very handy and powerful, there’s plenty off actions that <a href="http://www.noodlesoft.com">Hazel</a> is more suited to or more convenient for — this just acts as a nice safety check so it doesn’t step on your toes while you’re working.</p>
-  </article>
-  <article>
-    <header>
-      <h2 class="mute-links"><a href="https://robjwells.github.io/2013/07/easy-branch-comparison-with-mercurial/">Easy branch comparison with Mercurial</a></h2>
-      <p><time datetime="2013-07-27T20:33">Saturday, July 27 2013</time></p>
-    </header>
-    <p>I’ve spent a lot of time recently learning <a href="http://git-scm.com">Git</a> and <a href="http://mercurial.selenic.com">Mercurial</a>, and trying to decide which one I prefer and want to keep using.
-Both are nice, but one thing I like about Git is how easy it is to quickly see which commits are on one branch but not another.</p>
-<p>The commands below show commits on the feature branch that aren’t present on master, and are all equivalent:</p>
-<pre><code>git log feature ^master
-git log ^master feature
-git log master..feature</code></pre>
-
-
-<p>Unfortunately doing the same with Mercurial requires a lot more typing:</p>
-<pre><code>hg log -r &quot;ancestors('feature') and not ancestors('master')&quot;
-hg log -r &quot;::'feature' and not ::'master'&quot;</code></pre>
-
-
-<p>Which is a shame, and a bit odd since Mercurial has the incoming and outgoing commands to see which commits are coming in from (or going out to) a remote repository.
-I like to think of the comparison above as a local equivalent, to see which commits are going to be pulled across branches in a merge.</p>
-<p>Thankfully this can be put right with a quick alias in your .hgrc file. This is what I’ve got in mine:</p>
-<pre><code>[alias]
-compare = log -r &quot;ancestors('$1') and not ancestors('$2')&quot;</code></pre>
-
-
-<p>It’s general enough to allow comparisons between any two commits. Named branches and bookmarks both work fine, as do revision numbers and commit hashes.</p>
-<p>What’s nice about this alias is that any <code>hg log</code> options you’d like to use can just be stuck on the end as usual, since it’s just a shortcut to that command. For example these work as you’d expect:</p>
-<pre><code>hg compare feature master
-hg compare feature master --graph
-hg compare feature master -l 20 -p</code></pre>
   </article>
   <div class="pagination">
 <p class="pagination-older"><a href="https://robjwells.github.io/page-18/">Older posts</a></p><p class="pagination-newer"><a href="https://robjwells.github.io/page-16/">Newer posts</a></p>  </div>

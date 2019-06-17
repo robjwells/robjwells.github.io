@@ -8,6 +8,8 @@
   <!-- Load my combined stylesheet -->
   <link rel="stylesheet" href="/resources/all.min.css">
 
+  <!-- Load my combined JavaScript -->
+  <script src="/resources/all.min.js" async></script>
 
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
 
@@ -62,6 +64,85 @@
 
   <article>
     <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2012/10/dishonored-by-the-numbers/">Dishonored by the numbers</a></h2>
+      <p><time datetime="2012-10-14T16:20">Sunday, October 14 2012</time></p>
+    </header>
+    <p>Dishonored is so good. So incredibly good. It’s really fantastic. It came out (here, at least) on Friday and I’ve already completed it, with my first playthrough taking about 22 hours.</p>
+<p>It’s so good I was playing it until <em>5am</em> yesterday morning and until <em>4am</em> this morning. I just couldn’t stop, I couldn’t put it down.</p>
+<p>I can’t really think of a comparison, as in “If you liked game X then you’ll love Dishonored” or “It’s like the lovechild of game X and game Y”. At one point I thought: “This really does feel like <a href="http://www.rockpapershotgun.com/2012/07/06/from-the-shadows-hands-on-with-dishonored/">Thief with a knife</a>.” But it is so much more and really any simple comparison like that does a great disservice to what Arkane have created.</p>
+<p>Simply put: you should <a href="http://store.steampowered.com/app/205100/">buy Dishonored right now</a>.</p>
+<table>
+  <caption>Dishonored mission stats</caption>
+
+  <tbody>
+    <tr>
+      <th>Hostiles killed</th>
+      <td class="table-figures">1</td>
+    </tr>
+    <tr>
+      <th>Civilians killed</th>
+      <td class="table-figures">2</td>
+    </tr>
+    <tr>
+      <th>Alarms rung</th>
+      <td class="table-figures">0</td>
+    </tr>
+    <tr>
+      <th>Bodies found</th>
+      <td class="table-figures">7</td>
+    </tr>
+    <tr>
+      <th>No kills</th>
+      <td class="table-figures">6/9</td>
+    </tr>
+    <tr>
+      <th>Not detected</th>
+      <td class="table-figures">6/9</td>
+    </tr>
+    <tr>
+      <th>Chaos</th>
+      <td class="table-figures">Low</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>After each mission you get a stats screen but unfortunately there’s not one for the entire game. I went through and totted up the figures for my first playthrough.</p>
+<table>
+  <caption>Assassination target status</caption>
+  <tbody>
+    <tr>
+      <th>High Overseer Campbell</th>
+      <td>Dead</td>
+    </tr>
+    <tr>
+      <th>The Pendleton Twins</th>
+      <td>Alive</td>
+    </tr>
+    <tr>
+      <th>Lady Boyle</th>
+      <td>Dead</td>
+    </tr>
+    <tr>
+      <th>Lord Regent</th>
+      <td>Alive</td>
+    </tr>
+    <tr>
+      <th>Daud</th>
+      <td>Alive</td>
+    </tr>
+    <tr>
+      <th>Spoilerific last target</th>
+      <td>Alive</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>I was always surprised to see bodies found, because I was always fairly careful. However what I think happened is that when you take out a guard the AI seems to compensate by rotating another guard into that position. So if you take someone out and leave them where they were, there’s a chance they’ll be found.</p>
+<p>Looking back, I’m surprised how many of the main targets I left alive. There are non-lethal options for all of them and I was planning to do that every time. However, I had to ditch my plan for Campbell as things sort of got out of hand and Lady Boyle’s non-lethal option seemed a bit too creepy for me. (So I stabbed her instead. I’m such a gentleman.) And the last target in the low-chaos ending is optional, though it looks like the high-chaos ending requires you to go after more targets.</p>
+<p>Man, what a game.</p>
+  </article>
+  <article>
+    <header>
       <h2 class="mute-links"><a href="https://robjwells.github.io/2012/10/restart-in-windows-revenge-of-the-script/">Restart in Windows: Revenge of the Script</a></h2>
       <p><time datetime="2012-10-06T18:14">Saturday, October 6 2012</time></p>
     </header>
@@ -75,8 +156,9 @@
 <p>Then, to restart, just pick it from that script menu.</p>
 <h3>Extra, extra</h3>
 <p><del><em>Using Leopard (10.5) or earlier?</em> You’ll have to change the first line as “diskutil info” doesn’t work with volume names. Try this:</del></p>
-<pre><code>set deviceID to (do shell script &quot;diskutil list | ¬
-  grep YourBootcampPartition | awk '{print $8}'&quot;)</code></pre>
+<div class="syntax"><pre><span></span><span class="k">set</span> <span class="nv">deviceID</span> <span class="k">to</span> <span class="p">(</span><span class="nb">do shell script</span> <span class="s2">&quot;diskutil list | ¬</span>
+<span class="s2">  grep YourBootcampPartition | awk &#39;{print $8}&#39;&quot;</span><span class="p">)</span>
+</pre></div>
 
 
 <p><del>That should return something like "disk0s4". If it doesn’t change “print $8” to a different number, probably 7. (I recommend you try this in the Terminal until you’ve got it right, then adjust the AppleScript. The number refers to the column of the information.)</del></p>
@@ -87,13 +169,14 @@
 <p>You could also use <a href="http://www.red-sweater.com/fastscripts/">FastScripts</a>, a really nice replacement for the system script menu that you can use to give the script a keyboard shortcut.</p>
 <p>I don’t recommend that you save it as an application, which would let you add it to your dock. I did that once and got stuck in a restart loop, thanks to Lion’s ability to re-open applications that were running when you restarted. You can disable that feature in Mountain Lion, but I still strongly advise that you keep it as a plain old script file.</p>
 <h3>The code</h3>
-<pre><code>set deviceID to (do shell script &quot;diskutil info ¬
-YourBootcampPartition | grep Identifier | awk '{print $3}'&quot;)
+<div class="syntax"><pre><span></span><span class="k">set</span> <span class="nv">deviceID</span> <span class="k">to</span> <span class="p">(</span><span class="nb">do shell script</span> <span class="s2">&quot;diskutil info ¬</span>
+<span class="s2">YourBootcampPartition | grep Identifier | awk &#39;{print $3}&#39;&quot;</span><span class="p">)</span>
 
-do shell script &quot;bless -device /dev/&quot; &amp; deviceID &amp; ¬
-&quot; -legacy -setBoot -nextonly&quot; with administrator privileges
+<span class="nb">do shell script</span> <span class="s2">&quot;bless -device /dev/&quot;</span> <span class="o">&amp;</span> <span class="nv">deviceID</span> <span class="o">&amp;</span> <span class="se">¬</span>
+<span class="s2">&quot; -legacy -setBoot -nextonly&quot;</span> <span class="nv">with</span> <span class="nv">administrator</span> <span class="nv">privileges</span>
 
-tell application &quot;Finder&quot; to restart</code></pre>
+<span class="k">tell</span> <span class="nb">application</span> <span class="s2">&quot;Finder&quot;</span> <span class="k">to</span> <span class="nv">restart</span>
+</pre></div>
 
 
 <h3>The story</h3>
@@ -118,21 +201,23 @@ tell application &quot;Finder&quot; to restart</code></pre>
 <h3>Accessing AppleScript records using a variable</h3>
 <p>AppleScript gets a lot of stick for being a rubbish language. And it is. But before last night there wasn’t anything that really threw me and made me think “wow, that’s incredibly, impressively, mind-meltingly dumb”. (Admittedly, I’m not a programmer.)</p>
 <p>But it happened. Here’s the example code:</p>
-<pre><code>set myRecords to {Abc:&quot;1&quot;, Def:&quot;2&quot;, Ghi:&quot;3&quot;}
-set myVar to &quot;Abc&quot;
-get myVar of myRecords</code></pre>
+<div class="syntax"><pre><span></span><span class="k">set</span> <span class="nv">myRecords</span> <span class="k">to</span> <span class="p">{</span><span class="nv">Abc</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="nv">Def</span><span class="p">:</span><span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="nv">Ghi</span><span class="p">:</span><span class="s2">&quot;3&quot;</span><span class="p">}</span>
+<span class="k">set</span> <span class="nv">myVar</span> <span class="k">to</span> <span class="s2">&quot;Abc&quot;</span>
+<span class="k">get</span> <span class="nv">myVar</span> <span class="k">of</span> <span class="nv">myRecords</span>
+</pre></div>
 
 
 <p>Try that and you’ll get a big fat error message. Why? Because there’s no property in myRecords that’s literally called myVar.</p>
 <p>“But it’s a variable,” I hear you sob quietly into <a href="http://www.latenightsw.com">Script Debugger</a>. I know, I know. You were after the value of property “Abc”. Unfortunately AppleScript doesn’t let you access records in this way. If you want to access that property you need to refer to its “real” name directly in the code.</p>
 <p>Even to me this is ridiculous. I’ve learnt a little JavaScript with <a href="http://www.codecademy.com/">Codecademy</a> recently and you can do this very easily:</p>
-<pre><code>var theRecords = {
-    Abc: 1,
-    Def: 2,
-    Ghi: 3
-};
-var theVar = &quot;Abc&quot;;
-console.log(theRecords[theVar]);</code></pre>
+<div class="syntax"><pre><span></span><span class="kd">var</span> <span class="nx">theRecords</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">Abc</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nx">Def</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="nx">Ghi</span><span class="o">:</span> <span class="mi">3</span>
+<span class="p">};</span>
+<span class="kd">var</span> <span class="nx">theVar</span> <span class="o">=</span> <span class="s2">&quot;Abc&quot;</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">theRecords</span><span class="p">[</span><span class="nx">theVar</span><span class="p">]);</span>
+</pre></div>
 
 
 <p>This becomes important when you want to do something else and then refer back to the record.</p>
@@ -141,23 +226,25 @@ console.log(theRecords[theVar]);</code></pre>
 <p>Well, not quite. The language does not support doing this, true. But the language does let you contain a script within a script — which allows us to get past the “no variables to records” rubbish.</p>
 <p>Thanks go to the heroic <a href="http://macscripter.net/viewtopic.php?pid=64151#p64151">jobu on the MacScripter forums</a>, who posted this code in 2006. (Despite being so long ago, this technique doesn’t seem to have gotten much attention, as looking at many, many forum posts about this issue has shown.)</p>
 <p>Let’s have a look:</p>
-<pre><code>set myRecords to {Abc:&quot;1&quot;, Def:&quot;2&quot;, Ghi:&quot;3&quot;}
-set myVar to &quot;Abc&quot;
+<div class="syntax"><pre><span></span><span class="k">set</span> <span class="nv">myRecords</span> <span class="k">to</span> <span class="p">{</span><span class="nv">Abc</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="nv">Def</span><span class="p">:</span><span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="nv">Ghi</span><span class="p">:</span><span class="s2">&quot;3&quot;</span><span class="p">}</span>
+<span class="k">set</span> <span class="nv">myVar</span> <span class="k">to</span> <span class="s2">&quot;Abc&quot;</span>
 
-return (searchRecord(myVar, myRecords))
+<span class="no">return</span> <span class="p">(</span><span class="nv">searchRecord</span><span class="p">(</span><span class="nv">myVar</span><span class="p">,</span> <span class="nv">myRecords</span><span class="p">))</span>
 
-to searchRecord(theKey, theRecord)
-    run script &quot;on run{theKey,theRecord}
-        return (&quot; &amp; theKey &amp; &quot; of theRecord )
-        end&quot; with parameters {theKey, theRecord}
-end searchRecord</code></pre>
+<span class="k">to</span> <span class="nv">searchRecord</span><span class="p">(</span><span class="nv">theKey</span><span class="p">,</span> <span class="nv">theRecord</span><span class="p">)</span>
+    <span class="nb">run script</span> <span class="s2">&quot;on run{theKey,theRecord}</span>
+<span class="s2">        return (&quot;</span> <span class="o">&amp;</span> <span class="nv">theKey</span> <span class="o">&amp;</span> <span class="s2">&quot; of theRecord )</span>
+<span class="s2">        end&quot;</span> <span class="nv">with</span> <span class="nv">parameters</span> <span class="p">{</span><span class="nv">theKey</span><span class="p">,</span> <span class="nv">theRecord</span><span class="p">}</span>
+<span class="k">end</span> <span class="nv">searchRecord</span>
+</pre></div>
 
 
 <p>The important thing to note is that when the variable (in this case, myVar) is passed to the <code>run script</code> code, the variable’s contents are passed. That’s what you’d expect it to do, but what that means is that the variable is essentially hard-coded into this new script — you’re not recreating myVar, you’re just passing along myVar’s contents.</p>
 <p>Boom. A regular “get value of property x of the record.” And that data is then returned from the internal script to the parent, containing script. You can then call this as you would a subroutine handler, whenever you need to get a value for an unknown-at-compile-time property.</p>
 <p>Essentially, the shopkeeper won’t sell to you in person, but if you step outside and ring him then you’re set.</p>
 <p>Yeah. It’s a hack. Thankfully a short, understandable one, but a hack nonetheless. It’s crazy and this should be built into the language. Here’s JavaScript’s way again, for reference:</p>
-<pre><code>objectName[myVariable];</code></pre>
+<div class="syntax"><pre><span></span><span class="nx">objectName</span><span class="p">[</span><span class="nx">myVariable</span><span class="p">];</span>
+</pre></div>
 
 
 <p>Why is this missing? God knows.</p>
@@ -199,26 +286,27 @@ end searchRecord</code></pre>
 <p>It turns out that I was just opening up the preview images in tabs. Whoops. And their URLs don’t contain a unique code that’s shared with their purchase pages. Ah. And there are 10 of them. Erm.</p>
 <p>The one similarity they do have is that the filename is kinda sorta repeated on the purchase page, but it’s hyphen-separated so (<em>I thought, wrongly</em>) you can’t just copy and paste it into a search field.</p>
 <p>So I cooked up this little script in about a minute:</p>
-<pre><code>tell application &quot;Safari&quot;
-    set theURL to (get the URL of the front document)
-end tell
+<div class="syntax"><pre><span></span><span class="k">tell</span> <span class="nb">application</span> <span class="s2">&quot;Safari&quot;</span>
+    <span class="k">set</span> <span class="nv">theURL</span> <span class="k">to</span> <span class="p">(</span><span class="k">get</span> <span class="nb">the</span> <span class="nv">URL</span> <span class="k">of</span> <span class="nb">the</span> <span class="nb">front</span> <span class="na">document</span><span class="p">)</span>
+<span class="k">end</span> <span class="k">tell</span>
 
-set printsOffset to (get the offset of &quot;/prints/&quot; in theURL)
-set jpgOffset to (get the offset of &quot;.jpg&quot; in theURL)
+<span class="k">set</span> <span class="nv">printsOffset</span> <span class="k">to</span> <span class="p">(</span><span class="k">get</span> <span class="nb">the</span> <span class="nb">offset</span> <span class="k">of</span> <span class="s2">&quot;/prints/&quot;</span> <span class="k">in</span> <span class="nv">theURL</span><span class="p">)</span>
+<span class="k">set</span> <span class="nv">jpgOffset</span> <span class="k">to</span> <span class="p">(</span><span class="k">get</span> <span class="nb">the</span> <span class="nb">offset</span> <span class="k">of</span> <span class="s2">&quot;.jpg&quot;</span> <span class="k">in</span> <span class="nv">theURL</span><span class="p">)</span>
 
-set hyphenString to characters (printsOffset + 8) ¬
-through (jpgOffset - 1) of theURL as text
-set AppleScript's text item delimiters to &quot;-&quot;
-set theWords to (get the text items of hyphenString)
-set AppleScript's text item delimiters to &quot; &quot;
-set searchString to theWords as string
-set AppleScript's text item delimiters to &quot;&quot; -- return to default
+<span class="k">set</span> <span class="nv">hyphenString</span> <span class="k">to</span> <span class="nb">characters</span> <span class="p">(</span><span class="nv">printsOffset</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span> <span class="se">¬</span>
+<span class="nb">through</span> <span class="p">(</span><span class="nv">jpgOffset</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="k">of</span> <span class="nv">theURL</span> <span class="k">as </span><span class="nc">text</span>
+<span class="k">set</span> <span class="no">AppleScript</span>&#39;s <span class="no">text item delimiters</span> <span class="k">to</span> <span class="s2">&quot;-&quot;</span>
+<span class="k">set</span> <span class="nv">theWords</span> <span class="k">to</span> <span class="p">(</span><span class="k">get</span> <span class="nb">the</span> <span class="nb">text</span> <span class="nb">items</span> <span class="k">of</span> <span class="nv">hyphenString</span><span class="p">)</span>
+<span class="k">set</span> <span class="no">AppleScript</span>&#39;s <span class="no">text item delimiters</span> <span class="k">to</span> <span class="s2">&quot; &quot;</span>
+<span class="k">set</span> <span class="nv">searchString</span> <span class="k">to</span> <span class="nv">theWords</span> <span class="k">as </span><span class="nc">string</span>
+<span class="k">set</span> <span class="no">AppleScript</span>&#39;s <span class="no">text item delimiters</span> <span class="k">to</span> <span class="s2">&quot;&quot;</span> <span class="c">-- return to default</span>
 
-tell application &quot;Safari&quot;
-    tell the front document
-        search the web for searchString
-    end tell
-end tell</code></pre>
+<span class="k">tell</span> <span class="nb">application</span> <span class="s2">&quot;Safari&quot;</span>
+    <span class="k">tell</span> <span class="nb">the</span> <span class="nb">front</span> <span class="na">document</span>
+        <span class="nv">search</span> <span class="nb">the</span> <span class="nv">web</span> <span class="nb">for</span> <span class="nv">searchString</span>
+    <span class="k">end</span> <span class="k">tell</span>
+<span class="k">end</span> <span class="k">tell</span>
+</pre></div>
 
 
 <p>Then I saved it, gave it a shortcut in <a href="http://www.red-sweater.com/fastscripts/">FastScripts</a>, opened up the first tab in Safari, hit the shortcut, tabbed to select the first URL in the search results, then hit enter to load it. Rinse, repeat.</p>

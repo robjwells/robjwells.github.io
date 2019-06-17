@@ -8,6 +8,8 @@
   <!-- Load my combined stylesheet -->
   <link rel="stylesheet" href="/resources/all.min.css">
 
+  <!-- Load my combined JavaScript -->
+  <script src="/resources/all.min.js" async></script>
 
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
 
@@ -60,6 +62,19 @@
 
 <main role="main">
 
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2018/01/colin-currie-group-at-kings-place/">Colin Currie Group at Kings Place</a></h2>
+      <p><time datetime="2018-01-21T10:00">Sunday, January 21 2018</time></p>
+    </header>
+    <p>Last night, I treated myself to seeing the <a href="http://www.colincurriegroup.com">Colin Currie Group</a> <a href="https://www.kingsplace.co.uk/whats-on/contemporary/time-phase/">at Kings Place</a>, and they were absolutely sensational.</p>
+<p>It was quite the programme, with six pieces of Steve Reich’s music, and closed with a performance of Quartet, composed by Reich for Currie’s group.</p>
+<p>I first heard Quartet on May 24 2016, when it was played with Mallet Quartet and Music for 18 Musicians, and quite honestly was desperate to hear it again. It’s magical, and I left last night tapping out bits of it on my leg on the way to the train station.</p>
+<p>It wasn’t online, apart for <a href="https://soundcloud.com/colin-currie-perc/colin-currie-group-steve-reich-quartet-excerpt">a short clip</a>, but last month <a href="https://www.youtube.com/watch?v=-8y8N4Z8tkQ">a video of the group performing Quartet</a> in full was posted to YouTube, and Nonesuch are releasing a recording of <a href="http://www.nonesuch.com/journal/steve-reich-pulse-quartet-february-2-nonesuch-records-2017-12-14">Pulse &amp; Quartet</a> (Pulse by <a href="https://www.iceorg.org">ICE</a>, Quartet by CCG) at the start of February.</p>
+<p>The group are also releasing <a href="http://www.colincurriegroup.com/2018/01/pre-order-the-groups-first-recording/">a recording of Drumming</a>, which was as amazing to watch as it was to hear — I was sat right in line with the drums, and the effect of all four players drumming at once was stunning.</p>
+<p>Last night was also the first time I’d heard New York Counterpoint (for clarinet) and Vermont Counterpoint (for flute) live, and they really opened my eyes, having sort-of ignored them before.</p>
+<p>Really incredible stuff, all of it, start to finish. Reich’s compositions are brilliant, and I’m very thankful to be able to see a group dedicated to performing his work (for the third time now!).</p>
+  </article>
   <article>
     <header>
       <h2 class="mute-links"><a href="https://robjwells.github.io/2017/12/skype-emoji-cache/">Skype’s emoji cache</a></h2>
@@ -186,59 +201,46 @@
 </p>
 
 <p>And here’s the code that produced it:</p>
-<pre><code>library(ggplot2)
-
-# Read in and convert string times to datetimes
-trains &lt;- read.csv('collected.csv')
-trains$Time &lt;- as.POSIXct(trains$Time, format = '%Y-%m-%dT%H:%M:%S')
-
-# Get the data onto the plot
-p &lt;- ggplot(trains, aes(x = Time, y = Cost))
-
-# 'Reveal' the data with points and show the
-# East Mids price trend with a smoother
-completed &lt;- p + geom_point(aes(color = Operator)) +
-  geom_smooth(data = subset(trains, Operator == 'East Midlands Trains'),
-              aes(group = Operator, color = Operator),
-              method = 'loess', se = FALSE,
-              size = 0.75, show.legend = FALSE) +
-
-  # Let's adjust the scales
-  scale_x_datetime(date_breaks = '1 hour',
-                   date_labels = '%H:%M') +
-  scale_y_continuous(limits = c(0, 100),
-                     breaks = seq(10, 100, 10),
-                     expand = c(0, 0)) +
-
-  # Set some labels and adjust the look
-  labs(title = paste('Cost of single train tickets',
-                     'leaving European\ncapital cities',
-                     'on Friday December 23 2016'),
-       y = 'Ticket cost (€)',
-       color = 'Train operator') +
-  theme_bw(base_family = 'Trebuchet MS') +
-  theme(plot.title = element_text(hjust = 0.5))
-
-ggsave('plot.svg', plot = completed, device = 'svg',
-     width = 8, height = 4, units = 'in')</code></pre>
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="nf">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>
+<span class="lineno"> 2 </span>
+<span class="lineno"> 3 </span><span class="c1"># Read in and convert string times to datetimes</span>
+<span class="lineno"> 4 </span><span class="n">trains</span> <span class="o">&lt;-</span> <span class="nf">read.csv</span><span class="p">(</span><span class="s">&#39;collected.csv&#39;</span><span class="p">)</span>
+<span class="lineno"> 5 </span><span class="n">trains</span><span class="o">$</span><span class="n">Time</span> <span class="o">&lt;-</span> <span class="nf">as.POSIXct</span><span class="p">(</span><span class="n">trains</span><span class="o">$</span><span class="n">Time</span><span class="p">,</span> <span class="n">format</span> <span class="o">=</span> <span class="s">&#39;%Y-%m-%dT%H:%M:%S&#39;</span><span class="p">)</span>
+<span class="lineno"> 6 </span>
+<span class="lineno"> 7 </span><span class="c1"># Get the data onto the plot</span>
+<span class="lineno"> 8 </span><span class="n">p</span> <span class="o">&lt;-</span> <span class="nf">ggplot</span><span class="p">(</span><span class="n">trains</span><span class="p">,</span> <span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">Time</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">Cost</span><span class="p">))</span>
+<span class="lineno"> 9 </span>
+<span class="lineno">10 </span><span class="c1"># &#39;Reveal&#39; the data with points and show the</span>
+<span class="lineno">11 </span><span class="c1"># East Mids price trend with a smoother</span>
+<span class="lineno">12 </span><span class="n">completed</span> <span class="o">&lt;-</span> <span class="n">p</span> <span class="o">+</span> <span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">color</span> <span class="o">=</span> <span class="n">Operator</span><span class="p">))</span> <span class="o">+</span>
+<span class="lineno">13 </span>  <span class="nf">geom_smooth</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="nf">subset</span><span class="p">(</span><span class="n">trains</span><span class="p">,</span> <span class="n">Operator</span> <span class="o">==</span> <span class="s">&#39;East Midlands Trains&#39;</span><span class="p">),</span>
+<span class="lineno">14 </span>              <span class="nf">aes</span><span class="p">(</span><span class="n">group</span> <span class="o">=</span> <span class="n">Operator</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">Operator</span><span class="p">),</span>
+<span class="lineno">15 </span>              <span class="n">method</span> <span class="o">=</span> <span class="s">&#39;loess&#39;</span><span class="p">,</span> <span class="n">se</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span>
+<span class="lineno">16 </span>              <span class="n">size</span> <span class="o">=</span> <span class="m">0.75</span><span class="p">,</span> <span class="n">show.legend</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span> <span class="o">+</span>
+<span class="lineno">17 </span>
+<span class="lineno">18 </span>  <span class="c1"># Let&#39;s adjust the scales</span>
+<span class="lineno">19 </span>  <span class="nf">scale_x_datetime</span><span class="p">(</span><span class="n">date_breaks</span> <span class="o">=</span> <span class="s">&#39;1 hour&#39;</span><span class="p">,</span>
+<span class="lineno">20 </span>                   <span class="n">date_labels</span> <span class="o">=</span> <span class="s">&#39;%H:%M&#39;</span><span class="p">)</span> <span class="o">+</span>
+<span class="lineno">21 </span>  <span class="nf">scale_y_continuous</span><span class="p">(</span><span class="n">limits</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">100</span><span class="p">),</span>
+<span class="lineno">22 </span>                     <span class="n">breaks</span> <span class="o">=</span> <span class="nf">seq</span><span class="p">(</span><span class="m">10</span><span class="p">,</span> <span class="m">100</span><span class="p">,</span> <span class="m">10</span><span class="p">),</span>
+<span class="lineno">23 </span>                     <span class="n">expand</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span> <span class="o">+</span>
+<span class="lineno">24 </span>
+<span class="lineno">25 </span>  <span class="c1"># Set some labels and adjust the look</span>
+<span class="lineno">26 </span>  <span class="nf">labs</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="nf">paste</span><span class="p">(</span><span class="s">&#39;Cost of single train tickets&#39;</span><span class="p">,</span>
+<span class="lineno">27 </span>                     <span class="s">&#39;leaving European\ncapital cities&#39;</span><span class="p">,</span>
+<span class="lineno">28 </span>                     <span class="s">&#39;on Friday December 23 2016&#39;</span><span class="p">),</span>
+<span class="lineno">29 </span>       <span class="n">y</span> <span class="o">=</span> <span class="s">&#39;Ticket cost (€)&#39;</span><span class="p">,</span>
+<span class="lineno">30 </span>       <span class="n">color</span> <span class="o">=</span> <span class="s">&#39;Train operator&#39;</span><span class="p">)</span> <span class="o">+</span>
+<span class="lineno">31 </span>  <span class="nf">theme_bw</span><span class="p">(</span><span class="n">base_family</span> <span class="o">=</span> <span class="s">&#39;Trebuchet MS&#39;</span><span class="p">)</span> <span class="o">+</span>
+<span class="lineno">32 </span>  <span class="nf">theme</span><span class="p">(</span><span class="n">plot.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">hjust</span> <span class="o">=</span> <span class="m">0.5</span><span class="p">))</span>
+<span class="lineno">33 </span>
+<span class="lineno">34 </span><span class="nf">ggsave</span><span class="p">(</span><span class="s">&#39;plot.svg&#39;</span><span class="p">,</span> <span class="n">plot</span> <span class="o">=</span> <span class="n">completed</span><span class="p">,</span> <span class="n">device</span> <span class="o">=</span> <span class="s">&#39;svg&#39;</span><span class="p">,</span>
+<span class="lineno">35 </span>     <span class="n">width</span> <span class="o">=</span> <span class="m">8</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="m">4</span><span class="p">,</span> <span class="n">units</span> <span class="o">=</span> <span class="s">&#39;in&#39;</span><span class="p">)</span>
+</pre></div>
 
 
 <p>I’m still figuring things out with R and ggplot so I’m not exactly blazing through. (I still haven’t figured out how to export transparent SVGs without editing them by hand.)</p>
 <p>But I love the way that plots are built up out of individual pieces, which makes far more sense to me than trying to wrangle matplotlib’s figures and axes.</p>
-  </article>
-  <article>
-    <header>
-      <h2 class="mute-links"><a href="https://robjwells.github.io/2017/05/json-feed/">JSON Feed</a></h2>
-      <p><time datetime="2017-05-20T00:02">Saturday, May 20 2017</time></p>
-    </header>
-    <p>I added support for <a href="https://jsonfeed.org">JSON Feed</a> to my homemade static site generator <a href="https://github.com/robjwells/majestic">Majestic</a> today, and thought I’d note it because funnily enough the two implementations <a href="https://daringfireball.net/linked/2017/05/19/json-feed-jekyll">mentioned by John Gruber</a> (by <a href="https://github.com/hafniatimes/hafniatimes.github.io/blob/master/_layouts/jsonfeed.html">Niclas Darville</a> and <a href="https://github.com/jmacdotorg/plerd/blob/master/templates/jsonfeed.tt">Jason McIntosh</a>) used the approach I’d taken for <a href="https://github.com/robjwells/majestic/blob/master/majestic/default_templates/majestic-rss.xml">generating my RSS feed</a> and wanted to avoid.</p>
-<p>Basically all three of those define a document template and pass in the posts and other required bits, and you’re done. I’m really not knocking this — again, I do this with the RSS feed and it validates fine. It’s all good.</p>
-<p>But I ended up templating my RSS feed like this because I looked at the <a href="https://pypi.python.org/pypi/feedgenerator/1.9">feedgenerator</a> module and ran away. Majestic was my first Python project of any real size and I wanted to keep things as straightforward as I could. While it looks (with hindsight) <a href="https://github.com/getpelican/pelican/blob/master/pelican/writers.py">reasonably OK in use</a>, it doesn’t have any documentation, has been pulled out of Django, and has funky class names (<code>Rss201rev2Feed</code>) that didn’t fill me with confidence that I could implement an RSS feed quickly.</p>
-<p>I was using <a href="http://jinja.pocoo.org">Jinja</a> templating for the site and since HTML and XML are cousins just did that. But you can probably tell that I didn’t really know what I’m doing (still don’t!) with escaping as any field that might contain non-Ascii characters is wrapped in <code>&lt;![CDATA[…]]&gt;</code> tags.</p>
-<p>But hey, it works. Feed’s valid.</p>
-<p>With JSON, everything just feels much more obvious. In Python you hand off basic types to the built-in <a href="https://docs.python.org/3/library/json.html">json</a> module and you get back a string, all the encoding taken care of. And if I make a mistake Python will complain at me, instead of just dumping out a file of questionable worth.</p>
-<p>I think this is what all the people complaining on the Hacker News thread missed. Working in JSON is comfortable and familiar — the tools are good and you get told when something goes wrong. Working with XML can be unclear and a bit of a pain, and creating an invalid document is a risk.</p>
-<p>So my super-duper advanced JSON Feed implementation is… constructing a <code>dict</code>, adding things to it and passing it off to the json module that I use <em>all the time</em>. Taken care of. The code’s so boring I’m not even going to include it here (but <a href="https://github.com/robjwells/majestic/blob/d88aabba2dc0059814955802408fb46dc452c0de/majestic/collections.py#L130">it’s online to view</a>).</p>
   </article>
   <div class="pagination">
 <p class="pagination-older"><a href="https://robjwells.github.io/page-4/">Older posts</a></p><p class="pagination-newer"><a href="https://robjwells.github.io/page-2/">Newer posts</a></p>  </div>

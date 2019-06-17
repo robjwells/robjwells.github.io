@@ -8,6 +8,8 @@
   <!-- Load my combined stylesheet -->
   <link rel="stylesheet" href="/resources/all.min.css">
 
+  <!-- Load my combined JavaScript -->
+  <script src="/resources/all.min.js" async></script>
 
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
 
@@ -62,6 +64,24 @@
 
   <article>
     <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2014/04/manhandled/">Manhandled</a></h2>
+      <p><time datetime="2014-04-13T09:03">Sunday, April 13 2014</time></p>
+    </header>
+    <p><a href="http://www.leancrew.com/all-this/2014/04/oh-man/">Dr Drang</a> and <a href="http://nathangrigg.net/2014/04/zsh-push-line-or-edit/">Nathan</a> have both written recently about bringing up a man page for reference while typing a command in the terminal. I’ve two approaches to share, but unlike Nathan I can’t claim that they’re superior — just alternatives.</p>
+<p>I prefer them over the right-click method because I don’t like to take my hands off the keyboard unless absolutely necessary, and moving to Zsh is a bit much for me right now.</p>
+<p>First is <a href="http://www.obdev.at/products/launchbar/index.html">LaunchBar’s</a> built-in man page search (found under UTF-8 search templates in the index), which uses the <code>x-man-page://</code> URL scheme to bring up a new Terminal window. Here’s what you type:</p>
+<pre><code>⌘-Space man Space `command` ↩</code></pre>
+
+
+<p>The second approach layers the wonderful <a href="http://kapeli.com/dash">Dash</a> on top of LaunchBar, bringing up the man page in Dash’s interface instead of the Terminal.</p>
+<pre><code>⌘-Space dash Space `command` ↩</code></pre>
+
+
+<p>This gives you all the usual Dash goodies, including a section list and inline links to other man pages (if you decide, after all, to take your hands off the keyboard).</p>
+<p>You can prepend <code>man:</code> to the command name to restrict the search to man pages only, or even add a search template of the form <code>dash://man:*</code> to LaunchBar’s index — in place of the first man page search if you like.</p>
+  </article>
+  <article>
+    <header>
       <h2 class="mute-links"><a href="https://robjwells.github.io/2014/01/misbehaving-single-column-nstableview/">Misbehaving single-column NSTableView</a></h2>
       <p><time datetime="2014-01-26T19:24">Sunday, January 26 2014</time></p>
     </header>
@@ -94,46 +114,47 @@
   </p>
 </div>
 
-<pre><code>#!/usr/local/bin/python3
-
-import re
-import json
-from bs4 import BeautifulSoup
-from urllib.request import urlopen
-
-base_url = 'http://www.tunefind.com'
-seasons_index = '/show/entourage'
-response = urlopen(base_url + seasons_index)
-response_text = response.read().decode()
-soup = BeautifulSoup(response_text)
-
-seasons_div = soup.find('div', class_='lefttext sidebarIndent')
-seasons_urls = [(base_url + a_tag['href'])
-                for a_tag in seasons_div.find_all('a')]
-
-tracks_list = []
-
-for s in seasons_urls:
-  season = BeautifulSoup(urlopen(s).read().decode())
-  episode_urls = [(base_url + a_tag['href']) for a_tag
-                  in season.find_all('a',
-                    {'name': re.compile(r'episode\d+')})]
-
-  for e in episode_urls:
-    episode = BeautifulSoup(urlopen(e).read().decode())
-
-    for raw in episode.find_all(class_='tf-songevent-text'):
-      match = re.search(r'(.+)\n\s+by (.+)', raw.text.strip())
-      if match:
-        tracks_list.append(match.groups())
-
-for track in tracks_list:
-  # filter list for duplicates
-  if tracks_list.count(track) &gt; 1:
-    tracks_list.remove(track)
-
-with open('/Users/robjwells/Desktop/tracks.json', 'w') as tracks_json:
-  json.dump(tracks_list, tracks_json)</code></pre>
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="ch">#!/usr/local/bin/python3</span>
+<span class="lineno"> 2 </span>
+<span class="lineno"> 3 </span><span class="kn">import</span> <span class="nn">re</span>
+<span class="lineno"> 4 </span><span class="kn">import</span> <span class="nn">json</span>
+<span class="lineno"> 5 </span><span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
+<span class="lineno"> 6 </span><span class="kn">from</span> <span class="nn">urllib.request</span> <span class="k">import</span> <span class="n">urlopen</span>
+<span class="lineno"> 7 </span>
+<span class="lineno"> 8 </span><span class="n">base_url</span> <span class="o">=</span> <span class="s1">&#39;http://www.tunefind.com&#39;</span>
+<span class="lineno"> 9 </span><span class="n">seasons_index</span> <span class="o">=</span> <span class="s1">&#39;/show/entourage&#39;</span>
+<span class="lineno">10 </span><span class="n">response</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">base_url</span> <span class="o">+</span> <span class="n">seasons_index</span><span class="p">)</span>
+<span class="lineno">11 </span><span class="n">response_text</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+<span class="lineno">12 </span><span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">response_text</span><span class="p">)</span>
+<span class="lineno">13 </span>
+<span class="lineno">14 </span><span class="n">seasons_div</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;lefttext sidebarIndent&#39;</span><span class="p">)</span>
+<span class="lineno">15 </span><span class="n">seasons_urls</span> <span class="o">=</span> <span class="p">[(</span><span class="n">base_url</span> <span class="o">+</span> <span class="n">a_tag</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">])</span>
+<span class="lineno">16 </span>                <span class="k">for</span> <span class="n">a_tag</span> <span class="ow">in</span> <span class="n">seasons_div</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)]</span>
+<span class="lineno">17 </span>
+<span class="lineno">18 </span><span class="n">tracks_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="lineno">19 </span>
+<span class="lineno">20 </span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">seasons_urls</span><span class="p">:</span>
+<span class="lineno">21 </span>  <span class="n">season</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">urlopen</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+<span class="lineno">22 </span>  <span class="n">episode_urls</span> <span class="o">=</span> <span class="p">[(</span><span class="n">base_url</span> <span class="o">+</span> <span class="n">a_tag</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">a_tag</span>
+<span class="lineno">23 </span>                  <span class="ow">in</span> <span class="n">season</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span>
+<span class="lineno">24 </span>                    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;episode\d+&#39;</span><span class="p">)})]</span>
+<span class="lineno">25 </span>
+<span class="lineno">26 </span>  <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">episode_urls</span><span class="p">:</span>
+<span class="lineno">27 </span>    <span class="n">episode</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">urlopen</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+<span class="lineno">28 </span>
+<span class="lineno">29 </span>    <span class="k">for</span> <span class="n">raw</span> <span class="ow">in</span> <span class="n">episode</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">class_</span><span class="o">=</span><span class="s1">&#39;tf-songevent-text&#39;</span><span class="p">):</span>
+<span class="lineno">30 </span>      <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(.+)\n\s+by (.+)&#39;</span><span class="p">,</span> <span class="n">raw</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+<span class="lineno">31 </span>      <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+<span class="lineno">32 </span>        <span class="n">tracks_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">())</span>
+<span class="lineno">33 </span>
+<span class="lineno">34 </span><span class="k">for</span> <span class="n">track</span> <span class="ow">in</span> <span class="n">tracks_list</span><span class="p">:</span>
+<span class="lineno">35 </span>  <span class="c1"># filter list for duplicates</span>
+<span class="lineno">36 </span>  <span class="k">if</span> <span class="n">tracks_list</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">track</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<span class="lineno">37 </span>    <span class="n">tracks_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">track</span><span class="p">)</span>
+<span class="lineno">38 </span>
+<span class="lineno">39 </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/Users/robjwells/Desktop/tracks.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">tracks_json</span><span class="p">:</span>
+<span class="lineno">40 </span>  <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">tracks_list</span><span class="p">,</span> <span class="n">tracks_json</span><span class="p">)</span>
+</pre></div>
 
 
 <p>Tunefind’s website has index pages for each series with links to each of their seasons, which link to pages for each episode that contain track details. The scraping code iterates over the seasons (lines 14–24), then the episodes (lines 26–32).</p>
@@ -153,70 +174,71 @@ with open('/Users/robjwells/Desktop/tracks.json', 'w') as tracks_json:
 
 <p>After mulling over how much manual work I was willing to do, I came up with the idea for an AppleScript scaffold that, since I couldn’t script Spotify directly, would script around Spotify: using its URL scheme to search for tracks and a dialog box with controls to move through the list.</p>
 <p>Underneath that would be Python that managed the track list, assembled the URL and handled the controls:</p>
-<pre><code>#!/usr/local/bin/python3
-
-import json
-import subprocess
-
-position = open('/Users/robjwells/Desktop/position', 'r+')
-reported = open('/Users/robjwells/Desktop/reported', 'a')
-
-
-def asrun(script):
-  &quot;Run the given AppleScript and return the standard output and error.&quot;
-
-  osa = subprocess.Popen(['osascript', '-'],
-                         stdin=subprocess.PIPE,
-                         stdout=subprocess.PIPE)
-  return osa.communicate(script.encode())[0]
-
-
-with open('/Users/robjwells/Desktop/tracks.json') as tracks_json:
-  tracks_list = json.load(tracks_json)
-
-ascript = '''
-tell application &quot;LaunchBar&quot;
-   perform action &quot;Open Location&quot; with string &quot;spotify:search:{0}&quot;
-end tell
-
-tell application &quot;Finder&quot;
-   set dialog_result to display dialog &quot;Ready for next track?&quot; ¬
-       buttons {{&quot;Report&quot;, &quot;Stop&quot;, &quot;Next&quot;}} default button &quot;Next&quot;
-   return button returned of dialog_result
-end tell
-'''
-
-
-def prep_track(t):
-  joint = ' '.join(t)
-  return joint.replace(' ', '+')
-
-
-def prompt(t):
-  script = ascript.format(prep_track(t))
-  result = asrun(script).decode().strip()
-  if result == 'Stop':
-    return False
-  elif result == 'Report':
-    reported.write(json.dumps(t))
-    reported.write('\n')
-  position.seek(0)
-  position.write(str(tracks_list.index(t) + 1))
-  return True
-
-
-raw_pos = position.read()
-if raw_pos:
-  pos = int(raw_pos)
-else:
-  pos = 0
-
-for track in tracks_list[pos:]:
-  if not prompt(track):
-    break
-
-position.close()
-reported.close()</code></pre>
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="ch">#!/usr/local/bin/python3</span>
+<span class="lineno"> 2 </span>
+<span class="lineno"> 3 </span><span class="kn">import</span> <span class="nn">json</span>
+<span class="lineno"> 4 </span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="lineno"> 5 </span>
+<span class="lineno"> 6 </span><span class="n">position</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/Users/robjwells/Desktop/position&#39;</span><span class="p">,</span> <span class="s1">&#39;r+&#39;</span><span class="p">)</span>
+<span class="lineno"> 7 </span><span class="n">reported</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/Users/robjwells/Desktop/reported&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+<span class="lineno"> 8 </span>
+<span class="lineno"> 9 </span>
+<span class="lineno">10 </span><span class="k">def</span> <span class="nf">asrun</span><span class="p">(</span><span class="n">script</span><span class="p">):</span>
+<span class="lineno">11 </span>  <span class="s2">&quot;Run the given AppleScript and return the standard output and error.&quot;</span>
+<span class="lineno">12 </span>
+<span class="lineno">13 </span>  <span class="n">osa</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s1">&#39;osascript&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">],</span>
+<span class="lineno">14 </span>                         <span class="n">stdin</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+<span class="lineno">15 </span>                         <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+<span class="lineno">16 </span>  <span class="k">return</span> <span class="n">osa</span><span class="o">.</span><span class="n">communicate</span><span class="p">(</span><span class="n">script</span><span class="o">.</span><span class="n">encode</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+<span class="lineno">17 </span>
+<span class="lineno">18 </span>
+<span class="lineno">19 </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/Users/robjwells/Desktop/tracks.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">tracks_json</span><span class="p">:</span>
+<span class="lineno">20 </span>  <span class="n">tracks_list</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">tracks_json</span><span class="p">)</span>
+<span class="lineno">21 </span>
+<span class="lineno">22 </span><span class="n">ascript</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="lineno">23 </span><span class="s1">tell application &quot;LaunchBar&quot;</span>
+<span class="lineno">24 </span><span class="s1">   perform action &quot;Open Location&quot; with string &quot;spotify:search:</span><span class="si">{0}</span><span class="s1">&quot;</span>
+<span class="lineno">25 </span><span class="s1">end tell</span>
+<span class="lineno">26 </span>
+<span class="lineno">27 </span><span class="s1">tell application &quot;Finder&quot;</span>
+<span class="lineno">28 </span><span class="s1">   set dialog_result to display dialog &quot;Ready for next track?&quot; ¬</span>
+<span class="lineno">29 </span><span class="s1">       buttons {{&quot;Report&quot;, &quot;Stop&quot;, &quot;Next&quot;}} default button &quot;Next&quot;</span>
+<span class="lineno">30 </span><span class="s1">   return button returned of dialog_result</span>
+<span class="lineno">31 </span><span class="s1">end tell</span>
+<span class="lineno">32 </span><span class="s1">&#39;&#39;&#39;</span>
+<span class="lineno">33 </span>
+<span class="lineno">34 </span>
+<span class="lineno">35 </span><span class="k">def</span> <span class="nf">prep_track</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+<span class="lineno">36 </span>  <span class="n">joint</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="lineno">37 </span>  <span class="k">return</span> <span class="n">joint</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span>
+<span class="lineno">38 </span>
+<span class="lineno">39 </span>
+<span class="lineno">40 </span><span class="k">def</span> <span class="nf">prompt</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+<span class="lineno">41 </span>  <span class="n">script</span> <span class="o">=</span> <span class="n">ascript</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prep_track</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="lineno">42 </span>  <span class="n">result</span> <span class="o">=</span> <span class="n">asrun</span><span class="p">(</span><span class="n">script</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="lineno">43 </span>  <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="s1">&#39;Stop&#39;</span><span class="p">:</span>
+<span class="lineno">44 </span>    <span class="k">return</span> <span class="kc">False</span>
+<span class="lineno">45 </span>  <span class="k">elif</span> <span class="n">result</span> <span class="o">==</span> <span class="s1">&#39;Report&#39;</span><span class="p">:</span>
+<span class="lineno">46 </span>    <span class="n">reported</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="lineno">47 </span>    <span class="n">reported</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="lineno">48 </span>  <span class="n">position</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="lineno">49 </span>  <span class="n">position</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">tracks_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+<span class="lineno">50 </span>  <span class="k">return</span> <span class="kc">True</span>
+<span class="lineno">51 </span>
+<span class="lineno">52 </span>
+<span class="lineno">53 </span><span class="n">raw_pos</span> <span class="o">=</span> <span class="n">position</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="lineno">54 </span><span class="k">if</span> <span class="n">raw_pos</span><span class="p">:</span>
+<span class="lineno">55 </span>  <span class="n">pos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">raw_pos</span><span class="p">)</span>
+<span class="lineno">56 </span><span class="k">else</span><span class="p">:</span>
+<span class="lineno">57 </span>  <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="lineno">58 </span>
+<span class="lineno">59 </span><span class="k">for</span> <span class="n">track</span> <span class="ow">in</span> <span class="n">tracks_list</span><span class="p">[</span><span class="n">pos</span><span class="p">:]:</span>
+<span class="lineno">60 </span>  <span class="k">if</span> <span class="ow">not</span> <span class="n">prompt</span><span class="p">(</span><span class="n">track</span><span class="p">):</span>
+<span class="lineno">61 </span>    <span class="k">break</span>
+<span class="lineno">62 </span>
+<span class="lineno">63 </span><span class="n">position</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="lineno">64 </span><span class="n">reported</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
 
 
 <p>According to the file metadata, I created this script at 12.50am. Some of it is hilariously bad. I haven’t tidied up these scripts but I had to change a bit where I trampled all over my own global names. It’s in desperate need of re-ordering so I’m going to work through the script in the order parts are used, not in which they’re written.</p>
@@ -247,33 +269,34 @@ reported.close()</code></pre>
 
 <p>Since creating it in mid-December, I’ve been listening to the playlist and marking my favourite tracks so I could buy them on iTunes. There’s too many to do by hand, so a bit of automation is called for.</p>
 <p>Dragging a track from the Spotify client gives you an <code>http://open.spotify.com/track/…</code> URL. Opening it in a browser will likely get you the newfangled web player, which isn’t much use, but tools such as <code>curl</code> still return the source to the detail view you used to get. We’ll use this to turn the URLs back into track titles and artist names, and from there into iTunes links.</p>
-<pre><code>#!/usr/local/bin/python3
-
-import os
-import sys
-import requests
-from bs4 import BeautifulSoup as bs
-
-spot_path = os.path.join(os.getcwd(), sys.argv[1])
-itunes_search = 'https://itunes.apple.com/search?term={}&amp;country=gb'
-
-with open(spot_path) as spot_file:
-  spot_links = spot_file.read().splitlines()
-
-
-def spotify_to_itunes(link):
-  spot_soup = bs((requests.get(link)).text)
-  title = spot_soup.h1.text
-  artist = spot_soup.h2.a.text
-  plussed = '+'.join([title, artist]).replace(' ', '+')
-  itunes_response = requests.get(itunes_search.format(plussed))
-  if itunes_response.json()['resultCount']:
-    return itunes_response.json()['results'][0]['trackViewUrl']
-  else:
-    return ' '.join([artist, title])
-
-for line in spot_links:
-  print(spotify_to_itunes(line))</code></pre>
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="ch">#!/usr/local/bin/python3</span>
+<span class="lineno"> 2 </span>
+<span class="lineno"> 3 </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="lineno"> 4 </span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="lineno"> 5 </span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="lineno"> 6 </span><span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span> <span class="k">as</span> <span class="n">bs</span>
+<span class="lineno"> 7 </span>
+<span class="lineno"> 8 </span><span class="n">spot_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="lineno"> 9 </span><span class="n">itunes_search</span> <span class="o">=</span> <span class="s1">&#39;https://itunes.apple.com/search?term=</span><span class="si">{}</span><span class="s1">&amp;country=gb&#39;</span>
+<span class="lineno">10 </span>
+<span class="lineno">11 </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">spot_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">spot_file</span><span class="p">:</span>
+<span class="lineno">12 </span>  <span class="n">spot_links</span> <span class="o">=</span> <span class="n">spot_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+<span class="lineno">13 </span>
+<span class="lineno">14 </span>
+<span class="lineno">15 </span><span class="k">def</span> <span class="nf">spotify_to_itunes</span><span class="p">(</span><span class="n">link</span><span class="p">):</span>
+<span class="lineno">16 </span>  <span class="n">spot_soup</span> <span class="o">=</span> <span class="n">bs</span><span class="p">((</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">link</span><span class="p">))</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<span class="lineno">17 </span>  <span class="n">title</span> <span class="o">=</span> <span class="n">spot_soup</span><span class="o">.</span><span class="n">h1</span><span class="o">.</span><span class="n">text</span>
+<span class="lineno">18 </span>  <span class="n">artist</span> <span class="o">=</span> <span class="n">spot_soup</span><span class="o">.</span><span class="n">h2</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">text</span>
+<span class="lineno">19 </span>  <span class="n">plussed</span> <span class="o">=</span> <span class="s1">&#39;+&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">title</span><span class="p">,</span> <span class="n">artist</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span>
+<span class="lineno">20 </span>  <span class="n">itunes_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">itunes_search</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plussed</span><span class="p">))</span>
+<span class="lineno">21 </span>  <span class="k">if</span> <span class="n">itunes_response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;resultCount&#39;</span><span class="p">]:</span>
+<span class="lineno">22 </span>    <span class="k">return</span> <span class="n">itunes_response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;trackViewUrl&#39;</span><span class="p">]</span>
+<span class="lineno">23 </span>  <span class="k">else</span><span class="p">:</span>
+<span class="lineno">24 </span>    <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">artist</span><span class="p">,</span> <span class="n">title</span><span class="p">])</span>
+<span class="lineno">25 </span>
+<span class="lineno">26 </span><span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">spot_links</span><span class="p">:</span>
+<span class="lineno">27 </span>  <span class="nb">print</span><span class="p">(</span><span class="n">spotify_to_itunes</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+</pre></div>
 
 
 <p>Dragging several tracks from Spotify gives you URLs separated by newlines, which I saved to a file that is read and split in lines 11 &amp; 12. We iterate over each URL at the end of the script, printing the result of passing the URL to <code>spotify_to_itunes</code>, which does the hard work.</p>
@@ -325,46 +348,47 @@ for line in spot_links:
     </header>
     <p>I was recently reminded of David Sparks’s <a href="http://macsparky.com/blog/2013/5/text-expander-snippets-date-and-time">TextExpander date snippets</a>, the most interesting of which use AppleScript to insert the date for the next occurrence of a certain weekday. (And were <a href="http://www.tuaw.com/2013/01/21/mac-productivity-ten-textexpander-date-snippets/">written by Ben Waldie</a>.)</p>
 <p>Out of curiosity, I wrote a Python command-line tool called dayshift that does something similar. Its main differences are that it doesn’t have to be set up for specific days like the AppleScript snippets, and that it can find the date for a past weekday (“last Monday”) as well as a future one (“next Monday”).</p>
-<pre><code>#!/usr/local/bin/python3
-&quot;&quot;&quot;
-Print the date of the next or last specified weekday.
-
-Usage:
-  dayshift next &lt;weekday&gt; [--format=&lt;fmt&gt; --inline]
-  dayshift last &lt;weekday&gt; [--format=&lt;fmt&gt; --inline]
-
-Options:
-  --format=&lt;fmt&gt;, -f &lt;fmt&gt;  A strftime format string
-                            [default: %Y-%m-%d]
-  --inline, -i              Omit trailing newline
-
-&quot;&quot;&quot;
-from docopt import docopt
-from datetime import date, timedelta
-
-WEEKDAYS = {'mon': 0, 'tue': 1, 'wed': 2, 'thu': 3,
-            'fri': 4, 'sat': 5, 'sun': 6}
-
-args = docopt(__doc__)
-starting_offset = 2 if args['next'] else -2
-start_date = date.today() + timedelta(starting_offset)
-start_integer = start_date.weekday()
-target_integer = WEEKDAYS[args['&lt;weekday&gt;'][:3].lower()]
-
-if args['next']:
-  offset = target_integer - start_integer
-elif args['last']:
-  offset = start_integer - target_integer
-
-if offset &lt;= 0:
-  offset += 7
-
-if args['last']:
-  offset /= -1    # Make the offset negative
-
-target_date = start_date + timedelta(offset)
-ending = '' if args['--inline'] else '\n'
-print(target_date.strftime(args['--format']), end=ending)</code></pre>
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="ch">#!/usr/local/bin/python3</span>
+<span class="lineno"> 2 </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="lineno"> 3 </span><span class="sd">Print the date of the next or last specified weekday.</span>
+<span class="lineno"> 4 </span>
+<span class="lineno"> 5 </span><span class="sd">Usage:</span>
+<span class="lineno"> 6 </span><span class="sd">  dayshift next &lt;weekday&gt; [--format=&lt;fmt&gt; --inline]</span>
+<span class="lineno"> 7 </span><span class="sd">  dayshift last &lt;weekday&gt; [--format=&lt;fmt&gt; --inline]</span>
+<span class="lineno"> 8 </span>
+<span class="lineno"> 9 </span><span class="sd">Options:</span>
+<span class="lineno">10 </span><span class="sd">  --format=&lt;fmt&gt;, -f &lt;fmt&gt;  A strftime format string</span>
+<span class="lineno">11 </span><span class="sd">                            [default: %Y-%m-%d]</span>
+<span class="lineno">12 </span><span class="sd">  --inline, -i              Omit trailing newline</span>
+<span class="lineno">13 </span>
+<span class="lineno">14 </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="lineno">15 </span><span class="kn">from</span> <span class="nn">docopt</span> <span class="k">import</span> <span class="n">docopt</span>
+<span class="lineno">16 </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="lineno">17 </span>
+<span class="lineno">18 </span><span class="n">WEEKDAYS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;mon&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;tue&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;wed&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;thu&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="lineno">19 </span>            <span class="s1">&#39;fri&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;sat&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;sun&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">}</span>
+<span class="lineno">20 </span>
+<span class="lineno">21 </span><span class="n">args</span> <span class="o">=</span> <span class="n">docopt</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
+<span class="lineno">22 </span><span class="n">starting_offset</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;next&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="o">-</span><span class="mi">2</span>
+<span class="lineno">23 </span><span class="n">start_date</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">starting_offset</span><span class="p">)</span>
+<span class="lineno">24 </span><span class="n">start_integer</span> <span class="o">=</span> <span class="n">start_date</span><span class="o">.</span><span class="n">weekday</span><span class="p">()</span>
+<span class="lineno">25 </span><span class="n">target_integer</span> <span class="o">=</span> <span class="n">WEEKDAYS</span><span class="p">[</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;&lt;weekday&gt;&#39;</span><span class="p">][:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+<span class="lineno">26 </span>
+<span class="lineno">27 </span><span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;next&#39;</span><span class="p">]:</span>
+<span class="lineno">28 </span>  <span class="n">offset</span> <span class="o">=</span> <span class="n">target_integer</span> <span class="o">-</span> <span class="n">start_integer</span>
+<span class="lineno">29 </span><span class="k">elif</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;last&#39;</span><span class="p">]:</span>
+<span class="lineno">30 </span>  <span class="n">offset</span> <span class="o">=</span> <span class="n">start_integer</span> <span class="o">-</span> <span class="n">target_integer</span>
+<span class="lineno">31 </span>
+<span class="lineno">32 </span><span class="k">if</span> <span class="n">offset</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+<span class="lineno">33 </span>  <span class="n">offset</span> <span class="o">+=</span> <span class="mi">7</span>
+<span class="lineno">34 </span>
+<span class="lineno">35 </span><span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;last&#39;</span><span class="p">]:</span>
+<span class="lineno">36 </span>  <span class="n">offset</span> <span class="o">/=</span> <span class="o">-</span><span class="mi">1</span>    <span class="c1"># Make the offset negative</span>
+<span class="lineno">37 </span>
+<span class="lineno">38 </span><span class="n">target_date</span> <span class="o">=</span> <span class="n">start_date</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span>
+<span class="lineno">39 </span><span class="n">ending</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;--inline&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+<span class="lineno">40 </span><span class="nb">print</span><span class="p">(</span><span class="n">target_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;--format&#39;</span><span class="p">]),</span> <span class="n">end</span><span class="o">=</span><span class="n">ending</span><span class="p">)</span>
+</pre></div>
 
 
 <div class="flag" id="update_2014-01-13">
@@ -391,15 +415,17 @@ $ dayshift last Wednesday
 
 <p>But, returning to the original use case, I recommend two approaches.</p>
 <p>You can set up individual snippets to find the next or last occurrence of a certain weekday. Add a new shell script snippet, with code similar to this:</p>
-<pre><code>#!/bin/bash
-/path/to/dayshift next Monday -i</code></pre>
+<div class="syntax"><pre><span></span><span class="ch">#!/bin/bash</span>
+/path/to/dayshift next Monday -i
+</pre></div>
 
 
 <p>Or you can use TextExpander’s fill-in feature to let you pick the options on the fly (line breaks inserted for readability):</p>
-<pre><code>#!/bin/bash
-/path/to/dayshift %fillpopup:name=Next/Last:default=next:last%
-%fillpopup:name=Weekday:default=Monday:Tuesday:
-Wednesday:Thursday:Friday:Saturday:Sunday% -i</code></pre>
+<div class="syntax"><pre><span></span><span class="ch">#!/bin/bash</span>
+/path/to/dayshift %fillpopup:name<span class="o">=</span>Next/Last:default<span class="o">=</span>next:last%
+%fillpopup:name<span class="o">=</span>Weekday:default<span class="o">=</span>Monday:Tuesday:
+Wednesday:Thursday:Friday:Saturday:Sunday% -i
+</pre></div>
 
 
 <p>That looks pretty gross there, and it doesn’t look good in use either:</p>
@@ -410,95 +436,6 @@ Wednesday:Thursday:Friday:Saturday:Sunday% -i</code></pre>
   <p>Shortly after posting this yesterday, <a href="http://leancrew.com/all-this/">Dr Drang</a> sent me a nice email pointing out a <a href="http://www.leancrew.com/all-this/2012/09/eight-days-a-week/#comment-24659">comment by Dave Cross</a> on how to use the <code>date</code> utility in Unix to similar effect, which in its simplest form is <code>date -v+weds</code> (to get next Wednesday’s date).</p>
   <p>I recommend reading <a href="http://www.leancrew.com/all-this/2012/09/eight-days-a-week/">the entire post</a> that comment is in reply to as it addresses a very similar situation to the one above, but with an illuminating look at working with weekdays as integers.</p>
 </div>
-  </article>
-  <article>
-    <header>
-      <h2 class="mute-links"><a href="https://robjwells.github.io/2014/01/hijacking-the-bbc/">Hijacking the BBC</a></h2>
-      <p><time datetime="2014-01-08T15:56">Wednesday, January 8 2014</time></p>
-    </header>
-    <p>In December I started using <a href="http://rogueamoeba.com/audiohijackpro/">Audio Hijack Pro</a> to record <a href="http://www.bbc.co.uk/programmes/b006tt0y">Jazz on 3</a>, initially from the <a href="http://www.bbc.co.uk/radio/player/bbc_radio_three">Radio 3 live stream</a>. I soon realised this wasn’t a great idea: live streaming, Flash and an occasionally patchy internet connection don’t make for reliable recording.</p>
-<p>A bit of searching turned up <a href="http://www.leancrew.com/all-this/2009/07/bbc-radio-2-and-audio-hijack-pro-scripts/">a blog post</a> and <a href="https://github.com/drdrang/radio2">GitHub repository</a> by Dr Drang — who else! His approach was to record programmes from the BBC website after they’ve been broadcast. This is more reliable, allows for repeated tries if the recording fails for any reason, and makes it easier to handle longer-than-usual episodes.</p>
-<p>The logic is straightforward: find the unique ID for the programme’s most recent episode, use that to construct the player URL, and feed that to Audio Hijack.</p>
-<p>Most of the work is done in Python, with Audio Hijack running bridging AppleScripts when a recording starts and finishes — the latter used by Dr Drang to add a track list to the recording’s lyrics field and add the file to iTunes.</p>
-<p>This sounded ideal, but I couldn’t use the Doc’s work straight away as the scripts focus on Radio 2, use a player URL that doesn’t work (at least at home in Blighty) and need a few tweaks to fit my Python environment. It gave me an excuse to tinker with the wheel, if not <a href="http://www.leancrew.com/all-this/2014/01/reinventing-the-wheel/">reinvent it</a>.</p>
-<p>If you want to follow along at home, all the code is <a href="https://bitbucket.org/robjwells/beeb-hijack/src/">in a Bitbucket repository</a>.</p>
-<p>Before we dig in, there are two practical things to note:</p>
-<ul>
-<li>It’s all written for Python 3, but it wouldn’t take much to work on 2.</li>
-<li>You’ll need to install <a href="http://www.crummy.com/software/BeautifulSoup/">Beautiful Soup 4</a> and <a href="http://docopt.org">docopt</a>.
-    (Use <a href="http://www.pip-installer.org/en/latest/">pip</a>.)</li>
-</ul>
-<p>I initially wanted to consolidate the Python scripts into one file but that turned out to be stupid, so I (eventually) settled on having a module similar to Dr Drang’s that did most of the work and another script that acted as the command-line interface.</p>
-<p>(That partly explains why <a href="https://bitbucket.org/robjwells/beeb-hijack/src/">my repo</a> has fewer files — the other being that I add the artwork in Audio Hijack’s tags tab, not a script.)</p>
-<h3>Python module: bbcradio</h3>
-<p>A look at the programme info dictionaries at the top of our modules reveals the differences in our methods:</p>
-<pre><code># Dr Drang’s
-showinfo = {'70s': (6, re.compile(r&quot;Sounds of the '?70s&quot;)),
-            '60s': (5, re.compile(r&quot;Sounds of the '?60s&quot;)),
-            'soul':(2, re.compile(r&quot;Trevor Nelson&quot;)),
-            'at':  (3, re.compile(r&quot;At the BBC&quot;))}
-# Mine:
-PROG_DICT = {'jazz on 3': 'b006tt0y',
-             'jazz line-up': 'b006tnmw'}</code></pre>
-
-
-<p>Each entry in the Doc’s dictionary is a tuple of the weekday as an integer — used to construct a URL for a daily schedule — and a regular expression to pick out the programme from the scraped schedule.</p>
-<p>In mine I go after the programmes directly, as they all have a unique ID similar to the ones given to individual episodes. With this ID we can go to <a href="http://www.bbc.co.uk/programmes/b006tt0y/episodes/player">a list of the programme’s available episodes</a> and pluck out the most recent one.</p>
-<p>This has two benefits: we don’t need to care about the broadcast day and don’t have to search the schedule page. All you need is the programme ID, which you can grab from the end of <a href="http://www.bbc.co.uk/programmes/b006tt0y">a programme’s home page</a> URL.</p>
-<p>All the work is done in <code>latest_episode_code</code> in lines <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/bbcradio.py?at=default#cl-17">17–29</a>, which fetches the available episodes page and pulls the episode code for the first episode listed.</p>
-<p>For weekly programmes only one episode is listed, but this technique also works for programmes which are broadcast more often — like <a href="http://www.bbc.co.uk/programmes/b006qj9z">Today</a>, which Dr Drang has <a href="http://www.leancrew.com/all-this/2009/10/adapting-bbc-radio-recording-scripts/">addressed specifically</a>. In such cases just make sure to record an episode while it’s the most recent on the available episodes page.</p>
-<p>I’ve kept Dr Drang’s <a href="https://github.com/drdrang/radio2/blob/master/radio2.py#L37">episodeInfo</a> function — used to fetch the episode title, date and track list — <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/bbcradio.py?at=default#cl-38">largely intact</a>. I’ve added the time a track was played (if available — it’s often not) and I use a simpler method to fetch the broadcast date (pulling an <a href="http://tools.ietf.org/html/rfc3339#section-5.8">RFC 3339 date</a> from an attribute).</p>
-<p>But there is one important difference: the use of Beautiful Soup’s <code>select</code> function, which allows for a liberal search for multiple class names, instead of <code>find_all</code>, which only returns elements which <em>exactly</em> match a given class string. This is important because every other track listing has an <code>alt</code> class.</p>
-<h3>Command-line interface: beebhijack</h3>
-<p>By itself bbcradio is inert, with the moving parts contained in <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/beebhijack?at=default">a single interface script</a> that has two modes which return an episode’s streaming URL or its details and track list. (Originally these were separate scripts, but there was a lot of duplicate code.)</p>
-<p>At the command line you just pick a mode and supply a programme name. Here’s the help message:</p>
-<pre><code>$ beebhijack -h
-Usage:
-    beebhijack url &lt;programme&gt;
-    beebhijack details [--clean] &lt;programme&gt;
-
-Options:
-    --clean     Use two newlines instead of a pipe
-                to separate the episode details
-
-Accepted programmes:
-    jazz on 3
-    jazz line-up</code></pre>
-
-
-<p>And, because I’m still blown away how simple <a href="http://docopt.org">docopt</a> is, here’s all the code needed to produce that interface:</p>
-<pre><code>programmes = '''\
-Accepted programmes:
-    {}'''.format('\n    '.join(bbcradio.PROG_DICT.keys()))
-
-usage = '''\
-Usage:
-    {name} url &lt;programme&gt;
-    {name} details [--clean] &lt;programme&gt;
-
-Options:
-    --clean     Use two newlines instead of a pipe
-                to separate the episode details
-
-{prog_list}'''.format(name='beebhijack', prog_list=programmes)
-
-args = docopt(usage)</code></pre>
-
-
-<p>If you haven’t used it before, take 20 minutes to watch the <a href="http://docopt.org">docopt video</a>. It’s wonderful: give it a usage message and it hands you back a dictionary. Mine above is a little complicated because it tacks the list of accepted programmes onto the end of the usage message, in case you need a reminder at the command line. (I also print the list if you ask for a programme that’s not in the dictionary, in lines <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/beebhijack#cl-24">24–27</a>).</p>
-<p>In the dictionary docopt returns, commands (url, details) get a boolean value, so the mode switch is a simple if-else if.</p>
-<p>Unless given the <code>--clean</code> argument, the details mode prints the three parts of the tuple it gets from <code>episode_details</code> separated by pipes, which you can split up in AppleScript by changing the text item delimiters.</p>
-<p>It’s important to note that I don’t exactly <code>print</code> the details — instead I encode the string into UTF-8 and <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/beebhijack#cl-38">write it as bytes</a> to <code>sys.stdout.buffer</code>. (<a href="https://github.com/drdrang/radio2/blob/master/radio2-tracklist#L44">Dr Drang’s script does something similar</a>.) The shell invoked by AppleScript’s <code>do shell script</code> command defaults to <a href="/2013/09/get-your-us-ascii-out-of-my-face/"><code>US-ASCII</code></a>, causing a UnicodeEncodeError if you try to <code>print</code> a string containing non-Ascii characters.</p>
-<p>Generally, I think the key distinction between beebhijack and Dr Drang’s four scripts is that I keep all of the “real work” in the module.</p>
-<p>For example, we both fetch the episode ID in our modules, but I also construct the streaming URL there (lines <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/bbcradio.py#cl-32">32–35</a>) while the Doc does that in <a href="https://github.com/drdrang/radio2/blob/master/radio2-stream">a separate script</a>.</p>
-<p>This isn’t a big deal either way but I think it reveals my thinking about the beebhijack script: it’s a bridge between what you want to achieve and the program that actually does the work. The heaviest lifting done by beebhijack (joining the details) controls how the information is output, not what the information is.</p>
-<h3>Putting it all together</h3>
-<p>With the Python code sorted, all that’s left to do is to create individual pre- and post-recording AppleScripts that you get Audio Hijack to run (on the input and recording tabs, respectively).</p>
-<p>The <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/Jazz%20Line-Up%20URL.applescript">pre-recording script</a> just calls beebhijack’s url mode and pass a programme name. I’ve copied Dr Drang’s, but separated out the programme name and path to the script into properties to make them easier to spot and change.</p>
-<p>The same applies to <a href="https://bitbucket.org/robjwells/beeb-hijack/src/06686071d912f817b898b3c21bb88f3dc2d30ae6/Process%20Jazz%20Line-Up.applescript">the post-recording script</a>, which I stole off the Doc, who adapted one by Rogue Amoeba.</p>
-<p>The biggest change I made was to use text-item delimiters to split up the episode date, title and track list as I don’t just put them all into the lyrics field, instead using the title and date to rename the track. (The date is necessary because, although I have Audio Hijack name the files with the date, the recording takes place at least the day after the broadcast day.)</p>
-<p>I also don’t use a try block to handle errors fetching the episode details, because I prefer have an error message in the morning to prompt me to sort out the recording by hand.</p>
-<p>Once you’ve got the scripts in place, just set an appropriate schedule in Audio Hijack. I have it set to record for much longer than the usual episode length, just in case a longer episode airs that I don’t expect. This doesn’t inflate the file size, because Audio Hijack doesn’t add silence when nothing is output from your source.</p>
   </article>
   <div class="pagination">
 <p class="pagination-older"><a href="https://robjwells.github.io/page-16/">Older posts</a></p><p class="pagination-newer"><a href="https://robjwells.github.io/page-14/">Newer posts</a></p>  </div>

@@ -8,6 +8,8 @@
   <!-- Load my combined stylesheet -->
   <link rel="stylesheet" href="/resources/all.min.css">
 
+  <!-- Load my combined JavaScript -->
+  <script src="/resources/all.min.js" async></script>
 
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
 
@@ -67,10 +69,11 @@
     </header>
     <p>I have a startup item that launches a Jupyter notebook so that the server is always running in the background. It’s an attempt to reduce the friction of using the notebooks.</p>
 <p>By default, Jupyter starts the server on port 8888 on localhost, but expects a token (a long hexadecimal string) before it’ll let you in. If you list the currently running servers in the terminal you can see the token and also the server’s working directory.</p>
-<pre><code>% jupyter-notebook list
+<div class="syntax"><pre><span></span>% jupyter-notebook list
 Currently running servers:
-http://localhost:8889/?token=…hex… :: /Users/robjwells
-http://localhost:8888/?token=…hex… :: /Users/robjwells/jupyter-notebooks</code></pre>
+http://localhost:8889/?token<span class="o">=</span>…hex… :: /Users/robjwells
+http://localhost:8888/?token<span class="o">=</span>…hex… :: /Users/robjwells/jupyter-notebooks
+</pre></div>
 
 
 <p>We can use this to make finding and opening the particular notebook server you want a bit easier, using Keyboard Maestro.</p>
@@ -95,12 +98,14 @@ http://localhost:8888/?token=…hex… :: /Users/robjwells/jupyter-notebooks</co
 </p>
 
 <p>Here’s the first step, where we fetch the list of working directories.</p>
-<pre><code>jupyter-notebook list | tail -n +2 | awk '{print $3}'</code></pre>
+<div class="syntax"><pre><span></span>jupyter-notebook list <span class="p">|</span> tail -n +2 <span class="p">|</span> awk <span class="s1">&#39;{print $3}&#39;</span>
+</pre></div>
 
 
 <p>Our +2 argument to <code>tail</code> gets the output from the second line, chopping off the “Currently running servers:” bit. Then <code>awk</code> prints the third field, which contains the directory. (The first is the URL, the second the double-colon separator.)</p>
 <p>The third step fetches the corresponding URL for a directory:</p>
-<pre><code>jupyter-notebook list | grep &quot;:: $KMVAR_dir$&quot; | awk '{ print $1 }'</code></pre>
+<div class="syntax"><pre><span></span>jupyter-notebook list <span class="p">|</span> grep <span class="s2">&quot;:: </span><span class="nv">$KMVAR_dir</span>$<span class="s2">&quot;</span> <span class="p">|</span> awk <span class="s1">&#39;{ print $1 }&#39;</span>
+</pre></div>
 
 
 <p>Since the user has specified a directory already, we use <code>grep</code> with the Keyboard Maestro variable to find just that one line, and use <code>awk</code> again to extract the URL field.</p>

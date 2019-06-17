@@ -8,6 +8,8 @@
   <!-- Load my combined stylesheet -->
   <link rel="stylesheet" href="/resources/all.min.css">
 
+  <!-- Load my combined JavaScript -->
+  <script src="/resources/all.min.js" async></script>
 
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
 
@@ -60,6 +62,113 @@
 
 <main role="main">
 
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2015/07/historical-dollars/">Historical dollars</a></h2>
+      <p><time datetime="2015-07-15T23:40">Wednesday, July 15 2015</time></p>
+    </header>
+    <p>I’ve read <a href="https://en.wikipedia.org/wiki/A_People%27s_History_of_the_United_States">a</a> <a href="https://en.wikipedia.org/wiki/The_Big_Sleep">few</a> <a href="http://www.haymarketbooks.org/hc/People-Wasnt-Made-to-Burn">books</a> recently where references were made to dollar amounts from many years ago. However, I often find it difficult to understand the context of, say, $10,000 in 1829.</p>
+<p>But Wolfram Alpha <a href="http://www.wolframalpha.com/input/?i=$10,000+(1829+US+dollars)+in+2015">can give you a rough approximation</a> by applying inflation data. This isn’t perfect but is useful to get a general idea of what a similar amount might be today. (There isn’t all the context needed for a more accurate determination, and the underlying basket for inflation measures can be misleading.)</p>
+<p>Handily, there’s a <a href="http://products.wolframalpha.com/api/">Wolfram Alpha API</a> we can use to get this information programmatically. I originally wrote this script as a command-line tool, but how often do you read at your computer with a terminal window open? So the one in this post uses <a href="http://omz-software.com/pythonista/index.html">Pythonista</a> and its <code>ui</code> module to make things more practical.</p>
+<p>The code to get the new amount is pretty trivial:</p>
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="lineno"> 2 </span>
+<span class="lineno"> 3 </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+<span class="lineno"> 4 </span><span class="kn">from</span> <span class="nn">xml.etree</span> <span class="kn">import</span> <span class="n">ElementTree</span>
+<span class="lineno"> 5 </span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="lineno"> 6 </span><span class="kn">import</span> <span class="nn">ui</span>
+<span class="lineno"> 7 </span>
+<span class="lineno"> 8 </span>
+<span class="lineno"> 9 </span><span class="k">def</span> <span class="nf">calculate_amount</span><span class="p">(</span><span class="n">sender</span><span class="p">):</span>
+<span class="lineno">10 </span>  <span class="sd">&quot;&quot;&quot;Convert given dollar amount for given year to current dollars&quot;&quot;&quot;</span>
+<span class="lineno">11 </span>  <span class="n">amount</span> <span class="o">=</span> <span class="n">view</span><span class="p">[</span><span class="s1">&#39;amount&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+<span class="lineno">12 </span>  <span class="n">year</span> <span class="o">=</span> <span class="n">view</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+<span class="lineno">13 </span>
+<span class="lineno">14 </span>  <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">amount</span> <span class="ow">and</span> <span class="n">year</span><span class="p">):</span>
+<span class="lineno">15 </span>    <span class="k">return</span>
+<span class="lineno">16 </span>
+<span class="lineno">17 </span>  <span class="n">api_key</span> <span class="o">=</span> <span class="s1">&#39;YOUR API KEY IN HERE&#39;</span>
+<span class="lineno">18 </span>  <span class="n">api_url</span> <span class="o">=</span> <span class="s1">&#39;http://api.wolframalpha.com/v2/query&#39;</span>
+<span class="lineno">19 </span>  <span class="n">query_template</span> <span class="o">=</span> <span class="s1">&#39;${amount} ({past_year} US dollars) in {current_year}&#39;</span>
+<span class="lineno">20 </span>  <span class="n">query</span> <span class="o">=</span> <span class="n">query_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">amount</span><span class="o">=</span><span class="n">amount</span><span class="p">,</span>
+<span class="lineno">21 </span>                                <span class="n">past_year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span>
+<span class="lineno">22 </span>                                <span class="n">current_year</span><span class="o">=</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
+<span class="lineno">23 </span>  <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;appid&#39;</span><span class="p">:</span> <span class="n">api_key</span><span class="p">,</span>
+<span class="lineno">24 </span>                <span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+<span class="lineno">25 </span>                <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;plaintext&#39;</span><span class="p">,</span>
+<span class="lineno">26 </span>                <span class="s1">&#39;podtitle&#39;</span><span class="p">:</span> <span class="s1">&#39;Result&#39;</span><span class="p">}</span>
+<span class="lineno">27 </span>  <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">parameters</span><span class="p">)</span>
+<span class="lineno">28 </span>  <span class="n">xml_soup</span> <span class="o">=</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="lineno">29 </span>  <span class="n">new_amount</span> <span class="o">=</span> <span class="n">xml_soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;pod/subpod/plaintext&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="lineno">30 </span>  <span class="n">view</span><span class="p">[</span><span class="s1">&#39;result&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">new_amount</span>
+</pre></div>
+
+
+<p>The <code>calculate_amount</code> function above is called on a button press (hence the <code>sender</code> argument) and fetches the text from a couple of UI elements (all that <code>view</code> subscripting), bailing out if either the amount or year is missing.</p>
+<p>The query template (line 19) is how Wolfram Alpha parses historical dollar calculations (shown as “Input interpretation” on the website) so we can skip as much parsing time as possible.</p>
+<p>Requests makes sending the query a doddle, and we use an exact XPath expression to get at the result in the response. There’s an <a href="http://products.wolframalpha.com/api/explorer.html">API explorer</a> so you can get a handle on the structure. (Normally I’d use Beautiful Soup, but Pythonista doesn’t include lxml, so BS parses it as HTML and there’s really no point in risking — however slightly — that causing some problem. ElementTree isn’t bad if you’re doing something simple, anyway.)</p>
+<p>Lastly we update another UI element to show the result. Pretty simple.</p>
+<p>With the UI, you’ve got two choices: make it in code or use Pythonista’s UI editor. I chose to do it in code, because the UI editor saves a <code>.pyui</code> JSON file that <a href="https://omz-forums.appspot.com/pythonista/post/5254558653612032">takes a little work to share</a>.</p>
+<p>But now I would recommend people use the editor, as actually getting the code to work was a bit of a headache too. For the record: Ole Zorn has done an <em>incredible</em> job with Pythonista and the UI tools are incredible. However: the <code>ui</code> module seems to expose the Cocoa way of making GUIs, so unless you’ve got an understanding of that you may be in for some bumps. Helpfully, you can <a href="http://omz-software.com/pythonista/docs/ios/ui.html">view the <code>ui</code> module documentation online</a> Here’s the rest of the code:</p>
+<div class="syntax"><pre><span></span><span class="lineno">33 </span><span class="k">def</span> <span class="nf">setup_view</span><span class="p">():</span>
+<span class="lineno">34 </span>    <span class="n">view</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">View</span><span class="p">()</span>
+<span class="lineno">35 </span>    <span class="n">view</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Historical Dollars&#39;</span>
+<span class="lineno">36 </span>    <span class="n">view</span><span class="o">.</span><span class="n">background_color</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span>
+<span class="lineno">37 </span>    <span class="n">view</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">view</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">get_screen_size</span><span class="p">()</span>
+<span class="lineno">38 </span>
+<span class="lineno">39 </span>    <span class="n">amount_field</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+<span class="lineno">40 </span>    <span class="n">amount_field</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;amount&#39;</span>
+<span class="lineno">41 </span>    <span class="n">amount_field</span><span class="o">.</span><span class="n">keyboard_type</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">KEYBOARD_DECIMAL_PAD</span>
+<span class="lineno">42 </span>    <span class="n">amount_field</span><span class="o">.</span><span class="n">placeholder</span> <span class="o">=</span> <span class="s1">&#39;Dollar amount&#39;</span>
+<span class="lineno">43 </span>    <span class="n">amount_field</span><span class="o">.</span><span class="n">width</span> <span class="o">*=</span> <span class="mi">2</span>
+<span class="lineno">44 </span>    <span class="n">amount_field</span><span class="o">.</span><span class="n">height</span> <span class="o">/=</span> <span class="mi">2</span>
+<span class="lineno">45 </span>
+<span class="lineno">46 </span>    <span class="n">year_field</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+<span class="lineno">47 </span>    <span class="n">year_field</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;year&#39;</span>
+<span class="lineno">48 </span>    <span class="n">year_field</span><span class="o">.</span><span class="n">keyboard_type</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">KEYBOARD_NUMBER_PAD</span>
+<span class="lineno">49 </span>    <span class="n">year_field</span><span class="o">.</span><span class="n">placeholder</span> <span class="o">=</span> <span class="s1">&#39;Year&#39;</span>
+<span class="lineno">50 </span>    <span class="n">year_field</span><span class="o">.</span><span class="n">width</span> <span class="o">*=</span> <span class="mi">2</span>
+<span class="lineno">51 </span>    <span class="n">year_field</span><span class="o">.</span><span class="n">height</span> <span class="o">/=</span> <span class="mi">2</span>
+<span class="lineno">52 </span>
+<span class="lineno">53 </span>    <span class="n">button</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Calculate&#39;</span><span class="p">)</span>
+<span class="lineno">54 </span>    <span class="n">button</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">calculate_amount</span>
+<span class="lineno">55 </span>
+<span class="lineno">56 </span>    <span class="n">result_label</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">Label</span><span class="p">()</span>
+<span class="lineno">57 </span>    <span class="n">result_label</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;result&#39;</span>
+<span class="lineno">58 </span>    <span class="n">result_label</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">width</span>
+<span class="lineno">59 </span>    <span class="n">result_label</span><span class="o">.</span><span class="n">alignment</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">ALIGN_CENTER</span>
+<span class="lineno">60 </span>
+<span class="lineno">61 </span>    <span class="n">horizontal_centre</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="mf">0.5</span>
+<span class="lineno">62 </span>    <span class="n">field_spacing</span> <span class="o">=</span> <span class="n">amount_field</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="mf">1.5</span>
+<span class="lineno">63 </span>    <span class="n">amount_field</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">horizontal_centre</span><span class="p">,</span> <span class="n">amount_field</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+<span class="lineno">64 </span>    <span class="n">year_field</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">horizontal_centre</span><span class="p">,</span>
+<span class="lineno">65 </span>                         <span class="n">amount_field</span><span class="o">.</span><span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">field_spacing</span><span class="p">)</span>
+<span class="lineno">66 </span>    <span class="n">button</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">horizontal_centre</span><span class="p">,</span>
+<span class="lineno">67 </span>                     <span class="n">year_field</span><span class="o">.</span><span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">field_spacing</span> <span class="o">*</span> <span class="mf">0.75</span><span class="p">)</span>
+<span class="lineno">68 </span>    <span class="n">result_label</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">horizontal_centre</span><span class="p">,</span>
+<span class="lineno">69 </span>                           <span class="n">button</span><span class="o">.</span><span class="n">centre</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">field_spacing</span> <span class="o">*</span> <span class="mf">0.75</span><span class="p">)</span>
+<span class="lineno">70 </span>
+<span class="lineno">71 </span>    <span class="n">view</span><span class="o">.</span><span class="n">add_subview</span><span class="p">(</span><span class="n">amount_field</span><span class="p">)</span>
+<span class="lineno">72 </span>    <span class="n">view</span><span class="o">.</span><span class="n">add_subview</span><span class="p">(</span><span class="n">year_field</span><span class="p">)</span>
+<span class="lineno">73 </span>    <span class="n">view</span><span class="o">.</span><span class="n">add_subview</span><span class="p">(</span><span class="n">button</span><span class="p">)</span>
+<span class="lineno">74 </span>    <span class="n">view</span><span class="o">.</span><span class="n">add_subview</span><span class="p">(</span><span class="n">result_label</span><span class="p">)</span>
+<span class="lineno">75 </span>
+<span class="lineno">76 </span>    <span class="k">return</span> <span class="n">view</span>
+<span class="lineno">77 </span>
+<span class="lineno">78 </span>
+<span class="lineno">79 </span><span class="n">view</span> <span class="o">=</span> <span class="n">setup_view</span><span class="p">()</span>
+<span class="lineno">80 </span><span class="n">view</span><span class="o">.</span><span class="n">present</span><span class="p">(</span><span class="s1">&#39;sheet&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>And here’s what it looks like in action:</p>
+<p><img src="/images/2015-07-15_historical-dollars.png" alt="A screenshot of the historical dollars script run in Pythonista on an iPhone."></p>
+<p>The thing that really tripped me up was <code>.flex</code> on views, for resizing the element based on its containing view. In the code above this isn’t used. I initially followed the example code from the documentation and had all sorts of fun trying to work out why the view spacing was screwed up.</p>
+<p>Another problem was expecting the 'master', containing view (instantiated on line 34) to have the same size as the screen, when it seems to act kind of like HTML elements do when they’re full of floated elements (they collapse). That’s why I set the containing view’s size on line 37. (<code>get_screen_size</code> also seems to always return the portrait size.) All sorts of headaches resulted from this (centring elements based on the view’s centre particularly).</p>
+<p>Otherwise, it’s so straightforward and repetitive that I’m not going to explain most of the lines. It works well enough on an iPhone 5-sized screen in portrait mode (elements are off-centre in landscape) but for smaller screens you may want to shift things about a bit vertically.</p>
+<p>There are a couple of things to note. The names you give to elements are how you pick them out later (check out lines 11 and 40). Setting the button’s action (line 54) is obviously key, and you just give it a function object. And specifying the keyboard type for the two text fields relieves the need to do input validation (though the decimal keyboard lets you type multiple points), but frankly anyone who might use this should understand that it’ll break if you type in something funky.</p>
+<p>I’ve put <a href="https://gist.github.com/robjwells/9bcdb0cac8d234d1ab7e">the whole file online</a> if that’s easier for anyone. You just need to paste it into an empty script in Pythonista and run it. </p>
+  </article>
   <article>
     <header>
       <h2 class="mute-links"><a href="https://robjwells.github.io/2015/07/a-scripting-mess/">A scripting mess</a></h2>
@@ -148,15 +257,16 @@ Options:
     which specifies — shocker — the default value for that option.</li>
 </ul>
 <p>And here’s the new argument-handling code, to replace lines 54–87 in his script (there’s also the new line <code>from docopt import docopt</code> earlier on):</p>
-<pre><code># Handle options.
-args = docopt(help)
-sta = args['--station'].upper()
-ascii = args['--ascii']
-month = args['--month']
-precip = args['--precip']
-daily = False if precip else args['--daily']
+<div class="syntax"><pre><span></span><span class="c1"># Handle options.</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">docopt</span><span class="p">(</span><span class="n">help</span><span class="p">)</span>
+<span class="n">sta</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;--station&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+<span class="n">ascii</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;--ascii&#39;</span><span class="p">]</span>
+<span class="n">month</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;--month&#39;</span><span class="p">]</span>
+<span class="n">precip</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;--precip&#39;</span><span class="p">]</span>
+<span class="n">daily</span> <span class="o">=</span> <span class="kc">False</span> <span class="k">if</span> <span class="n">precip</span> <span class="k">else</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;--daily&#39;</span><span class="p">]</span>
 
-d = parse(args['DATE'], dayfirst=False)</code></pre>
+<span class="n">d</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;DATE&#39;</span><span class="p">],</span> <span class="n">dayfirst</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
 
 
 <p>Provide <code>docopt</code> with your help message and you get back a dictionary. Options that take an argument give you back the argument, the default or None (if you don’t set a default). The switch-type options are booleans, being False if they’re not used.</p>
@@ -170,7 +280,8 @@ d = parse(args['DATE'], dayfirst=False)</code></pre>
     <p>At work recently I ran into two subtle AppleScript oddities that tripped me up when modifying one of our production scripts.</p>
 <h3>Return value could be a string or a list</h3>
 <p>This may be specific to InDesign but I'd be surprised (I haven't checked). When asking for:</p>
-<pre><code>get the contents of text frame frame_name of page page_num</code></pre>
+<div class="syntax"><pre><span></span><span class="k">get</span> <span class="nb">the</span> <span class="na">contents</span> <span class="k">of</span> <span class="nb">text</span> <span class="nv">frame</span> <span class="nv">frame_name</span> <span class="k">of</span> <span class="nv">page</span> <span class="nv">page_num</span>
+</pre></div>
 
 
 <p>you could receive a string (if there's just one frame with that name) or a list of strings (if there are several).</p>
@@ -178,75 +289,16 @@ d = parse(args['DATE'], dayfirst=False)</code></pre>
 <p>The solution is to cast the result to a list, using <code>as list</code>. If it's already a list it's unchanged, if it's a lone string it's just wrapped in a list.</p>
 <h3>AppleScript's for-in may not give you the value</h3>
 <p>AppleScript lets you do the following:</p>
-<pre><code>repeat with element in the_list</code></pre>
+<div class="syntax"><pre><span></span><span class="k">repeat</span> <span class="nv">with</span> <span class="nv">element</span> <span class="k">in</span> <span class="nv">the_list</span>
+</pre></div>
 
 
 <p>which assigns (sort of) the elements of the list to the given variable name. Sort of because in some cases you don't get the value represented by <code>element</code>, you get a kind of pointer to the nth item of the list:</p>
-<pre><code>item n of {...}</code></pre>
+<div class="syntax"><pre><span></span><span class="nb">item</span> <span class="nv">n</span> <span class="k">of</span> <span class="p">{...}</span>
+</pre></div>
 
 
 <p>If you have a list of strings, comparing another string to the loop variable will fail, because it's not really a string. The solution is to ask for <code>the contents of element</code> or <code>element as string</code>.</p>
-  </article>
-  <article>
-    <header>
-      <h2 class="mute-links"><a href="https://robjwells.github.io/2015/02/my-email-nightmare/">My email nightmare</a></h2>
-      <p><time datetime="2015-02-25T12:35">Wednesday, February 25 2015</time></p>
-    </header>
-    <p>At work we have about 40 employees. A couple of weeks ago I moved our email to a new provider (<a href="https://fastmail.com">FastMail</a>). It took a while to get to but most of the activity was extremely concentrated, and that led me to make some mistakes. However, the move was successful, and hopefully my experience can smooth the way for people in a similar situation.</p>
-<h3>Background</h3>
-<p>From what I can tell, we’d been running our email through cPanel on a <a href="https://ukwebsolutionsdirect.co.uk">shared host</a> since 2003. (I was hired in 2010 and this became my responsibility in May 2014.)</p>
-<p>It wasn’t really an appropriate choice for a business. We had a small amount of space (9GB) shared between all employees. When users (or the entire account) exceeded their quota, the software would bounce incoming emails and send a shaming email to senders. Lots of simple things (holiday automatic replies) required my involvement.</p>
-<p>In addition, our domain’s DNS records were also managed through cPanel, tying the settings for our domain to our host (who were also our registrar at this point, so not totally unreasonable).</p>
-<p>The host wasn’t great either.</p>
-<ul>
-<li>To use SSL encryption, our email clients had to point to their server (not our own domain). This isn't a problem, except that one weekday afternoon in November they moved us to a different server without warning, breaking our email clients.</li>
-<li>Our contacts, using major webmail services, would sometimes have their provider refuse to send mail to us because our shared server had been placed on a <a href="https://en.wikipedia.org/wiki/DNSBL">blackhole list</a>.</li>
-<li>Five failed login attempts within two minutes would trigger an IP block. Starting an email client and, wondering why nothing’s happening, pressing the check mail button twice would shut down one of our two office lines. (POP/IMAP &amp; SMTP authentication counted as separate attempts.)</li>
-</ul>
-<p>That last one was really fun in combination with the November server move, as I went round the office changing people’s email settings. Their support workers, however, were helpful.</p>
-<p>And about two-thirds of our employees were accessing their email over POP, with nothing stored on our server.</p>
-<p>We were in a pretty bad state. (Hopefully little of this sounds familiar to you.)</p>
-<h3>Preparation</h3>
-<p>The biggest task before the switch itself was to move everyone using POP to access their mail to IMAP, otherwise when it came time to do the migration there’d be nothing to move across. They’d have to keep the old POP account in their client forever to be able to access old mail (one remote worker has had to do this because they couldn’t manage to set up IMAP access to their account in <a href="https://en.wikipedia.org/wiki/Microsoft_Entourage">Entourage</a>, their version of which is <a href="https://en.wikipedia.org/wiki/Microsoft_Office#Microsoft_Office_2001_and_v._X">old and busted</a>).</p>
-<p>For machines you can access personally this is fairly straightforward but dull. You generally can’t convert a client account from POP to IMAP, so set up a parallel account in the client and move messages into the IMAP version’s folders. If you have people using Entourage X or 2004 beware that moving messages between accounts will not preserve the original received date. I was moving everyone to Apple Mail — the only OS X client I’m going to support — and had to change the date column to use <em>date sent</em>.</p>
-<p>With remote workers you’re reliant on their technical skills and your ability to give instructions. For non-technical users think seriously about having them keep a disabled POP account as an archive (as mentioned above) as it may not be worth hours of your time trying to guide them on to IMAP.</p>
-<p>Ensure that your DNS settings are in a state where all that’s needed to do is to flip the MX records during the transition. You want to be able to pull the plug on your old provider without the world stopping. In our case, I transferred our domain to <a href="https://www.hover.com">Hover</a> and recreated the records. (cPanel stores MX and other records separately.)</p>
-<p>You’ll obviously need to draw up a list of accounts that’ll need creating at the new provider, which will give you a chance to rationalise your usage. This is particularly important when moving to a provider that charges per account (as FastMail and seemingly everyone else does). FastMail has a CSV import feature which will let you create many accounts in one step. (I just used regex in BBEdit to transform a simple list into the required format.)</p>
-<p>In our case, the biggest change was the ability to create aliases. So instead of five separate arts desk accounts we now have one main account, with aliases filing mail into subfolders. Combined with pruning unnecessary accounts, this meant I was able to almost halve the number we needed.</p>
-<p>Aliases also let me clean up our unpredictable account names, so that everyone is now firstnamesurname@, while ensuring that all mail sent to the old addresses ends up in the right place.</p>
-<p>You can get started on this list at any point, and it was one of the first things that I did after getting approval. But as you approach D-Day you need to <em>make sure that the list is up to date</em>. I failed to do this and, while it didn't cause major problems, it caused me to panic a bit as I scrambled to get the missing accounts up and running.</p>
-<h3>Transition</h3>
-<p>It will benefit you greatly if you draw up a plan for the transition. That includes choosing a D-Day, and detailing what actions you are going to perform and in which order. My biggest mistake was to let a worsening of the problems detailed above force my hand and act hastily. Do everything you can to avoid this and work according to plan.</p>
-<p>Your D-Day list should include:</p>
-<ol>
-<li>Business sign-up and payment. (You may be ready but is the person with the company card?)</li>
-<li>User account creation. (Double-check you're not missing any.)</li>
-<li>User migration and client settings switch. (You can’t split these.)</li>
-<li>MX record switch.</li>
-</ol>
-<p>1 &amp; 2 are straightforward, although after the second you may want to spend some time cleaning up autofilled names for non-personal accounts (Ms Acme C Department) and corresponding global address book entries.</p>
-<p>You’ll need to decide on a migration strategy. <a href="https://www.fastmail.com/help/business/migrate.html">The FastMail help</a> for this is very good. For any sizeable number of accounts you’ll want the second option: set up the accounts then for each user set up forwarding at the old provider, migrate existing mail and then change the user’s settings.</p>
-<p>As soon as you enable forwarding for a user the clock is ticking for you to change the user’s settings. Perform the IMAP migration and the clock ticks faster. The longer you wait the more the user’s new account will diverge from the old one.</p>
-<p>This is where I made <em>by far my biggest mistake</em>, one which forced me to work through the night to complete the switchover. I set up forwarding for and migrated each user in one block, without changing any client settings. If I hadn’t then spent hours changing everyone’s client settings I would have had to purge the accounts and start over with the IMAP migration. That’s a pain because after each import  for each account you’ll probably have to do some housekeeping (moving sent mail into FastMail’s sent folder, junk to junk, and so on).</p>
-<p>Note the order of actions on <a href="https://www.fastmail.com/help/business/migrate.html">the FastMail help page</a>:</p>
-<ol>
-<li>Forward the user’s new mail,</li>
-<li>Migrate the user’s existing mail,</li>
-<li>Change the user’s settings,</li>
-<li>Then <em>and only then</em> move on to the next user.</li>
-</ol>
-<p>Completely moving a user allows you to take as long as you need to complete the whole transition. Given other pressures on me at work, it’s likely that it would’ve taken weeks to move everyone. Making this mistake at least forced me to complete the entire thing quickly, even if it meant working a 19-hour shift. (I started working on the emails in earnest after a full day working on edition.)</p>
-<p>If you have remote workers you’ll need a strategy for them too. Mine was to send them all emails (to their personal accounts) containing a warning that their mail clients would be broken, new settings if they felt comfortable enough changing them, and instructions on how to access the web interface.</p>
-<p>Once you’ve got everyone moved over, flip the switch on the MX records so that new mail flows directly to the new provider.</p>
-<h4>Aside: hosting your DNS with FastMail</h4>
-<p>FastMail encourages you to host your DNS with them. I haven’t done it for <code>robjwells.com</code> or work because I feel that there should be a separation there (DNS settings stay with <a href="https://www.hover.com">the registrar</a>) and I’m not intimidated by DNS records (although they’re a massive pain).</p>
-<p>But if, say, <a href="http://daveplummer.net">my stepdad</a> wanted email for <a href="http://daveplummer.net">his business</a> I’d tell him to let FastMail handle his DNS settings. If I leave the Star I may switch the DNS to FastMail if there’s no-one sufficiently technical to take over from me.</p>
-<p>I did briefly switch work to use FastMail’s DNS two nights ago, to see if it enabled automatic configuration in Apple Mail or Thunderbird. No difference. (Our domain publishes SRV records that are meant to help with this and I thought I might have made a mistake, but no dice with either. Outlook may be a different story, but as we’re a mostly Mac office who cares?)</p>
-<h3>Afterwards</h3>
-<p>The actual change in email provider should largely be invisible to your users. Your biggest problem is going to be what I’ll call user education. Some of this will be straightforward. In our case, an example was to get people to check their spam folder (we previously had daily quarantine emails).</p>
-<p>But some will be more personal and political. That you won’t set up or support their <a href="https://en.wikipedia.org/wiki/Microsoft_Entourage">terrible email client</a>. That email aliases really do work. That, no, their emails are not mysteriously disappearing.</p>
-<p>A nice bonus for me is that I’m now not responsible for fixing whole categories of problems, and I’m <a href="http://blog.fastmail.com/2014/12/01/fastmail-advent-2014/">very confident in the FastMail staff</a>.</p>
-<p>But frankly this whole thing has been a nightmare (including writing this damn post, which has taken forever) and it’s a huge relief to have it sorted.</p>
   </article>
   <div class="pagination">
 <p class="pagination-older"><a href="https://robjwells.github.io/page-13/">Older posts</a></p><p class="pagination-newer"><a href="https://robjwells.github.io/page-11/">Newer posts</a></p>  </div>

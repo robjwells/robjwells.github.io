@@ -8,6 +8,8 @@
   <!-- Load my combined stylesheet -->
   <link rel="stylesheet" href="/resources/all.min.css">
 
+  <!-- Load my combined JavaScript -->
+  <script src="/resources/all.min.js" async></script>
 
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
 
@@ -62,40 +64,73 @@
 
   <article>
     <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2013/07/easy-branch-comparison-with-mercurial/">Easy branch comparison with Mercurial</a></h2>
+      <p><time datetime="2013-07-27T20:33">Saturday, July 27 2013</time></p>
+    </header>
+    <p>I’ve spent a lot of time recently learning <a href="http://git-scm.com">Git</a> and <a href="http://mercurial.selenic.com">Mercurial</a>, and trying to decide which one I prefer and want to keep using.
+Both are nice, but one thing I like about Git is how easy it is to quickly see which commits are on one branch but not another.</p>
+<p>The commands below show commits on the feature branch that aren’t present on master, and are all equivalent:</p>
+<pre><code>git log feature ^master
+git log ^master feature
+git log master..feature</code></pre>
+
+
+<p>Unfortunately doing the same with Mercurial requires a lot more typing:</p>
+<pre><code>hg log -r &quot;ancestors('feature') and not ancestors('master')&quot;
+hg log -r &quot;::'feature' and not ::'master'&quot;</code></pre>
+
+
+<p>Which is a shame, and a bit odd since Mercurial has the incoming and outgoing commands to see which commits are coming in from (or going out to) a remote repository.
+I like to think of the comparison above as a local equivalent, to see which commits are going to be pulled across branches in a merge.</p>
+<p>Thankfully this can be put right with a quick alias in your .hgrc file. This is what I’ve got in mine:</p>
+<pre><code>[alias]
+compare = log -r &quot;ancestors('$1') and not ancestors('$2')&quot;</code></pre>
+
+
+<p>It’s general enough to allow comparisons between any two commits. Named branches and bookmarks both work fine, as do revision numbers and commit hashes.</p>
+<p>What’s nice about this alias is that any <code>hg log</code> options you’d like to use can just be stuck on the end as usual, since it’s just a shortcut to that command. For example these work as you’d expect:</p>
+<pre><code>hg compare feature master
+hg compare feature master --graph
+hg compare feature master -l 20 -p</code></pre>
+  </article>
+  <article>
+    <header>
       <h2 class="mute-links"><a href="https://robjwells.github.io/2013/07/sunny-with-a-chance-of-python/">Sunny with a chance of Python</a></h2>
       <p><time datetime="2013-07-23T22:28">Tuesday, July 23 2013</time></p>
     </header>
     <p>Learning Python is the next goal that I’ve set myself, though I have put it off for a bit while I <a href="http://www.cengage.com/cgi-wadsworth/course_products_wp.pl?fid=M20b&amp;product_isbn_issn=9780495826163&amp;discipline_number=10002&amp;template=AISE">improve my maths skills</a>.</p>
 <p>But I do have one little Python script that I’ve been playing with for a while, which I first wrote to dip my toe in and see if I liked the language. (I do, very much so).</p>
 <p>It’s incredibly basic but complements my <a href="https://github.com/robjwells/weatherman">automatic weather script</a>, which saves a lot of time and tedium at work, by fetching a text summary of the weather for the entire UK.</p>
-<pre><code>#!/usr/bin/env python3
-&quot;&quot;&quot;Get a 3 to 5 day outlook for the UK from the Met Office.&quot;&quot;&quot;
-
-from urllib.request import urlopen
-from bs4 import BeautifulSoup as bs
-from subprocess import Popen, PIPE
-
-api_url = (&quot;http://datapoint.metoffice.gov.uk/public/&quot; +
-           &quot;data/txt/wxfcs/regionalforecast/xml/515&quot;)
-api_key = &quot;Your Datapoint API key here&quot;
-
-def get_weather():
-  &quot;&quot;&quot;Retrieve and parse the text summary forecast&quot;&quot;&quot;
-  raw_xml = urlopen(api_url + &quot;?key=&quot; + api_key)
-  outlook = bs(raw_xml).find(id=&quot;day3to5&quot;).get_text()
-  return outlook
-
-if __name__ == &quot;__main__&quot;:
-  # Encode and pipe outlook to pasteboard
-  outlook_bytes = get_weather().encode()
-  Popen(&quot;pbcopy&quot;, stdin=PIPE).communicate(outlook_bytes)</code></pre>
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="ch">#!/usr/bin/env python3</span>
+<span class="lineno"> 2 </span><span class="sd">&quot;&quot;&quot;Get a 3 to 5 day outlook for the UK from the Met Office.&quot;&quot;&quot;</span>
+<span class="lineno"> 3 </span>
+<span class="lineno"> 4 </span><span class="kn">from</span> <span class="nn">urllib.request</span> <span class="k">import</span> <span class="n">urlopen</span>
+<span class="lineno"> 5 </span><span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span> <span class="k">as</span> <span class="n">bs</span>
+<span class="lineno"> 6 </span><span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span>
+<span class="lineno"> 7 </span>
+<span class="lineno"> 8 </span><span class="n">api_url</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;http://datapoint.metoffice.gov.uk/public/&quot;</span> <span class="o">+</span>
+<span class="lineno"> 9 </span>           <span class="s2">&quot;data/txt/wxfcs/regionalforecast/xml/515&quot;</span><span class="p">)</span>
+<span class="lineno">10 </span><span class="n">api_key</span> <span class="o">=</span> <span class="s2">&quot;Your Datapoint API key here&quot;</span>
+<span class="lineno">11 </span>
+<span class="lineno">12 </span><span class="k">def</span> <span class="nf">get_weather</span><span class="p">():</span>
+<span class="lineno">13 </span>  <span class="sd">&quot;&quot;&quot;Retrieve and parse the text summary forecast&quot;&quot;&quot;</span>
+<span class="lineno">14 </span>  <span class="n">raw_xml</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">api_url</span> <span class="o">+</span> <span class="s2">&quot;?key=&quot;</span> <span class="o">+</span> <span class="n">api_key</span><span class="p">)</span>
+<span class="lineno">15 </span>  <span class="n">outlook</span> <span class="o">=</span> <span class="n">bs</span><span class="p">(</span><span class="n">raw_xml</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;day3to5&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+<span class="lineno">16 </span>  <span class="k">return</span> <span class="n">outlook</span>
+<span class="lineno">17 </span>
+<span class="lineno">18 </span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="lineno">19 </span>  <span class="c1"># Encode and pipe outlook to pasteboard</span>
+<span class="lineno">20 </span>  <span class="n">outlook_bytes</span> <span class="o">=</span> <span class="n">get_weather</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+<span class="lineno">21 </span>  <span class="n">Popen</span><span class="p">(</span><span class="s2">&quot;pbcopy&quot;</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span><span class="o">.</span><span class="n">communicate</span><span class="p">(</span><span class="n">outlook_bytes</span><span class="p">)</span>
+</pre></div>
 
 
 <p>As shown at the top, this is Python 3 code. I have a version written in Python 2 which is very similar. It uses the built-in ElementTree XML parser instead of the nicer Beautiful Soup used in this script as I both wanted to get my head around the interface and for reasons to do with the Python version at work.</p>
 <p>Lines 8–10 set up variables needed to access the <a href="http://www.metoffice.gov.uk/datapoint">Met Office API</a>, which is done in the <code>get_weather</code> function below.</p>
 <p>Beautiful Soup is used to parse the API response in line 16. I love its dead simple method for finding elements, especially compared to ElementTree’s insistence that you provide the XML namespace:</p>
-<pre><code>pattern = (&quot;.//{www.metoffice.gov.uk/xml/metoRegionalFcst}&quot; +
-           &quot;Period[@id='day3to5']&quot;)</code></pre>
+<div class="syntax"><pre><span></span><span class="n">pattern</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;.//{www.metoffice.gov.uk/xml/metoRegionalFcst}&quot;</span> <span class="o">+</span>
+           <span class="s2">&quot;Period[@id=&#39;day3to5&#39;]&quot;</span><span class="p">)</span>
+</pre></div>
 
 
 <p>My favourite part of the script is also the newest. If it is run directly from the command line (line 18) it pipes the forecast to the clipboard using <code>pbcopy</code>. I knew Python could start external processes but I was <em>blown away</em> by how easy this was. Previously the script printed the forecast and I used a shell alias to send it to the pasteboard. Yuck. This is much better.</p>
@@ -140,10 +175,11 @@ if __name__ == &quot;__main__&quot;:
     </header>
     <p>I had read that the modulo operator (remainder after integer division) was slow but had never had a chance to try to break it myself, until a couple of days ago. I was distracted from my <a href="http://getpython3.com/diveintopython3/">current project</a> by <a href="http://projecteuler.net">Project Euler</a>, after searching for a way to test and improve my programming and maths skills.</p>
 <p>Project Euler is a collection of problems designed to exercise those skills and its first, simplest task is to add up the multiples of 3 and 5 below 1,000, which I first solved with a fairly typical “brute-force” approach:</p>
-<pre><code>sum = 0
-for x in range(1, 1000):
-    if x % 3 == 0 or x % 5 == 0:
-        sum += x</code></pre>
+<div class="syntax"><pre><span></span><span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">sum</span> <span class="o">+=</span> <span class="n">x</span>
+</pre></div>
 
 
 <p>This iterates over the numbers 1 through 999, checking to see if there’s a remainder after dividing by 3 or 5. After finishing, I read on the problem’s forum thread of a way of achieving the result with a little more maths and without using the modulo.</p>
@@ -151,13 +187,14 @@ for x in range(1, 1000):
 <p>So I decided to kick the limit up a bit, from 999 to 999,999,999.</p>
 <p>The modulo method took 4 minutes and 24.506 seconds (264.506s) while the more mathematical approach held steady at 0.026 seconds. Over 10,000 times as fast. Yes, I double-checked the results.</p>
 <p>The modulo code was similar to that above while the other method was written like so:</p>
-<pre><code>def sum_series(multiple, top_limit):
-    mult_max = top_limit // multiple
-    return multiple * (mult_max * (mult_max + 1)) / 2
+<div class="syntax"><pre><span></span><span class="k">def</span> <span class="nf">sum_series</span><span class="p">(</span><span class="n">multiple</span><span class="p">,</span> <span class="n">top_limit</span><span class="p">):</span>
+    <span class="n">mult_max</span> <span class="o">=</span> <span class="n">top_limit</span> <span class="o">//</span> <span class="n">multiple</span>
+    <span class="k">return</span> <span class="n">multiple</span> <span class="o">*</span> <span class="p">(</span><span class="n">mult_max</span> <span class="o">*</span> <span class="p">(</span><span class="n">mult_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
 
-print(sum_series(3, 999)
-        + sum_series(5, 999)
-        - sum_series(15, 999))</code></pre>
+<span class="nb">print</span><span class="p">(</span><span class="n">sum_series</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">999</span><span class="p">)</span>
+        <span class="o">+</span> <span class="n">sum_series</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">999</span><span class="p">)</span>
+        <span class="o">-</span> <span class="n">sum_series</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">999</span><span class="p">))</span>
+</pre></div>
 
 
 <p>The <code>sum_series</code> function works out how many multiples of a given number there are between 0 and <code>top_limit</code> and adds them up.</p>
@@ -179,14 +216,15 @@ of uncommitted modified files for the name of
 the file (provided by Hazel as <code>$1</code>).</p>
 </blockquote>
 <p>It has been on my mind all day, so I decided to have a crack at it:</p>
-<pre><code>cd $(dirname $1)
-FILENAME=$(basename $1)
-GITSTATUS=$(git status -s &quot;$FILENAME&quot;)
-if [ &quot;$GITSTATUS&quot; == &quot;&quot; ]; then
-  exit 0 # Clean
-else
-  exit 1 # Dirty
-fi</code></pre>
+<div class="syntax"><pre><span></span><span class="lineno">1 </span><span class="nb">cd</span> <span class="k">$(</span>dirname <span class="nv">$1</span><span class="k">)</span>
+<span class="lineno">2 </span><span class="nv">FILENAME</span><span class="o">=</span><span class="k">$(</span>basename <span class="nv">$1</span><span class="k">)</span>
+<span class="lineno">3 </span><span class="nv">GITSTATUS</span><span class="o">=</span><span class="k">$(</span>git status -s <span class="s2">&quot;</span><span class="nv">$FILENAME</span><span class="s2">&quot;</span><span class="k">)</span>
+<span class="lineno">4 </span><span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$GITSTATUS</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+<span class="lineno">5 </span>  <span class="nb">exit</span> <span class="m">0</span> <span class="c1"># Clean</span>
+<span class="lineno">6 </span><span class="k">else</span>
+<span class="lineno">7 </span>  <span class="nb">exit</span> <span class="m">1</span> <span class="c1"># Dirty</span>
+<span class="lineno">8 </span><span class="k">fi</span>
+</pre></div>
 
 
 <div class="flag">
@@ -202,36 +240,6 @@ fi</code></pre>
 <p>Older versions of the script parsed the long <code>git status</code> output with a regular expression, which wasn’t ideal: a false negative could result if a file had the same name as a branch or the last word on a line of boilerplate output.</p>
 <p>Lastly the script checks if <code>git status</code> returned anything. An empty string counts as success since it would only contain characters if the file was dirty.</p>
 <p>The two exit lines tell Hazel whether the file passed the script’s check (<code>exit 0</code>) or failed (<code>exit 1</code>).</p>
-  </article>
-  <article>
-    <header>
-      <h2 class="mute-links"><a href="https://robjwells.github.io/2013/06/gating-hazel-with-git-status/">Gating Hazel with git status</a></h2>
-      <p><time datetime="2013-06-25T00:52">Tuesday, June 25 2013</time></p>
-    </header>
-    <p>The JavaScript and CSS files for this site live on Amazon S3, but getting them up there can be a chore once you consider compression and uploading with the right headers.</p>
-<p>That wasn’t too difficult to sort out with AppleScript and Transmit but I wanted to avoid having to start the script manually as well.</p>
-<p><a href="http://www.noodlesoft.com/hazel.php">Hazel</a>, the housekeeper for your Mac, can keep watch and is ideal for this — except when you’re still working on the file. It’s going to get under your feet if you tell it to run its rules once the modification date is after the last match.</p>
-<p>If the files are under version control the commit status is an ideal way to signal whether or not a file is ready to go. Combine that with Hazel’s ability to use a shell script in its conditions and you end up with something like this:</p>
-<pre><code>cd ~/Sites/robjwells
-GITSTATUS=$(git status | head -n 2 | tail -n 1 | grep -o &quot;^nothing&quot;)
-if [ &quot;$GITSTATUS&quot; == &quot;nothing&quot; ]; then
-    exit 0
-else
-    exit 1
-fi</code></pre>
-
-
-<p>(This is my first time writing about a purely shell script, so please be gentle.)</p>
-<p>First it moves into the directory in question, which is a git repo.
-Next it calls <code>git status</code>, extracts the second line of the output (<code>head</code> and <code>tail</code>) and checks if it starts with “nothing”. That’s because the status command returns this on a clean repo:</p>
-<pre><code># On branch master
-nothing to commit, working directory clean</code></pre>
-
-
-<p>If <code>grep</code> finds “nothing” it gets stuck in <code>$GITSTATUS</code>, which is compared to the string you would expect from a clean repo. If it matches the script exits with a success status code, which tells Hazel that the file has passed the check.</p>
-<p>(The -o flag makes <code>grep</code> only return the match, instead of the whole line.)</p>
-<p>Initially I did this check in the AppleScript that was applied to the file once it passed date and extension checks. But this meant that Hazel considered it to have matched successfully and would not run the rules on the file until it triggered the date conditions again. The lesson here is that checks must be separate from actions. Thankfully Hazel makes it easy to do that.</p>
-<p>If you work with repositories which are rarely “all clear” as in this case, you could improve this snippet by <a href="/2013/06/more-precise-git-status-gating/">checking the status tool’s list of uncommitted modified files for the name of the file</a> (provided by Hazel as <code>$1</code>).</p>
   </article>
   <div class="pagination">
 <p class="pagination-older"><a href="https://robjwells.github.io/page-19/">Older posts</a></p><p class="pagination-newer"><a href="https://robjwells.github.io/page-17/">Newer posts</a></p>  </div>

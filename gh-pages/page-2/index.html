@@ -8,6 +8,8 @@
   <!-- Load my combined stylesheet -->
   <link rel="stylesheet" href="/resources/all.min.css">
 
+  <!-- Load my combined JavaScript -->
+  <script src="/resources/all.min.js" async></script>
 
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
 
@@ -60,6 +62,78 @@
 
 <main role="main">
 
+  <article>
+    <header>
+      <h2 class="mute-links"><a href="https://robjwells.github.io/2018/05/horizontally-scroll-a-table-in-html/">Horizontally scroll a table in HTML</a></h2>
+      <p><time datetime="2018-05-11T23:35">Friday, May 11 2018</time></p>
+    </header>
+    <p>After I published <a href="https://www.robjwells.com/2018/05/table-manipulation-with-r/">my post about manipulating tables (of data) in R</a>, I noticed that there was something amiss with the HTML table in that post showing an example section of our newsroom rota.</p>
+<p class="full-width">
+    <img
+        src="/images/2018-05-11-table-fixed.png"
+        alt="A screenshot showing a table laid out with table-layout: fixed in CSS, with many cells wrapping with scrollbars in an unreadable fashion."
+        />
+</p>
+
+<p>When I first wrote the CSS for this site, <a href="https://www.robjwells.com/2013/07/five-different-kinds-of-grey/">roughly five years ago</a>, I had HTML tables set so that the whole table would scroll were it to be too wide for its containing column. At least, I’m pretty sure it worked like that.</p>
+<p>Anyway, as you can see above, it doesn’t work like that now. The table there is laid out with the following CSS:</p>
+<div class="syntax"><pre><span></span><span class="nt">table</span> <span class="p">{</span>
+  <span class="k">table-layout</span><span class="p">:</span> <span class="kc">fixed</span><span class="p">;</span>
+  <span class="k">width</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Which has the effect of restricting the table size to 100%, and doing odd things to the cells if there’s too much to fit in whatever width 100% happens to be.</p>
+<p>As an attempted quick fix, I removed the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout"><code>table-layout</code></a> property so that it would inherit the default, <code>auto</code>. The width is still 100% to provide some consistency, rather than having an odd assortment of table widths.</p>
+<p>So the CSS is now this:</p>
+<div class="syntax"><pre><span></span><span class="nt">table</span> <span class="p">{</span>
+  <span class="k">width</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>This has the effect of having the table overflow the container horizontally if the content is too wide, like so:</p>
+<p class="full-width">
+    <img
+        src="/images/2018-05-11-table-auto.png"
+        alt="A screenshot showing a table laid out with table-layout: auto in CSS, with the table overflowing its container horizontally."
+        />
+</p>
+
+<p>Which is perhaps more readable if pretty ugly. And not what I wanted: to scroll the entire table within its container.</p>
+<p>I said attempted earlier because I, er, never deployed the change on the site (it’s been a busy couple of weeks, contrary to the post tempo).</p>
+<p>In the meantime, I stumbled across a fix by opening Safari’s reader mode, in which tables scroll horizontally within their container! The secret? The table is wrapped in an enclosing <code>div</code>, which has its <code>overflow-x</code> property set to <code>auto</code>, and then the table scrolls within the div.</p>
+<p>Here’s what that looks like when rendered:</p>
+<p class="full-width">
+    <img
+        src="/images/2018-05-11-table-div.png"
+        alt="A screenshot showing a table laid out and scrolling within a containing div with its overflow-x property set to auto."
+        />
+</p>
+
+<p>Here’s the HTML:</p>
+<div class="syntax"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;table-container&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">table</span><span class="p">&gt;</span>
+  …
+  <span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+
+
+<p>And here’s the CSS:</p>
+<div class="syntax"><pre><span></span><span class="nt">table</span> <span class="p">{</span>
+  <span class="k">width</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">.</span><span class="nc">table-container</span> <span class="p">{</span>
+  <span class="k">overflow-x</span><span class="p">:</span> <span class="kc">auto</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>You want <code>auto</code> instead of <code>scroll</code> as the latter shows the scrollbar all the time. </p>
+  </article>
   <article>
     <header>
       <h2 class="mute-links"><a href="https://robjwells.github.io/2018/05/table-manipulation-with-r/">Table manipulation with R</a></h2>
@@ -132,23 +206,26 @@ Thu May 10    16pp    Rob Wells</code></pre>
 <p>Thankfully, R (and the <a href="https://www.tidyverse.org">Tidyverse</a> particularly) is a great environment in which to wrangle your data, and to do so fairly quickly. All the code below was pulled together in about 30 minutes total (with a good 10 minutes of reading documentation and fixing errors in the original source data). Writing this post has taken much longer.</p>
 <p>In our example below we’re going to have four workers who each cover the chief sub at different times. Here we’re going make “Dan Taylor” the chief sub. Congratulations, Dan!</p>
 <p>First we’ll pull in our libraries.</p>
-<pre><code>library(tidyverse)
-library(lubridate)
-library(stringr)</code></pre>
+<div class="syntax"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">lubridate</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">stringr</span><span class="p">)</span>
+</pre></div>
 
 
 <p>Then we’ll read in the data, which is saved in a TSV file after copying and pasting from the spreadsheet into a text document. We’ll select only the production days and the unnamed first column (named X1 on import), excluding Saturdays and the TOIL columns.</p>
-<pre><code>wide &lt;- read_tsv('chsub.tsv') %&gt;%
-    select(matches('^(Mon|Tue|Wed|Thu|Fri|Sun) |X1')) %&gt;%
-    rename(name = X1)</code></pre>
+<div class="syntax"><pre><span></span><span class="n">wide</span> <span class="o">&lt;-</span> <span class="nf">read_tsv</span><span class="p">(</span><span class="s">&#39;chsub.tsv&#39;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+    <span class="nf">select</span><span class="p">(</span><span class="nf">matches</span><span class="p">(</span><span class="s">&#39;^(Mon|Tue|Wed|Thu|Fri|Sun) |X1&#39;</span><span class="p">))</span> <span class="o">%&gt;%</span>
+    <span class="nf">rename</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">X1</span><span class="p">)</span>
+</pre></div>
 
 
 <p>Then we’ll use a <a href="http://tidyr.tidyverse.org">tidyr</a> function, <a href="http://tidyr.tidyverse.org/reference/gather.html"><code>gather()</code></a>, to transform our wide format into a tall one by selecting the date columns. It’s easier to get a feel for <code>gather()</code> by looking at the output.</p>
-<pre><code>tidy &lt;- wide %&gt;%
-    gather(matches('^(Mon|Tue|Wed|Thu|Fri|Sun) '),
-           key = date,
-           value = status)
-head(tidy)</code></pre>
+<div class="syntax"><pre><span></span><span class="n">tidy</span> <span class="o">&lt;-</span> <span class="n">wide</span> <span class="o">%&gt;%</span>
+    <span class="nf">gather</span><span class="p">(</span><span class="nf">matches</span><span class="p">(</span><span class="s">&#39;^(Mon|Tue|Wed|Thu|Fri|Sun) &#39;</span><span class="p">),</span>
+           <span class="n">key</span> <span class="o">=</span> <span class="n">date</span><span class="p">,</span>
+           <span class="n">value</span> <span class="o">=</span> <span class="n">status</span><span class="p">)</span>
+<span class="nf">head</span><span class="p">(</span><span class="n">tidy</span><span class="p">)</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
@@ -166,15 +243,16 @@ head(tidy)</code></pre>
 
 <p>We now have a row for each person for each day, along with their “status” for the day.</p>
 <p>But Dan doesn’t have his chief sub days marked, as it would be nearly every day. Let’s split out Dan’s rows and replace the empty cells with <code>Ch Sub</code>, the same status string used by everyone else. Then we’ll combine the filled-out Dan rows with all the non-Dan rows from the original data frame.</p>
-<pre><code>dan_replaced &lt;- tidy %&gt;%
-    filter(name == 'Dan Taylor') %&gt;%
-    replace_na(list(status = 'Ch Sub'))
+<div class="syntax"><pre><span></span><span class="n">dan_replaced</span> <span class="o">&lt;-</span> <span class="n">tidy</span> <span class="o">%&gt;%</span>
+    <span class="nf">filter</span><span class="p">(</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;Dan Taylor&#39;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+    <span class="nf">replace_na</span><span class="p">(</span><span class="nf">list</span><span class="p">(</span><span class="n">status</span> <span class="o">=</span> <span class="s">&#39;Ch Sub&#39;</span><span class="p">))</span>
 
-all &lt;- tidy %&gt;%
-    filter(name != 'Dan Taylor') %&gt;%
-    rbind(dan_replaced)
+<span class="n">all</span> <span class="o">&lt;-</span> <span class="n">tidy</span> <span class="o">%&gt;%</span>
+    <span class="nf">filter</span><span class="p">(</span><span class="n">name</span> <span class="o">!=</span> <span class="s">&#39;Dan Taylor&#39;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+    <span class="nf">rbind</span><span class="p">(</span><span class="n">dan_replaced</span><span class="p">)</span>
 
-tail(all)</code></pre>
+<span class="nf">tail</span><span class="p">(</span><span class="n">all</span><span class="p">)</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
@@ -191,19 +269,21 @@ tail(all)</code></pre>
 
 
 <p>Great. But poor Dan, he’s working every day over New Year 2018-2019. In reality, I haven’t done that far on the rota, just up to October. We’ll convert all those dates now, and filter out all the newly missing entries where the month was outside our range.</p>
-<pre><code>dated &lt;- all %&gt;%
-    mutate(
-        date = dmy(str_c(str_extract(date, '\\d+/[4-9]'), '/2018'))
-    ) %&gt;%
-    filter(!is.na(date))</code></pre>
+<div class="syntax"><pre><span></span><span class="n">dated</span> <span class="o">&lt;-</span> <span class="n">all</span> <span class="o">%&gt;%</span>
+    <span class="nf">mutate</span><span class="p">(</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="nf">dmy</span><span class="p">(</span><span class="nf">str_c</span><span class="p">(</span><span class="nf">str_extract</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="s">&#39;\\d+/[4-9]&#39;</span><span class="p">),</span> <span class="s">&#39;/2018&#39;</span><span class="p">))</span>
+    <span class="p">)</span> <span class="o">%&gt;%</span>
+    <span class="nf">filter</span><span class="p">(</span><span class="o">!</span><span class="nf">is.na</span><span class="p">(</span><span class="n">date</span><span class="p">))</span>
+</pre></div>
 
 
 <p>Let’s get only the chief sub-related rows and sort them by date.</p>
-<pre><code>chsub &lt;- dated %&gt;%
-    filter(str_detect(status, 'Ch Sub')) %&gt;%
-    arrange(date) %&gt;%
-    select(date, chief_sub = name)
-head(chsub)</code></pre>
+<div class="syntax"><pre><span></span><span class="n">chsub</span> <span class="o">&lt;-</span> <span class="n">dated</span> <span class="o">%&gt;%</span>
+    <span class="nf">filter</span><span class="p">(</span><span class="nf">str_detect</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="s">&#39;Ch Sub&#39;</span><span class="p">))</span> <span class="o">%&gt;%</span>
+    <span class="nf">arrange</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">%&gt;%</span>
+    <span class="nf">select</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">chief_sub</span> <span class="o">=</span> <span class="n">name</span><span class="p">)</span>
+<span class="nf">head</span><span class="p">(</span><span class="n">chsub</span><span class="p">)</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
@@ -220,22 +300,24 @@ head(chsub)</code></pre>
 
 
 <p>Exactly what we want. Now time for a bit of formatting to make this giant list somewhat acceptable for other people. This is also where my knowledge of R runs out.</p>
-<pre><code>formatted &lt;- str_c(
-    format(chsub$date, '%a %Y-%m-%d'),
-           chsub$chief_sub,
-           sep = '  ')
+<div class="syntax"><pre><span></span><span class="n">formatted</span> <span class="o">&lt;-</span> <span class="nf">str_c</span><span class="p">(</span>
+    <span class="nf">format</span><span class="p">(</span><span class="n">chsub</span><span class="o">$</span><span class="n">date</span><span class="p">,</span> <span class="s">&#39;%a %Y-%m-%d&#39;</span><span class="p">),</span>
+           <span class="n">chsub</span><span class="o">$</span><span class="n">chief_sub</span><span class="p">,</span>
+           <span class="n">sep</span> <span class="o">=</span> <span class="s">&#39;  &#39;</span><span class="p">)</span>
 
-fd &lt;- file('output.txt')
-writeLines(formatted, fd)
-close(fd)</code></pre>
+<span class="n">fd</span> <span class="o">&lt;-</span> <span class="nf">file</span><span class="p">(</span><span class="s">&#39;output.txt&#39;</span><span class="p">)</span>
+<span class="nf">writeLines</span><span class="p">(</span><span class="n">formatted</span><span class="p">,</span> <span class="n">fd</span><span class="p">)</span>
+<span class="nf">close</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
+</pre></div>
 
 
 <p>So we’ll switch to Python, printing a blank line between each production week (of six days).</p>
-<pre><code>with open('output.txt') as f:
-    for idx, line in enumerate(f.readlines()):
-        if idx % 6 == 0:
-            print()
-        print(line, end='')</code></pre>
+<div class="syntax"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;output.txt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">%</span> <span class="mi">6</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
@@ -278,15 +360,16 @@ Fri 2018-08-31  Dan Taylor</code></pre>
 <p>In that post I mentioned how pleasant it is working in <a href="https://www.rstudio.com/products/RStudio/">R Studio</a> in a <a href="https://rmarkdown.rstudio.com">R Markdown</a> document. It really is, and I find the R Markdown way of mixing prose and code much more natural and fluid than <a href="https://jupyter.org">Jupyter notebooks</a>, which I like the idea of but find the block-based method a bit awkward.</p>
 <p>The biggest problem with R Markdown was fitting it into my, admittedly arcane, <a href="https://github.com/robjwells/majestic">blogging system</a>. To do so, I’ve cooked up <a href="https://github.com/robjwells/primaryunit/blob/3be7c91007f10946e60fecb3c2007f85080d3950/posts/2018/04/decode_blocks.py">a short Python script</a> to transform the Markdown output from R Studio and <a href="https://yihui.name/knitr/">knitr</a>.</p>
 <p>Right now, I’ve settled on this set of output options in the YAML front-matter:</p>
-<pre><code>md_document:
-    variant: markdown_strict+fenced_code_blocks
-    preserve_yaml: true
-    fig_width: 7.5
-    fig_height: 5
-    dev: svg
-    pandoc_args: [
-        &quot;--wrap&quot;, &quot;preserve&quot;
-    ]</code></pre>
+<div class="syntax"><pre><span></span><span class="nt">md_document</span><span class="p">:</span>
+    <span class="nt">variant</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">markdown_strict+fenced_code_blocks</span>
+    <span class="nt">preserve_yaml</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="nt">fig_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">7.5</span>
+    <span class="nt">fig_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+    <span class="nt">dev</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">svg</span>
+    <span class="nt">pandoc_args</span><span class="p">:</span> <span class="p p-Indicator">[</span>
+        <span class="s">&quot;--wrap&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;preserve&quot;</span>
+    <span class="p p-Indicator">]</span>
+</pre></div>
 
 
 <p>Now I don’t actually use fenced (<code>~~~~</code>) code blocks in Markdown, instead I just use regular Markdown indented code blocks with a header line (<code>python:</code>) at the top. But I include that extension in the Markdown variant to make it easier to transform code blocks later.</p>
@@ -315,34 +398,37 @@ Fri 2018-08-31  Dan Taylor</code></pre>
 <h3>Setup</h3>
 <p>To start with we’re going to load some libraries to make our life easier. The <a href="https://www.tidyverse.org">Tidyverse</a> wraps up several helpful packages; lubridate has some handy date-handling functions; stringr is helpful for, er, strings; patchwork allows you to easily combine plots into one figure; ggalt provides an extra geom (<code>geom_encircle()</code>) that we’ll use in a bit. Forgive me for not making clear where functions come from below as, like Swift, R imports into the global namespace.</p>
 <p>Not shown is my customised ggplot2 theme, which you can find if you <a href="https://github.com/robjwells/primaryunit/tree/master/posts/2018/04">look at the original .Rmd source file</a>.</p>
-<pre><code>library(tidyverse)
-library(lubridate)
-library(stringr)
-library(patchwork)
-library(ggalt)
+<div class="syntax"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">lubridate</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">stringr</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">patchwork</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">ggalt</span><span class="p">)</span>
 
-# Moving average function from https://stackoverflow.com/a/4862334/1845155
-mav &lt;- function(x, n) {
-    stats::filter(x, rep(1/n, n), sides = 1)
-}</code></pre>
+<span class="c1"># Moving average function from https://stackoverflow.com/a/4862334/1845155</span>
+<span class="n">mav</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">stats</span><span class="o">::</span><span class="nf">filter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nf">rep</span><span class="p">(</span><span class="m">1</span><span class="o">/</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">sides</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
 
 <h3>Data import</h3>
 <p>I keep all the CSV files as received, just dating the filenames with the date I got them. (Sorry, I won’t be sharing the data.) Let’s load all the files:</p>
-<pre><code>oyster_filenames &lt;- dir(
-    '~/Documents/Oyster card/Journey history CSVs/',
-    pattern = '*.csv',
-    full.names = TRUE)</code></pre>
+<div class="syntax"><pre><span></span><span class="n">oyster_filenames</span> <span class="o">&lt;-</span> <span class="nf">dir</span><span class="p">(</span>
+    <span class="s">&#39;~/Documents/Oyster card/Journey history CSVs/&#39;</span><span class="p">,</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="s">&#39;*.csv&#39;</span><span class="p">,</span>
+    <span class="n">full.names</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
 
 <p>There are 109 CSV files that we need to open, load, and combine.</p>
-<pre><code>oyster_data &lt;- oyster_filenames %&gt;%
-    map(~ read_csv(., skip = 1)) %&gt;%
-    reduce(rbind)</code></pre>
+<div class="syntax"><pre><span></span><span class="n">oyster_data</span> <span class="o">&lt;-</span> <span class="n">oyster_filenames</span> <span class="o">%&gt;%</span>
+    <span class="nf">map</span><span class="p">(</span><span class="o">~</span> <span class="nf">read_csv</span><span class="p">(</span><span class="n">.,</span> <span class="n">skip</span> <span class="o">=</span> <span class="m">1</span><span class="p">))</span> <span class="o">%&gt;%</span>
+    <span class="nf">reduce</span><span class="p">(</span><span class="n">rbind</span><span class="p">)</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
@@ -350,7 +436,8 @@ mav &lt;- function(x, n) {
 <p>Here we’re piping <code>oyster_filenames</code> through <code>map</code>, where we use an R formula to supply arguments to <code>read_csv</code> to skip the header line in each file. Finally we <code>reduce</code> the 109 data frames by binding them by row.</p>
 <h3>Poking around the data</h3>
 <p>We can take a look at the data to get an idea of its structure:</p>
-<pre><code>head(oyster_data)</code></pre>
+<div class="syntax"><pre><span></span><span class="nf">head</span><span class="p">(</span><span class="n">oyster_data</span><span class="p">)</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
@@ -371,9 +458,10 @@ mav &lt;- function(x, n) {
 <p>Actions taken “outside” of the card need to be “picked up” by the card by tapping on an Oyster card reader. Here we can see a balance increase being collected, mixed in with the journey details. (Funnily enough, TfL accidentally cancelled my automatic top-up a couple of months ago, but that was never applied to my account as I didn’t use the card before the action expired.)</p>
 <p>But we’re only interested in rail journeys, one station to another, with a start and finish time.</p>
 <p>Let’s see if the notes field can give us any guidance of what we may need to exclude.</p>
-<pre><code>oyster_data %&gt;%
-    filter(!is.na(Note)) %&gt;%
-    count(Note, sort = TRUE)</code></pre>
+<div class="syntax"><pre><span></span><span class="n">oyster_data</span> <span class="o">%&gt;%</span>
+    <span class="nf">filter</span><span class="p">(</span><span class="o">!</span><span class="nf">is.na</span><span class="p">(</span><span class="n">Note</span><span class="p">))</span> <span class="o">%&gt;%</span>
+    <span class="nf">count</span><span class="p">(</span><span class="n">Note</span><span class="p">,</span> <span class="n">sort</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
@@ -389,10 +477,11 @@ mav &lt;- function(x, n) {
 
 
 <p>OK, not much here, but there are some troublesome rail journeys missing either a starting or finishing station. The “incomplete journey” line also hints at something to be aware of:</p>
-<pre><code>oyster_data %&gt;%
-    filter(str_detect(Note, 'This incomplete journey')) %&gt;%
-    select(`Journey/Action`) %&gt;%
-    first()</code></pre>
+<div class="syntax"><pre><span></span><span class="n">oyster_data</span> <span class="o">%&gt;%</span>
+    <span class="nf">filter</span><span class="p">(</span><span class="nf">str_detect</span><span class="p">(</span><span class="n">Note</span><span class="p">,</span> <span class="s">&#39;This incomplete journey&#39;</span><span class="p">))</span> <span class="o">%&gt;%</span>
+    <span class="nf">select</span><span class="p">(</span><span class="n">`Journey/Action`</span><span class="p">)</span> <span class="o">%&gt;%</span>
+    <span class="nf">first</span><span class="p">()</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
@@ -402,15 +491,16 @@ mav &lt;- function(x, n) {
 
 <p>Note the angle brackets surrounding the substituted station. We’ll come back to this later.</p>
 <p>A missing start or finish time is a giveaway for oddities, which overlaps somewhat but not completely with Journey/Action fields that don’t match the pattern of <code>{station} to {station}</code>. Let’s fish those out and have a look at the abbreviated descriptions:</p>
-<pre><code>stations_regex &lt;- '^&lt;?([^&gt;]+)&gt;? to &lt;?([^&gt;]+)&gt;?$'
+<div class="syntax"><pre><span></span><span class="n">stations_regex</span> <span class="o">&lt;-</span> <span class="s">&#39;^&lt;?([^&gt;]+)&gt;? to &lt;?([^&gt;]+)&gt;?$&#39;</span>
 
-oyster_data %&gt;%
-    filter(
-        is.na(`Start Time`) |
-        is.na(`End Time`) |
-        !str_detect(`Journey/Action`, stations_regex)) %&gt;%
-    mutate(abbr = str_extract(`Journey/Action`, '^[^,]+')) %&gt;%
-    count(abbr, sort = TRUE)</code></pre>
+<span class="n">oyster_data</span> <span class="o">%&gt;%</span>
+    <span class="nf">filter</span><span class="p">(</span>
+        <span class="nf">is.na</span><span class="p">(</span><span class="n">`Start Time`</span><span class="p">)</span> <span class="o">|</span>
+        <span class="nf">is.na</span><span class="p">(</span><span class="n">`End Time`</span><span class="p">)</span> <span class="o">|</span>
+        <span class="o">!</span><span class="nf">str_detect</span><span class="p">(</span><span class="n">`Journey/Action`</span><span class="p">,</span> <span class="n">stations_regex</span><span class="p">))</span> <span class="o">%&gt;%</span>
+    <span class="nf">mutate</span><span class="p">(</span><span class="n">abbr</span> <span class="o">=</span> <span class="nf">str_extract</span><span class="p">(</span><span class="n">`Journey/Action`</span><span class="p">,</span> <span class="s">&#39;^[^,]+&#39;</span><span class="p">))</span> <span class="o">%&gt;%</span>
+    <span class="nf">count</span><span class="p">(</span><span class="n">abbr</span><span class="p">,</span> <span class="n">sort</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
@@ -433,12 +523,13 @@ oyster_data %&gt;%
 
 <h3>Tidying the data</h3>
 <p>All these should be filtered out of the data for analysis. (The two unknown transactions appear to be two halves of my old commute. Strange.)</p>
-<pre><code>rail_journeys &lt;- oyster_data %&gt;%
-    # Note the !() below to invert the earlier filter
-    filter(!(
-        is.na(`Start Time`) |
-        is.na(`End Time`) |
-        !str_detect(`Journey/Action`, stations_regex)))</code></pre>
+<div class="syntax"><pre><span></span><span class="n">rail_journeys</span> <span class="o">&lt;-</span> <span class="n">oyster_data</span> <span class="o">%&gt;%</span>
+    <span class="c1"># Note the !() below to invert the earlier filter</span>
+    <span class="nf">filter</span><span class="p">(</span><span class="o">!</span><span class="p">(</span>
+        <span class="nf">is.na</span><span class="p">(</span><span class="n">`Start Time`</span><span class="p">)</span> <span class="o">|</span>
+        <span class="nf">is.na</span><span class="p">(</span><span class="n">`End Time`</span><span class="p">)</span> <span class="o">|</span>
+        <span class="o">!</span><span class="nf">str_detect</span><span class="p">(</span><span class="n">`Journey/Action`</span><span class="p">,</span> <span class="n">stations_regex</span><span class="p">)))</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
@@ -451,30 +542,31 @@ oyster_data %&gt;%
 <li>All money-related fields should be dropped except for “charge” (the journey fare).</li>
 </ul>
 <p>Let’s have a crack at it, proceeding in that order:</p>
-<pre><code>tidy_journeys &lt;- rail_journeys %&gt;%
-    mutate(
-        start = dmy_hms(
-            str_c(Date, `Start Time`, sep=' '),
-            tz = 'Europe/London'),
-        end = dmy_hms(
-            str_c(Date, `End Time`, sep=' '),
-            tz = 'Europe/London') +
-            # Add an extra day if the journey ends “earlier” than the start
-            days(1 * (`End Time` &lt; `Start Time`)),
-        # Let’s add a duration to make our lives easier
-        duration = end - start,
+<div class="syntax"><pre><span></span><span class="n">tidy_journeys</span> <span class="o">&lt;-</span> <span class="n">rail_journeys</span> <span class="o">%&gt;%</span>
+    <span class="nf">mutate</span><span class="p">(</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="nf">dmy_hms</span><span class="p">(</span>
+            <span class="nf">str_c</span><span class="p">(</span><span class="n">Date</span><span class="p">,</span> <span class="n">`Start Time`</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">),</span>
+            <span class="n">tz</span> <span class="o">=</span> <span class="s">&#39;Europe/London&#39;</span><span class="p">),</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="nf">dmy_hms</span><span class="p">(</span>
+            <span class="nf">str_c</span><span class="p">(</span><span class="n">Date</span><span class="p">,</span> <span class="n">`End Time`</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">),</span>
+            <span class="n">tz</span> <span class="o">=</span> <span class="s">&#39;Europe/London&#39;</span><span class="p">)</span> <span class="o">+</span>
+            <span class="c1"># Add an extra day if the journey ends “earlier” than the start</span>
+            <span class="nf">days</span><span class="p">(</span><span class="m">1</span> <span class="o">*</span> <span class="p">(</span><span class="n">`End Time`</span> <span class="o">&lt;</span> <span class="n">`Start Time`</span><span class="p">)),</span>
+        <span class="c1"># Let’s add a duration to make our lives easier</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">,</span>
 
-        enter = str_match(`Journey/Action`, stations_regex)[,2],
-        exit = str_match(`Journey/Action`, stations_regex)[,3]
-    ) %&gt;%
-    select(
-        start, end, duration,
-        enter, exit,
-        fare = Charge
-    ) %&gt;%
-    # Sorting solely to correct the slightly odd example output
-    arrange(start)
-head(tidy_journeys)</code></pre>
+        <span class="n">enter</span> <span class="o">=</span> <span class="nf">str_match</span><span class="p">(</span><span class="n">`Journey/Action`</span><span class="p">,</span> <span class="n">stations_regex</span><span class="p">)</span><span class="n">[</span><span class="p">,</span><span class="m">2</span><span class="n">]</span><span class="p">,</span>
+        <span class="n">exit</span> <span class="o">=</span> <span class="nf">str_match</span><span class="p">(</span><span class="n">`Journey/Action`</span><span class="p">,</span> <span class="n">stations_regex</span><span class="p">)</span><span class="n">[</span><span class="p">,</span><span class="m">3</span><span class="n">]</span>
+    <span class="p">)</span> <span class="o">%&gt;%</span>
+    <span class="nf">select</span><span class="p">(</span>
+        <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span>
+        <span class="n">enter</span><span class="p">,</span> <span class="n">exit</span><span class="p">,</span>
+        <span class="n">fare</span> <span class="o">=</span> <span class="n">Charge</span>
+    <span class="p">)</span> <span class="o">%&gt;%</span>
+    <span class="c1"># Sorting solely to correct the slightly odd example output</span>
+    <span class="nf">arrange</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+<span class="nf">head</span><span class="p">(</span><span class="n">tidy_journeys</span><span class="p">)</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
@@ -496,14 +588,15 @@ head(tidy_journeys)</code></pre>
 <p>Looking back, it’s not tremendously helpful, but it’s a starting point. (In addition, while that plot is labelled as showing a six-week average, the code computes <a href="https://github.com/robjwells/primaryunit/blob/master/posts/2016/09/analyse_journey_history.py#L168">an eight-week average</a>, and a quick count of the points preceding the average line confirms it.)</p>
 <p>But there’s a problem with the data: they record journeys made, not the absence of any journeys (obviously). If we’re to accurately plot weekly spending, we need to include weeks where no journeys were made and no money spent.</p>
 <p>First, let’s make a data frame containing every <a href="https://en.wikipedia.org/wiki/ISO_week_date">ISO week</a> from the earliest journey in our data to the most recent.</p>
-<pre><code>blank_weeks &lt;- seq(min(tidy_journeys$start),
-    max(tidy_journeys$end),
-    by = '1 week') %&gt;%
-    tibble(
-        start = .,
-        week = format(., '%G-W%V')
-    )
-head(blank_weeks)</code></pre>
+<div class="syntax"><pre><span></span><span class="n">blank_weeks</span> <span class="o">&lt;-</span> <span class="nf">seq</span><span class="p">(</span><span class="nf">min</span><span class="p">(</span><span class="n">tidy_journeys</span><span class="o">$</span><span class="n">start</span><span class="p">),</span>
+    <span class="nf">max</span><span class="p">(</span><span class="n">tidy_journeys</span><span class="o">$</span><span class="n">end</span><span class="p">),</span>
+    <span class="n">by</span> <span class="o">=</span> <span class="s">&#39;1 week&#39;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+    <span class="nf">tibble</span><span class="p">(</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">.,</span>
+        <span class="n">week</span> <span class="o">=</span> <span class="nf">format</span><span class="p">(</span><span class="n">.,</span> <span class="s">&#39;%G-W%V&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="nf">head</span><span class="p">(</span><span class="n">blank_weeks</span><span class="p">)</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
@@ -521,19 +614,21 @@ head(blank_weeks)</code></pre>
 
 <p>The format string uses the ISO week year (%G) and the ISO week number (%V), which may differ from what you might intuitively expect. I’ve included a somewhat arbitrary start time, as it’s a bit easier to plot and label datetimes rather than the year-week strings.</p>
 <p>Now we need to summarise our actual journey data, collecting the total fare for each ISO week. We’ll use <code>group_by()</code> and <code>summarise()</code> — two tools that took me a few tries to get a handle on. Here <code>summarise()</code> works group-wise based on the result of <code>group_by()</code>; you don’t have to pass the group into the <code>summarise()</code> call, just specify the value you want summarised and how.</p>
-<pre><code>real_week_totals &lt;- tidy_journeys %&gt;%
-    group_by(week = format(start, '%G-W%V')) %&gt;%
-    summarise(total = sum(fare))</code></pre>
+<div class="syntax"><pre><span></span><span class="n">real_week_totals</span> <span class="o">&lt;-</span> <span class="n">tidy_journeys</span> <span class="o">%&gt;%</span>
+    <span class="nf">group_by</span><span class="p">(</span><span class="n">week</span> <span class="o">=</span> <span class="nf">format</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="s">&#39;%G-W%V&#39;</span><span class="p">))</span> <span class="o">%&gt;%</span>
+    <span class="nf">summarise</span><span class="p">(</span><span class="n">total</span> <span class="o">=</span> <span class="nf">sum</span><span class="p">(</span><span class="n">fare</span><span class="p">))</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
 
 <p>That done, we can use an SQL-like join operation to take every week in our giant list and match it against the week summaries from our real data. The join leaves missing values (<code>NA</code>) in the total column for weeks where no journeys were made (and so weren’t present in the data to summarise) so we replace them with zero.</p>
-<pre><code>complete_week_totals &lt;- left_join(blank_weeks,
-                                  real_week_totals,
-                                  by = 'week') %&gt;%
-    replace_na(list(total = 0))
-tail(complete_week_totals)</code></pre>
+<div class="syntax"><pre><span></span><span class="n">complete_week_totals</span> <span class="o">&lt;-</span> <span class="nf">left_join</span><span class="p">(</span><span class="n">blank_weeks</span><span class="p">,</span>
+                                  <span class="n">real_week_totals</span><span class="p">,</span>
+                                  <span class="n">by</span> <span class="o">=</span> <span class="s">&#39;week&#39;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+    <span class="nf">replace_na</span><span class="p">(</span><span class="nf">list</span><span class="p">(</span><span class="n">total</span> <span class="o">=</span> <span class="m">0</span><span class="p">))</span>
+<span class="nf">tail</span><span class="p">(</span><span class="n">complete_week_totals</span><span class="p">)</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
@@ -550,38 +645,39 @@ tail(complete_week_totals)</code></pre>
 
 
 <p>With this summary frame assembled, we can now plot the totals. I’m also going to mark roughly when I moved house so we can try to see if there’s any particular shift.</p>
-<pre><code>house_move &lt;- as.POSIXct('2016-08-01')
-pound_scale &lt;- scales::dollar_format(prefix = '£')
+<div class="syntax"><pre><span></span><span class="n">house_move</span> <span class="o">&lt;-</span> <span class="nf">as.POSIXct</span><span class="p">(</span><span class="s">&#39;2016-08-01&#39;</span><span class="p">)</span>
+<span class="n">pound_scale</span> <span class="o">&lt;-</span> <span class="n">scales</span><span class="o">::</span><span class="nf">dollar_format</span><span class="p">(</span><span class="n">prefix</span> <span class="o">=</span> <span class="s">&#39;£&#39;</span><span class="p">)</span>
 
-weeks_for_avg &lt;- 8
+<span class="n">weeks_for_avg</span> <span class="o">&lt;-</span> <span class="m">8</span>
 
-ggplot(data = complete_week_totals,
-       mapping = aes(x = start, y = total)) +
-    geom_vline(
-        xintercept = house_move,
-        colour = rjw_grey,
-        alpha = 0.75) +
-    geom_point(
-        colour = rjw_blue,
-        size = 0.75) +
-    geom_line(
-        mapping = aes(y = mav(complete_week_totals$total,
-                              weeks_for_avg)),
-        colour = rjw_red) +
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">complete_week_totals</span><span class="p">,</span>
+       <span class="n">mapping</span> <span class="o">=</span> <span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">start</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">total</span><span class="p">))</span> <span class="o">+</span>
+    <span class="nf">geom_vline</span><span class="p">(</span>
+        <span class="n">xintercept</span> <span class="o">=</span> <span class="n">house_move</span><span class="p">,</span>
+        <span class="n">colour</span> <span class="o">=</span> <span class="n">rjw_grey</span><span class="p">,</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="m">0.75</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">geom_point</span><span class="p">(</span>
+        <span class="n">colour</span> <span class="o">=</span> <span class="n">rjw_blue</span><span class="p">,</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="m">0.75</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">geom_line</span><span class="p">(</span>
+        <span class="n">mapping</span> <span class="o">=</span> <span class="nf">aes</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="nf">mav</span><span class="p">(</span><span class="n">complete_week_totals</span><span class="o">$</span><span class="n">total</span><span class="p">,</span>
+                              <span class="n">weeks_for_avg</span><span class="p">)),</span>
+        <span class="n">colour</span> <span class="o">=</span> <span class="n">rjw_red</span><span class="p">)</span> <span class="o">+</span>
 
-    labs(
-        title = str_glue(
-            'Weekly transport spending and {weeks_for_avg}',
-            '-week moving average'),
-        subtitle = (
-            'September 2014 to May 2018, vertical bar marks house move'),
-        x = NULL, y = NULL) +
+    <span class="nf">labs</span><span class="p">(</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="nf">str_glue</span><span class="p">(</span>
+            <span class="s">&#39;Weekly transport spending and {weeks_for_avg}&#39;</span><span class="p">,</span>
+            <span class="s">&#39;-week moving average&#39;</span><span class="p">),</span>
+        <span class="n">subtitle</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&#39;September 2014 to May 2018, vertical bar marks house move&#39;</span><span class="p">),</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">)</span> <span class="o">+</span>
 
-    scale_x_datetime(
-        date_breaks = '6 months',
-        date_labels = '%b ’%y') +
-    scale_y_continuous(
-        labels = pound_scale)</code></pre>
+    <span class="nf">scale_x_datetime</span><span class="p">(</span>
+        <span class="n">date_breaks</span> <span class="o">=</span> <span class="s">&#39;6 months&#39;</span><span class="p">,</span>
+        <span class="n">date_labels</span> <span class="o">=</span> <span class="s">&#39;%b ’%y&#39;</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">scale_y_continuous</span><span class="p">(</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">pound_scale</span><span class="p">)</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
@@ -599,26 +695,27 @@ ggplot(data = complete_week_totals,
 <p>That said, the code for this plot is a pretty great example of what I like about ggplot2: you create a plot, add geoms to it, customise the labels and scales, piece by piece until you’re happy. It’s fairly straightforward to discover things (especially with RStudio’s completion), and you change things by adding on top of the basics instead of hunting around in the properties of figures or axes or whatever.</p>
 <h3>Cumulative spending</h3>
 <p>The first plot showed a change in my average weekly spending. What does that look like when we plot the cumulative spending over this period?</p>
-<pre><code>ggplot(data = tidy_journeys,
-       mapping = aes(x = start,
-                     y = cumsum(fare),
-                     colour = start &gt; house_move)) +
-    geom_line(
-        size = 1) +
+<div class="syntax"><pre><span></span><span class="nf">ggplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">tidy_journeys</span><span class="p">,</span>
+       <span class="n">mapping</span> <span class="o">=</span> <span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">start</span><span class="p">,</span>
+                     <span class="n">y</span> <span class="o">=</span> <span class="nf">cumsum</span><span class="p">(</span><span class="n">fare</span><span class="p">),</span>
+                     <span class="n">colour</span> <span class="o">=</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="n">house_move</span><span class="p">))</span> <span class="o">+</span>
+    <span class="nf">geom_line</span><span class="p">(</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="o">+</span>
 
-    labs(
-        title = 'Cumulative Oyster card spending',
-        subtitle = 'September 2014 to May 2018',
-        x = NULL, y = NULL,
-        colour = 'House move') +
-    scale_y_continuous(
-        labels = pound_scale,
-        breaks = c(0, 500, 1000, 1400, 1650)) +
-    scale_color_brewer(
-        labels = c('Before', 'After'),
-        palette = 'Set2') +
-    theme(
-        legend.position = 'bottom')</code></pre>
+    <span class="nf">labs</span><span class="p">(</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s">&#39;Cumulative Oyster card spending&#39;</span><span class="p">,</span>
+        <span class="n">subtitle</span> <span class="o">=</span> <span class="s">&#39;September 2014 to May 2018&#39;</span><span class="p">,</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">,</span>
+        <span class="n">colour</span> <span class="o">=</span> <span class="s">&#39;House move&#39;</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">scale_y_continuous</span><span class="p">(</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">pound_scale</span><span class="p">,</span>
+        <span class="n">breaks</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">500</span><span class="p">,</span> <span class="m">1000</span><span class="p">,</span> <span class="m">1400</span><span class="p">,</span> <span class="m">1650</span><span class="p">))</span> <span class="o">+</span>
+    <span class="nf">scale_color_brewer</span><span class="p">(</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Before&#39;</span><span class="p">,</span> <span class="s">&#39;After&#39;</span><span class="p">),</span>
+        <span class="n">palette</span> <span class="o">=</span> <span class="s">&#39;Set2&#39;</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">theme</span><span class="p">(</span>
+        <span class="n">legend.position</span> <span class="o">=</span> <span class="s">&#39;bottom&#39;</span><span class="p">)</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
@@ -635,32 +732,33 @@ ggplot(data = complete_week_totals,
 <p>The difference in slope is quite clear; at one point I fitted a linear smoother to the two periods but it overlapped so tightly with the data that it was difficult to read either. I’ve also monkeyed around with the y-axis breaks to highlight the difference; what before took three to six months to spend has taken about 21 months since the house move.</p>
 <h3>Zero-spending weeks</h3>
 <p>One thing that shows up in the first plot, and likely underlies the drop in average spending, is the number of weeks where I don’t travel using my Oyster card at all. Let’s pull together a one-dimensional plot showing just that.</p>
-<pre><code>ggplot(complete_week_totals,
-       aes(x = start,
-           y = 1,
-           fill = total == 0)) +
-    geom_col(
-        width = 60 * 60 * 24 * 7) +  # datetime col width handled as seconds
-    geom_vline(
-        xintercept = house_move,
-        colour = rjw_red) +
+<div class="syntax"><pre><span></span><span class="nf">ggplot</span><span class="p">(</span><span class="n">complete_week_totals</span><span class="p">,</span>
+       <span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">start</span><span class="p">,</span>
+           <span class="n">y</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span>
+           <span class="n">fill</span> <span class="o">=</span> <span class="n">total</span> <span class="o">==</span> <span class="m">0</span><span class="p">))</span> <span class="o">+</span>
+    <span class="nf">geom_col</span><span class="p">(</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="m">60</span> <span class="o">*</span> <span class="m">60</span> <span class="o">*</span> <span class="m">24</span> <span class="o">*</span> <span class="m">7</span><span class="p">)</span> <span class="o">+</span>  <span class="c1"># datetime col width handled as seconds</span>
+    <span class="nf">geom_vline</span><span class="p">(</span>
+        <span class="n">xintercept</span> <span class="o">=</span> <span class="n">house_move</span><span class="p">,</span>
+        <span class="n">colour</span> <span class="o">=</span> <span class="n">rjw_red</span><span class="p">)</span> <span class="o">+</span>
 
-    scale_fill_manual(
-        values = c(str_c(rjw_grey, '20'), rjw_grey),
-        labels = c('Some', 'None')) +
-    scale_x_datetime(
-        limits = c(min(complete_week_totals$start),
-                   max(complete_week_totals$start)),
-        expand = c(0, 0)) +
-    scale_y_continuous(
-        breaks = NULL) +
-    labs(
-        title = 'Weeks with zero Oyster card spending',
-        subtitle = 'September 2014 to May 2018, red line marks house move',
-        x = NULL, y = NULL,
-        fill = 'Spending') +
-    theme(
-        legend.position = 'bottom')</code></pre>
+    <span class="nf">scale_fill_manual</span><span class="p">(</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="nf">str_c</span><span class="p">(</span><span class="n">rjw_grey</span><span class="p">,</span> <span class="s">&#39;20&#39;</span><span class="p">),</span> <span class="n">rjw_grey</span><span class="p">),</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Some&#39;</span><span class="p">,</span> <span class="s">&#39;None&#39;</span><span class="p">))</span> <span class="o">+</span>
+    <span class="nf">scale_x_datetime</span><span class="p">(</span>
+        <span class="n">limits</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="nf">min</span><span class="p">(</span><span class="n">complete_week_totals</span><span class="o">$</span><span class="n">start</span><span class="p">),</span>
+                   <span class="nf">max</span><span class="p">(</span><span class="n">complete_week_totals</span><span class="o">$</span><span class="n">start</span><span class="p">)),</span>
+        <span class="n">expand</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span> <span class="o">+</span>
+    <span class="nf">scale_y_continuous</span><span class="p">(</span>
+        <span class="n">breaks</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">labs</span><span class="p">(</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s">&#39;Weeks with zero Oyster card spending&#39;</span><span class="p">,</span>
+        <span class="n">subtitle</span> <span class="o">=</span> <span class="s">&#39;September 2014 to May 2018, red line marks house move&#39;</span><span class="p">,</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">,</span>
+        <span class="n">fill</span> <span class="o">=</span> <span class="s">&#39;Spending&#39;</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">theme</span><span class="p">(</span>
+        <span class="n">legend.position</span> <span class="o">=</span> <span class="s">&#39;bottom&#39;</span><span class="p">)</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
@@ -675,40 +773,41 @@ ggplot(data = complete_week_totals,
 </p>
 
 <p>The change here after I moved house is stark, nearly an inversion of the previous pattern of zero/no-zero spending weeks. (Almost looks like <a href="https://www.robjwells.com/2018/02/british-newspaper-barcodes-explained-and-automated/">a barcode</a>!)</p>
-<p>My apologies for the thin lines between columns, which is an SVG artefact. The inspiration for this was a plot of games/non-games in the App Store top charts that <a href="http://leancrew.com/all-this/">Dr Drang</a> included at the bottom of one of his posts and, for the life of me, I can’t find now.</p>
+<p>My apologies for the thin lines between columns, which is an SVG artefact. The inspiration for this was <a href="https://www.macstories.net/stories/exploring-the-app-stores-top-grossing-chart/">a plot of games/non-games in the App Store top charts</a> that Dr Drang included <a href="http://www.leancrew.com/all-this/2016/07/a-delightfully-simple-chart/">at the bottom of one of his posts</a>.</p>
 <h3>Changes in journey properties</h3>
 <p>So it’s clear that I travel less on the Tube network, and that I spend less. But what has happened to the sort of journeys that I make? Are they longer? Shorter? Less expensive? More?</p>
 <p>Let’s have a look at how the average fare and average journey duration change over time.</p>
-<pre><code>n_journey_avg &lt;- 10
+<div class="syntax"><pre><span></span><span class="n">n_journey_avg</span> <span class="o">&lt;-</span> <span class="m">10</span>
 
-common_vline &lt;- geom_vline(xintercept = house_move,
-                           colour = rjw_red)
-common_point &lt;- geom_point(size = .5)
+<span class="n">common_vline</span> <span class="o">&lt;-</span> <span class="nf">geom_vline</span><span class="p">(</span><span class="n">xintercept</span> <span class="o">=</span> <span class="n">house_move</span><span class="p">,</span>
+                           <span class="n">colour</span> <span class="o">=</span> <span class="n">rjw_red</span><span class="p">)</span>
+<span class="n">common_point</span> <span class="o">&lt;-</span> <span class="nf">geom_point</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="m">.5</span><span class="p">)</span>
 
-fares_over_time &lt;- ggplot(tidy_journeys,
-                          aes(x = start,
-                              y = mav(fare, n_journey_avg))) +
-    scale_x_datetime(
-        labels = NULL) +
-    scale_y_continuous(
-        labels = pound_scale) +
-    labs(
-        y = 'Fare',
-        title = 'More expensive, shorter journeys',
-        subtitle = str_glue('{n_journey_avg}-journey average, ',
-                            'vertical line marks house move'))
+<span class="n">fares_over_time</span> <span class="o">&lt;-</span> <span class="nf">ggplot</span><span class="p">(</span><span class="n">tidy_journeys</span><span class="p">,</span>
+                          <span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">start</span><span class="p">,</span>
+                              <span class="n">y</span> <span class="o">=</span> <span class="nf">mav</span><span class="p">(</span><span class="n">fare</span><span class="p">,</span> <span class="n">n_journey_avg</span><span class="p">)))</span> <span class="o">+</span>
+    <span class="nf">scale_x_datetime</span><span class="p">(</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">scale_y_continuous</span><span class="p">(</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">pound_scale</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">labs</span><span class="p">(</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="s">&#39;Fare&#39;</span><span class="p">,</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s">&#39;More expensive, shorter journeys&#39;</span><span class="p">,</span>
+        <span class="n">subtitle</span> <span class="o">=</span> <span class="nf">str_glue</span><span class="p">(</span><span class="s">&#39;{n_journey_avg}-journey average, &#39;</span><span class="p">,</span>
+                            <span class="s">&#39;vertical line marks house move&#39;</span><span class="p">))</span>
 
-duration_over_time &lt;- ggplot(tidy_journeys,
-                             aes(x = start,
-                                 y = mav(duration, n_journey_avg))) +
-    scale_y_continuous() +
-    labs(
-        y = 'Duration (mins)')
+<span class="n">duration_over_time</span> <span class="o">&lt;-</span> <span class="nf">ggplot</span><span class="p">(</span><span class="n">tidy_journeys</span><span class="p">,</span>
+                             <span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">start</span><span class="p">,</span>
+                                 <span class="n">y</span> <span class="o">=</span> <span class="nf">mav</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span> <span class="n">n_journey_avg</span><span class="p">)))</span> <span class="o">+</span>
+    <span class="nf">scale_y_continuous</span><span class="p">()</span> <span class="o">+</span>
+    <span class="nf">labs</span><span class="p">(</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="s">&#39;Duration (mins)&#39;</span><span class="p">)</span>
 
-(fares_over_time / duration_over_time) &amp;  # Patchwork is magic
-    common_vline &amp;
-    common_point &amp;
-    labs(x = NULL)</code></pre>
+<span class="p">(</span><span class="n">fares_over_time</span> <span class="o">/</span> <span class="n">duration_over_time</span><span class="p">)</span> <span class="o">&amp;</span>  <span class="c1"># Patchwork is magic</span>
+    <span class="n">common_vline</span> <span class="o">&amp;</span>
+    <span class="n">common_point</span> <span class="o">&amp;</span>
+    <span class="nf">labs</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">)</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
@@ -723,48 +822,49 @@ duration_over_time &lt;- ggplot(tidy_journeys,
 </p>
 
 <p>Journeys taken after the house move appear to be shorter and more expensive. How distinct is this? What is driving the averages? I have a hunch so let me rush on ahead with this plot.</p>
-<pre><code>commute_stations &lt;- c('Woolwich Arsenal DLR', 'Stratford International DLR',
-                      'Stratford', 'Pudding Mill Lane DLR')
+<div class="syntax"><pre><span></span><span class="n">commute_stations</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Woolwich Arsenal DLR&#39;</span><span class="p">,</span> <span class="s">&#39;Stratford International DLR&#39;</span><span class="p">,</span>
+                      <span class="s">&#39;Stratford&#39;</span><span class="p">,</span> <span class="s">&#39;Pudding Mill Lane DLR&#39;</span><span class="p">)</span>
 
-commute_journeys &lt;- tidy_journeys %&gt;%
-    filter(
-        enter %in% commute_stations,
-        exit %in% commute_stations)
+<span class="n">commute_journeys</span> <span class="o">&lt;-</span> <span class="n">tidy_journeys</span> <span class="o">%&gt;%</span>
+    <span class="nf">filter</span><span class="p">(</span>
+        <span class="n">enter</span> <span class="o">%in%</span> <span class="n">commute_stations</span><span class="p">,</span>
+        <span class="n">exit</span> <span class="o">%in%</span> <span class="n">commute_stations</span><span class="p">)</span>
 
-high_speed_journeys &lt;- tidy_journeys %&gt;%
-    filter(
-        str_detect(enter, 'HS1'),
-        str_detect(exit, 'HS1'))
+<span class="n">high_speed_journeys</span> <span class="o">&lt;-</span> <span class="n">tidy_journeys</span> <span class="o">%&gt;%</span>
+    <span class="nf">filter</span><span class="p">(</span>
+        <span class="nf">str_detect</span><span class="p">(</span><span class="n">enter</span><span class="p">,</span> <span class="s">&#39;HS1&#39;</span><span class="p">),</span>
+        <span class="nf">str_detect</span><span class="p">(</span><span class="n">exit</span><span class="p">,</span> <span class="s">&#39;HS1&#39;</span><span class="p">))</span>
 
-ggplot(tidy_journeys,
-       aes(x = fare,
-           y = duration,
-           colour = start &gt; house_move)) +
-    geom_jitter(
-        width = 0.05,  # 5p
-        height = 0.5,  # 30 seconds
-        alpha = 0.5) +
-    geom_encircle(
-        data = commute_journeys,
-        size = 1.5) +
-    geom_encircle(
-        data = high_speed_journeys,
-        size = 1.5) +
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">tidy_journeys</span><span class="p">,</span>
+       <span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">fare</span><span class="p">,</span>
+           <span class="n">y</span> <span class="o">=</span> <span class="n">duration</span><span class="p">,</span>
+           <span class="n">colour</span> <span class="o">=</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="n">house_move</span><span class="p">))</span> <span class="o">+</span>
+    <span class="nf">geom_jitter</span><span class="p">(</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="m">0.05</span><span class="p">,</span>  <span class="c1"># 5p</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="m">0.5</span><span class="p">,</span>  <span class="c1"># 30 seconds</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="m">0.5</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">geom_encircle</span><span class="p">(</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">commute_journeys</span><span class="p">,</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="m">1.5</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">geom_encircle</span><span class="p">(</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">high_speed_journeys</span><span class="p">,</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="m">1.5</span><span class="p">)</span> <span class="o">+</span>
 
-    scale_color_brewer(
-        palette = 'Set2',
-        labels = c('Before', 'After')) +
-    scale_x_continuous(
-        labels = pound_scale) +
-    scale_y_continuous(
-        limits = c(0, 80)) +
-    labs(
-        title = 'Pre- and post-move averages driven by two groups',
-        subtitle = str_c('Old commute and high-speed journeys circled,',
-                         ' positions not exact'),
-        x = 'Fare',
-        y = 'Duration (mins)',
-        colour = 'House move')</code></pre>
+    <span class="nf">scale_color_brewer</span><span class="p">(</span>
+        <span class="n">palette</span> <span class="o">=</span> <span class="s">&#39;Set2&#39;</span><span class="p">,</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Before&#39;</span><span class="p">,</span> <span class="s">&#39;After&#39;</span><span class="p">))</span> <span class="o">+</span>
+    <span class="nf">scale_x_continuous</span><span class="p">(</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">pound_scale</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">scale_y_continuous</span><span class="p">(</span>
+        <span class="n">limits</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">80</span><span class="p">))</span> <span class="o">+</span>
+    <span class="nf">labs</span><span class="p">(</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s">&#39;Pre- and post-move averages driven by two groups&#39;</span><span class="p">,</span>
+        <span class="n">subtitle</span> <span class="o">=</span> <span class="nf">str_c</span><span class="p">(</span><span class="s">&#39;Old commute and high-speed journeys circled,&#39;</span><span class="p">,</span>
+                         <span class="s">&#39; positions not exact&#39;</span><span class="p">),</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="s">&#39;Fare&#39;</span><span class="p">,</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="s">&#39;Duration (mins)&#39;</span><span class="p">,</span>
+        <span class="n">colour</span> <span class="o">=</span> <span class="s">&#39;House move&#39;</span><span class="p">)</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
@@ -784,35 +884,37 @@ ggplot(tidy_journeys,
 <p>On the other hand, trips involving the HS1 line are expensive and very short. A single off-peak fare is currently £3.90 and peak £5.60, while the journey time between Stratford International and St Pancras is just seven minutes, with a bit of waiting inside the gateline.</p>
 <h3>But is that it?</h3>
 <p>Does that theory of the two extreme groups really explain the difference? Let’s filter out the two groups from our journey data.</p>
-<pre><code>journeys_without_extremes &lt;- tidy_journeys %&gt;%
-    anti_join(commute_journeys) %&gt;%
-    anti_join(high_speed_journeys)</code></pre>
+<div class="syntax"><pre><span></span><span class="n">journeys_without_extremes</span> <span class="o">&lt;-</span> <span class="n">tidy_journeys</span> <span class="o">%&gt;%</span>
+    <span class="nf">anti_join</span><span class="p">(</span><span class="n">commute_journeys</span><span class="p">)</span> <span class="o">%&gt;%</span>
+    <span class="nf">anti_join</span><span class="p">(</span><span class="n">high_speed_journeys</span><span class="p">)</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
 
 <p>Let’s look how the journey durations compare:</p>
-<pre><code>ggplot(journeys_without_extremes,
-       aes(x = duration,
-           fill = start &gt; house_move)) +
-    geom_histogram(
-        binwidth = 5,
-        closed = 'left',
-        colour = 'black',
-        size = 0.15,
-        position = 'identity') +
-    scale_x_continuous(
-        breaks = seq(0, 70, 10),
-        limits = c(0, 70)) +
-    scale_fill_brewer(
-        palette = 'Set2',
-        labels = c('Before', 'After')) +
-    labs(
-        title = 'Post-move journeys still shorter',
-        subtitle = 'Commute and HS1 journeys excluded, bars overlap',
-        x = 'Duration (mins)',
-        y = 'Number of journeys',
-        fill = 'House move')</code></pre>
+<div class="syntax"><pre><span></span><span class="nf">ggplot</span><span class="p">(</span><span class="n">journeys_without_extremes</span><span class="p">,</span>
+       <span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">duration</span><span class="p">,</span>
+           <span class="n">fill</span> <span class="o">=</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="n">house_move</span><span class="p">))</span> <span class="o">+</span>
+    <span class="nf">geom_histogram</span><span class="p">(</span>
+        <span class="n">binwidth</span> <span class="o">=</span> <span class="m">5</span><span class="p">,</span>
+        <span class="n">closed</span> <span class="o">=</span> <span class="s">&#39;left&#39;</span><span class="p">,</span>
+        <span class="n">colour</span> <span class="o">=</span> <span class="s">&#39;black&#39;</span><span class="p">,</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="m">0.15</span><span class="p">,</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="s">&#39;identity&#39;</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">scale_x_continuous</span><span class="p">(</span>
+        <span class="n">breaks</span> <span class="o">=</span> <span class="nf">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">70</span><span class="p">,</span> <span class="m">10</span><span class="p">),</span>
+        <span class="n">limits</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">70</span><span class="p">))</span> <span class="o">+</span>
+    <span class="nf">scale_fill_brewer</span><span class="p">(</span>
+        <span class="n">palette</span> <span class="o">=</span> <span class="s">&#39;Set2&#39;</span><span class="p">,</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Before&#39;</span><span class="p">,</span> <span class="s">&#39;After&#39;</span><span class="p">))</span> <span class="o">+</span>
+    <span class="nf">labs</span><span class="p">(</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s">&#39;Post-move journeys still shorter&#39;</span><span class="p">,</span>
+        <span class="n">subtitle</span> <span class="o">=</span> <span class="s">&#39;Commute and HS1 journeys excluded, bars overlap&#39;</span><span class="p">,</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="s">&#39;Duration (mins)&#39;</span><span class="p">,</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="s">&#39;Number of journeys&#39;</span><span class="p">,</span>
+        <span class="n">fill</span> <span class="o">=</span> <span class="s">&#39;House move&#39;</span><span class="p">)</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
@@ -827,27 +929,28 @@ ggplot(tidy_journeys,
 </p>
 
 <p>And the fares:</p>
-<pre><code>ggplot(journeys_without_extremes,
-       aes(x = fare,
-           fill = start &gt; house_move)) +
-    geom_histogram(
-        binwidth = 0.5,
-        closed = 'left',
-        colour = 'black',
-        size = 0.15,
-        position = 'identity') +
-    scale_x_continuous(
-        labels = pound_scale) +
-    scale_fill_brewer(
-        palette = 'Set2',
-        labels = c('Before', 'After')) +
+<div class="syntax"><pre><span></span><span class="nf">ggplot</span><span class="p">(</span><span class="n">journeys_without_extremes</span><span class="p">,</span>
+       <span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">fare</span><span class="p">,</span>
+           <span class="n">fill</span> <span class="o">=</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="n">house_move</span><span class="p">))</span> <span class="o">+</span>
+    <span class="nf">geom_histogram</span><span class="p">(</span>
+        <span class="n">binwidth</span> <span class="o">=</span> <span class="m">0.5</span><span class="p">,</span>
+        <span class="n">closed</span> <span class="o">=</span> <span class="s">&#39;left&#39;</span><span class="p">,</span>
+        <span class="n">colour</span> <span class="o">=</span> <span class="s">&#39;black&#39;</span><span class="p">,</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="m">0.15</span><span class="p">,</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="s">&#39;identity&#39;</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">scale_x_continuous</span><span class="p">(</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">pound_scale</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">scale_fill_brewer</span><span class="p">(</span>
+        <span class="n">palette</span> <span class="o">=</span> <span class="s">&#39;Set2&#39;</span><span class="p">,</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Before&#39;</span><span class="p">,</span> <span class="s">&#39;After&#39;</span><span class="p">))</span> <span class="o">+</span>
 
-    labs(
-        title = 'Post-move journeys generally more expensive',
-        subtitle = 'Commute and HS1 journeys excluded, bars overlap',
-        x = 'Fare',
-        y = 'Number of journeys',
-        fill = 'House move')</code></pre>
+    <span class="nf">labs</span><span class="p">(</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s">&#39;Post-move journeys generally more expensive&#39;</span><span class="p">,</span>
+        <span class="n">subtitle</span> <span class="o">=</span> <span class="s">&#39;Commute and HS1 journeys excluded, bars overlap&#39;</span><span class="p">,</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="s">&#39;Fare&#39;</span><span class="p">,</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="s">&#39;Number of journeys&#39;</span><span class="p">,</span>
+        <span class="n">fill</span> <span class="o">=</span> <span class="s">&#39;House move&#39;</span><span class="p">)</span>
+</pre></div>
 
 
 <!-- Comment to separate R code and output -->
@@ -1032,22 +1135,23 @@ ggplot(tidy_journeys,
 
 <p><a href="https://github.com/AlDanial/cloc">Cloc</a> tells me that the main Python file has a <em>whopping</em> 104 lines of code, and there are 264 lines of code in the related unit tests.</p>
 <p>Really all of the heavy lifting is done by BWIPP, a cut-down version of which is included in the <a href="https://github.com/ppps/ms-barcode">ms-barcode</a> repository (just ISSN, EAN-13 and EAN-2). The entirety of my “own” PostScript is this (where the parts in braces are Python string formatting targets):</p>
-<pre><code>%!PS
-({bwipp_location}) run
-
-11 5 moveto ({issn} {seq:02} {week:02}) (includetext height=1.07)
-  /issn /uk.co.terryburton.bwipp findresource exec
-
-% Print header line(s)
-/Courier findfont
-9 scalefont
-setfont
-
-newpath
-11 86 moveto
-({header}) show
-
-showpage</code></pre>
+<div class="syntax"><pre><span></span><span class="lineno"> 1 </span><span class="cp">%!PS</span>
+<span class="lineno"> 2 </span><span class="s">({bwipp_location})</span> <span class="nf">run</span>
+<span class="lineno"> 3 </span>
+<span class="lineno"> 4 </span><span class="mf">11</span> <span class="mf">5</span> <span class="nf">moveto</span> <span class="s">({issn} {seq:02} {week:02})</span> <span class="s">(includetext height=1.07)</span>
+<span class="lineno"> 5 </span>  <span class="nv">/issn</span> <span class="nv">/uk.co.terryburton.bwipp</span> <span class="nf">findresource</span> <span class="nf">exec</span>
+<span class="lineno"> 6 </span>
+<span class="lineno"> 7 </span><span class="c1">% Print header line(s)</span>
+<span class="lineno"> 8 </span><span class="nv">/Courier</span> <span class="nf">findfont</span>
+<span class="lineno"> 9 </span><span class="mf">9</span> <span class="nf">scalefont</span>
+<span class="lineno">10 </span><span class="nf">setfont</span>
+<span class="lineno">11 </span>
+<span class="lineno">12 </span><span class="nf">newpath</span>
+<span class="lineno">13 </span><span class="mf">11</span> <span class="mf">86</span> <span class="nf">moveto</span>
+<span class="lineno">14 </span><span class="s">({header})</span> <span class="nf">show</span>
+<span class="lineno">15 </span>
+<span class="lineno">16 </span><span class="nf">showpage</span>
+</pre></div>
 
 
 <p>The bits that you may need to fiddle with, if you want to produce a different-sized barcode, are the initial location the ISSN symbol is drawn at (line 4) and <code>height=1.07</code> on the same line.</p>
@@ -1059,19 +1163,6 @@ showpage</code></pre>
 <p>Going back to our earlier discussion of hazards, I think we’ve reached the substitution stage rather than the elimination stage.</p>
 <p>We have eliminated human error in choosing the components of the barcode, but we’ve done it by substituting code to make that decision. That’s still a good trade, because that code can be tested to ensure it does the right thing.</p>
 <p>And then, you can go back to not worrying about barcodes.</p>
-  </article>
-  <article>
-    <header>
-      <h2 class="mute-links"><a href="https://robjwells.github.io/2018/01/colin-currie-group-at-kings-place/">Colin Currie Group at Kings Place</a></h2>
-      <p><time datetime="2018-01-21T10:00">Sunday, January 21 2018</time></p>
-    </header>
-    <p>Last night, I treated myself to seeing the <a href="http://www.colincurriegroup.com">Colin Currie Group</a> <a href="https://www.kingsplace.co.uk/whats-on/contemporary/time-phase/">at Kings Place</a>, and they were absolutely sensational.</p>
-<p>It was quite the programme, with six pieces of Steve Reich’s music, and closed with a performance of Quartet, composed by Reich for Currie’s group.</p>
-<p>I first heard Quartet on May 24 2016, when it was played with Mallet Quartet and Music for 18 Musicians, and quite honestly was desperate to hear it again. It’s magical, and I left last night tapping out bits of it on my leg on the way to the train station.</p>
-<p>It wasn’t online, apart for <a href="https://soundcloud.com/colin-currie-perc/colin-currie-group-steve-reich-quartet-excerpt">a short clip</a>, but last month <a href="https://www.youtube.com/watch?v=-8y8N4Z8tkQ">a video of the group performing Quartet</a> in full was posted to YouTube, and Nonesuch are releasing a recording of <a href="http://www.nonesuch.com/journal/steve-reich-pulse-quartet-february-2-nonesuch-records-2017-12-14">Pulse &amp; Quartet</a> (Pulse by <a href="https://www.iceorg.org">ICE</a>, Quartet by CCG) at the start of February.</p>
-<p>The group are also releasing <a href="http://www.colincurriegroup.com/2018/01/pre-order-the-groups-first-recording/">a recording of Drumming</a>, which was as amazing to watch as it was to hear — I was sat right in line with the drums, and the effect of all four players drumming at once was stunning.</p>
-<p>Last night was also the first time I’d heard New York Counterpoint (for clarinet) and Vermont Counterpoint (for flute) live, and they really opened my eyes, having sort-of ignored them before.</p>
-<p>Really incredible stuff, all of it, start to finish. Reich’s compositions are brilliant, and I’m very thankful to be able to see a group dedicated to performing his work (for the third time now!).</p>
   </article>
   <div class="pagination">
 <p class="pagination-older"><a href="https://robjwells.github.io/page-3/">Older posts</a></p><p class="pagination-newer"><a href="https://robjwells.github.io">Newer posts</a></p>  </div>
