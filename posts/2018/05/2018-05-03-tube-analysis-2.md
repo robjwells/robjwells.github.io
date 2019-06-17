@@ -425,7 +425,7 @@ One thing that shows up in the first plot, and likely underlies the drop in aver
 
 The change here after I moved house is stark, nearly an inversion of the previous pattern of zero/no-zero spending weeks. (Almost looks like [a barcode](https://www.robjwells.com/2018/02/british-newspaper-barcodes-explained-and-automated/)!)
 
-My apologies for the thin lines between columns, which is an SVG artefact. The inspiration for this was a plot of games/non-games in the App Store top charts that [Dr Drang](http://leancrew.com/all-this/) included at the bottom of one of his posts and, for the life of me, I can’t find now.
+My apologies for the thin lines between columns, which is an SVG artefact. The inspiration for this was [a plot of games/non-games in the App Store top charts](https://www.macstories.net/stories/exploring-the-app-stores-top-grossing-chart/) that Dr Drang included [at the bottom of one of his posts](http://www.leancrew.com/all-this/2016/07/a-delightfully-simple-chart/).
 
 ### Changes in journey properties
 
