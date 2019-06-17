@@ -17,7 +17,7 @@ var css_dir = 'css/',
     build_dir = 'build/';
 
 
-gulp.task('css', function () {
+gulp.task('css', gulp.series(function (done) {
     // Imports are removed because we're explicity concatenating.
     // The imports in those files are really a development convenience.
     // The order of filenames in ordered_files is important.
@@ -37,10 +37,12 @@ gulp.task('css', function () {
         .pipe(csso())  // minify
         .pipe(rename('all.min.css'))
         .pipe(gulp.dest(build_dir));
-});
+
+    done();
+}));
 
 
-gulp.task('js', function () {
+gulp.task('js', gulp.series(function (done) {
     // The order of filenames in ordered_files is important
     var ordered_files = ['robjwells'].map(function (name) {
         return js_dir + name + '.js';
@@ -52,13 +54,16 @@ gulp.task('js', function () {
         .pipe(uglify())
         .pipe(rename('all.min.js'))
         .pipe(gulp.dest(build_dir));
-});
+
+    done();
+}));
 
 
-gulp.task('watch', function () {
+gulp.task('watch', gulp.series(function (done) {
     gulp.watch(css_glob, ['css']);
     gulp.watch(js_glob, ['js']);
-});
+    done();
+}));
 
 
-gulp.task('default', ['css', 'js']);
+gulp.task('default', gulp.series(['css', 'js']));
