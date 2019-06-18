@@ -3,11 +3,11 @@ title: About Primary Unit
 slug: about
 ---
 
-Primary Unit is written by me, Rob Wells, as a personal blog. I work production at a newspaper in London, England. You can subscribe to my posts by [RSS][] or [JSON][].
+Primary Unit is written by me, Rob Wells, as a personal blog. I’m currently studying for an MSc in [computer science at Birkbeck College][bbk] at night, and work for [a peace campaign][cnd] during the day. I used to work for [a newspaper][star]. You can subscribe to my posts by [RSS][] or [JSON][].
 
-If you’d like to get in touch, send an email to my first name at this website. Or you can contact me securely on [Keybase][], or say hi on [Twitter][].
+If you’d like to get in touch, send an email to my first name at robjwells.com.
 
-You can find my code at [GitHub][] and [Bitbucket][], bookmarks at [Pinboard][], and photos on [Flickr][].
+You can find my code at [GitHub][] and bookmarks at [Pinboard][]. *Very occasionally* I put photos on [Flickr][].
 
 ### Mirrors
 
@@ -17,12 +17,14 @@ This site is hosted in several places, just in case:
 * [`s3.robjwells.com`](https://s3.robjwells.com) (Amazon S3)
 * [`robjwells.github.io`](https://robjwells.github.io) (GitHub)
 
+[bbk]: http://www.dcs.bbk.ac.uk
+[cnd]: https://cnduk.org
+[star]: https://morningstaronline.co.uk
+
 [RSS]: /rss
 [JSON]: /feed.json
-[Keybase]: https://keybase.io/robjwells
 [Twitter]: https://twitter.com/robjwells
 
 [GitHub]: https://github.com/robjwells
-[Bitbucket]: https://bitbucket.org/robjwells/
 [Pinboard]: https://pinboard.in/u:robjwells/public
 [Flickr]: https://www.flickr.com/photos/orwellianrob/
