@@ -1,5 +1,6 @@
 ---
 title: "3.75 years on the Tube"
+slug: "3-75-years-on-the-tube"
 author: Rob Wells
 date: 2018-05-03T01:00:00
 output:
