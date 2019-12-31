@@ -1,6 +1,6 @@
 ---
 title: "Blackjack!"
-date: 2013-02-25 14:58
+date: 2013-02-25T14:58:00
 tags: ["Web"]
 ---
 

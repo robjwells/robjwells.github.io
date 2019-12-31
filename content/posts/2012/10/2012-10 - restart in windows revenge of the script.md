@@ -1,6 +1,6 @@
 ---
 title: "Restart in Windows: Revenge of the Script"
-date: 2012-10-06 18:14
+date: 2012-10-06T18:14:00
 tags: ["AppleScript"]
 ---
 

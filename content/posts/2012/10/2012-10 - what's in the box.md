@@ -1,6 +1,6 @@
 ---
 title: "What’s in the box!?"
-date: 2012-10-05 00:00
+date: 2012-10-05T00:00:00
 tags: ["AppleScript"]
 ---
 

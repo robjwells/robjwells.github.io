@@ -1,6 +1,6 @@
 ---
 title: "Owen’s two million Tories"
-date: 2016-09-09 01:00
+date: 2016-09-09T01:00:00
 ---
 
 In my recent post about [where Labour’s votes could come from][labour-votes] in the next general election, I tried to keep clear of factional arguments about the current leadership election. I think that the argument that Tory votes are not required is strong enough under whichever leader.

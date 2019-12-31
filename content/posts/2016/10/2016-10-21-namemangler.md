@@ -1,6 +1,6 @@
 ---
 title: "Padding regex groups in Name Mangler"
-date: 2016-10-21 22:45
+date: 2016-10-21T22:45:00
 ---
 
 I’m a big fan of [Name Mangler by Many Tricks][nm], an interactive file renaming application for everything from simple operations to really quite complex and powerful ones, with a comfortable and straightforward interface.

@@ -1,6 +1,6 @@
 ---
 title: "Audio Hijack 3 and scripts"
-date: 2015-01-21 21:03
+date: 2015-01-21T21:03:00
 tags: ["Audio Hijack Pro", "Audio Hijack 3"]
 ---
 

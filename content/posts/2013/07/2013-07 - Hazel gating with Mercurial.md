@@ -1,6 +1,6 @@
 ---
 title: "Hazel gating with Mercurial"
-date: 2013-07-31 23:16
+date: 2013-07-31T23:16:00
 tags: ["Hazel", "Mercurial", "Shell"]
 ---
 

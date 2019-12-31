@@ -1,6 +1,6 @@
 ---
 title: "Working with R Markdown"
-date: 2018-05-05 23:55
+date: 2018-05-05T23:55:00
 ---
 
 I’ve just published an update to [my recent Tube travel post][tube-2], fixing a few small mistakes, a bigger one (an error in a station name that nonetheless didn’t affect the plot involved) and adding an update to the last section which goes a bit deeper into the fare and duration difference between the two periods.

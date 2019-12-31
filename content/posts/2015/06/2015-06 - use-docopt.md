@@ -1,6 +1,6 @@
 ---
 title: "You should be using docopt"
-date: 2015-06-30 12:21
+date: 2015-06-30T12:21:00
 tags: ["Python", "Programming"]
 ---
 

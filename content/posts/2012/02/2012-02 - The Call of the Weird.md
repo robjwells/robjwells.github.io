@@ -1,6 +1,6 @@
 ---
 title: "The Call of the Weird"
-date: 2012-02-01 15:18
+date: 2012-02-01T15:18:00
 tags: ["Books"]
 ---
 

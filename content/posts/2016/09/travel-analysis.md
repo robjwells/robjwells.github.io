@@ -1,6 +1,6 @@
 ---
 title: "Two years on the Tube"
-date: 2016-09-17 22:00
+date: 2016-09-17T22:00:00
 ---
 
 If you [register your Oyster card online][register], you can get [Transport for London][tfl] to send you a summary of your recent journey history, as either a PDF or a CSV file. I ignored it for years after I moved here because I couldn’t work out the use but decided in 2014 to keep a record of my own travel. I had nothing in particular in mind at the time, but I thought: “CSV! I can crunch the numbers at some point!”

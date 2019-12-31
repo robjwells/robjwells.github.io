@@ -1,6 +1,6 @@
 ---
 title: "Mano-al-teclado"
-date: 2014-04-14 23:09
+date: 2014-04-14T23:09:00
 tags: ["Shell"]
 ---
 

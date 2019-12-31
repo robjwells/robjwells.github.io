@@ -1,6 +1,6 @@
 ---
 title: "First brush with modulo speed"
-date: 2013-06-29 12:05
+date: 2013-06-29T12:05:00
 tags: ["Programming"]
 ---
 

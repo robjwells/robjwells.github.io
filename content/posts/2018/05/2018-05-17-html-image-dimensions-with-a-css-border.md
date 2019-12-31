@@ -1,6 +1,6 @@
 ---
 title: "HTML image dimensions with a CSS border"
-date: 2018-05-17 21:00
+date: 2018-05-17T21:00:00
 ---
 
 When I use images here, I tend to give ones without any transparency a border, which is done using CSS and applied to `img` tags unless they have a `no-border` class.

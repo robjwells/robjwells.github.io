@@ -1,6 +1,6 @@
 ---
 title: "Interruptions"
-date: 2015-01-17 22:13
+date: 2015-01-17T22:13:00
 tags: ["Work"]
 ---
 

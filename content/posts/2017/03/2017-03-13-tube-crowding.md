@@ -1,6 +1,6 @@
 ---
 title: "Tube crowding"
-date: 2017-03-13 23:10
+date: 2017-03-13T23:10:00
 ---
 
 Last week [TfL released some data about crowding on Tube trains][data]. There’s a good write-up by [Diamond Geezer][dg].

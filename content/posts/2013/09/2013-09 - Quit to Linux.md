@@ -1,6 +1,6 @@
 ---
 title: "Quit to Linux"
-date: 2013-09-17 23:16
+date: 2013-09-17T23:16:00
 tags: ["Games"]
 ---
 

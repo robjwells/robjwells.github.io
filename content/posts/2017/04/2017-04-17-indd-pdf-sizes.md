@@ -1,6 +1,6 @@
 ---
 title: "InDesign PDF metastasis"
-date: 2017-04-17 22:25
+date: 2017-04-17T22:25:00
 ---
 
 At work we deal a lot with PDFs, both press quality and low-quality for viewing on screen. Over time I’ve automated a fair amount of the creation for both types, but one thing that I haven’t yet done is automate file-size reductions for the low-quality PDFs.

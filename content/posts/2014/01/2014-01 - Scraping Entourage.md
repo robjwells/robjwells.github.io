@@ -1,6 +1,6 @@
 ---
 title: "Scraping Entourage"
-date: 2014-01-22 13:32
+date: 2014-01-22T13:32:00
 tags: ["AppleScript", "Programming", "Python"]
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "Promptless Mercurial"
-date: 2013-08-24 13:04
+date: 2013-08-24T13:04:00
 tags: ["Mercurial"]
 ---
 

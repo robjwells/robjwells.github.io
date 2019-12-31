@@ -1,6 +1,6 @@
 ---
 title: "Python Counter gotcha with max"
-date: 2015-08-07 13:49
+date: 2015-08-07T13:49:00
 tags: ["Python"]
 ---
 

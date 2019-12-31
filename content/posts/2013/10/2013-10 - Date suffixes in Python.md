@@ -1,6 +1,6 @@
 ---
 title: "Date suffixes in Python"
-date: 2013-10-07 22:51
+date: 2013-10-07T22:51:00
 tags: ["AppleScript", "Programming", "Python", "TextExpander"]
 ---
 

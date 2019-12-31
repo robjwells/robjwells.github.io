@@ -1,6 +1,6 @@
 ---
 title: "Support across the board"
-date: 2016-09-25 21:00
+date: 2016-09-25T21:00:00
 ---
 
 Having written a few things about the Labour Party recently ([1][], [2][], [3][]), it would be remiss of me not to mark the result.

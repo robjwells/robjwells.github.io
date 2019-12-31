@@ -1,6 +1,6 @@
 ---
 title: "Easy branch comparison with Mercurial"
-date: 2013-07-27 20:33
+date: 2013-07-27T20:33:00
 tags: ["Git", "Mercurial"]
 ---
 

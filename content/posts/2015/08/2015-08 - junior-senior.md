@@ -1,6 +1,6 @@
 ---
 title: "Yeah!"
-date: 2015-08-05 20:04
+date: 2015-08-05T20:04:00
 tags: ["music", "JavaScript"]
 ---
 

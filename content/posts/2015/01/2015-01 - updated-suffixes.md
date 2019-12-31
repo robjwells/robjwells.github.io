@@ -1,6 +1,6 @@
 ---
 title: "Updated date suffix script"
-date: 2015-01-17 18:56
+date: 2015-01-17T18:56:00
 tags: ["Python", "Programming"]
 ---
 

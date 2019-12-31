@@ -1,6 +1,6 @@
 ---
 title: "Where could Labour’s votes come from?"
-date: 2016-09-02 14:30
+date: 2016-09-02T14:30:00
 ---
 
 It was suggested often during last year’s Labour leadership contest that if the party had Jeremy Corbyn at the helm it couldn’t win a general election. The argument holds that Corbyn, as a leftwinger, couldn’t appeal to people who had previously voted for the Tories, and these were the people Labour needed to win over in order to make the sums work.

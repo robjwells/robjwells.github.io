@@ -1,6 +1,6 @@
 ---
 title: "Locale in OS X — what’s the current situation?"
-date: 2014-12-22 10:16
+date: 2014-12-22T10:16:00
 tags: ["OS X"]
 ---
 

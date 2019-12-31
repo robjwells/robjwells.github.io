@@ -1,6 +1,6 @@
 ---
 title: "More precise git status gating"
-date: 2013-06-25 22:18
+date: 2013-06-25T22:18:00
 tags: ["Hazel", "Git", "Shell"]
 ---
 

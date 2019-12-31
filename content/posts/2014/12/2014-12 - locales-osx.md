@@ -1,6 +1,6 @@
 ---
 title: "Locale in OS X and Launch Agents"
-date: 2014-12-20 15:46
+date: 2014-12-20T15:46:00
 tags: ["OS X"]
 ---
 

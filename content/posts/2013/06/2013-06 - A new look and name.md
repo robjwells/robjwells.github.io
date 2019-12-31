@@ -1,6 +1,6 @@
 ---
 title: "A new look and name"
-date: 2013-06-24 17:36
+date: 2013-06-24T17:36:00
 tags: ["Personal"]
 ---
 

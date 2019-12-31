@@ -1,6 +1,6 @@
 ---
 title: "Restart in Windows: The script strikes back"
-date: 2013-05-25 17:47
+date: 2013-05-25T17:47:00
 tags: ["AppleScript"]
 ---
 

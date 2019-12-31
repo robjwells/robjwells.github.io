@@ -1,6 +1,6 @@
 ---
 title: "Python’s Counter class, again"
-date: 2015-08-10 22:34
+date: 2015-08-10T22:34:00
 tags: ["Python"]
 ---
 

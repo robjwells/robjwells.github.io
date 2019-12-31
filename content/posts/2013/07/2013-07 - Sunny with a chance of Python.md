@@ -1,6 +1,6 @@
 ---
 title: "Sunny with a chance of Python"
-date: 2013-07-23 22:28
+date: 2013-07-23T22:28:00
 tags: ["Programming", "Python"]
 ---
 

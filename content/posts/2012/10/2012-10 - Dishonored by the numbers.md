@@ -1,6 +1,6 @@
 ---
 title: "Dishonored by the numbers"
-date: 2012-10-14 16:20
+date: 2012-10-14T16:20:00
 tags: ["Games"]
 ---
 

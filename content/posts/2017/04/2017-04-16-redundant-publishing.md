@@ -1,6 +1,6 @@
 ---
 title: "Redundant publishing"
-date: 2017-04-16 22:39
+date: 2017-04-16T22:39:00
 ---
 
 In my previous post about [page speed][ps], I mentioned that I’d written [my own site generator][Majestic]. I’m not quite ready to talk specifically about it — I want to write some documentation first — and really I doubt that anyone but me *should* be using it.

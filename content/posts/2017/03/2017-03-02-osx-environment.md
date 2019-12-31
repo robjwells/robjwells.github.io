@@ -1,6 +1,6 @@
 ---
 title: "Setting OS X’s environment"
-date: 2017-03-02 14:30
+date: 2017-03-02T14:30:00
 ---
 
 <div class="flag">

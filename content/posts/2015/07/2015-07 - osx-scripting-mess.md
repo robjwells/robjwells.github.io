@@ -1,6 +1,6 @@
 ---
 title: "A scripting mess"
-date: 2015-07-05 16:52
+date: 2015-07-05T16:52:00
 tags: ["AppleScript"]
 ---
 

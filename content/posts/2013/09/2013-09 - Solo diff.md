@@ -1,6 +1,6 @@
 ---
 title: "Solo diff"
-date: 2013-09-13 20:39
+date: 2013-09-13T20:39:00
 tags: ["Python", "Programming", "Copy editing", "BBEdit"]
 ---
 

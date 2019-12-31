@@ -1,6 +1,6 @@
 ---
 title: "My email nightmare"
-date: 2015-02-25 12:35
+date: 2015-02-25T12:35:00
 tags: ["email"]
 ---
 

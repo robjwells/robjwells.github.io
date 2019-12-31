@@ -1,6 +1,6 @@
 ---
 title: "Horizontally scroll a table in HTML"
-date: 2018-05-11 23:35
+date: 2018-05-11T23:35:00
 ---
 
 After I published [my post about manipulating tables (of data) in R][chsub], I noticed that there was something amiss with the HTML table in that post showing an example section of our newsroom rota.

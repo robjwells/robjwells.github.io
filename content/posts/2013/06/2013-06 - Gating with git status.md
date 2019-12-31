@@ -1,6 +1,6 @@
 ---
 title: "Gating Hazel with git status"
-date: 2013-06-25 00:52
+date: 2013-06-25T00:52:00
 tags: ["Git", "Hazel", "Shell"]
 ---
 

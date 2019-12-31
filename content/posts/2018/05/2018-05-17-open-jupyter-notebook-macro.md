@@ -1,6 +1,6 @@
 ---
 title: "Open Jupyter notebooks with a Keyboard Maestro macro"
-date: 2018-05-17 19:45
+date: 2018-05-17T19:45:00
 ---
 
 I have a startup item that launches a Jupyter notebook so that the server is always running in the background. It’s an attempt to reduce the friction of using the notebooks.

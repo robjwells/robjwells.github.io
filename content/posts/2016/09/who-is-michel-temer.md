@@ -1,6 +1,6 @@
 ---
 title: "Who is Michel Temer?"
-date: 2016-09-07 01:30
+date: 2016-09-07T01:30:00
 ---
 
 Some politicians intrigue me in a bizarre way, in that they are so shamelessly atrocious, so lacking in self-awareness. There are a few in the Labour Party, but I won’t say who as I’ve been told recently that if I offend the Compliance Unit my vote can be torn up despite me having cast it.

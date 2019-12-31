@@ -1,6 +1,6 @@
 ---
 title: "Misbehaving single-column NSTableView"
-date: 2014-01-26 19:24
+date: 2014-01-26T19:24:00
 tags: ["Cocoa", "Programming", "Xcode"]
 ---
 

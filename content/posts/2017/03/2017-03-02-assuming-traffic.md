@@ -1,6 +1,6 @@
 ---
 title: "Assuming traffic"
-date: 2017-03-02 22:40
+date: 2017-03-02T22:40:00
 ---
 
 As a journalist and a socialist, one of my interests is looking into and understanding the beliefs that underpin journalistic output.

@@ -1,6 +1,6 @@
 ---
 title: "Terminal countdown"
-date: 2013-08-17 14:36
+date: 2013-08-17T14:36:00
 tags: ["Python", "Programming", "Shell"]
 ---
 

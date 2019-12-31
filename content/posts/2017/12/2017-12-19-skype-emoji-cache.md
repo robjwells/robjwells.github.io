@@ -1,7 +1,7 @@
 ---
 title: "Skype’s emoji cache"
 slug: skype-emoji-cache
-date: 2017-12-19 11:31
+date: 2017-12-19T11:31:00
 ---
 
 Skype, a 117MB application (as of right now, on macOS at least), keeps a 340MB stash of emojis on your computer. What?

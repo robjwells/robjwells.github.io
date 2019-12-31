@@ -1,6 +1,6 @@
 ---
 title: "Everyday automation"
-date: 2012-09-18 18:23
+date: 2012-09-18T18:23:00
 tags: ["AppleScript"]
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "My one iOS 7 problem"
-date: 2014-01-16 12:25
+date: 2014-01-16T12:25:00
 tags: ["iOS"]
 ---
 

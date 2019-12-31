@@ -1,6 +1,6 @@
 ---
 title: "Jupyter notebook macro bug"
-date: 2018-05-22 09:47
+date: 2018-05-22T09:47:00
 ---
 
 My post detailing [a Keyboard Maestro macro to open Jupyter notebooks][km-jupyter] had a dumb bug in the second shell pipeline, which fetches the URL of the desired notebook.

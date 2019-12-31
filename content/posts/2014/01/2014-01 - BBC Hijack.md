@@ -1,6 +1,6 @@
 ---
 title: "Hijacking the BBC"
-date: 2014-01-08 15:56
+date: 2014-01-08T15:56:00
 tags: ["Audio Hijack Pro", "Programming", "Python"]
 ---
 

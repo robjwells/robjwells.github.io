@@ -1,7 +1,7 @@
 ---
 title: "3.75 years on the Tube"
 author: Rob Wells
-date: 2018-05-03 01:00
+date: 2018-05-03T01:00:00
 output:
     md_document:
         variant: markdown_strict+fenced_code_blocks

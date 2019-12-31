@@ -1,6 +1,6 @@
 ---
 title: "Die, bookmarks bar, die"
-date: 2013-11-18 13:15
+date: 2013-11-18T13:15:00
 tags: ["AppleScript", "Launchbar"]
 ---
 

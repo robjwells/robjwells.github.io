@@ -1,6 +1,6 @@
 ---
 title: "Solving boredom with four languages"
-date: 2014-12-04 00:01
+date: 2014-12-04T00:01:00
 tags: ["Shell", "AppleScript", "JavaScript", "Python"]
 ---
 
