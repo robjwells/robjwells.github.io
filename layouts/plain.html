@@ -1,0 +1,7 @@
+{{ define "header" }}{{ partial "page-header.html" . }}{{ end }}
+{{ define "main" }}
+    <article class="center cf pv5 measure-wide-l">
+        <h2>{{ .Title }}</h2>
+        {{ .Content }}
+    </article>
+{{ end }}
