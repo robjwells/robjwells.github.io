@@ -4,4 +4,4 @@ title = "My New Hugo Site"
 theme = "robjwells-2020"
 
 [permalinks]
-posts = "/:year/:month/:title"
+posts = "/:year/:month/:slug"
