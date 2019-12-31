@@ -1,6 +1,6 @@
-baseURL = "http://example.org/"
-languageCode = "en-us"
-title = "My New Hugo Site"
+baseURL = "https://www.robjwells.com"
+languageCode = "en-gb"
+title = "Primary Unit on Hugo"
 theme = "robjwells-2020"
 
 [permalinks]
