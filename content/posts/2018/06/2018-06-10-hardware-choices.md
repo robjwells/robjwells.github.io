@@ -1,6 +1,6 @@
 ---
-Title: Hard(ware) choices
-Date: 2018-06-10 21:50
+title: "Hard(ware) choices"
+date: 2018-06-10T21:50:00
 ---
 
 It looks like my 2011 iMac might be on the way out. I’ve been having odd graphical problems today and yesterday, and I think that it might be the graphics card overheating. Running Apple Diagnostics (Hardware Test as was) reports an error with the hard drive ([the fan specifically][fan-error]) which I’ve seen before. My working theory at this point is that a failed or obstructed fan coupled with dust build-up and the fairly hot room has led to this point.

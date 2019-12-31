@@ -1,6 +1,6 @@
 ---
-Title: Table manipulation with R
-Date: 2018-05-08 23:15
+title: "Table manipulation with R"
+date: 2018-05-08T23:15:00
 ---
 
 One of my responsibilities at work is to provide a list of people who our printers should call if there’s ever a problem with the edition. Usually that’s the chief sub, or whoever is covering her.
