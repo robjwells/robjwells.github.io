@@ -1,7 +1,7 @@
 ---
 title: Manhandled
 date: 2014-04-13 09:03
-tags: Shell
+tags: ["Shell"]
 ---
 
 [Dr Drang][] and [Nathan][] have both written recently about bringing up a man page for reference while typing a command in the terminal. I’ve two approaches to share, but unlike Nathan I can’t claim that they’re superior — just alternatives.

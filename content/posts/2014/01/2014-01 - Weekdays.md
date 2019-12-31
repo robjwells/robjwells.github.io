@@ -1,7 +1,7 @@
 ---
 title: Next and last weekdays
 date: 2014-01-11 16:08
-tags: Python, Programming, TextExpander
+tags: ["Python", "Programming", "TextExpander"]
 ---
 
 I was recently reminded of David Sparks’s [TextExpander date snippets][ds-dates], the most interesting of which use AppleScript to insert the date for the next occurrence of a certain weekday. (And were [written by Ben Waldie][bw].)

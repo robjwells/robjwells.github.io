@@ -1,7 +1,7 @@
 ---
 title: What’s in the box!?
 date: 2012-10-05 00:00
-tags: AppleScript
+tags: ["AppleScript"]
 ---
 
 <p class="full-width">

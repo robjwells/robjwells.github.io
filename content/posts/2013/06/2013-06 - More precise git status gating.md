@@ -1,7 +1,7 @@
 ---
 title: More precise git status gating
 date: 2013-06-25 22:18
-tags: Hazel, Git, Shell
+tags: ["Hazel", "Git", "Shell"]
 ---
 
 At the end of my post about having [Hazel][] [check a file’s commit status][post] before running rules on it, I suggested that the script could be made better by not requiring the entire repository be committed and clean:

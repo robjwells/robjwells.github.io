@@ -1,7 +1,7 @@
 ---
 title: Die, bookmarks bar, die
 date: 2013-11-18 13:15
-tags: AppleScript, Launchbar
+tags: ["AppleScript", "Launchbar"]
 ---
 
 I hate the bookmarks bar. This thing:

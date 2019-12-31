@@ -1,7 +1,7 @@
 ---
 title: The Call of the Weird
 date: 2012-02-01 15:18
-tags: Books
+tags: ["Books"]
 ---
 
 <img src="/images/2012-02-01-call-of-the-weird.jpg" class="pull-right"/>

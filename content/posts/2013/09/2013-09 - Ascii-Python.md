@@ -1,7 +1,7 @@
 ---
 title: Get your US-ASCII out of my face
 date: 2013-09-14 14:05
-tags: OS X, Programming, Python, Shell
+tags: ["OS X", "Programming", "Python", "Shell"]
 ---
 
 <div class="flag">

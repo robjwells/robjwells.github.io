@@ -1,7 +1,7 @@
 ---
 title: Setting a date with TextExpander
 date: 2013-03-06 10:45
-tags: AppleScript, TextExpander
+tags: ["AppleScript", "TextExpander"]
 ---
 
 I suck at dates. Badly.

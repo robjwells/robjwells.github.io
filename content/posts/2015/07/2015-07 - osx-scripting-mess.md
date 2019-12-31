@@ -1,7 +1,7 @@
 ---
 title: A scripting mess
 date: 2015-07-05 16:52
-tags: AppleScript
+tags: ["AppleScript"]
 ---
 
 I was thinking about redoing the [page generator script][] for work again this morning, wondering if the newly widespread support for JavaScript in Cocoa applications and JavaScript for Automation would simplify some of the work I started on a Cocoa page-generating application.

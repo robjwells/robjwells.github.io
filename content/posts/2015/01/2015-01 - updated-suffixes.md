@@ -1,7 +1,7 @@
 ---
 title: Updated date suffix script
 date: 2015-01-17 18:56
-tags: Python, Programming
+tags: ["Python", "Programming"]
 ---
 
 One of my favourite scripts is [a snippet of Python that produces a date with an ordinal suffix][suffixes]. It’s [short, simple][good_code], and was probably the first thing I did in Python that made me sit back and smile.

@@ -1,7 +1,7 @@
 ---
 title: Scraping Entourage
 date: 2014-01-22 13:32
-tags: AppleScript, Programming, Python
+tags: ["AppleScript", "Programming", "Python"]
 ---
 
 Early last year myself and my flatmate got into [Entourage][], which is incredible. We devoured all eight seasons in a few weeks. One thing that I love about it is the soundtrack. It’s a mix of older and newer stuff and, frankly, I have no idea about music so it’s nice to have a pool of well-picked tracks to dip in to.

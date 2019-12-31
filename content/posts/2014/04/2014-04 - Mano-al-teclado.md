@@ -1,7 +1,7 @@
 ---
 title: Mano-al-teclado
 date: 2014-04-14 23:09
-tags: Shell
+tags: ["Shell"]
 ---
 
 In a [follow-up][drman2] to his [man page post][drman1], Dr Drang writes that he suspects the people who responded with keyboard-centric methods “were all slightly appalled by the notion of using the mouse or trackpad to bring up a man page.”

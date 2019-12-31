@@ -1,7 +1,7 @@
 ---
 title: Quit to Linux
 date: 2013-09-17 23:16
-tags: Games
+tags: ["Games"]
 ---
 
 Usually I dislike commenting on stuff in the news, instead keeping to topics I have at least some direct experience of — even if I’m frequently documenting my own lack of experience.

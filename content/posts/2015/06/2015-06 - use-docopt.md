@@ -1,7 +1,7 @@
 ---
 title: You should be using docopt
 date: 2015-06-30 12:21
-tags: Python, Programming
+tags: ["Python", "Programming"]
 ---
 
 If you write any command-line tools that have a need for a help message, then you should really try [docopt][], which gets you out of having to write argument-parsing code yourself. I’ve mentioned it before, [briefly][], and I wouldn’t want to be without it.

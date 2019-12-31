@@ -1,7 +1,7 @@
 ---
 title: Locale in OS X and Launch Agents
 date: 2014-12-20 15:46
-tags: OS X
+tags: ["OS X"]
 ---
 
 <div class="flag">

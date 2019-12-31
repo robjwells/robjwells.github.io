@@ -1,7 +1,7 @@
 ---
 title: Re: Unresponsive
 date: 2015-10-06 02:33
-tags: Web
+tags: ["Web"]
 ---
 
 [Dr Drang posted recently][drang] about his trouble getting his site to work with the new responsive design mode in Safari 9 (which is very similar to the Firefox feature of the same name). He also detailed the complicated setup he has for providing his current mobile layout to small, portrait screens (ie phones) — media queries in HTML link tags and separate stylesheet files.

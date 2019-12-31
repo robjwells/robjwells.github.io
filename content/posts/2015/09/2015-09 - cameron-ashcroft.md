@@ -1,7 +1,7 @@
 ---
 title: Cameron & Ashcroft
 date: 2015-09-21 20:42
-tags: politics
+tags: ["politics"]
 ---
 
 Today’s allegations in the Mail are completely tedious in almost all aspects yet are interesting in one.

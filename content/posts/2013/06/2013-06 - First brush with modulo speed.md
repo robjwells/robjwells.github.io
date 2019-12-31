@@ -1,7 +1,7 @@
 ---
 title: First brush with modulo speed
 date: 2013-06-29 12:05
-tags: Programming
+tags: ["Programming"]
 ---
 
 I had read that the modulo operator (remainder after integer division) was slow but had never had a chance to try to break it myself, until a couple of days ago. I was distracted from my [current project][dip] by [Project Euler][pe], after searching for a way to test and improve my programming and maths skills.

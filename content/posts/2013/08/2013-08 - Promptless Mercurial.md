@@ -1,7 +1,7 @@
 ---
 title: Promptless Mercurial
 date: 2013-08-24 13:04
-tags: Mercurial
+tags: ["Mercurial"]
 ---
 
 My time-wasting with Git and Mercurial continues apace — although I think I’m largely done learning how to use each — and I’m at the point where I start fussing over trivial details.

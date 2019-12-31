@@ -1,7 +1,7 @@
 ---
 title: Commit summary length hooks
 date: 2013-08-03 13:31
-tags: Git, Mercurial, Python
+tags: ["Git", "Mercurial", "Python"]
 ---
 
 Despite planning to take a break from doing computer work in my spare time, I’ve haven’t stopped playing with Mercurial and Git.

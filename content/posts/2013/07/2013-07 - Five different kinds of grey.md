@@ -1,7 +1,7 @@
 ---
 title: Five different kinds of grey
 date: 2013-07-06 18:54
-tags: Personal, Web
+tags: ["Personal", "Web"]
 ---
 
 My post from a couple of weeks ago [about the changes to this site][newlook] briefly mentioned that despite having this domain for about five years I’d never been satisfied with its design.

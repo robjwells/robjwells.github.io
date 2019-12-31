@@ -1,7 +1,7 @@
 ---
 title: Interruptions
 date: 2015-01-17 22:13
-tags: Work
+tags: ["Work"]
 ---
 
 [Like Dr Drang][drang], I’ve noticed some stuff doing the rounds about open offices, with the odd article cropping up now and again on [Hacker News][]. At most I’ve skimmed them, because it really seemed like a really straightforward situation.

@@ -1,7 +1,7 @@
 ---
 title: Solo diff
 date: 2013-09-13 20:39
-tags: Python, Programming, Copy editing, BBEdit
+tags: ["Python", "Programming", "Copy editing", "BBEdit"]
 ---
 
 At work we edit the reporters’ copy in plain text files using [TextWrangler][], duplicating their original at the bottom of the file before we start subbing.

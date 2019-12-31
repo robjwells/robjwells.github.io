@@ -1,7 +1,7 @@
 ---
 title: Dishonored by the numbers
 date: 2012-10-14 16:20
-tags: Games
+tags: ["Games"]
 ---
 
 Dishonored is so good. So incredibly good. It’s really fantastic. It came out (here, at least) on Friday and I’ve already completed it, with my first playthrough taking about 22 hours.

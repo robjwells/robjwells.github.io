@@ -1,7 +1,7 @@
 ---
 title: AppleScript list gotchas
 date: 2015-06-26 12:05
-tags: AppleScript
+tags: ["AppleScript"]
 ---
 
 At work recently I ran into two subtle AppleScript oddities that tripped me up when modifying one of our production scripts.
