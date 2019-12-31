@@ -1,5 +1,5 @@
 ---
-title: Cameron & Ashcroft
+title: "Cameron & Ashcroft"
 date: 2015-09-21 20:42
 tags: ["politics"]
 ---

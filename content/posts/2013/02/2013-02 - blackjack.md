@@ -1,5 +1,5 @@
 ---
-title: Blackjack!
+title: "Blackjack!"
 date: 2013-02-25 14:58
 tags: ["Web"]
 ---

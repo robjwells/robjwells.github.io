@@ -1,5 +1,5 @@
 ---
-title: Audio Hijack 3 and scripts
+title: "Audio Hijack 3 and scripts"
 date: 2015-01-21 21:03
 tags: ["Audio Hijack Pro", "Audio Hijack 3"]
 ---

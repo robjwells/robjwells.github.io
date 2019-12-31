@@ -1,5 +1,5 @@
 ---
-title: Blind data
+title: "Blind data"
 date: 2016-11-05 01:00
 ---
 

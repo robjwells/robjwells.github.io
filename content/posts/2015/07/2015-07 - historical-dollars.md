@@ -1,5 +1,5 @@
 ---
-title: Historical dollars
+title: "Historical dollars"
 date: 2015-07-15 23:40
 tags: ["Python", "Programming"]
 ---

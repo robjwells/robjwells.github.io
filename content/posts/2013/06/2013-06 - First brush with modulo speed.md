@@ -1,5 +1,5 @@
 ---
-title: First brush with modulo speed
+title: "First brush with modulo speed"
 date: 2013-06-29 12:05
 tags: ["Programming"]
 ---

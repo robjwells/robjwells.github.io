@@ -1,5 +1,5 @@
 ---
-title: The automation paradox at work
+title: "The automation paradox at work"
 date: 2015-07-02 13:19
 tags: ["Work"]
 ---

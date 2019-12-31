@@ -1,5 +1,5 @@
 ---
-title: Five different kinds of grey
+title: "Five different kinds of grey"
 date: 2013-07-06 18:54
 tags: ["Personal", "Web"]
 ---

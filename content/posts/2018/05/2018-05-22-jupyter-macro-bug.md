@@ -1,5 +1,5 @@
 ---
-title: Jupyter notebook macro bug
+title: "Jupyter notebook macro bug"
 date: 2018-05-22 09:47
 ---
 

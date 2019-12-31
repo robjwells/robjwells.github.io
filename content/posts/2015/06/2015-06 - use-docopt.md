@@ -1,5 +1,5 @@
 ---
-title: You should be using docopt
+title: "You should be using docopt"
 date: 2015-06-30 12:21
 tags: ["Python", "Programming"]
 ---

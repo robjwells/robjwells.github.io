@@ -1,5 +1,5 @@
 ---
-title: Horizontally scroll a table in HTML
+title: "Horizontally scroll a table in HTML"
 date: 2018-05-11 23:35
 ---
 

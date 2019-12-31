@@ -1,5 +1,5 @@
 ---
-title: Where could Labour’s votes come from?
+title: "Where could Labour’s votes come from?"
 date: 2016-09-02 14:30
 ---
 

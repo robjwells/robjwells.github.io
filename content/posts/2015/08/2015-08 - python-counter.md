@@ -1,5 +1,5 @@
 ---
-title: Python Counter gotcha with max
+title: "Python Counter gotcha with max"
 date: 2015-08-07 13:49
 tags: ["Python"]
 ---

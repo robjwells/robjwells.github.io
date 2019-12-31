@@ -1,5 +1,5 @@
 ---
-title: Skype’s emoji cache
+title: "Skype’s emoji cache"
 slug: skype-emoji-cache
 date: 2017-12-19 11:31
 ---

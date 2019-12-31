@@ -1,5 +1,5 @@
 ---
-title: HTML image dimensions with a CSS border
+title: "HTML image dimensions with a CSS border"
 date: 2018-05-17 21:00
 ---
 

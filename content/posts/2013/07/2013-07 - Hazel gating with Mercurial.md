@@ -1,5 +1,5 @@
 ---
-title: Hazel gating with Mercurial
+title: "Hazel gating with Mercurial"
 date: 2013-07-31 23:16
 tags: ["Hazel", "Mercurial", "Shell"]
 ---

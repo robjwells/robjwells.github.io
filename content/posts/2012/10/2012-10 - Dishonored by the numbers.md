@@ -1,5 +1,5 @@
 ---
-title: Dishonored by the numbers
+title: "Dishonored by the numbers"
 date: 2012-10-14 16:20
 tags: ["Games"]
 ---

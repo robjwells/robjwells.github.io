@@ -1,5 +1,5 @@
 ---
-title: Next and last weekdays
+title: "Next and last weekdays"
 date: 2014-01-11 16:08
 tags: ["Python", "Programming", "TextExpander"]
 ---

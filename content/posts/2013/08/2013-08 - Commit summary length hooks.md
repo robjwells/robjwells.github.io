@@ -1,5 +1,5 @@
 ---
-title: Commit summary length hooks
+title: "Commit summary length hooks"
 date: 2013-08-03 13:31
 tags: ["Git", "Mercurial", "Python"]
 ---

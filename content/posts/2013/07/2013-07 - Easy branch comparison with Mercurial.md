@@ -1,5 +1,5 @@
 ---
-title: Easy branch comparison with Mercurial
+title: "Easy branch comparison with Mercurial"
 date: 2013-07-27 20:33
 tags: ["Git", "Mercurial"]
 ---

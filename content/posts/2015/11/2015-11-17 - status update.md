@@ -1,5 +1,5 @@
 ---
-title: Status update
+title: "Status update"
 date: 2015-11-17 16:10
 ---
 

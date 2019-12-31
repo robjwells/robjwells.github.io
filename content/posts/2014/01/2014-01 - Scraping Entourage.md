@@ -1,5 +1,5 @@
 ---
-title: Scraping Entourage
+title: "Scraping Entourage"
 date: 2014-01-22 13:32
 tags: ["AppleScript", "Programming", "Python"]
 ---

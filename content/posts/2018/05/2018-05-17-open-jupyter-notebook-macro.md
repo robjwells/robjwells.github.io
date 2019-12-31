@@ -1,5 +1,5 @@
 ---
-title: Open Jupyter notebooks with a Keyboard Maestro macro
+title: "Open Jupyter notebooks with a Keyboard Maestro macro"
 date: 2018-05-17 19:45
 ---
 

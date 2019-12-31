@@ -1,5 +1,5 @@
 ---
-title: AppleScript list gotchas
+title: "AppleScript list gotchas"
 date: 2015-06-26 12:05
 tags: ["AppleScript"]
 ---

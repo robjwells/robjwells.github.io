@@ -1,5 +1,5 @@
 ---
-title: Promptless Mercurial
+title: "Promptless Mercurial"
 date: 2013-08-24 13:04
 tags: ["Mercurial"]
 ---

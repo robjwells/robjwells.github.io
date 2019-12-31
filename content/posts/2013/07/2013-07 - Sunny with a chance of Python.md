@@ -1,5 +1,5 @@
 ---
-title: Sunny with a chance of Python
+title: "Sunny with a chance of Python"
 date: 2013-07-23 22:28
 tags: ["Programming", "Python"]
 ---

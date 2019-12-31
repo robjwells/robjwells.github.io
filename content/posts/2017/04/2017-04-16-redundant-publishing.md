@@ -1,5 +1,5 @@
 ---
-title: Redundant publishing
+title: "Redundant publishing"
 date: 2017-04-16 22:39
 ---
 

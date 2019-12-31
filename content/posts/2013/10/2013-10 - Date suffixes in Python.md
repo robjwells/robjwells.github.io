@@ -1,5 +1,5 @@
 ---
-title: Date suffixes in Python
+title: "Date suffixes in Python"
 date: 2013-10-07 22:51
 tags: ["AppleScript", "Programming", "Python", "TextExpander"]
 ---

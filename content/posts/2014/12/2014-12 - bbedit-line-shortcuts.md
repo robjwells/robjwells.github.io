@@ -1,5 +1,5 @@
 ---
-title: Start and end of line shortcuts in BBEdit
+title: "Start and end of line shortcuts in BBEdit"
 date: 2014-12-18 00:34
 tags: ["AppleScript", "BBEdit"]
 ---

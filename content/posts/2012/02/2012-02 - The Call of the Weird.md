@@ -1,5 +1,5 @@
 ---
-title: The Call of the Weird
+title: "The Call of the Weird"
 date: 2012-02-01 15:18
 tags: ["Books"]
 ---
