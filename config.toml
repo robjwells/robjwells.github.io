@@ -5,3 +5,6 @@ theme = "robjwells-2020"
 
 [permalinks]
 posts = "/:year/:month/:slug"
+
+[params]
+description = "A blog by Rob Wells, mostly about computer stuff."
