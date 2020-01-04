@@ -6,9 +6,9 @@
       {{- .Permalink | jsonify -}}
     {{- end }},
     "author": {
-        "name": "{{ .Site.Author.name | jsonify }}",
-        "url": "{{ .Site.Author.url }}",
-        "avatar": "{{ .Site.Author.avatar }}"
+        "name": {{ .Site.Author.name | jsonify }},
+        "url": {{ .Site.Author.url | jsonify }},
+        "avatar": {{ .Site.Author.avatar | jsonify }}
     },
     "items": [
       {{ with .Site.GetPage "section" "posts" }}
