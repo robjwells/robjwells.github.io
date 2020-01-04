@@ -6,7 +6,8 @@
       {{- .Permalink | jsonify -}}
     {{- end }},
     "items": [
-      {{ range $index, $entry := first 15 .Data.Pages }}
+      {{ with .Site.GetPage "section" "posts" }}
+      {{ range $index, $entry := first 10 .Pages }}
       {{- if $index }}, {{ end }}
       {
         "id": {{ .Permalink | jsonify }},
@@ -15,6 +16,7 @@
         "date_published": {{ .Date.Format "2006-01-02T15:04:05Z07:00" | jsonify }},
         "content_html": {{ .Content | jsonify }}
       }
+      {{- end }}
       {{- end }}
     ]
 }
