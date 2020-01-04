@@ -8,6 +8,8 @@ disableKinds = ["taxonomy", "taxonomyTerm"]
 
 [author]
 name = "Rob Wells"
+url = "https://www.robjwells.com/about"
+avatar = "https://www.robjwells.com/images/rob-scafell-pike.jpg"
 
 [permalinks]
 posts = "/:year/:month/:slug"
