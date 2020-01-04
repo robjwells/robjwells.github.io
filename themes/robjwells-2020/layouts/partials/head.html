@@ -3,8 +3,11 @@
   <title>{{ .Site.Title}} – {{ .Title }} </title>
 
   <!-- Load my combined stylesheet -->
-  <link rel="stylesheet" href="https://www.robjwells.com/resources/all.min.css">
-  <!--<link rel="stylesheet" href="/resources/all.min.css">-->
+  {{- $reset := resources.Get "css/reset.css" -}}
+  {{- $mainCSS := resources.Get "css/styles.css" -}}
+  {{- $syntax := resources.Get "css/highlight.css" -}}
+  {{- $css := slice $reset $mainCSS $syntax | resources.Concat "all.css" | minify | fingerprint -}}
+  <link rel="stylesheet" href="{{ $css.Permalink }}">
 
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
 
