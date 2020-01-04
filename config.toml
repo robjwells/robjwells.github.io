@@ -28,3 +28,6 @@ description = "A blog by Rob Wells, mostly about computer stuff."
 
 [outputs]
 home = ["html", "rss", "jsonfeed"]
+
+[markup.goldmark.renderer]
+unsafe = "true"
