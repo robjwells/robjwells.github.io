@@ -5,6 +5,7 @@
     "feed_url": {{ with .OutputFormats.Get "jsonfeed" -}}
       {{- .Permalink | jsonify -}}
     {{- end }},
+    "description": {{ .Site.Params.description | jsonify }},
     "author": {
         "name": {{ .Site.Author.name | jsonify }},
         "url": {{ .Site.Author.url | jsonify }},
