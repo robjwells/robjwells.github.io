@@ -14,3 +14,12 @@ posts = "/:year/:month/:slug"
 
 [params]
 description = "A blog by Rob Wells, mostly about computer stuff."
+
+[outputFormats]
+    [outputFormats.jsonfeed]
+    mediaType = "application/json"
+    baseName = "feed"
+    isPlainText = true
+
+[outputs]
+home = ["html", "rss", "jsonfeed"]
