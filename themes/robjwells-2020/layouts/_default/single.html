@@ -1,4 +1,4 @@
-{{ partial "header.html" . }}
+{{ define "main" }}
     <article>
       <header>
         <h2 class="mute-links"><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
@@ -8,4 +8,4 @@
       </header>
       {{ .Content }}
     </article>
-{{ partial "footer.html" . }}
+{{ end }}
