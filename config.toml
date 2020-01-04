@@ -21,5 +21,8 @@ description = "A blog by Rob Wells, mostly about computer stuff."
     baseName = "feed"
     isPlainText = true
 
+    [outputFormats.RSS]
+    baseName = "rss"
+
 [outputs]
 home = ["html", "rss", "jsonfeed"]
