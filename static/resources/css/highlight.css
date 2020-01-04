@@ -1,0 +1,74 @@
+@import url('styles.css');
+
+/*   ----------------------   */
+/*!  COLOUR REFERENCE         */
+/*                            */
+/*   #1369BF   Blue           */
+/*   #00800A   Green          */
+/*   #BD3338   Red            */
+/*   #607080   Grey           */
+/*                            */
+/*   ----------------------   */
+
+
+.syntax .lineno {
+    padding-right: 0.5em;
+}
+
+/* Grey */
+.syntax .lineno,
+.syntax .c,
+.syntax .c1,
+.syntax .ch,
+.syntax .cm,
+.syntax .cp,
+.syntax .cpf,
+.syntax .cs,
+.syntax .gp,
+.syntax .gt
+{
+    color: #607080;
+}
+
+/* Blue */
+.syntax .nb,
+.syntax .k,
+.syntax .kn,
+.syntax .ow,
+.syntax .bp,
+.syntax .nt,
+.syntax .kd,
+.syntax .nd
+{
+    color: #1369BF;
+}
+
+
+/* Red */
+.syntax .si,
+.syntax .se,
+.syntax .m,
+.syntax .mb,
+.syntax .mf,
+.syntax .mh,
+.syntax .mi,
+.syntax .mo,
+.syntax .sr,
+.syntax .sa,
+.syntax .gr
+{
+    color: #BD3338;
+}
+
+
+/* Green */
+.syntax .s,
+.syntax .s1,
+.syntax .s2,
+.syntax .sd,
+.syntax .sb,
+.syntax .sc,
+.syntax .dl
+{
+    color: #00800A;
+}
