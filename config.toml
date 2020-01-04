@@ -4,6 +4,8 @@ title = "Primary Unit on Hugo"
 theme = "robjwells-2020"
 copyright = "This work is licensed under a Creative Commons Attribution 4.0 International License."
 rssLimit = 10
+disableKinds = ["taxonomy", "taxonomyTerm"]
+
 [author]
 name = "Rob Wells"
 
