@@ -1,4 +1,4 @@
-{{ partial "header.html" . }}
+{{ define "main" }}
     {{ with .Site.GetPage "section" "posts" }}
     {{ range .Pages.GroupByDate "2006" }}
     <h3>{{ .Key }}</h3>
@@ -15,4 +15,4 @@
     </ul>
     {{ end }}
     {{ end }}
-{{ partial "footer.html" . }}
+{{ end }}
