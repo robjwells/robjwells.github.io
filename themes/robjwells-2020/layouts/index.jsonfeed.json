@@ -6,7 +6,7 @@
       {{- .Permalink | jsonify -}}
     {{- end }},
     "author": {
-        "name": "{{ .Site.Author.name }}",
+        "name": "{{ .Site.Author.name | jsonify }}",
         "url": "{{ .Site.Author.url }}",
         "avatar": "{{ .Site.Author.avatar }}"
     },
