@@ -2,6 +2,7 @@
 title: "The Anatomy of Fascism"
 author: "Robert O Paxton"
 finish-date: 2020-01-04T18:03:56Z
+publisher-link: "https://www.penguin.co.uk/books/54710/the-anatomy-of-fascism/9780141014326.html"
 ---
 
 An excellent book that uses comparison between fascist groups and regimes to attempt to understand how to define fascism itself.
