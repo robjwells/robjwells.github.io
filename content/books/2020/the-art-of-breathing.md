@@ -22,27 +22,12 @@ There’s also a weird thing about Marx and Engels on p86, where Penman uses the
 
 > Apologies to Marx and Engels (they’d probably think meditation is a ‘capitalist running-dog conspiracy’. It isn’t, in case you were wondering.)
 
-As far as I can tell, “capitalist running-dog conspiracy” is not a phrase ever used by Marx or Engels, but it’s just so strange to include this weird slight in, of all things, a book about meditation.
-
-They wrote [basically nothing about Buddhism][me-bud], from which secular mindfulness techniques are drawn.
-But their work was substantially about connections and circulations within society, the links between different social and economic forces.
-They were open to and eager for scientific discovery and advancement.
-How strange would it be to consider that they might not just blithely write off a technique all about the connection between mind and body when there is increasing — and increasingly critiqued and scrutinised — [evidence about its effects][science]?
-
-(There is, of course, the [“McMindfulness” debate][criticism], which argues more or less that, divorced from Buddhist ethics, it is being used as a substitute for addressing societal problems and a source of profit.
-Frankly if you ever thought that there was a possibility of challenging capitalism through mindfulness I know [two dead Germans][me] who’d like to have a word.)
-
-I get that it’s odd to write four paragraphs about *one short line* half-way through, but it did jump out at me. Maybe it’s just another sign of the pervasive, mindless anti-communism of our culture.
-
----
-
-Anyway, this is a fine, beautiful book that I won’t be recommending to my hard-nosed humourless conspiratorial Marxist friends but may lend to those with more poetic inclinations.
+Previously, I’d written more about how this was wrong-headed given Marx and Engels’s openness to scientific discovery (and the “running-dog” phrase is not even one of theirs).
+I ditched that because, on reflection, it came across as unkind.
+This throwaway line I think is just a reflection of the deep anti-communist trend in Britain’s modern mainstream intellectual culture.
+(I do think it’s particularly *mindless* of Penman to include it, and odd enough that it’s sparked me to write this!)
 
 [audio]: http://franticworld.com/resources/breathing/
 [mindfulness]: https://www.littlebrown.co.uk/titles/mark-williams/mindfulness/9780748126514/
 [depression]: https://www.guilford.com/books/The-Mindful-Way-through-Depression/Williams-Teasdale-Segal-Kabat-Zinn/9781593851286
 [cm]: https://www.marxists.org/archive/marx/works/1848/communist-manifesto/ch01.htm#025
-[me-bud]: http://www.vgweb.org/bsq/marxbud.htm
-[science]: https://greatergood.berkeley.edu/article/item/the_state_of_mindfulness_science
-[criticism]: https://www.theguardian.com/lifeandstyle/2019/apr/16/how-capitalism-captured-the-mindfulness-industry
-[me]: https://www.marxists.org/archive/marx/
