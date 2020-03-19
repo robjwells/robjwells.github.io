@@ -5,3 +5,4 @@
 * Redirect current RSS address in nginx
 * Redirect current JSON address in nginx
 * Convert old-style code formatting
+* Change code highlighting style
