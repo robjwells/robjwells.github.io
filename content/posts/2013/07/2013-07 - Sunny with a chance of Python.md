@@ -14,29 +14,29 @@ It’s incredibly basic but complements my [automatic weather script][weatherman
 
 [weatherman]: https://github.com/robjwells/weatherman
 
-    python3:
-     1:  #!/usr/bin/env python3
-     2:  """Get a 3 to 5 day outlook for the UK from the Met Office."""
-     3:  
-     4:  from urllib.request import urlopen
-     5:  from bs4 import BeautifulSoup as bs
-     6:  from subprocess import Popen, PIPE
-     7:  
-     8:  api_url = ("http://datapoint.metoffice.gov.uk/public/" +
-     9:             "data/txt/wxfcs/regionalforecast/xml/515")
-    10:  api_key = "Your Datapoint API key here"
-    11:  
-    13:  def get_weather():
-    14:    """Retrieve and parse the text summary forecast"""
-    15:    raw_xml = urlopen(api_url + "?key=" + api_key)
-    16:    outlook = bs(raw_xml).find(id="day3to5").get_text()
-    17:    return outlook
-    18:  
-    19:  if __name__ == "__main__":
-    20:    # Encode and pipe outlook to pasteboard
-    21:    outlook_bytes = get_weather().encode()
-    22:    Popen("pbcopy", stdin=PIPE).communicate(outlook_bytes)
+```python {linenos=true}
+#!/usr/bin/env python3
+"""Get a 3 to 5 day outlook for the UK from the Met Office."""
 
+from urllib.request import urlopen
+from bs4 import BeautifulSoup as bs
+from subprocess import Popen, PIPE
+
+api_url = ("http://datapoint.metoffice.gov.uk/public/" +
+           "data/txt/wxfcs/regionalforecast/xml/515")
+api_key = "Your Datapoint API key here"
+
+def get_weather():
+  """Retrieve and parse the text summary forecast"""
+  raw_xml = urlopen(api_url + "?key=" + api_key)
+  outlook = bs(raw_xml).find(id="day3to5").get_text()
+  return outlook
+
+if __name__ == "__main__":
+  # Encode and pipe outlook to pasteboard
+  outlook_bytes = get_weather().encode()
+  Popen("pbcopy", stdin=PIPE).communicate(outlook_bytes)
+```
 
 As shown at the top, this is Python 3 code. I have a version written in Python 2 which is very similar. It uses the built-in ElementTree XML parser instead of the nicer Beautiful Soup used in this script as I both wanted to get my head around the interface and for reasons to do with the Python version at work.
 
@@ -46,9 +46,10 @@ Lines 8–10 set up variables needed to access the [Met Office API][datapoint], 
 
 Beautiful Soup is used to parse the API response in line 16. I love its dead simple method for finding elements, especially compared to ElementTree’s insistence that you provide the XML namespace:
 
-    python3:
-    pattern = (".//{www.metoffice.gov.uk/xml/metoRegionalFcst}" +
-               "Period[@id='day3to5']")
+```python
+pattern = (".//{www.metoffice.gov.uk/xml/metoRegionalFcst}" +
+           "Period[@id='day3to5']")
+```
 
 My favourite part of the script is also the newest. If it is run directly from the command line (line 18) it pipes the forecast to the clipboard using `pbcopy`. I knew Python could start external processes but I was *blown away* by how easy this was. Previously the script printed the forecast and I used a shell alias to send it to the pasteboard. Yuck. This is much better.
 

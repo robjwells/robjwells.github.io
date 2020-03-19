@@ -30,12 +30,13 @@ Safari’s AppleScript support is fairly poor — it doesn’t expose your bookm
 
 Grab the code (stored as the bookmark’s address) and — importantly — [decode][url] it to turn entities such as `%7B` into `{`. Lop off the leading `javascript:` and insert it into this tiny AppleScript:
 
-    applescript:
-    tell application "Safari"
-      set bookmarklet to "your_bookmarklet_code_here"
-      set current_tab to the current tab of the front window
-      do JavaScript bookmarklet in current_tab
-    end tell
+```applescript
+tell application "Safari"
+  set bookmarklet to "your_bookmarklet_code_here"
+  set current_tab to the current tab of the front window
+  do JavaScript bookmarklet in current_tab
+end tell
+```
 
 [url]: http://meyerweb.com/eric/tools/dencoder/
 

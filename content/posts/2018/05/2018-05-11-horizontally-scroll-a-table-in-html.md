@@ -20,11 +20,12 @@ When I first wrote the CSS for this site, [roughly five years ago][redesign], I 
 
 Anyway, as you can see above, it doesn’t work like that now. The table there is laid out with the following CSS:
 
-    css:
-    table {
-      table-layout: fixed;
-      width: 100%;
-    }
+```css
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+```
 
 Which has the effect of restricting the table size to 100%, and doing odd things to the cells if there’s too much to fit in whatever width 100% happens to be.
 
@@ -34,10 +35,11 @@ As an attempted quick fix, I removed the [`table-layout`][table-layout] property
 
 So the CSS is now this:
 
-    css:
-    table {
-      width: 100%;
-    }
+```css:
+table {
+  width: 100%;
+}
+```
 
 This has the effect of having the table overflow the container horizontally if the content is too wide, like so:
 
@@ -65,22 +67,24 @@ Here’s what that looks like when rendered:
 
 Here’s the HTML:
 
-    html:
-    <div class="table-container">
-      <table>
-      …
-      </table>
-    </div>
+```html
+<div class="table-container">
+  <table>
+  …
+  </table>
+</div>
+```
 
 And here’s the CSS:
 
-    css:
-    table {
-      width: 100%;
-    }
+```css
+table {
+  width: 100%;
+}
 
-    .table-container {
-      overflow-x: auto;
-    }
+.table-container {
+  overflow-x: auto;
+}
+```
 
 You want `auto` instead of `scroll` as the latter shows the scrollbar all the time. 

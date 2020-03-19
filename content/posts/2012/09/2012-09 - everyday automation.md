@@ -20,27 +20,28 @@ The one similarity they do have is that the filename is kinda sorta repeated on 
 
 So I cooked up this little script in about a minute:
 
-    applescript:
-    tell application "Safari"
-        set theURL to (get the URL of the front document)
+```applescript
+tell application "Safari"
+    set theURL to (get the URL of the front document)
+end tell
+
+set printsOffset to (get the offset of "/prints/" in theURL)
+set jpgOffset to (get the offset of ".jpg" in theURL)
+
+set hyphenString to characters (printsOffset + 8) ¬
+through (jpgOffset - 1) of theURL as text
+set AppleScript's text item delimiters to "-"
+set theWords to (get the text items of hyphenString)
+set AppleScript's text item delimiters to " "
+set searchString to theWords as string
+set AppleScript's text item delimiters to "" -- return to default
+
+tell application "Safari"
+    tell the front document
+        search the web for searchString
     end tell
-
-    set printsOffset to (get the offset of "/prints/" in theURL)
-    set jpgOffset to (get the offset of ".jpg" in theURL)
-
-    set hyphenString to characters (printsOffset + 8) ¬
-    through (jpgOffset - 1) of theURL as text
-    set AppleScript's text item delimiters to "-"
-    set theWords to (get the text items of hyphenString)
-    set AppleScript's text item delimiters to " "
-    set searchString to theWords as string
-    set AppleScript's text item delimiters to "" -- return to default
-
-    tell application "Safari"
-        tell the front document
-            search the web for searchString
-        end tell
-    end tell
+end tell
+```
 
 Then I saved it, gave it a shortcut in [FastScripts][fs], opened up the first tab in Safari, hit the shortcut, tabbed to select the first URL in the search results, then hit enter to load it. Rinse, repeat.
 

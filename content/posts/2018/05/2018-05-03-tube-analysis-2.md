@@ -38,17 +38,18 @@ To start with we’re going to load some libraries to make our life easier. The 
 
 Not shown is my customised ggplot2 theme, which you can find if you [look at the original .Rmd source file](https://github.com/robjwells/primaryunit/tree/master/posts/2018/04).
 
-    r:
-    library(tidyverse)
-    library(lubridate)
-    library(stringr)
-    library(patchwork)
-    library(ggalt)
-    
-    # Moving average function from https://stackoverflow.com/a/4862334/1845155
-    mav <- function(x, n) {
-        stats::filter(x, rep(1/n, n), sides = 1)
-    }
+```r
+library(tidyverse)
+library(lubridate)
+library(stringr)
+library(patchwork)
+library(ggalt)
+
+# Moving average function from https://stackoverflow.com/a/4862334/1845155
+mav <- function(x, n) {
+    stats::filter(x, rep(1/n, n), sides = 1)
+}
+```
 
 <!-- Comment to separate R code and output -->
 
@@ -56,20 +57,22 @@ Not shown is my customised ggplot2 theme, which you can find if you [look at the
 
 I keep all the CSV files as received, just dating the filenames with the date I got them. (Sorry, I won’t be sharing the data.) Let’s load all the files:
 
-    r:
-    oyster_filenames <- dir(
-        '~/Documents/Oyster card/Journey history CSVs/',
-        pattern = '*.csv',
-        full.names = TRUE)
+```r
+oyster_filenames <- dir(
+    '~/Documents/Oyster card/Journey history CSVs/',
+    pattern = '*.csv',
+    full.names = TRUE)
+```
 
 <!-- Comment to separate R code and output -->
 
 There are 109 CSV files that we need to open, load, and combine.
 
-    r:
-    oyster_data <- oyster_filenames %>%
-        map(~ read_csv(., skip = 1)) %>%
-        reduce(rbind)
+```r
+oyster_data <- oyster_filenames %>%
+    map(~ read_csv(., skip = 1)) %>%
+    reduce(rbind)
+```
 
 <!-- Comment to separate R code and output -->
 
@@ -79,8 +82,9 @@ Here we’re piping `oyster_filenames` through `map`, where we use an R formula 
 
 We can take a look at the data to get an idea of its structure:
 
-    r:
-    head(oyster_data)
+```r
+head(oyster_data)
+```
 
 <!-- Comment to separate R code and output -->
 
@@ -103,10 +107,11 @@ But we’re only interested in rail journeys, one station to another, with a sta
 
 Let’s see if the notes field can give us any guidance of what we may need to exclude.
 
-    r:
-    oyster_data %>%
-        filter(!is.na(Note)) %>%
-        count(Note, sort = TRUE)
+```r
+oyster_data %>%
+    filter(!is.na(Note)) %>%
+    count(Note, sort = TRUE)
+```
 
 <!-- Comment to separate R code and output -->
 
@@ -121,11 +126,12 @@ Let’s see if the notes field can give us any guidance of what we may need to e
 
 OK, not much here, but there are some troublesome rail journeys missing either a starting or finishing station. The “incomplete journey” line also hints at something to be aware of:
 
-    r:
-    oyster_data %>%
-        filter(str_detect(Note, 'This incomplete journey')) %>%
-        select(`Journey/Action`) %>%
-        first()
+```r
+oyster_data %>%
+    filter(str_detect(Note, 'This incomplete journey')) %>%
+    select(`Journey/Action`) %>%
+    first()
+```
 
 <!-- Comment to separate R code and output -->
 
@@ -135,16 +141,17 @@ Note the angle brackets surrounding the substituted station. We’ll come back t
 
 A missing start or finish time is a giveaway for oddities, which overlaps somewhat but not completely with Journey/Action fields that don’t match the pattern of `{station} to {station}`. Let’s fish those out and have a look at the abbreviated descriptions:
 
-    r:
-    stations_regex <- '^<?([^>]+)>? to <?([^>]+)>?$'
-    
-    oyster_data %>%
-        filter(
-            is.na(`Start Time`) |
-            is.na(`End Time`) |
-            !str_detect(`Journey/Action`, stations_regex)) %>%
-        mutate(abbr = str_extract(`Journey/Action`, '^[^,]+')) %>%
-        count(abbr, sort = TRUE)
+```r
+stations_regex <- '^<?([^>]+)>? to <?([^>]+)>?$'
+
+oyster_data %>%
+    filter(
+        is.na(`Start Time`) |
+        is.na(`End Time`) |
+        !str_detect(`Journey/Action`, stations_regex)) %>%
+    mutate(abbr = str_extract(`Journey/Action`, '^[^,]+')) %>%
+    count(abbr, sort = TRUE)
+```
 
 <!-- Comment to separate R code and output -->
 
@@ -167,13 +174,14 @@ A missing start or finish time is a giveaway for oddities, which overlaps somewh
 
 All these should be filtered out of the data for analysis. (The two unknown transactions appear to be two halves of my old commute. Strange.)
 
-    r:
-    rail_journeys <- oyster_data %>%
-        # Note the !() below to invert the earlier filter
-        filter(!(
-            is.na(`Start Time`) |
-            is.na(`End Time`) |
-            !str_detect(`Journey/Action`, stations_regex)))
+```r
+rail_journeys <- oyster_data %>%
+    # Note the !() below to invert the earlier filter
+    filter(!(
+        is.na(`Start Time`) |
+        is.na(`End Time`) |
+        !str_detect(`Journey/Action`, stations_regex)))
+```
 
 <!-- Comment to separate R code and output -->
 
@@ -187,31 +195,32 @@ But there’s more tidying-up to do:
 
 Let’s have a crack at it, proceeding in that order:
 
-    r:
-    tidy_journeys <- rail_journeys %>%
-        mutate(
-            start = dmy_hms(
-                str_c(Date, `Start Time`, sep=' '),
-                tz = 'Europe/London'),
-            end = dmy_hms(
-                str_c(Date, `End Time`, sep=' '),
-                tz = 'Europe/London') +
-                # Add an extra day if the journey ends “earlier” than the start
-                days(1 * (`End Time` < `Start Time`)),
-            # Let’s add a duration to make our lives easier
-            duration = end - start,
-    
-            enter = str_match(`Journey/Action`, stations_regex)[,2],
-            exit = str_match(`Journey/Action`, stations_regex)[,3]
-        ) %>%
-        select(
-            start, end, duration,
-            enter, exit,
-            fare = Charge
-        ) %>%
-        # Sorting solely to correct the slightly odd example output
-        arrange(start)
-    head(tidy_journeys)
+```
+tidy_journeys <- rail_journeys %>%
+    mutate(
+        start = dmy_hms(
+            str_c(Date, `Start Time`, sep=' '),
+            tz = 'Europe/London'),
+        end = dmy_hms(
+            str_c(Date, `End Time`, sep=' '),
+            tz = 'Europe/London') +
+            # Add an extra day if the journey ends “earlier” than the start
+            days(1 * (`End Time` < `Start Time`)),
+        # Let’s add a duration to make our lives easier
+        duration = end - start,
+
+        enter = str_match(`Journey/Action`, stations_regex)[,2],
+        exit = str_match(`Journey/Action`, stations_regex)[,3]
+    ) %>%
+    select(
+        start, end, duration,
+        enter, exit,
+        fare = Charge
+    ) %>%
+    # Sorting solely to correct the slightly odd example output
+    arrange(start)
+head(tidy_journeys)
+```
 
 <!-- Comment to separate R code and output -->
 
@@ -237,15 +246,16 @@ But there’s a problem with the data: they record journeys made, not the absenc
 
 First, let’s make a data frame containing every [ISO week](https://en.wikipedia.org/wiki/ISO_week_date) from the earliest journey in our data to the most recent.
 
-    r:
-    blank_weeks <- seq(min(tidy_journeys$start),
-        max(tidy_journeys$end),
-        by = '1 week') %>%
-        tibble(
-            start = .,
-            week = format(., '%G-W%V')
-        )
-    head(blank_weeks)
+```r
+blank_weeks <- seq(min(tidy_journeys$start),
+    max(tidy_journeys$end),
+    by = '1 week') %>%
+    tibble(
+        start = .,
+        week = format(., '%G-W%V')
+    )
+head(blank_weeks)
+```
 
 <!-- Comment to separate R code and output -->
 
@@ -263,21 +273,23 @@ The format string uses the ISO week year (%G) and the ISO week number (%V), whic
 
 Now we need to summarise our actual journey data, collecting the total fare for each ISO week. We’ll use `group_by()` and `summarise()` — two tools that took me a few tries to get a handle on. Here `summarise()` works group-wise based on the result of `group_by()`; you don’t have to pass the group into the `summarise()` call, just specify the value you want summarised and how.
 
-    r:
-    real_week_totals <- tidy_journeys %>%
-        group_by(week = format(start, '%G-W%V')) %>%
-        summarise(total = sum(fare))
+```r
+real_week_totals <- tidy_journeys %>%
+    group_by(week = format(start, '%G-W%V')) %>%
+    summarise(total = sum(fare))
+```
 
 <!-- Comment to separate R code and output -->
 
 That done, we can use an SQL-like join operation to take every week in our giant list and match it against the week summaries from our real data. The join leaves missing values (`NA`) in the total column for weeks where no journeys were made (and so weren’t present in the data to summarise) so we replace them with zero.
 
-    r:
-    complete_week_totals <- left_join(blank_weeks,
-                                      real_week_totals,
-                                      by = 'week') %>%
-        replace_na(list(total = 0))
-    tail(complete_week_totals)
+```r
+complete_week_totals <- left_join(blank_weeks,
+                                  real_week_totals,
+                                  by = 'week') %>%
+    replace_na(list(total = 0))
+tail(complete_week_totals)
+```
 
 <!-- Comment to separate R code and output -->
 
@@ -293,39 +305,40 @@ That done, we can use an SQL-like join operation to take every week in our giant
 
 With this summary frame assembled, we can now plot the totals. I’m also going to mark roughly when I moved house so we can try to see if there’s any particular shift.
 
-    r:
-    house_move <- as.POSIXct('2016-08-01')
-    pound_scale <- scales::dollar_format(prefix = '£')
-    
-    weeks_for_avg <- 8
-    
-    ggplot(data = complete_week_totals,
-           mapping = aes(x = start, y = total)) +
-        geom_vline(
-            xintercept = house_move,
-            colour = rjw_grey,
-            alpha = 0.75) +
-        geom_point(
-            colour = rjw_blue,
-            size = 0.75) +
-        geom_line(
-            mapping = aes(y = mav(complete_week_totals$total,
-                                  weeks_for_avg)),
-            colour = rjw_red) +
-    
-        labs(
-            title = str_glue(
-                'Weekly transport spending and {weeks_for_avg}',
-                '-week moving average'),
-            subtitle = (
-                'September 2014 to May 2018, vertical bar marks house move'),
-            x = NULL, y = NULL) +
-    
-        scale_x_datetime(
-            date_breaks = '6 months',
-            date_labels = '%b ’%y') +
-        scale_y_continuous(
-            labels = pound_scale)
+```r
+house_move <- as.POSIXct('2016-08-01')
+pound_scale <- scales::dollar_format(prefix = '£')
+
+weeks_for_avg <- 8
+
+ggplot(data = complete_week_totals,
+       mapping = aes(x = start, y = total)) +
+    geom_vline(
+        xintercept = house_move,
+        colour = rjw_grey,
+        alpha = 0.75) +
+    geom_point(
+        colour = rjw_blue,
+        size = 0.75) +
+    geom_line(
+        mapping = aes(y = mav(complete_week_totals$total,
+                              weeks_for_avg)),
+        colour = rjw_red) +
+
+    labs(
+        title = str_glue(
+            'Weekly transport spending and {weeks_for_avg}',
+            '-week moving average'),
+        subtitle = (
+            'September 2014 to May 2018, vertical bar marks house move'),
+        x = NULL, y = NULL) +
+
+    scale_x_datetime(
+        date_breaks = '6 months',
+        date_labels = '%b ’%y') +
+    scale_y_continuous(
+        labels = pound_scale)
+```
 
 <!-- Comment to separate R code and output -->
 
@@ -346,27 +359,28 @@ That said, the code for this plot is a pretty great example of what I like about
 
 The first plot showed a change in my average weekly spending. What does that look like when we plot the cumulative spending over this period?
 
-    r:
-    ggplot(data = tidy_journeys,
-           mapping = aes(x = start,
-                         y = cumsum(fare),
-                         colour = start > house_move)) +
-        geom_line(
-            size = 1) +
-    
-        labs(
-            title = 'Cumulative Oyster card spending',
-            subtitle = 'September 2014 to May 2018',
-            x = NULL, y = NULL,
-            colour = 'House move') +
-        scale_y_continuous(
-            labels = pound_scale,
-            breaks = c(0, 500, 1000, 1400, 1650)) +
-        scale_color_brewer(
-            labels = c('Before', 'After'),
-            palette = 'Set2') +
-        theme(
-            legend.position = 'bottom')
+```r
+ggplot(data = tidy_journeys,
+       mapping = aes(x = start,
+                     y = cumsum(fare),
+                     colour = start > house_move)) +
+    geom_line(
+        size = 1) +
+
+    labs(
+        title = 'Cumulative Oyster card spending',
+        subtitle = 'September 2014 to May 2018',
+        x = NULL, y = NULL,
+        colour = 'House move') +
+    scale_y_continuous(
+        labels = pound_scale,
+        breaks = c(0, 500, 1000, 1400, 1650)) +
+    scale_color_brewer(
+        labels = c('Before', 'After'),
+        palette = 'Set2') +
+    theme(
+        legend.position = 'bottom')
+```
 
 <!-- Comment to separate R code and output -->
 
@@ -385,33 +399,34 @@ The difference in slope is quite clear; at one point I fitted a linear smoother 
 
 One thing that shows up in the first plot, and likely underlies the drop in average spending, is the number of weeks where I don’t travel using my Oyster card at all. Let’s pull together a one-dimensional plot showing just that.
 
-    r:
-    ggplot(complete_week_totals,
-           aes(x = start,
-               y = 1,
-               fill = total == 0)) +
-        geom_col(
-            width = 60 * 60 * 24 * 7) +  # datetime col width handled as seconds
-        geom_vline(
-            xintercept = house_move,
-            colour = rjw_red) +
-    
-        scale_fill_manual(
-            values = c(str_c(rjw_grey, '20'), rjw_grey),
-            labels = c('Some', 'None')) +
-        scale_x_datetime(
-            limits = c(min(complete_week_totals$start),
-                       max(complete_week_totals$start)),
-            expand = c(0, 0)) +
-        scale_y_continuous(
-            breaks = NULL) +
-        labs(
-            title = 'Weeks with zero Oyster card spending',
-            subtitle = 'September 2014 to May 2018, red line marks house move',
-            x = NULL, y = NULL,
-            fill = 'Spending') +
-        theme(
-            legend.position = 'bottom')
+```r
+ggplot(complete_week_totals,
+       aes(x = start,
+           y = 1,
+           fill = total == 0)) +
+    geom_col(
+        width = 60 * 60 * 24 * 7) +  # datetime col width handled as seconds
+    geom_vline(
+        xintercept = house_move,
+        colour = rjw_red) +
+
+    scale_fill_manual(
+        values = c(str_c(rjw_grey, '20'), rjw_grey),
+        labels = c('Some', 'None')) +
+    scale_x_datetime(
+        limits = c(min(complete_week_totals$start),
+                   max(complete_week_totals$start)),
+        expand = c(0, 0)) +
+    scale_y_continuous(
+        breaks = NULL) +
+    labs(
+        title = 'Weeks with zero Oyster card spending',
+        subtitle = 'September 2014 to May 2018, red line marks house move',
+        x = NULL, y = NULL,
+        fill = 'Spending') +
+    theme(
+        legend.position = 'bottom')
+```
 
 <!-- Comment to separate R code and output -->
 
@@ -434,37 +449,38 @@ So it’s clear that I travel less on the Tube network, and that I spend less. B
 
 Let’s have a look at how the average fare and average journey duration change over time.
 
-    r:
-    n_journey_avg <- 10
-    
-    common_vline <- geom_vline(xintercept = house_move,
-                               colour = rjw_red)
-    common_point <- geom_point(size = .5)
-    
-    fares_over_time <- ggplot(tidy_journeys,
-                              aes(x = start,
-                                  y = mav(fare, n_journey_avg))) +
-        scale_x_datetime(
-            labels = NULL) +
-        scale_y_continuous(
-            labels = pound_scale) +
-        labs(
-            y = 'Fare',
-            title = 'More expensive, shorter journeys',
-            subtitle = str_glue('{n_journey_avg}-journey average, ',
-                                'vertical line marks house move'))
-    
-    duration_over_time <- ggplot(tidy_journeys,
-                                 aes(x = start,
-                                     y = mav(duration, n_journey_avg))) +
-        scale_y_continuous() +
-        labs(
-            y = 'Duration (mins)')
-    
-    (fares_over_time / duration_over_time) &  # Patchwork is magic
-        common_vline &
-        common_point &
-        labs(x = NULL)
+```r
+n_journey_avg <- 10
+
+common_vline <- geom_vline(xintercept = house_move,
+                           colour = rjw_red)
+common_point <- geom_point(size = .5)
+
+fares_over_time <- ggplot(tidy_journeys,
+                          aes(x = start,
+                              y = mav(fare, n_journey_avg))) +
+    scale_x_datetime(
+        labels = NULL) +
+    scale_y_continuous(
+        labels = pound_scale) +
+    labs(
+        y = 'Fare',
+        title = 'More expensive, shorter journeys',
+        subtitle = str_glue('{n_journey_avg}-journey average, ',
+                            'vertical line marks house move'))
+
+duration_over_time <- ggplot(tidy_journeys,
+                             aes(x = start,
+                                 y = mav(duration, n_journey_avg))) +
+    scale_y_continuous() +
+    labs(
+        y = 'Duration (mins)')
+
+(fares_over_time / duration_over_time) &  # Patchwork is magic
+    common_vline &
+    common_point &
+    labs(x = NULL)
+```
 
 <!-- Comment to separate R code and output -->
 
@@ -479,49 +495,50 @@ Let’s have a look at how the average fare and average journey duration change 
 
 Journeys taken after the house move appear to be shorter and more expensive. How distinct is this? What is driving the averages? I have a hunch so let me rush on ahead with this plot.
 
-    r:
-    commute_stations <- c('Woolwich Arsenal DLR', 'Stratford International DLR',
-                          'Stratford', 'Pudding Mill Lane DLR')
-    
-    commute_journeys <- tidy_journeys %>%
-        filter(
-            enter %in% commute_stations,
-            exit %in% commute_stations)
-    
-    high_speed_journeys <- tidy_journeys %>%
-        filter(
-            str_detect(enter, 'HS1'),
-            str_detect(exit, 'HS1'))
-    
-    ggplot(tidy_journeys,
-           aes(x = fare,
-               y = duration,
-               colour = start > house_move)) +
-        geom_jitter(
-            width = 0.05,  # 5p
-            height = 0.5,  # 30 seconds
-            alpha = 0.5) +
-        geom_encircle(
-            data = commute_journeys,
-            size = 1.5) +
-        geom_encircle(
-            data = high_speed_journeys,
-            size = 1.5) +
-    
-        scale_color_brewer(
-            palette = 'Set2',
-            labels = c('Before', 'After')) +
-        scale_x_continuous(
-            labels = pound_scale) +
-        scale_y_continuous(
-            limits = c(0, 80)) +
-        labs(
-            title = 'Pre- and post-move averages driven by two groups',
-            subtitle = str_c('Old commute and high-speed journeys circled,',
-                             ' positions not exact'),
-            x = 'Fare',
-            y = 'Duration (mins)',
-            colour = 'House move')
+```r
+commute_stations <- c('Woolwich Arsenal DLR', 'Stratford International DLR',
+                      'Stratford', 'Pudding Mill Lane DLR')
+
+commute_journeys <- tidy_journeys %>%
+    filter(
+        enter %in% commute_stations,
+        exit %in% commute_stations)
+
+high_speed_journeys <- tidy_journeys %>%
+    filter(
+        str_detect(enter, 'HS1'),
+        str_detect(exit, 'HS1'))
+
+ggplot(tidy_journeys,
+       aes(x = fare,
+           y = duration,
+           colour = start > house_move)) +
+    geom_jitter(
+        width = 0.05,  # 5p
+        height = 0.5,  # 30 seconds
+        alpha = 0.5) +
+    geom_encircle(
+        data = commute_journeys,
+        size = 1.5) +
+    geom_encircle(
+        data = high_speed_journeys,
+        size = 1.5) +
+
+    scale_color_brewer(
+        palette = 'Set2',
+        labels = c('Before', 'After')) +
+    scale_x_continuous(
+        labels = pound_scale) +
+    scale_y_continuous(
+        limits = c(0, 80)) +
+    labs(
+        title = 'Pre- and post-move averages driven by two groups',
+        subtitle = str_c('Old commute and high-speed journeys circled,',
+                         ' positions not exact'),
+        x = 'Fare',
+        y = 'Duration (mins)',
+        colour = 'House move')
+```
 
 <!-- Comment to separate R code and output -->
 
@@ -546,37 +563,39 @@ On the other hand, trips involving the HS1 line are expensive and very short. A 
 
 Does that theory of the two extreme groups really explain the difference? Let’s filter out the two groups from our journey data.
 
-    r:
-    journeys_without_extremes <- tidy_journeys %>%
-        anti_join(commute_journeys) %>%
-        anti_join(high_speed_journeys)
+```r
+journeys_without_extremes <- tidy_journeys %>%
+    anti_join(commute_journeys) %>%
+    anti_join(high_speed_journeys)
+```
 
 <!-- Comment to separate R code and output -->
 
 Let’s look how the journey durations compare:
 
-    r:
-    ggplot(journeys_without_extremes,
-           aes(x = duration,
-               fill = start > house_move)) +
-        geom_histogram(
-            binwidth = 5,
-            closed = 'left',
-            colour = 'black',
-            size = 0.15,
-            position = 'identity') +
-        scale_x_continuous(
-            breaks = seq(0, 70, 10),
-            limits = c(0, 70)) +
-        scale_fill_brewer(
-            palette = 'Set2',
-            labels = c('Before', 'After')) +
-        labs(
-            title = 'Post-move journeys still shorter',
-            subtitle = 'Commute and HS1 journeys excluded, bars overlap',
-            x = 'Duration (mins)',
-            y = 'Number of journeys',
-            fill = 'House move')
+```r
+ggplot(journeys_without_extremes,
+       aes(x = duration,
+           fill = start > house_move)) +
+    geom_histogram(
+        binwidth = 5,
+        closed = 'left',
+        colour = 'black',
+        size = 0.15,
+        position = 'identity') +
+    scale_x_continuous(
+        breaks = seq(0, 70, 10),
+        limits = c(0, 70)) +
+    scale_fill_brewer(
+        palette = 'Set2',
+        labels = c('Before', 'After')) +
+    labs(
+        title = 'Post-move journeys still shorter',
+        subtitle = 'Commute and HS1 journeys excluded, bars overlap',
+        x = 'Duration (mins)',
+        y = 'Number of journeys',
+        fill = 'House move')
+```
 
 <!-- Comment to separate R code and output -->
 
@@ -591,28 +610,29 @@ Let’s look how the journey durations compare:
 
 And the fares:
 
-    r:
-    ggplot(journeys_without_extremes,
-           aes(x = fare,
-               fill = start > house_move)) +
-        geom_histogram(
-            binwidth = 0.5,
-            closed = 'left',
-            colour = 'black',
-            size = 0.15,
-            position = 'identity') +
-        scale_x_continuous(
-            labels = pound_scale) +
-        scale_fill_brewer(
-            palette = 'Set2',
-            labels = c('Before', 'After')) +
-    
-        labs(
-            title = 'Post-move journeys generally more expensive',
-            subtitle = 'Commute and HS1 journeys excluded, bars overlap',
-            x = 'Fare',
-            y = 'Number of journeys',
-            fill = 'House move')
+```r
+ggplot(journeys_without_extremes,
+       aes(x = fare,
+           fill = start > house_move)) +
+    geom_histogram(
+        binwidth = 0.5,
+        closed = 'left',
+        colour = 'black',
+        size = 0.15,
+        position = 'identity') +
+    scale_x_continuous(
+        labels = pound_scale) +
+    scale_fill_brewer(
+        palette = 'Set2',
+        labels = c('Before', 'After')) +
+
+    labs(
+        title = 'Post-move journeys generally more expensive',
+        subtitle = 'Commute and HS1 journeys excluded, bars overlap',
+        x = 'Fare',
+        y = 'Number of journeys',
+        fill = 'House move')
+```
 
 <!-- Comment to separate R code and output -->
 

@@ -34,16 +34,17 @@ The biggest problem with R Markdown was fitting it into my, admittedly arcane, [
 
 Right now, I’ve settled on this set of output options in the YAML front-matter:
 
-    yaml:
-    md_document:
-        variant: markdown_strict+fenced_code_blocks
-        preserve_yaml: true
-        fig_width: 7.5
-        fig_height: 5
-        dev: svg
-        pandoc_args: [
-            "--wrap", "preserve"
-        ]
+```yaml
+md_document:
+    variant: markdown_strict+fenced_code_blocks
+    preserve_yaml: true
+    fig_width: 7.5
+    fig_height: 5
+    dev: svg
+    pandoc_args: [
+        "--wrap", "preserve"
+    ]
+```
 
 Now I don’t actually use fenced (`~~~~`) code blocks in Markdown, instead I just use regular Markdown indented code blocks with a header line (`python:`) at the top. But I include that extension in the Markdown variant to make it easier to transform code blocks later.
 

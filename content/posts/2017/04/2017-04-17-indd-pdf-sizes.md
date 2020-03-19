@@ -21,17 +21,18 @@ Thankfully you can have a poke around PDF files with your favourite text editor 
 
 [BBEdit]: http://www.barebones.com/products/bbedit/
 
-    xml:
-    <x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP […]">
-     <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-      <rdf:Description rdf:about=""
-        xmlns:xmp="http://ns.adobe.com/xap/1.0/"
-        xmlns:dc="http://purl.org/dc/elements/1.1/"
-        xmlns:photoshop="http://ns.adobe.com/photoshop/1.0/"
-        … Blah blah blah exif data etc …
-      </rdf:Description>
-     </rdf:RDF>
-    </x:xmpmeta>
+```xml
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP […]">
+ <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <rdf:Description rdf:about=""
+    xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:photoshop="http://ns.adobe.com/photoshop/1.0/"
+    … Blah blah blah exif data etc …
+  </rdf:Description>
+ </rdf:RDF>
+</x:xmpmeta>
+```
 
 Which is the none-too-exciting block for one of the images, a Photoshop file. There’s two more like this, roughly 50–100 lines each. Then we hit a chunk which describes the InDesign file itself, with this giveaway line:
 
@@ -44,26 +45,26 @@ Except this InDesign metadata block is 53,895 lines long in a file that’s 86,5
 
 I think it’s safe to say we’ve found our culprit. But what’s going on in those 54,000 lines? Well, mostly this:
 
-    xml:
-    <xmpMM:History>
-       <rdf:Seq>
-          <rdf:li rdf:parseType="Resource">
-             <stEvt:action>created</stEvt:action>
-             <stEvt:instanceID>xmp.iid:[… hex ID …]</stEvt:instanceID>
-             <stEvt:when>2012-05-22T12:55:27+01:00</stEvt:when>
-             <stEvt:softwareAgent>Adobe InDesign 6.0</stEvt:softwareAgent>
-          </rdf:li>
-          <rdf:li rdf:parseType="Resource">
-             <stEvt:action>saved</stEvt:action>
-             <stEvt:instanceID>xmp.iid:[… hex ID …]</stEvt:instanceID>
-             <stEvt:when>2012-05-22T12:55:54+01:00</stEvt:when>
-             <stEvt:softwareAgent>Adobe InDesign 6.0</stEvt:softwareAgent>
-             <stEvt:changed>/</stEvt:changed>
-          </rdf:li>
-        <!--  1,287 more list items  -->
-       </rdf:Seq>
-    </xmpMM:History>
-
+```xml
+<xmpMM:History>
+   <rdf:Seq>
+      <rdf:li rdf:parseType="Resource">
+         <stEvt:action>created</stEvt:action>
+         <stEvt:instanceID>xmp.iid:[… hex ID …]</stEvt:instanceID>
+         <stEvt:when>2012-05-22T12:55:27+01:00</stEvt:when>
+         <stEvt:softwareAgent>Adobe InDesign 6.0</stEvt:softwareAgent>
+      </rdf:li>
+      <rdf:li rdf:parseType="Resource">
+         <stEvt:action>saved</stEvt:action>
+         <stEvt:instanceID>xmp.iid:[… hex ID …]</stEvt:instanceID>
+         <stEvt:when>2012-05-22T12:55:54+01:00</stEvt:when>
+         <stEvt:softwareAgent>Adobe InDesign 6.0</stEvt:softwareAgent>
+         <stEvt:changed>/</stEvt:changed>
+      </rdf:li>
+    <!--  1,287 more list items  -->
+   </rdf:Seq>
+</xmpMM:History>
+```
 It’s effectively a record of every time the document was saved. But if you look at the `stEvt:when` tag you’ll notice the first items are from 2012 — when our “master” InDesign file from which we derive our edition files was first created. So, the whole record of that master file is included in every InDesign file we use, and the PDFs we create from them.
 
 Can we remove this metadata from InDesign? You can see it in <span class="osx-menu">File ▸ File Info… ▸ Advanced</span>, select it and press the rubbish bin icon. Save, quit, reopen and… it’s still there.
@@ -79,12 +80,14 @@ After using [ghostscript][] for our [automatic barcode creation][barcode], I twi
 [ghostscript]: https://ghostscript.com
 [barcode]: https://github.com/ppps/ms-barcode
 
-    gs -sDEVICE=pdfwrite \
-       -dPDFSETTINGS=/screen \
-       -dCompatibilityLevel=1.5 \
-       -dNOPAUSE -dQUIET -dBATCH \
-       -sOutputFile="11_Books_180417-smaller.pdf" \
-       "11_Books_180417.pdf"
+```
+gs -sDEVICE=pdfwrite \
+   -dPDFSETTINGS=/screen \
+   -dCompatibilityLevel=1.5 \
+   -dNOPAUSE -dQUIET -dBATCH \
+   -sOutputFile="11_Books_180417-smaller.pdf" \
+   "11_Books_180417.pdf"
+```
 
 Most of that is ghostscript boilerplate (it’s not exactly the friendliest tool to use), but the important option is `-dPDFSETTINGS=/screen` which, according to [one page of the sprawling docs][pdfsettings], is a predefined Adobe Distiller setting.
 

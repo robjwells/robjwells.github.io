@@ -18,12 +18,10 @@ The shorter path of the parent would match part of the child’s path.
 
 The original `grep` pattern was:
 
-    sh:
     grep "$KMVAR_dir"
 
 And is now:
 
-    sh:
     grep ":: $KMVAR_dir$"
 
 So that it only matches the exact directory chosen in the list prompt, and not one of its children.

@@ -12,41 +12,43 @@ Since I’ve been writing more and more Python, I thought it would be fun to rew
 
 First, here’s my original Applescript:
 
-    applescript:
-     1:  set theDate to the day of the (current date)
-     2:  set theDay to the weekday of the (current date)
-     3:  set theMonth to the month of the (current date)
-     4:  set theYear to the year of the (current date)
-     5:  
-     6:  set lastChar to (the last character of (theDate as string)) as number
-     7:  
-     8:  if lastChar > 3 or lastChar is 0 or (theDate > 10 and theDate < 21) then
-     9:    set theDate to (theDate as string) & "th"
-    10:  else
-    11:    set theSuffixes to {"st", "nd", "rd"}
-    12:    set theDate to (theDate as string) & (item lastChar of theSuffixes)
-    13:  end if
-    14:  
-    15:  return (theDay & ", " & theMonth & " " & theDate & ", " & theYear) as string
+```applescript {linenos=true}
+set theDate to the day of the (current date)
+set theDay to the weekday of the (current date)
+set theMonth to the month of the (current date)
+set theYear to the year of the (current date)
+
+set lastChar to (the last character of (theDate as string)) as number
+
+if lastChar > 3 or lastChar is 0 or (theDate > 10 and theDate < 21) then
+  set theDate to (theDate as string) & "th"
+else
+  set theSuffixes to {"st", "nd", "rd"}
+  set theDate to (theDate as string) & (item lastChar of theSuffixes)
+end if
+
+return (theDay & ", " & theMonth & " " & theDate & ", " & theYear) as string
+```
 
 And now the Python:
 
-    python3:
-     1:  #!/usr/local/bin/python3
-     2:  
-     3:  from datetime import date
-     4:  
-     5:  today = date.today()
-     6:  date_string = today.strftime('%A, %B #, %Y')
-     7:  day = today.day
-     8:  
-     9:  if (3 < day < 21) or (23 < day < 31):
-    10:    day = str(day) + 'th'
-    11:  else:
-    12:    suffixes = {1: 'st', 2: 'nd', 3: 'rd'}
-    13:    day = str(day) + suffixes[day % 10]
-    14:  
-    15:  print(date_string.replace('#', day), end='')
+```python {linenos=true}
+#!/usr/local/bin/python3
+
+from datetime import date
+
+today = date.today()
+date_string = today.strftime('%A, %B #, %Y')
+day = today.day
+
+if (3 < day < 21) or (23 < day < 31):
+  day = str(day) + 'th'
+else:
+  suffixes = {1: 'st', 2: 'nd', 3: 'rd'}
+  day = str(day) + suffixes[day % 10]
+
+print(date_string.replace('#', day), end='')
+```
 
 <div class="flag">
     <p>

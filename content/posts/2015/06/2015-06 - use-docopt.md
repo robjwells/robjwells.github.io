@@ -15,28 +15,30 @@ For an example I’m going to pick on Dr Drang, who was unfortunate enough to [p
 
 Take a look at his original help message, and then check out the following:
 
-    Return NCDC weather report for the given date.
+```
+Return NCDC weather report for the given date.
 
-    Usage: ncdc [options] DATE
+Usage: ncdc [options] DATE
 
-    Options:
-        -a, --ascii        : return ASCII file instead of HTML
-        -d, --daily        : return daily summary instead of hourly reports
-        -m, --month        : entire month, not just a single day
-        -p, --precip       : precipitation (hourly only, overrides -d)
-        -s, --station STA  : the station abbreviation [default: ORD]
-                             O'Hare     ORD
-                             Midway     MDW
-                             Palwaukee  PWK
-                             Aurora     ARR
-                             Waukegan   UGN
-                             Lewis      LOT
-                             DuPage     DPA
-                             Lansing    IGQ
-                             Joliet     JOT
-                             Kankakee   IKK
-                             Gary       GYY
-        -h, --help         : print this message
+Options:
+    -a, --ascii        : return ASCII file instead of HTML
+    -d, --daily        : return daily summary instead of hourly reports
+    -m, --month        : entire month, not just a single day
+    -p, --precip       : precipitation (hourly only, overrides -d)
+    -s, --station STA  : the station abbreviation [default: ORD]
+                         O'Hare     ORD
+                         Midway     MDW
+                         Palwaukee  PWK
+                         Aurora     ARR
+                         Waukegan   UGN
+                         Lewis      LOT
+                         DuPage     DPA
+                         Lansing    IGQ
+                         Joliet     JOT
+                         Kankakee   IKK
+                         Gary       GYY
+    -h, --help         : print this message
+```
 
 It’s essentially the same, but with a couple of minor changes:
 
@@ -48,16 +50,17 @@ It’s essentially the same, but with a couple of minor changes:
 
 And here’s the new argument-handling code, to replace lines 54–87 in his script (there’s also the new line `from docopt import docopt` earlier on):
 
-    python3:
-    # Handle options.
-    args = docopt(help)
-    sta = args['--station'].upper()
-    ascii = args['--ascii']
-    month = args['--month']
-    precip = args['--precip']
-    daily = False if precip else args['--daily']
+```python
+# Handle options.
+args = docopt(help)
+sta = args['--station'].upper()
+ascii = args['--ascii']
+month = args['--month']
+precip = args['--precip']
+daily = False if precip else args['--daily']
 
-    d = parse(args['DATE'], dayfirst=False)
+d = parse(args['DATE'], dayfirst=False)
+```
 
 Provide `docopt` with your help message and you get back a dictionary. Options that take an argument give you back the argument, the default or None (if you don’t set a default). The switch-type options are booleans, being False if they’re not used.
 

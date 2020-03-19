@@ -16,10 +16,11 @@ AppleScript gets a lot of stick for being a rubbish language. And it is. But bef
 
 But it happened. Here’s the example code:
 
-    applescript:
-    set myRecords to {Abc:"1", Def:"2", Ghi:"3"}
-    set myVar to "Abc"
-    get myVar of myRecords
+```applescript
+set myRecords to {Abc:"1", Def:"2", Ghi:"3"}
+set myVar to "Abc"
+get myVar of myRecords
+```
 
 Try that and you’ll get a big fat error message. Why? Because there’s no property in myRecords that’s literally called myVar.
 
@@ -29,14 +30,15 @@ Try that and you’ll get a big fat error message. Why? Because there’s no pro
 
 Even to me this is ridiculous. I’ve learnt a little JavaScript with [Codecademy][] recently and you can do this very easily:
 
-    javascript:
-    var theRecords = {
-        Abc: 1,
-        Def: 2,
-        Ghi: 3
-    };
-    var theVar = "Abc";
-    console.log(theRecords[theVar]);
+```javascript
+var theRecords = {
+    Abc: 1,
+    Def: 2,
+    Ghi: 3
+};
+var theVar = "Abc";
+console.log(theRecords[theVar]);
+```
 
 [Codecademy]:   http://www.codecademy.com/
 
@@ -54,17 +56,18 @@ Thanks go to the heroic [jobu on the MacScripter forums][ms], who posted this co
 
 Let’s have a look:
 
-    applescript:
-    set myRecords to {Abc:"1", Def:"2", Ghi:"3"}
-    set myVar to "Abc"
+```applescript
+set myRecords to {Abc:"1", Def:"2", Ghi:"3"}
+set myVar to "Abc"
 
-    return (searchRecord(myVar, myRecords))
+return (searchRecord(myVar, myRecords))
 
-    to searchRecord(theKey, theRecord)
-        run script "on run{theKey,theRecord}
-            return (" & theKey & " of theRecord )
-            end" with parameters {theKey, theRecord}
-    end searchRecord
+to searchRecord(theKey, theRecord)
+    run script "on run{theKey,theRecord}
+        return (" & theKey & " of theRecord )
+        end" with parameters {theKey, theRecord}
+end searchRecord
+```
 
 The important thing to note is that when the variable (in this case, myVar) is passed to the `run script` code, the variable’s contents are passed. That’s what you’d expect it to do, but what that means is that the variable is essentially hard-coded into this new script — you’re not recreating myVar, you’re just passing along myVar’s contents.
 
@@ -74,8 +77,9 @@ Essentially, the shopkeeper won’t sell to you in person, but if you step outsi
 
 Yeah. It’s a hack. Thankfully a short, understandable one, but a hack nonetheless. It’s crazy and this should be built into the language. Here’s JavaScript’s way again, for reference:
 
-    javascript:
-    objectName[myVariable];
+```javascript
+objectName[myVariable];
+```
 
 Why is this missing? God knows.
 

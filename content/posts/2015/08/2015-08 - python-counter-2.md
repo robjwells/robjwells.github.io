@@ -8,10 +8,11 @@ I made a mistake in [my recent post about Python’s Counter class][post] by usi
 
 I had a lovely email from [Jacob Söndergaard][js] that prompted me into clarifying things, and also started me thinking about ways you can still use `max` on the counter to get the most common item. Here’s what I’ve got:
 
-    python3:
-    from collections import Counter
-    c = Counter('abracadabra')
-    most_common = max(c.items(), key=lambda t: t[1])[0]
+```python
+from collections import Counter
+c = Counter('abracadabra')
+most_common = max(c.items(), key=lambda t: t[1])[0]
+```
 
 Here `max` gets a sequence of tuples (key, count) from `c.items()` and the custom `key` function tells it to choose the greatest element based on the count. The `[0]` index at the end ensures you just get the key, not the count.
 

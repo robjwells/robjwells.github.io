@@ -10,17 +10,18 @@ Since I’ve been playing around with Mercurial I thought it would only be fair 
 
 The basic mechanism is the same (parsing the status output) and the code is barely changed:
 
-    bash:
-     1:  #!/bin/bash
-     2:  
-     3:  cd $(dirname $1)
-     4:  FILENAME=$(basename $1)
-     5:  HGSTATUS=$(hg status -c "$FILENAME")
-     6:  if [ "$HGSTATUS" == "" ]; then
-     7:    exit 1 # Dirty
-     8:  else
-     9:    exit 0 # Clean
-    10:  fi
+```bash
+#!/bin/bash
+
+cd $(dirname $1)
+FILENAME=$(basename $1)
+HGSTATUS=$(hg status -c "$FILENAME")
+if [ "$HGSTATUS" == "" ]; then
+  exit 1 # Dirty
+else
+  exit 0 # Clean
+fi
+```
 
 An important difference to note is that this script checks that the file is clean (through the `-c` flag on line 5), not that the file is *not dirty* as the Git version does. This requires the conditional to be reversed as an empty string means that the file has been modified in some way.
 

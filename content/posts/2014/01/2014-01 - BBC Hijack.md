@@ -45,15 +45,16 @@ I initially wanted to consolidate the Python scripts into one file but that turn
 
 A look at the programme info dictionaries at the top of our modules reveals the differences in our methods:
 
-    python3:
-    # Dr Drang’s
-    showinfo = {'70s': (6, re.compile(r"Sounds of the '?70s")),
-                '60s': (5, re.compile(r"Sounds of the '?60s")),
-                'soul':(2, re.compile(r"Trevor Nelson")),
-                'at':  (3, re.compile(r"At the BBC"))}
-    # Mine:
-    PROG_DICT = {'jazz on 3': 'b006tt0y',
-                 'jazz line-up': 'b006tnmw'}
+```python
+# Dr Drang’s
+showinfo = {'70s': (6, re.compile(r"Sounds of the '?70s")),
+            '60s': (5, re.compile(r"Sounds of the '?60s")),
+            'soul':(2, re.compile(r"Trevor Nelson")),
+            'at':  (3, re.compile(r"At the BBC"))}
+# Mine:
+PROG_DICT = {'jazz on 3': 'b006tt0y',
+             'jazz line-up': 'b006tnmw'}
+```
 
 Each entry in the Doc’s dictionary is a tuple of the weekday as an integer — used to construct a URL for a daily schedule — and a regular expression to pick out the programme from the scraped schedule.
 
@@ -88,38 +89,41 @@ By itself bbcradio is inert, with the moving parts contained in [a single interf
 
 At the command line you just pick a mode and supply a programme name. Here’s the help message:
 
-    $ beebhijack -h
-    Usage:
-        beebhijack url <programme>
-        beebhijack details [--clean] <programme>
+```
+$ beebhijack -h
+Usage:
+    beebhijack url <programme>
+    beebhijack details [--clean] <programme>
 
-    Options:
-        --clean     Use two newlines instead of a pipe
-                    to separate the episode details
+Options:
+    --clean     Use two newlines instead of a pipe
+                to separate the episode details
 
-    Accepted programmes:
-        jazz on 3
-        jazz line-up
+Accepted programmes:
+    jazz on 3
+    jazz line-up
+```
 
 And, because I’m still blown away how simple [docopt][] is, here’s all the code needed to produce that interface:
 
-    python3:
-     7:  programmes = '''\
-     8:  Accepted programmes:
-     9:      {}'''.format('\n    '.join(bbcradio.PROG_DICT.keys()))
-    10:  
-    11:  usage = '''\
-    12:  Usage:
-    13:      {name} url <programme>
-    14:      {name} details [--clean] <programme>
-    15:  
-    16:  Options:
-    17:      --clean     Use two newlines instead of a pipe
-    18:                  to separate the episode details
-    19:  
-    20:  {prog_list}'''.format(name='beebhijack', prog_list=programmes)
-    21:  
-    22:  args = docopt(usage)
+```python {linenos=true, linenostart=7}
+programmes = '''\
+Accepted programmes:
+    {}'''.format('\n    '.join(bbcradio.PROG_DICT.keys()))
+
+usage = '''\
+Usage:
+    {name} url <programme>
+    {name} details [--clean] <programme>
+
+Options:
+    --clean     Use two newlines instead of a pipe
+                to separate the episode details
+
+{prog_list}'''.format(name='beebhijack', prog_list=programmes)
+
+args = docopt(usage)
+```
 
 If you haven’t used it before, take 20 minutes to watch the [docopt video][docopt]. It’s wonderful: give it a usage message and it hands you back a dictionary. Mine above is a little complicated because it tacks the list of accepted programmes onto the end of the usage message, in case you need a reminder at the command line. (I also print the list if you ask for a programme that’s not in the dictionary, in lines [24–27][wrongprog]).
 

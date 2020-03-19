@@ -19,9 +19,10 @@ Then, to restart, just pick it from that script menu.
 
 <del>*Using Leopard (10.5) or earlier?* You’ll have to change the first line as “diskutil info” doesn’t work with volume names. Try this:</del>
 
-    applescript:
-    set deviceID to (do shell script "diskutil list | ¬
-      grep YourBootcampPartition | awk '{print $8}'")
+```applescript
+set deviceID to (do shell script "diskutil list | ¬
+  grep YourBootcampPartition | awk '{print $8}'")
+```
 
 <del>That should return something like "disk0s4". If it doesn’t change “print $8” to a different number, probably 7. (I recommend you try this in the Terminal until you’ve got it right, then adjust the AppleScript. The number refers to the column of the information.)</del>
 
@@ -42,15 +43,15 @@ I don’t recommend that you save it as an application, which would let you add 
 
 ### The code
 
-    applescript:
-    set deviceID to (do shell script "diskutil info ¬
-    YourBootcampPartition | grep Identifier | awk '{print $3}'")
+```applescript
+set deviceID to (do shell script "diskutil info ¬
+YourBootcampPartition | grep Identifier | awk '{print $3}'")
 
-    do shell script "bless -device /dev/" & deviceID & ¬
-    " -legacy -setBoot -nextonly" with administrator privileges
+do shell script "bless -device /dev/" & deviceID & ¬
+" -legacy -setBoot -nextonly" with administrator privileges
 
-    tell application "Finder" to restart
-
+tell application "Finder" to restart
+```
 
 ### The story
 

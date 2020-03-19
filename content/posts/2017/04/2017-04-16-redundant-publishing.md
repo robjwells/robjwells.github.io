@@ -20,18 +20,19 @@ In my case the main settings file contains the configuration for publishing to m
 
 Then I have two extra JSON files: `robjwells.github.io.json` and `s3.robjwells.com.json`, which contain the customisations for publishing for those domains. Here’s the config for GitHub in full:
 
-    json:
-    {
-      "site": {
-        "url": "https://robjwells.github.io",
-        "title": "Primary Unit mirror on GitHub",
-        "description": "A mirror of https://www.robjwells.com hosted on GitHub"
-      },
+```json
+{
+  "site": {
+    "url": "https://robjwells.github.io",
+    "title": "Primary Unit mirror on GitHub",
+    "description": "A mirror of https://www.robjwells.com hosted on GitHub"
+  },
 
-      "paths": {
-        "output root": "gh-pages"
-      }
-    }
+  "paths": {
+    "output root": "gh-pages"
+  }
+}
+```
 
 Setting `site.url` is important because of the way my templates render article links (though my markdown source contains only relative links that work anywhere). And `paths.output root` just specifies the build directory where the HTML files get written.
 
@@ -39,58 +40,59 @@ All the moving parts are contained in [a makefile][make] which can build all thr
 
 [make]: https://github.com/robjwells/primaryunit/blob/master/makefile
 
-    makefile:
-    NOW = $(shell date +'%Y-%m-%d %H:%M')
-    DISTID = $(shell cat cloudfront-distribution-id)
+```makefile
+NOW = $(shell date +'%Y-%m-%d %H:%M')
+DISTID = $(shell cat cloudfront-distribution-id)
 
 
-    define upload-robjwells
-    rsync -zv -e ssh www.robjwells.com.conf
-        rick@deckard:/srv/www/www.robjwells.com/
-    rsync -azv --delete -e ssh site/
-        rick@deckard:/srv/www/www.robjwells.com/html/
-    endef
+define upload-robjwells
+rsync -zv -e ssh www.robjwells.com.conf
+    rick@deckard:/srv/www/www.robjwells.com/
+rsync -azv --delete -e ssh site/
+    rick@deckard:/srv/www/www.robjwells.com/html/
+endef
 
 
-    define upload-github
-    cd gh-pages ; git add . ; git commit -m "$(NOW)" ; git push
-    endef
+define upload-github
+cd gh-pages ; git add . ; git commit -m "$(NOW)" ; git push
+endef
 
 
-    define upload-aws
-    aws s3 sync s3 s3://s3.robjwells.com --delete
-    aws cloudfront create-invalidation
-        --distribution-id="$(DISTID)" --paths=/index.html
-    endef
+define upload-aws
+aws s3 sync s3 s3://s3.robjwells.com --delete
+aws cloudfront create-invalidation
+    --distribution-id="$(DISTID)" --paths=/index.html
+endef
 
 
-    all: robjwells github aws
+all: robjwells github aws
 
-    force-all: force-robjwells force-github force-aws
+force-all: force-robjwells force-github force-aws
 
-    robjwells:
-      majestic
-      $(upload-robjwells)
+robjwells:
+  majestic
+  $(upload-robjwells)
 
-    force-robjwells:
-      majestic --force-write
-      $(upload-robjwells)
+force-robjwells:
+  majestic --force-write
+  $(upload-robjwells)
 
-    github:
-      majestic --settings=robjwells.github.io.json
-      $(upload-github)
+github:
+  majestic --settings=robjwells.github.io.json
+  $(upload-github)
 
-    force-github:
-      majestic --settings=robjwells.github.io.json --force-write
-      $(upload-github)
+force-github:
+  majestic --settings=robjwells.github.io.json --force-write
+  $(upload-github)
 
-    aws:
-      majestic --settings=s3.robjwells.com.json
-      $(upload-aws)
+aws:
+  majestic --settings=s3.robjwells.com.json
+  $(upload-aws)
 
-    force-aws:
-      majestic --settings=s3.robjwells.com.json --force-write
-      $(upload-aws)
+force-aws:
+  majestic --settings=s3.robjwells.com.json --force-write
+  $(upload-aws)
+```
 
 (The `force-*` options rebuild the whole site, not just files which have changed.)
 

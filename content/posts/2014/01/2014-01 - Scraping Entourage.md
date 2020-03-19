@@ -27,47 +27,48 @@ But the advantages of having users assemble such data are weighed against the mi
   </p>
 </div>
 
-    python3:
-     1:  #!/usr/local/bin/python3
-     2:  
-     3:  import re
-     4:  import json
-     5:  from bs4 import BeautifulSoup
-     6:  from urllib.request import urlopen
-     7:  
-     8:  base_url = 'http://www.tunefind.com'
-     9:  seasons_index = '/show/entourage'
-    10:  response = urlopen(base_url + seasons_index)
-    11:  response_text = response.read().decode()
-    12:  soup = BeautifulSoup(response_text)
-    13:  
-    14:  seasons_div = soup.find('div', class_='lefttext sidebarIndent')
-    15:  seasons_urls = [(base_url + a_tag['href'])
-    16:                  for a_tag in seasons_div.find_all('a')]
-    17:  
-    18:  tracks_list = []
-    19:  
-    20:  for s in seasons_urls:
-    21:    season = BeautifulSoup(urlopen(s).read().decode())
-    22:    episode_urls = [(base_url + a_tag['href']) for a_tag
-    23:                    in season.find_all('a',
-    24:                      {'name': re.compile(r'episode\d+')})]
-    25:  
-    26:    for e in episode_urls:
-    27:      episode = BeautifulSoup(urlopen(e).read().decode())
-    28:  
-    29:      for raw in episode.find_all(class_='tf-songevent-text'):
-    30:        match = re.search(r'(.+)\n\s+by (.+)', raw.text.strip())
-    31:        if match:
-    32:          tracks_list.append(match.groups())
-    33:  
-    34:  for track in tracks_list:
-    35:    # filter list for duplicates
-    36:    if tracks_list.count(track) > 1:
-    37:      tracks_list.remove(track)
-    38:  
-    39:  with open('/Users/robjwells/Desktop/tracks.json', 'w') as tracks_json:
-    40:    json.dump(tracks_list, tracks_json)
+```python3 {linenos=true}
+#!/usr/local/bin/python3
+
+import re
+import json
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
+
+base_url = 'http://www.tunefind.com'
+seasons_index = '/show/entourage'
+response = urlopen(base_url + seasons_index)
+response_text = response.read().decode()
+soup = BeautifulSoup(response_text)
+
+seasons_div = soup.find('div', class_='lefttext sidebarIndent')
+seasons_urls = [(base_url + a_tag['href'])
+                for a_tag in seasons_div.find_all('a')]
+
+tracks_list = []
+
+for s in seasons_urls:
+  season = BeautifulSoup(urlopen(s).read().decode())
+  episode_urls = [(base_url + a_tag['href']) for a_tag
+                  in season.find_all('a',
+                    {'name': re.compile(r'episode\d+')})]
+
+  for e in episode_urls:
+    episode = BeautifulSoup(urlopen(e).read().decode())
+
+    for raw in episode.find_all(class_='tf-songevent-text'):
+      match = re.search(r'(.+)\n\s+by (.+)', raw.text.strip())
+      if match:
+        tracks_list.append(match.groups())
+
+for track in tracks_list:
+  # filter list for duplicates
+  if tracks_list.count(track) > 1:
+    tracks_list.remove(track)
+
+with open('/Users/robjwells/Desktop/tracks.json', 'w') as tracks_json:
+  json.dump(tracks_list, tracks_json)
+```
 
 Tunefind’s website has index pages for each series with links to each of their seasons, which link to pages for each episode that contain track details. The scraping code iterates over the seasons (lines 14–24), then the episodes (lines 26–32).
 
@@ -96,71 +97,72 @@ After mulling over how much manual work I was willing to do, I came up with the 
 
 Underneath that would be Python that managed the track list, assembled the URL and handled the controls:
 
-    python3:
-     1:  #!/usr/local/bin/python3
-     2:  
-     3:  import json
-     4:  import subprocess
-     5:  
-     6:  position = open('/Users/robjwells/Desktop/position', 'r+')
-     7:  reported = open('/Users/robjwells/Desktop/reported', 'a')
-     8:  
-     9:  
-    10:  def asrun(script):
-    11:    "Run the given AppleScript and return the standard output and error."
-    12:  
-    13:    osa = subprocess.Popen(['osascript', '-'],
-    14:                           stdin=subprocess.PIPE,
-    15:                           stdout=subprocess.PIPE)
-    16:    return osa.communicate(script.encode())[0]
-    17:  
-    18:  
-    19:  with open('/Users/robjwells/Desktop/tracks.json') as tracks_json:
-    20:    tracks_list = json.load(tracks_json)
-    21:  
-    22:  ascript = '''
-    23:  tell application "LaunchBar"
-    24:  	perform action "Open Location" with string "spotify:search:{0}"
-    25:  end tell
-    26:  
-    27:  tell application "Finder"
-    28:  	set dialog_result to display dialog "Ready for next track?" ¬
-    29:  		buttons {{"Report", "Stop", "Next"}} default button "Next"
-    30:  	return button returned of dialog_result
-    31:  end tell
-    32:  '''
-    33:  
-    34:  
-    35:  def prep_track(t):
-    36:    joint = ' '.join(t)
-    37:    return joint.replace(' ', '+')
-    38:  
-    39:  
-    40:  def prompt(t):
-    41:    script = ascript.format(prep_track(t))
-    42:    result = asrun(script).decode().strip()
-    43:    if result == 'Stop':
-    44:      return False
-    45:    elif result == 'Report':
-    46:      reported.write(json.dumps(t))
-    47:      reported.write('\n')
-    48:    position.seek(0)
-    49:    position.write(str(tracks_list.index(t) + 1))
-    50:    return True
-    51:  
-    52:  
-    53:  raw_pos = position.read()
-    54:  if raw_pos:
-    55:    pos = int(raw_pos)
-    56:  else:
-    57:    pos = 0
-    58:  
-    59:  for track in tracks_list[pos:]:
-    60:    if not prompt(track):
-    61:      break
-    62:  
-    63:  position.close()
-    64:  reported.close()
+```python3 {linenos=true}
+#!/usr/local/bin/python3
+
+import json
+import subprocess
+
+position = open('/Users/robjwells/Desktop/position', 'r+')
+reported = open('/Users/robjwells/Desktop/reported', 'a')
+
+
+def asrun(script):
+  "Run the given AppleScript and return the standard output and error."
+
+  osa = subprocess.Popen(['osascript', '-'],
+                         stdin=subprocess.PIPE,
+                         stdout=subprocess.PIPE)
+  return osa.communicate(script.encode())[0]
+
+
+with open('/Users/robjwells/Desktop/tracks.json') as tracks_json:
+  tracks_list = json.load(tracks_json)
+
+ascript = '''
+tell application "LaunchBar"
+	perform action "Open Location" with string "spotify:search:{0}"
+end tell
+
+tell application "Finder"
+	set dialog_result to display dialog "Ready for next track?" ¬
+		buttons {{"Report", "Stop", "Next"}} default button "Next"
+	return button returned of dialog_result
+end tell
+'''
+
+
+def prep_track(t):
+  joint = ' '.join(t)
+  return joint.replace(' ', '+')
+
+
+def prompt(t):
+  script = ascript.format(prep_track(t))
+  result = asrun(script).decode().strip()
+  if result == 'Stop':
+    return False
+  elif result == 'Report':
+    reported.write(json.dumps(t))
+    reported.write('\n')
+  position.seek(0)
+  position.write(str(tracks_list.index(t) + 1))
+  return True
+
+
+raw_pos = position.read()
+if raw_pos:
+  pos = int(raw_pos)
+else:
+  pos = 0
+
+for track in tracks_list[pos:]:
+  if not prompt(track):
+    break
+
+position.close()
+reported.close()
+```
 
 According to the file metadata, I created this script at 12.50am. Some of it is hilariously bad. I haven’t tidied up these scripts but I had to change a bit where I trampled all over my own global names. It’s in desperate need of re-ordering so I’m going to work through the script in the order parts are used, not in which they’re written.
 
@@ -208,34 +210,35 @@ Since creating it in mid-December, I’ve been listening to the playlist and mar
 
 Dragging a track from the Spotify client gives you an `http://open.spotify.com/track/…` URL. Opening it in a browser will likely get you the newfangled web player, which isn’t much use, but tools such as `curl` still return the source to the detail view you used to get. We’ll use this to turn the URLs back into track titles and artist names, and from there into iTunes links.
 
-    python3:
-     1:  #!/usr/local/bin/python3
-     2:  
-     3:  import os
-     4:  import sys
-     5:  import requests
-     6:  from bs4 import BeautifulSoup as bs
-     7:  
-     8:  spot_path = os.path.join(os.getcwd(), sys.argv[1])
-     9:  itunes_search = 'https://itunes.apple.com/search?term={}&country=gb'
-    10:  
-    11:  with open(spot_path) as spot_file:
-    12:    spot_links = spot_file.read().splitlines()
-    13:  
-    14:  
-    15:  def spotify_to_itunes(link):
-    16:    spot_soup = bs((requests.get(link)).text)
-    17:    title = spot_soup.h1.text
-    18:    artist = spot_soup.h2.a.text
-    19:    plussed = '+'.join([title, artist]).replace(' ', '+')
-    20:    itunes_response = requests.get(itunes_search.format(plussed))
-    21:    if itunes_response.json()['resultCount']:
-    22:      return itunes_response.json()['results'][0]['trackViewUrl']
-    23:    else:
-    24:      return ' '.join([artist, title])
-    25:  
-    26:  for line in spot_links:
-    27:    print(spotify_to_itunes(line))
+```python3 {linenos=true}
+#!/usr/local/bin/python3
+
+import os
+import sys
+import requests
+from bs4 import BeautifulSoup as bs
+
+spot_path = os.path.join(os.getcwd(), sys.argv[1])
+itunes_search = 'https://itunes.apple.com/search?term={}&country=gb'
+
+with open(spot_path) as spot_file:
+  spot_links = spot_file.read().splitlines()
+
+
+def spotify_to_itunes(link):
+  spot_soup = bs((requests.get(link)).text)
+  title = spot_soup.h1.text
+  artist = spot_soup.h2.a.text
+  plussed = '+'.join([title, artist]).replace(' ', '+')
+  itunes_response = requests.get(itunes_search.format(plussed))
+  if itunes_response.json()['resultCount']:
+    return itunes_response.json()['results'][0]['trackViewUrl']
+  else:
+    return ' '.join([artist, title])
+
+for line in spot_links:
+  print(spotify_to_itunes(line))
+```
 
 Dragging several tracks from Spotify gives you URLs separated by newlines, which I saved to a file that is read and split in lines 11 & 12. We iterate over each URL at the end of the script, printing the result of passing the URL to `spotify_to_itunes`, which does the hard work.
 

@@ -12,24 +12,27 @@ So I whipped up some scripts to give me back those shortcuts while keeping the r
 
 ### Start of line
 
-    applescript:
-    set line_start to the characterOffset of line (startLine of the selection)
-    select insertion point before character line_start
+```applescript
+set line_start to the characterOffset of line (startLine of the selection)
+select insertion point before character line_start
+```
 
 ### End of line
 
-    applescript:
-    set current_line to line (startLine of the selection)
-    set end_of_line to ((characterOffset of current_line) + (length of current_line))
-    select insertion point before character end_of_line
+```applescript
+set current_line to line (startLine of the selection)
+set end_of_line to ((characterOffset of current_line) + (length of current_line))
+select insertion point before character end_of_line
+```
 
 Wrap both of those in:
 
-    applescript:
-    tell application "BBEdit"
-        tell the front text window
-            …
-        end
+```applescript
+tell application "BBEdit"
+    tell the front text window
+        …
     end
+end
+```
 
 (omitted above to reduce the amount of scrolling), dump them in ~/Library/Application Support/BBEdit/Scripts/, assign them the ⌃A and ⌃E shortcuts in BBEdit's preferences, and you're all set.

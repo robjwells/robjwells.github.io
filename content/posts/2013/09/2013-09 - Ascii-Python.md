@@ -38,16 +38,17 @@ This was the point at which I found [a relevant Stack Overflow question][so]. Un
 
 Hm. But what’s this about `sys.setdefaultencoding`? So I started poking around with this terrible little script:
 
-    python3:
-    #!/usr/bin/env python3
-    import os
-    import sys
-    import locale
-    entire_file = open(os.environ['BB_DOC_PATH'], 'r')
-    print(os.environ)
-    print(entire_file.encoding)
-    print(sys.getdefaultencoding())
-    print(locale.getpreferredencoding())
+```python
+#!/usr/bin/env python3
+import os
+import sys
+import locale
+entire_file = open(os.environ['BB_DOC_PATH'], 'r')
+print(os.environ)
+print(entire_file.encoding)
+print(sys.getdefaultencoding())
+print(locale.getpreferredencoding())
+```
 
 For the last three lines, which print the encodings used, I got:
 
@@ -68,7 +69,6 @@ As [this thread][lang] eventually made me realise, I didn’t actually have `$LA
 
 The root of the problem is that if a locale isn’t set it defaults to the C locale — meaning US-ASCII in OS&nbsp;X. **The solution is to explicitly set $LANG in your .bash_profile**:
 
-    bash:
     export LANG="en_GB.UTF-8"
 
 I’ve also got that line in ~/.bashrc for safety, but do bear in mind that *some shells will ignore both* ~/.bash_profile and ~/.bashrc.

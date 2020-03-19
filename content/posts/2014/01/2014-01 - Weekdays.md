@@ -11,47 +11,48 @@ I was recently reminded of David Sparks’s [TextExpander date snippets][ds-date
 
 Out of curiosity, I wrote a Python command-line tool called dayshift that does something similar. Its main differences are that it doesn’t have to be set up for specific days like the AppleScript snippets, and that it can find the date for a past weekday (“last Monday”) as well as a future one (“next Monday”).
 
-    python3:
-     1:  #!/usr/local/bin/python3
-     2:  """
-     3:  Print the date of the next or last specified weekday.
-     4:  
-     5:  Usage:
-     6:    dayshift next <weekday> [--format=<fmt> --inline]
-     7:    dayshift last <weekday> [--format=<fmt> --inline]
-     8:  
-     9:  Options:
-    10:    --format=<fmt>, -f <fmt>  A strftime format string
-    11:                              [default: %Y-%m-%d]
-    12:    --inline, -i              Omit trailing newline
-    13:  
-    14:  """
-    15:  from docopt import docopt
-    16:  from datetime import date, timedelta
-    17:  
-    18:  WEEKDAYS = {'mon': 0, 'tue': 1, 'wed': 2, 'thu': 3,
-    19:              'fri': 4, 'sat': 5, 'sun': 6}
-    20:  
-    21:  args = docopt(__doc__)
-    22:  starting_offset = 2 if args['next'] else -2
-    23:  start_date = date.today() + timedelta(starting_offset)
-    24:  start_integer = start_date.weekday()
-    25:  target_integer = WEEKDAYS[args['<weekday>'][:3].lower()]
-    26:  
-    27:  if args['next']:
-    28:    offset = target_integer - start_integer
-    29:  elif args['last']:
-    30:    offset = start_integer - target_integer
-    31:  
-    32:  if offset <= 0:
-    33:    offset += 7
-    34:  
-    35:  if args['last']:
-    36:    offset /= -1    # Make the offset negative
-    37:  
-    38:  target_date = start_date + timedelta(offset)
-    39:  ending = '' if args['--inline'] else '\n'
-    40:  print(target_date.strftime(args['--format']), end=ending)
+```python3 {linenos=true}
+#!/usr/local/bin/python3
+"""
+Print the date of the next or last specified weekday.
+
+Usage:
+  dayshift next <weekday> [--format=<fmt> --inline]
+  dayshift last <weekday> [--format=<fmt> --inline]
+
+Options:
+  --format=<fmt>, -f <fmt>  A strftime format string
+                            [default: %Y-%m-%d]
+  --inline, -i              Omit trailing newline
+
+"""
+from docopt import docopt
+from datetime import date, timedelta
+
+WEEKDAYS = {'mon': 0, 'tue': 1, 'wed': 2, 'thu': 3,
+            'fri': 4, 'sat': 5, 'sun': 6}
+
+args = docopt(__doc__)
+starting_offset = 2 if args['next'] else -2
+start_date = date.today() + timedelta(starting_offset)
+start_integer = start_date.weekday()
+target_integer = WEEKDAYS[args['<weekday>'][:3].lower()]
+
+if args['next']:
+  offset = target_integer - start_integer
+elif args['last']:
+  offset = start_integer - target_integer
+
+if offset <= 0:
+  offset += 7
+
+if args['last']:
+  offset /= -1    # Make the offset negative
+
+target_date = start_date + timedelta(offset)
+ending = '' if args['--inline'] else '\n'
+print(target_date.strftime(args['--format']), end=ending)
+```
 
 <div class="flag" id="update_2014-01-13">
   <p><strong>Update <time>2014-01-13</time></strong></p>
@@ -83,26 +84,30 @@ The other option, `--format`, determines how the date is printed. I use docopt�
 
 The script works great as a command-line utility:
 
-    $ dayshift next Wednesday
-    2014-01-15
-    $ dayshift last Wednesday
-    2014-01-08
+```
+$ dayshift next Wednesday
+2014-01-15
+$ dayshift last Wednesday
+2014-01-08
+```
 
 But, returning to the original use case, I recommend two approaches.
 
 You can set up individual snippets to find the next or last occurrence of a certain weekday. Add a new shell script snippet, with code similar to this:
     
-    bash:
-    #!/bin/bash
-    /path/to/dayshift next Monday -i
+```
+#!/bin/bash
+/path/to/dayshift next Monday -i
+```
 
 Or you can use TextExpander’s fill-in feature to let you pick the options on the fly (line breaks inserted for readability):
 
-    bash:
-    #!/bin/bash
-    /path/to/dayshift %fillpopup:name=Next/Last:default=next:last%
-    %fillpopup:name=Weekday:default=Monday:Tuesday:
-    Wednesday:Thursday:Friday:Saturday:Sunday% -i
+```
+#!/bin/bash
+/path/to/dayshift %fillpopup:name=Next/Last:default=next:last%
+%fillpopup:name=Weekday:default=Monday:Tuesday:
+Wednesday:Thursday:Friday:Saturday:Sunday% -i
+```
 
 That looks pretty gross there, and it doesn’t look good in use either:
 

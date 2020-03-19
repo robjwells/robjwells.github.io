@@ -53,56 +53,59 @@ This one’s going to be more complicated than the previous two, as I want to us
 
 AppleScript’s built-in `current date` command returns an object from which we can extract all the pieces we need to construct a date, like so:
 
-    applescript:
-    set theDate to the day of the (current date)
-    set theDay to the weekday of the (current date)
-    set theMonth to the month of the (current date)
-    set theYear to the year of the (current date)
+```applescript
+set theDate to the day of the (current date)
+set theDay to the weekday of the (current date)
+set theMonth to the month of the (current date)
+set theYear to the year of the (current date)
+```
 
 Now to build the suffix. Most dates have the suffix “th”, so we want to focus on the special cases: 1, 2, 3, 21, 22, and 31. We could check for each of these but there’s a smarter way.
 
 We need to pull the date’s **last** character, which determines the suffix, so we can work with both single and double-digit dates:
 
-    applescript:
-    set lastChar to (the last character of (theDate as string))¬
-     as number
+```applescript
+set lastChar to (the last character of (theDate as string)) as number
+```
 
 Now we check for the most common situation (“th”) by testing `lastChar` against a range:
 
-    applescript:
-    if lastChar is 0 or lastChar > 3 or (theDate > 10 and¬
-     theDate < 21) then
-        set theDate to (theDate as string) & "th"
+```applescript
+if lastChar is 0 or lastChar > 3 or (theDate > 10 and¬
+ theDate < 21) then
+    set theDate to (theDate as string) & "th"
+```
 
 If we put the other suffixes in order and in a list, we can use the last character of the date itself to extract the correct suffix:
 
-    applescript:
-    set theSuffixes to {"st", "nd", "rd"}
-    set theDate to (theDate as string) & (item lastChar¬
-     of theSuffixes)
+```applescript
+set theSuffixes to {"st", "nd", "rd"}
+set theDate to (theDate as string) & (item lastChar of theSuffixes)
+```
 
 Now let’s roll it up and `return` a constructed date:
 
-    applescript:
-    set theDate to the day of the (current date)
-    set theDay to the weekday of the (current date)
-    set theMonth to the month of the (current date)
-    set theYear to the year of the (current date)
+```applescript
+set theDate to the day of the (current date)
+set theDay to the weekday of the (current date)
+set theMonth to the month of the (current date)
+set theYear to the year of the (current date)
 
-    set lastChar to (the last character of (theDate as string))¬
-     as number
+set lastChar to (the last character of (theDate as string))¬
+ as number
 
-    if lastChar > 3 or lastChar is 0 or (theDate > 10 and¬
-     theDate < 21) then
-        set theDate to (theDate as string) & "th"
-    else
-        set theSuffixes to {"st", "nd", "rd"}
-        set theDate to (theDate as string) & (item lastChar¬
-         of theSuffixes)
-    end if
+if lastChar > 3 or lastChar is 0 or (theDate > 10 and¬
+ theDate < 21) then
+    set theDate to (theDate as string) & "th"
+else
+    set theSuffixes to {"st", "nd", "rd"}
+    set theDate to (theDate as string) & (item lastChar¬
+     of theSuffixes)
+end if
 
-    return (theDay & ", " & theMonth & " " & theDate & ", " &¬
-     theYear) as string
+return (theDay & ", " & theMonth & " " & theDate & ", " &¬
+ theYear) as string
+```
 
 ### End result
 

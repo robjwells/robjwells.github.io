@@ -14,25 +14,26 @@ So when I wrote my first commit hook I did it in both flavours. It’s a simple 
 
 ### Mercurial
 
-    python3:
-     1:  #!/usr/bin/env python3
-     2:  
-     3:  import os
-     4:  import sys
-     5:  from termtools import colour
-     6:  from subprocess import check_output
-     7:  
-     8:  node = os.environ["HG_NODE"]
-     9:  message = check_output(["hg", "log", "-r", node,
-    10:                          "--template", "{desc}"]).decode()
-    11:  summary_length = len(message.splitlines()[0])
-    12:  
-    13:  if summary_length > 50:
-    14:    print(colour("! Changeset summary is too long (> 50c)", "red"))
-    15:    sys.exit(1)
-    16:  elif summary_length < 10:
-    17:    print(colour("! Changeset summary is too short (< 10c)", "red"))
-    18:    sys.exit(1)
+```python {linenos=true}
+#!/usr/bin/env python3
+
+import os
+import sys
+from termtools import colour
+from subprocess import check_output
+
+node = os.environ["HG_NODE"]
+message = check_output(["hg", "log", "-r", node,
+                        "--template", "{desc}"]).decode()
+summary_length = len(message.splitlines()[0])
+
+if summary_length > 50:
+  print(colour("! Changeset summary is too long (> 50c)", "red"))
+  sys.exit(1)
+elif summary_length < 10:
+  print(colour("! Changeset summary is too short (< 10c)", "red"))
+  sys.exit(1)
+```
 
 Many of [Mercurial’s hook types][hghooks] provide useful data as shell variables. In line 8 we get the node (hash) of the changeset about to be committed and use that on line 9 & 10 to fetch the commit message.
 
@@ -48,22 +49,22 @@ The colour function called on lines 14 and 17 is used to turn the warning text r
 
 ### Git
 
-    python3:
-     1:  #!/usr/bin/env python3
-     2:  
-     3:  import sys
-     4:  from termtools import colour
-     5:  
-     6:  message = open(sys.argv[1])
-     7:  summary_length = len(message.readline().splitlines()[0])
-     8:  
-     9:  if summary_length > 50:
-    10:    print(colour("! Commit summary is too long (> 50c)", "red"))
-    11:    sys.exit(1)
-    12:  elif summary_length < 10:
-    13:    print(colour("! Commit summary is too short (< 10c)", "red"))
-    14:    sys.exit(1)
+```python
+#!/usr/bin/env python3
 
+import sys
+from termtools import colour
+
+message = open(sys.argv[1])
+summary_length = len(message.readline().splitlines()[0])
+
+if summary_length > 50:
+  print(colour("! Commit summary is too long (> 50c)", "red"))
+  sys.exit(1)
+elif summary_length < 10:
+  print(colour("! Commit summary is too short (< 10c)", "red"))
+  sys.exit(1)
+```
 
 [Git’s hooks][githooks] include one specifically for the commit message, and when it is called Git feeds it a file containing the message — that’s what we open on line 6.
 
@@ -93,27 +94,28 @@ With Git things are a little more tricky, as the script (or a link to it) must a
 
 In both scripts the printed warnings are run through a colour function, which is something I whipped up with exactly this situation in mind.
 
-    python3:
-     1:  def colour(str, col, background=False):
-     2:    COLOURS = {'black': "30",
-     3:               'red': "31",
-     4:               'green': "32",
-     5:               'yellow': "33",
-     6:               'blue': "34",
-     7:               'magenta': "35",
-     8:               'cyan': "36",
-     9:               'white': "37"}
-    10:    escape = "\x1b"
-    11:    reset = escape + "[0m"
-    12:    reverse = ";7"
-    13:  
-    14:    colour_code = COLOURS[col.lower()]
-    15:    start = escape + "[" + colour_code
-    16:    if background:
-    17:      start += reverse
-    18:    start += "m"
-    19:  
-    20:    return (start + str + reset)
+```python
+def colour(str, col, background=False):
+  COLOURS = {'black': "30",
+             'red': "31",
+             'green': "32",
+             'yellow': "33",
+             'blue': "34",
+             'magenta': "35",
+             'cyan': "36",
+             'white': "37"}
+  escape = "\x1b"
+  reset = escape + "[0m"
+  reverse = ";7"
+
+  colour_code = COLOURS[col.lower()]
+  start = escape + "[" + colour_code
+  if background:
+    start += reverse
+  start += "m"
+
+  return (start + str + reset)
+```
 
 It wraps [ANSI colour codes][ansi] around a string and returns it. The action occurs in lines 14-18, where control codes are concatenated with the colour number fetched from the dictionary on lines 2-9. There’s an option to colour the background instead of the text, using the reverse code. The colour codes get stuck on the front of the string and a reset code is put on the end.
 

@@ -14,7 +14,6 @@ That wasn’t too difficult to sort out with AppleScript and Transmit but I want
 
 If the files are under version control the commit status is an ideal way to signal whether or not a file is ready to go. Combine that with Hazel’s ability to use a shell script in its conditions and you end up with something like this:
 
-    bash:
     cd ~/Sites/robjwells
     GITSTATUS=$(git status | head -n 2 | tail -n 1 | grep -o "^nothing")
     if [ "$GITSTATUS" == "nothing" ]; then

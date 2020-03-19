@@ -107,95 +107,95 @@ It started off life as [a shell script by Nathan Grigg][ng], which I was first a
 
 Here’s the version I use at home:
 
-    python3:
-     1:  #!/usr/local/bin/python3
-     2:  """Automatically start TimeMachine backups, with rotation"""
-     3:  
-     4:  from enum import Enum
-     5:  import logging
-     6:  from pathlib import Path
-     7:  import subprocess
-     8:  
-     9:  logging.basicConfig(
-    10:    level=logging.INFO,
-    11:    style='{',
-    12:    format='{asctime}  {levelname}  {message}',
-    13:    datefmt='%Y-%m-%d %H:%M'
-    14:  )
-    15:  
-    16:  TM_DRIVE_NAMES = [
-    17:    'HG',
-    18:    'Orson-A',
-    19:    'Orson-B',
-    20:    ]
-    21:  
-    22:  DiskutilAction = Enum('DiskutilAction', 'mount unmount')
-    23:  
-    24:  
-    25:  def _diskutil_interface(drive_name: str, action: DiskutilAction) -> bool:
-    26:    """Run diskutil through subprocess interface
-    27:  
-    28:    This is abstracted out because other the two (un)mounting functions
-    29:    would duplicate much of their code.
-    30:  
-    31:    Returns True if the return code is 0 (success), False on failure
-    32:    """
-    33:    args = ['diskutil', 'quiet', action.name] + [drive_name]
-    34:    return subprocess.run(args).returncode == 0
-    35:  
-    36:  
-    37:  def mount_drive(drive_name):
-    38:    """Try to mount drive using diskutil and return status code"""
-    39:    return _diskutil_interface(drive_name, DiskutilAction.mount)
-    40:  
-    41:  
-    42:  def unmount_drive(drive_name):
-    43:    """Try to unmount drive using diskutil and return status code"""
-    44:    return _diskutil_interface(drive_name, DiskutilAction.unmount)
-    45:  
-    46:  
-    47:  def begin_backup():
-    48:    """Back up using tmutil and return backup summary"""
-    49:    args = ['tmutil', 'startbackup', '--auto', '--rotation', '--block']
-    50:    result = subprocess.run(
-    51:      args,
-    52:      stdout=subprocess.PIPE,
-    53:      stderr=subprocess.PIPE
-    54:      )
-    55:    if result.returncode == 0:
-    56:      return (result.returncode, result.stdout.decode('utf-8'))
-    57:    else:
-    58:      return (result.returncode, result.stderr.decode('utf-8'))
-    59:  
-    60:  
-    61:  def main():
-    62:    drives_to_eject = []
-    63:  
-    64:    for drive_name in TM_DRIVE_NAMES:
-    65:      if Path('/Volumes', drive_name).exists():
-    66:        continue
-    67:      elif mount_drive(drive_name):
-    68:        drives_to_eject.append(drive_name)
-    69:      else:
-    70:        logging.warning(f'Failed to mount {drive_name}')
-    71:  
-    72:    logging.info('Beginning backup')
-    73:    return_code, log_messages = begin_backup()
-    74:    log_func = logging.info if return_code == 0 else logging.warning
-    75:    for line in log_messages.splitlines():
-    76:      log_func(line)
-    77:    logging.info('Backup finished')
-    78:  
-    79:    for drive_name in drives_to_eject:
-    80:      if not unmount_drive(drive_name):
-    81:        logging.warning(f'Failed to unmount {drive_name}, trying again…')
-    82:        if not unmount_drive(drive_name):
-    83:          logging.warning(
-    84:            f'Failed to unmount {drive_name} on second attempt')
-    85:  
-    86:  if __name__ == '__main__':
-    87:    main()
+```python {linenos=true}
+#!/usr/local/bin/python3
+"""Automatically start TimeMachine backups, with rotation"""
 
+from enum import Enum
+import logging
+from pathlib import Path
+import subprocess
+
+logging.basicConfig(
+  level=logging.INFO,
+  style='{',
+  format='{asctime}  {levelname}  {message}',
+  datefmt='%Y-%m-%d %H:%M'
+)
+
+TM_DRIVE_NAMES = [
+  'HG',
+  'Orson-A',
+  'Orson-B',
+  ]
+
+DiskutilAction = Enum('DiskutilAction', 'mount unmount')
+
+
+def _diskutil_interface(drive_name: str, action: DiskutilAction) -> bool:
+  """Run diskutil through subprocess interface
+
+  This is abstracted out because other the two (un)mounting functions
+  would duplicate much of their code.
+
+  Returns True if the return code is 0 (success), False on failure
+  """
+  args = ['diskutil', 'quiet', action.name] + [drive_name]
+  return subprocess.run(args).returncode == 0
+
+
+def mount_drive(drive_name):
+  """Try to mount drive using diskutil and return status code"""
+  return _diskutil_interface(drive_name, DiskutilAction.mount)
+
+
+def unmount_drive(drive_name):
+  """Try to unmount drive using diskutil and return status code"""
+  return _diskutil_interface(drive_name, DiskutilAction.unmount)
+
+
+def begin_backup():
+  """Back up using tmutil and return backup summary"""
+  args = ['tmutil', 'startbackup', '--auto', '--rotation', '--block']
+  result = subprocess.run(
+    args,
+    stdout=subprocess.PIPE,
+    stderr=subprocess.PIPE
+    )
+  if result.returncode == 0:
+    return (result.returncode, result.stdout.decode('utf-8'))
+  else:
+    return (result.returncode, result.stderr.decode('utf-8'))
+
+
+def main():
+  drives_to_eject = []
+
+  for drive_name in TM_DRIVE_NAMES:
+    if Path('/Volumes', drive_name).exists():
+      continue
+    elif mount_drive(drive_name):
+      drives_to_eject.append(drive_name)
+    else:
+      logging.warning(f'Failed to mount {drive_name}')
+
+  logging.info('Beginning backup')
+  return_code, log_messages = begin_backup()
+  log_func = logging.info if return_code == 0 else logging.warning
+  for line in log_messages.splitlines():
+    log_func(line)
+  logging.info('Backup finished')
+
+  for drive_name in drives_to_eject:
+    if not unmount_drive(drive_name):
+      logging.warning(f'Failed to unmount {drive_name}, trying again…')
+      if not unmount_drive(drive_name):
+        logging.warning(
+          f'Failed to unmount {drive_name} on second attempt')
+
+if __name__ == '__main__':
+  main()
+```
 
 The basic idea is the same: mount the backup drives if they’re not already, perform the backup using `tmutil`, and eject the drives that were mounted by the script afterwards. There’s nothing tricky in the script, except maybe the enum on line 22 — that’s to replace strings and risking a typo.
 
@@ -205,17 +205,18 @@ The arguments to `tmutil` on line 49 get Time Machine to behave as if it were ru
 
 The version at work is the same except that it contains some code to skip backups overnight:
 
-    python3:
-    TIME_LIMITS = (8, 23)
-    
-    def check_time(time, limits=TIME_LIMITS):
-      """Return True if backup should proceed based on time of day"""
-      early_limit, late_limit = limits
-      return early_limit <= time <= late_limit
+```python
+TIME_LIMITS = (8, 23)
 
-    # And called like so:
-    check_time(datetime.now().hour)
-    
+def check_time(time, limits=TIME_LIMITS):
+  """Return True if backup should proceed based on time of day"""
+  early_limit, late_limit = limits
+  return early_limit <= time <= late_limit
+
+# And called like so:
+check_time(datetime.now().hour)
+```    
+
 This was written pretty late at night so it’s not the best, but it does work.
 
 #### SuperDuper!

@@ -12,12 +12,13 @@ It’s a nice, quick way of having something to refer back to without the hassle
 
 It began as a loose convention, with different people having their own way of marking off the original copy. To make it completely painless, and to bring in a standard method, I wrote this short Python script a couple of months ago:
 
-    python3:
-    #!/usr/bin/env python3
-    from sys import stdin
-    orig = stdin.read()
-    dupe = "{0}\n\n\n\n#### Original Copy ####\n\n\n\n{0}".format(orig)
-    print(dupe)
+```python
+#!/usr/bin/env python3
+from sys import stdin
+orig = stdin.read()
+dupe = "{0}\n\n\n\n#### Original Copy ####\n\n\n\n{0}".format(orig)
+print(dupe)
+```
 
 I installed it to everyone’s text filters folder — TextWrangler provides the document’s text (or the selection) to text filters via stdin — and people tend to use it.
 
@@ -31,27 +32,28 @@ Thankfully both of the new people use the duplication script consistently, so it
     <p>The code below is written for BBEdit, which I use at home. Except for <code>BB_DOC_PATH</code>, I swap out <code>bb</code> for <code>tw</code> in the script used at work.</p>
 </div>
 
-    python3:
-     1:  #!/usr/bin/env python3
-     2:  
-     3:  import os
-     4:  import re
-     5:  import subprocess
-     6:  
-     7:  os.chdir('/tmp')
-     8:  with open(os.environ['BB_DOC_PATH']) as full_file:
-     9:    sub_copy, orig_copy = re.split(r'#{2,} original copy #{2,}',
-    10:                                   full_file.read(), flags=re.I)
-    11:  
-    12:  with open('bb_orig_copy', 'w') as orig_file:
-    13:    orig_copy = orig_copy.strip() + '\n'
-    14:    orig_file.write(orig_copy)
-    15:  
-    16:  with open('bb_subbed_copy', 'w') as sub_file:
-    17:    sub_copy = sub_copy.strip() + '\n'
-    18:    sub_file.write(sub_copy)
-    19:  
-    20:  subprocess.call(['bbdiff', 'bb_orig_copy', 'bb_subbed_copy'])
+```python {linenos=true}
+#!/usr/bin/env python3
+
+import os
+import re
+import subprocess
+
+os.chdir('/tmp')
+with open(os.environ['BB_DOC_PATH']) as full_file:
+  sub_copy, orig_copy = re.split(r'#{2,} original copy #{2,}',
+                                 full_file.read(), flags=re.I)
+
+with open('bb_orig_copy', 'w') as orig_file:
+  orig_copy = orig_copy.strip() + '\n'
+  orig_file.write(orig_copy)
+
+with open('bb_subbed_copy', 'w') as sub_file:
+  sub_copy = sub_copy.strip() + '\n'
+  sub_file.write(sub_copy)
+
+subprocess.call(['bbdiff', 'bb_orig_copy', 'bb_subbed_copy'])
+```
 
 The entire file is split into subbed and original sections in lines 9 & 10, and on lines 14 & 18 each of those is written to a file (in `/tmp` — line 7). The leading and trailing whitespace is stripped from each and a newline added in order to clean up the comparison.
 

@@ -7,11 +7,12 @@ I have a startup item that launches a Jupyter notebook so that the server is alw
 
 By default, Jupyter starts the server on port 8888 on localhost, but expects a token (a long hexadecimal string) before it’ll let you in. If you list the currently running servers in the terminal you can see the token and also the server’s working directory.
     
-    zsh:
-    % jupyter-notebook list
-    Currently running servers:
-    http://localhost:8889/?token=…hex… :: /Users/robjwells
-    http://localhost:8888/?token=…hex… :: /Users/robjwells/jupyter-notebooks
+```
+% jupyter-notebook list
+Currently running servers:
+http://localhost:8889/?token=…hex… :: /Users/robjwells
+http://localhost:8888/?token=…hex… :: /Users/robjwells/jupyter-notebooks
+```
 
 We can use this to make finding and opening the particular notebook server you want a bit easier, using Keyboard Maestro.
 
@@ -41,15 +42,16 @@ In between, if there’s more than one notebook server running, the macro prompt
 
 Here’s the first step, where we fetch the list of working directories.
 
-    zsh:
-    jupyter-notebook list | tail -n +2 | awk '{print $3}'
-
+```
+jupyter-notebook list | tail -n +2 | awk '{print $3}'
+```
 Our +2 argument to `tail` gets the output from the second line, chopping off the “Currently running servers:” bit. Then `awk` prints the third field, which contains the directory. (The first is the URL, the second the double-colon separator.)
 
 The third step fetches the corresponding URL for a directory:
 
-    zsh:
-    jupyter-notebook list | grep ":: $KMVAR_dir$" | awk '{ print $1 }'
+```
+jupyter-notebook list | grep ":: $KMVAR_dir$" | awk '{ print $1 }'
+```
 
 Since the user has specified a directory already, we use `grep` with the Keyboard Maestro variable to find just that one line, and use `awk` again to extract the URL field.
 

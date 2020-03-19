@@ -10,19 +10,19 @@ A quick and hopefully final update on my short AppleScript to restart from Mac O
 
 I’ve revised the script again, this time relying on the `$NF` variable in `awk` to extract the last field. That makes using `diskutil list` easy, and so I now recommend the following for all users, including those on Leopard or Tiger:
 
-    applescript:
-    set deviceID to (do shell script "diskutil list ¬
-      | awk '/YourBootcampPartition/ {print $NF}'")
-    do shell script "bless -device /dev/" & deviceID & ¬
-      " -legacy -setBoot -nextonly" ¬
-      with administrator privileges
-    tell application "Finder" to restart
+```applescript
+set deviceID to (do shell script "diskutil list ¬
+  | awk '/YourBootcampPartition/ {print $NF}'")
+do shell script "bless -device /dev/" & deviceID & ¬
+  " -legacy -setBoot -nextonly" ¬
+  with administrator privileges
+tell application "Finder" to restart
+```
 
 [1]: /2012/10/restart-in-windows-revenge-of-the-script/
 
 Here’s the shell part to get the identifier on its own:
 
-    bash:
     diskutil list | awk '/YourBootcampPartition/ {print $NF}'
 
 To be clear, the name of the partition **must go between the two slashes**.

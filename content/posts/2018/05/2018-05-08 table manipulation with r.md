@@ -90,29 +90,32 @@ In our example below we’re going to have four workers who each cover the chief
 
 First we’ll pull in our libraries.
 
-    r:
-    library(tidyverse)
-    library(lubridate)
-    library(stringr)
+```r
+library(tidyverse)
+library(lubridate)
+library(stringr)
+```
 
 Then we’ll read in the data, which is saved in a TSV file after copying and pasting from the spreadsheet into a text document. We’ll select only the production days and the unnamed first column (named X1 on import), excluding Saturdays and the TOIL columns.
 
-    r:
-    wide <- read_tsv('chsub.tsv') %>%
-        select(matches('^(Mon|Tue|Wed|Thu|Fri|Sun) |X1')) %>%
-        rename(name = X1)
+```r
+wide <- read_tsv('chsub.tsv') %>%
+    select(matches('^(Mon|Tue|Wed|Thu|Fri|Sun) |X1')) %>%
+    rename(name = X1)
+```
 
 Then we’ll use a [tidyr][] function, [`gather()`][gather], to transform our wide format into a tall one by selecting the date columns. It’s easier to get a feel for `gather()` by looking at the output.
 
 [tidyr]: http://tidyr.tidyverse.org
 [gather]: http://tidyr.tidyverse.org/reference/gather.html
 
-    r:
-    tidy <- wide %>%
-        gather(matches('^(Mon|Tue|Wed|Thu|Fri|Sun) '),
-               key = date,
-               value = status)
-    head(tidy)
+```r
+tidy <- wide %>%
+    gather(matches('^(Mon|Tue|Wed|Thu|Fri|Sun) '),
+           key = date,
+           value = status)
+head(tidy)
+```
 
 <!-- Comment to separate R code and output -->
 
@@ -130,16 +133,17 @@ We now have a row for each person for each day, along with their “status” fo
 
 But Dan doesn’t have his chief sub days marked, as it would be nearly every day. Let’s split out Dan’s rows and replace the empty cells with `Ch Sub`, the same status string used by everyone else. Then we’ll combine the filled-out Dan rows with all the non-Dan rows from the original data frame.
 
-    r:
-    dan_replaced <- tidy %>%
-        filter(name == 'Dan Taylor') %>%
-        replace_na(list(status = 'Ch Sub'))
+```r
+dan_replaced <- tidy %>%
+    filter(name == 'Dan Taylor') %>%
+    replace_na(list(status = 'Ch Sub'))
 
-    all <- tidy %>%
-        filter(name != 'Dan Taylor') %>%
-        rbind(dan_replaced)
+all <- tidy %>%
+    filter(name != 'Dan Taylor') %>%
+    rbind(dan_replaced)
 
-    tail(all)
+tail(all)
+```
 
 <!-- Comment to separate R code and output -->
 
@@ -155,21 +159,23 @@ But Dan doesn’t have his chief sub days marked, as it would be nearly every da
 
 Great. But poor Dan, he’s working every day over New Year 2018-2019. In reality, I haven’t done that far on the rota, just up to October. We’ll convert all those dates now, and filter out all the newly missing entries where the month was outside our range.
 
-    r:
-    dated <- all %>%
-        mutate(
-            date = dmy(str_c(str_extract(date, '\\d+/[4-9]'), '/2018'))
-        ) %>%
-        filter(!is.na(date))
+```r
+dated <- all %>%
+    mutate(
+        date = dmy(str_c(str_extract(date, '\\d+/[4-9]'), '/2018'))
+    ) %>%
+    filter(!is.na(date))
+```
 
 Let’s get only the chief sub-related rows and sort them by date.
 
-    r:
-    chsub <- dated %>%
-        filter(str_detect(status, 'Ch Sub')) %>%
-        arrange(date) %>%
-        select(date, chief_sub = name)
-    head(chsub)
+```r
+chsub <- dated %>%
+    filter(str_detect(status, 'Ch Sub')) %>%
+    arrange(date) %>%
+    select(date, chief_sub = name)
+head(chsub)
+```
 
 <!-- Comment to separate R code and output -->
 
@@ -185,24 +191,26 @@ Let’s get only the chief sub-related rows and sort them by date.
 
 Exactly what we want. Now time for a bit of formatting to make this giant list somewhat acceptable for other people. This is also where my knowledge of R runs out.
 
-    r:
-    formatted <- str_c(
-        format(chsub$date, '%a %Y-%m-%d'),
-               chsub$chief_sub,
-               sep = '  ')
+```r
+formatted <- str_c(
+    format(chsub$date, '%a %Y-%m-%d'),
+           chsub$chief_sub,
+           sep = '  ')
 
-    fd <- file('output.txt')
-    writeLines(formatted, fd)
-    close(fd)
+fd <- file('output.txt')
+writeLines(formatted, fd)
+close(fd)
+```
 
 So we’ll switch to Python, printing a blank line between each production week (of six days).
 
-    python3:
-    with open('output.txt') as f:
-        for idx, line in enumerate(f.readlines()):
-            if idx % 6 == 0:
-                print()
-            print(line, end='')
+```python
+with open('output.txt') as f:
+    for idx, line in enumerate(f.readlines()):
+        if idx % 6 == 0:
+            print()
+        print(line, end='')
+```
 
 <!-- Comment to separate R code and output -->
 

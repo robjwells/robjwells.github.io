@@ -17,18 +17,19 @@ Also, the method of inserting the suffixed day just uses `str.replace` to replac
 
 Here’s the new code:
 
-    python3:
-     1:  from datetime import date
-     2:  
-     3:  def ordinal_suffix(day):
-     4:    if 3 < day < 21 or 23 < day < 31:
-     5:      return 'th'
-     6:    else:
-     7:      return {1: 'st', 2: 'nd', 3: 'rd'}[day % 10]
-     8:  
-     9:  today = date.today()
-    10:  date_string = today.strftime('%A, %B %-d{suffix}, %Y')
-    11:  print(date_string.format(suffix=ordinal_suffix(today.day)))
+```python3 {linenos=true}
+from datetime import date
+
+def ordinal_suffix(day):
+  if 3 < day < 21 or 23 < day < 31:
+    return 'th'
+  else:
+    return {1: 'st', 2: 'nd', 3: 'rd'}[day % 10]
+
+today = date.today()
+date_string = today.strftime('%A, %B %-d{suffix}, %Y')
+print(date_string.format(suffix=ordinal_suffix(today.day)))
+```
 
 Starting with the date string on line 10, `%-d` surpasses the prefix, and we include a replacement field (`{suffix}`). That gets formatted with the output of the `ordinal_suffix` function.
 

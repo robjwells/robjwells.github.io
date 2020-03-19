@@ -17,15 +17,16 @@ At the end of my post about having [Hazel][] [check a file’s commit status][po
 
 It has been on my mind all day, so I decided to have a crack at it:
 
-    bash:
-    1:  cd $(dirname $1)
-    2:  FILENAME=$(basename $1)
-    3:  GITSTATUS=$(git status -s "$FILENAME")
-    4:  if [ "$GITSTATUS" == "" ]; then
-    5:    exit 0 # Clean
-    6:  else
-    7:    exit 1 # Dirty
-    8:  fi
+```{linenos=true}
+cd $(dirname $1)
+FILENAME=$(basename $1)
+GITSTATUS=$(git status -s "$FILENAME")
+if [ "$GITSTATUS" == "" ]; then
+  exit 0 # Clean
+else
+  exit 1 # Dirty
+fi
+```
 
 <div class="flag">
     <strong>Update 2013-06-27</strong>

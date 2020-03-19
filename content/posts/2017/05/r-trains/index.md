@@ -39,43 +39,44 @@ Anyway, here’s the plot:
 </p>
 
 And here’s the code that produced it:
-    
-    R:
-     1:  library(ggplot2)
-     2:  
-     3:  # Read in and convert string times to datetimes
-     4:  trains <- read.csv('collected.csv')
-     5:  trains$Time <- as.POSIXct(trains$Time, format = '%Y-%m-%dT%H:%M:%S')
-     6:  
-     7:  # Get the data onto the plot
-     8:  p <- ggplot(trains, aes(x = Time, y = Cost))
-     9:  
-    10:  # 'Reveal' the data with points and show the
-    11:  # East Mids price trend with a smoother
-    12:  completed <- p + geom_point(aes(color = Operator)) +
-    13:    geom_smooth(data = subset(trains, Operator == 'East Midlands Trains'),
-    14:                aes(group = Operator, color = Operator),
-    15:                method = 'loess', se = FALSE,
-    16:                size = 0.75, show.legend = FALSE) +
-    17:  
-    18:    # Let's adjust the scales
-    19:    scale_x_datetime(date_breaks = '1 hour',
-    20:                     date_labels = '%H:%M') +
-    21:    scale_y_continuous(limits = c(0, 100),
-    22:                       breaks = seq(10, 100, 10),
-    23:                       expand = c(0, 0)) +
-    24:  
-    25:    # Set some labels and adjust the look
-    26:    labs(title = paste('Cost of single train tickets',
-    27:                       'leaving European\ncapital cities',
-    28:                       'on Friday December 23 2016'),
-    29:         y = 'Ticket cost (€)',
-    30:         color = 'Train operator') +
-    31:    theme_bw(base_family = 'Trebuchet MS') +
-    32:    theme(plot.title = element_text(hjust = 0.5))
-    33:  
-    34:  ggsave('plot.svg', plot = completed, device = 'svg',
-    35:       width = 8, height = 4, units = 'in')
+
+```r
+library(ggplot2)
+
+# Read in and convert string times to datetimes
+trains <- read.csv('collected.csv')
+trains$Time <- as.POSIXct(trains$Time, format = '%Y-%m-%dT%H:%M:%S')
+
+# Get the data onto the plot
+p <- ggplot(trains, aes(x = Time, y = Cost))
+
+# 'Reveal' the data with points and show the
+# East Mids price trend with a smoother
+completed <- p + geom_point(aes(color = Operator)) +
+  geom_smooth(data = subset(trains, Operator == 'East Midlands Trains'),
+              aes(group = Operator, color = Operator),
+              method = 'loess', se = FALSE,
+              size = 0.75, show.legend = FALSE) +
+
+  # Let's adjust the scales
+  scale_x_datetime(date_breaks = '1 hour',
+                   date_labels = '%H:%M') +
+  scale_y_continuous(limits = c(0, 100),
+                     breaks = seq(10, 100, 10),
+                     expand = c(0, 0)) +
+
+  # Set some labels and adjust the look
+  labs(title = paste('Cost of single train tickets',
+                     'leaving European\ncapital cities',
+                     'on Friday December 23 2016'),
+       y = 'Ticket cost (€)',
+       color = 'Train operator') +
+  theme_bw(base_family = 'Trebuchet MS') +
+  theme(plot.title = element_text(hjust = 0.5))
+
+ggsave('plot.svg', plot = completed, device = 'svg',
+     width = 8, height = 4, units = 'in')
+```
 
 I’m still figuring things out with R and ggplot so I’m not exactly blazing through. (I still haven’t figured out how to export transparent SVGs without editing them by hand.)
 

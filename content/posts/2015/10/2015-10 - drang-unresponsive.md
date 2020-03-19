@@ -26,8 +26,9 @@ Most of the changes that make up the Doc’s mobile style sheet are `font-size` 
 
 Basically, Dr Drang’s mobile style sheet increases the text size to compensate for the mobile browser rendering at “full size” (980px in Safari on iOS). (This is how [the New York Times website looked normal in the first iPhone demo][nyt-demo] in 2007.) The usual technique is to tell the browser to render at “device size” through the use of a `meta` HTML tag:
 
-    html:
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1">
+```
 
 [nyt-demo]: https://youtu.be/vN4U5FqrOdQ?t=2515
 

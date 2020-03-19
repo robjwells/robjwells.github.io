@@ -12,37 +12,38 @@ Handily, there’s a [Wolfram Alpha API][wa-api] we can use to get this informat
 
 The code to get the new amount is pretty trivial:
 
-    python:
-     1:  from __future__ import division
-     2:  
-     3:  from datetime import date
-     4:  from xml.etree import ElementTree
-     5:  import requests
-     6:  import ui
-     7:  
-     8:  
-     9:  def calculate_amount(sender):
-    10:    """Convert given dollar amount for given year to current dollars"""
-    11:    amount = view['amount'].text
-    12:    year = view['year'].text
-    13:  
-    14:    if not (amount and year):
-    15:      return
-    16:  
-    17:    api_key = 'YOUR API KEY IN HERE'
-    18:    api_url = 'http://api.wolframalpha.com/v2/query'
-    19:    query_template = '${amount} ({past_year} US dollars) in {current_year}'
-    20:    query = query_template.format(amount=amount,
-    21:                                  past_year=year,
-    22:                                  current_year=date.today().year)
-    23:    parameters = {'appid': api_key,
-    24:                  'input': query,
-    25:                  'format': 'plaintext',
-    26:                  'podtitle': 'Result'}
-    27:    response = requests.get(api_url, params=parameters)
-    28:    xml_soup = ElementTree.fromstring(response.content)
-    29:    new_amount = xml_soup.find('pod/subpod/plaintext').text.splitlines()[0]
-    30:    view['result'].text = new_amount
+```python {linenos=true}
+from __future__ import division
+
+from datetime import date
+from xml.etree import ElementTree
+import requests
+import ui
+
+
+def calculate_amount(sender):
+  """Convert given dollar amount for given year to current dollars"""
+  amount = view['amount'].text
+  year = view['year'].text
+
+  if not (amount and year):
+    return
+
+  api_key = 'YOUR API KEY IN HERE'
+  api_url = 'http://api.wolframalpha.com/v2/query'
+  query_template = '${amount} ({past_year} US dollars) in {current_year}'
+  query = query_template.format(amount=amount,
+                                past_year=year,
+                                current_year=date.today().year)
+  parameters = {'appid': api_key,
+                'input': query,
+                'format': 'plaintext',
+                'podtitle': 'Result'}
+  response = requests.get(api_url, params=parameters)
+  xml_soup = ElementTree.fromstring(response.content)
+  new_amount = xml_soup.find('pod/subpod/plaintext').text.splitlines()[0]
+  view['result'].text = new_amount
+```
 
 The `calculate_amount` function above is called on a button press (hence the `sender` argument) and fetches the text from a couple of UI elements (all that `view` subscripting), bailing out if either the amount or year is missing.
 
@@ -56,55 +57,56 @@ With the UI, you’ve got two choices: make it in code or use Pythonista’s UI 
 
 But now I would recommend people use the editor, as actually getting the code to work was a bit of a headache too. For the record: Ole Zorn has done an *incredible* job with Pythonista and the UI tools are incredible. However: the `ui` module seems to expose the Cocoa way of making GUIs, so unless you’ve got an understanding of that you may be in for some bumps. Helpfully, you can [view the `ui` module documentation online][ui-docs] Here’s the rest of the code:
 
-    python:
-    33:  def setup_view():
-    34:      view = ui.View()
-    35:      view.name = 'Historical Dollars'
-    36:      view.background_color = 'white'
-    37:      view.width, view.height = ui.get_screen_size()
-    38:  
-    39:      amount_field = ui.TextField()
-    40:      amount_field.name = 'amount'
-    41:      amount_field.keyboard_type = ui.KEYBOARD_DECIMAL_PAD
-    42:      amount_field.placeholder = 'Dollar amount'
-    43:      amount_field.width *= 2
-    44:      amount_field.height /= 2
-    45:  
-    46:      year_field = ui.TextField()
-    47:      year_field.name = 'year'
-    48:      year_field.keyboard_type = ui.KEYBOARD_NUMBER_PAD
-    49:      year_field.placeholder = 'Year'
-    50:      year_field.width *= 2
-    51:      year_field.height /= 2
-    52:  
-    53:      button = ui.Button(title='Calculate')
-    54:      button.action = calculate_amount
-    55:  
-    56:      result_label = ui.Label()
-    57:      result_label.name = 'result'
-    58:      result_label.width = view.width
-    59:      result_label.alignment = ui.ALIGN_CENTER
-    60:  
-    61:      horizontal_centre = view.width * 0.5
-    62:      field_spacing = amount_field.height * 1.5
-    63:      amount_field.center = (horizontal_centre, amount_field.height)
-    64:      year_field.center = (horizontal_centre,
-    65:                           amount_field.center[1] + field_spacing)
-    66:      button.center = (horizontal_centre,
-    67:                       year_field.center[1] + field_spacing * 0.75)
-    68:      result_label.center = (horizontal_centre,
-    69:                             button.centre[1] + field_spacing * 0.75)
-    70:  
-    71:      view.add_subview(amount_field)
-    72:      view.add_subview(year_field)
-    73:      view.add_subview(button)
-    74:      view.add_subview(result_label)
-    75:  
-    76:      return view
-    77:  
-    78:  
-    79:  view = setup_view()
-    80:  view.present('sheet')
+```python {linenos=true, linenostart=33}
+def setup_view():
+    view = ui.View()
+    view.name = 'Historical Dollars'
+    view.background_color = 'white'
+    view.width, view.height = ui.get_screen_size()
+
+    amount_field = ui.TextField()
+    amount_field.name = 'amount'
+    amount_field.keyboard_type = ui.KEYBOARD_DECIMAL_PAD
+    amount_field.placeholder = 'Dollar amount'
+    amount_field.width *= 2
+    amount_field.height /= 2
+
+    year_field = ui.TextField()
+    year_field.name = 'year'
+    year_field.keyboard_type = ui.KEYBOARD_NUMBER_PAD
+    year_field.placeholder = 'Year'
+    year_field.width *= 2
+    year_field.height /= 2
+
+    button = ui.Button(title='Calculate')
+    button.action = calculate_amount
+
+    result_label = ui.Label()
+    result_label.name = 'result'
+    result_label.width = view.width
+    result_label.alignment = ui.ALIGN_CENTER
+
+    horizontal_centre = view.width * 0.5
+    field_spacing = amount_field.height * 1.5
+    amount_field.center = (horizontal_centre, amount_field.height)
+    year_field.center = (horizontal_centre,
+                         amount_field.center[1] + field_spacing)
+    button.center = (horizontal_centre,
+                     year_field.center[1] + field_spacing * 0.75)
+    result_label.center = (horizontal_centre,
+                           button.centre[1] + field_spacing * 0.75)
+
+    view.add_subview(amount_field)
+    view.add_subview(year_field)
+    view.add_subview(button)
+    view.add_subview(result_label)
+
+    return view
+
+
+view = setup_view()
+view.present('sheet')
+```
 
 And here’s what it looks like in action:
 

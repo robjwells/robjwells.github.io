@@ -255,23 +255,24 @@ Here’s a diagram to show the flow through the program (forgive the graphics, I
 
 Really all of the heavy lifting is done by BWIPP, a cut-down version of which is included in the [ms-barcode][] repository (just ISSN, EAN-13 and EAN-2). The entirety of my “own” PostScript is this (where the parts in braces are Python string formatting targets):
 
-    postscript:
-     1:  %!PS
-     2:  ({bwipp_location}) run
-     3:  
-     4:  11 5 moveto ({issn} {seq:02} {week:02}) (includetext height=1.07)
-     5:    /issn /uk.co.terryburton.bwipp findresource exec
-     6:  
-     7:  % Print header line(s)
-     8:  /Courier findfont
-     9:  9 scalefont
-    10:  setfont
-    11:  
-    12:  newpath
-    13:  11 86 moveto
-    14:  ({header}) show
-    15:  
-    16:  showpage
+```postscript {linenos=true}
+%!PS
+({bwipp_location}) run
+
+11 5 moveto ({issn} {seq:02} {week:02}) (includetext height=1.07)
+  /issn /uk.co.terryburton.bwipp findresource exec
+
+% Print header line(s)
+/Courier findfont
+9 scalefont
+setfont
+
+newpath
+11 86 moveto
+({header}) show
+
+showpage
+```
 
 The bits that you may need to fiddle with, if you want to produce a different-sized barcode, are the initial location the ISSN symbol is drawn at (line 4) and `height=1.07` on the same line.
 

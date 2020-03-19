@@ -65,34 +65,37 @@ I wanted to share that toast clip but after reading [Jacques Mattheij’s post T
 
 Here’s the code:
 
-    html:
-     1:  <img src="data:image/png;base64,
-     2:  … base64 data …
-     3:  " alt="The first frame of the gif." id="toast">
-     4:  
-     5:  <script>
-     6:  var toast_img = document.getElementById('toast');
-     7:  var data_uri = toast_img.src;
-     8:  var gif_url = '/images/2015-08-05_Junior-Senior-Yeah.gif';
-     9:  document.getElementById('toast').addEventListener('click', function (ev) {
-    10:    var target = ev.target;
-    11:    if (target.src.match(/^data:image/)) {
-    12:        target.src = gif_url;
-    13:    } else {
-    14:        target.src = data_uri;
-    15:    }
-    16:  });
-    17:  </script>
-    17:  <noscript>
-    18:    <p>
-    19:      Sorry, you don’t have JavaScript enabled.
-    20:      Here’s <a href="/images/2015…gif">a link to the gif</a>.
-    21:    </p>
-    22:  </noscript>
+```html {linenos=true}
+<img src="data:image/png;base64,
+… base64 data …
+" alt="The first frame of the gif." id="toast">
+
+<script>
+var toast_img = document.getElementById('toast');
+var data_uri = toast_img.src;
+var gif_url = '/images/2015-08-05_Junior-Senior-Yeah.gif';
+document.getElementById('toast').addEventListener('click', function (ev) {
+  var target = ev.target;
+  if (target.src.match(/^data:image/)) {
+      target.src = gif_url;
+  } else {
+      target.src = data_uri;
+  }
+});
+</script>
+<noscript>
+  <p>
+    Sorry, you don’t have JavaScript enabled.
+    Here’s <a href="/images/2015…gif">a link to the gif</a>.
+  </p>
+</noscript>
+```
 
 I grabbed the first frame and saved it as a png. At 1.5kB it wasn’t worth the extra request or bothering uploading the file, so I turned it into [a base64 data URI][mdn] and put it in-line (note the placeholder on line 2). From the command line:
 
-    uuencode -m infile remotename
+```
+uuencode -m infile remotename
+```
 
 The `remotename` just gets included in the header line, which you ditch, but you have to give something to the command.
 
