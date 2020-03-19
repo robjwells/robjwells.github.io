@@ -1,3 +1,2 @@
-* Full-text RSS feed
 * Full-text JSON feed
 * Remove site search
