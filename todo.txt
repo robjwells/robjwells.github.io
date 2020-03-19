@@ -1,2 +1,1 @@
-* Full-text JSON feed
 * Remove site search
