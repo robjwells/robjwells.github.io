@@ -20,7 +20,7 @@
 /*! BASIC SETTINGS AND STRUCTURE */
 
 body {
-  background-color: var(--grey);
+  background-color: var(--grey5);
   font-family: 'Source Sans Pro', 'Trebuchet MS', 'Geneva', serif;
   font-size: 100%;        /* 16 */
   font-style: normal;
@@ -30,7 +30,6 @@ body {
 }
 
 .wrapper {
-  background-color: var(--grey5);
   margin: 0 auto;
   max-width: 65rem;   /* 1040 */
   min-height: 100vh;
