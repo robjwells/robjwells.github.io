@@ -1,0 +1,548 @@
+---
+title: "Tube usage"
+author: "Rob Wells"
+date: "2018-04-17 21:00"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+We’ll need Hadley Wickham’s libraries, so we’ll use the shortcut to bring the the core Tidyverse in, as well as a date-handling library. We’ll also set the default plot theme.
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(lubridate)
+
+theme_rjw <- function(base_size = 14, base_family = 'Source Sans Pro')
+{
+    theme_minimal(base_size = base_size,
+                  base_family = base_family) %+replace%
+        theme(panel.background = element_blank(),
+              plot.background = element_rect(
+                  fill = '#f7f8f9', color = NA),
+              legend.background = element_blank()) +
+        theme(plot.title = element_text(margin = margin(b = 5)),
+              plot.subtitle = element_text(margin = margin(b = 5)),
+              axis.title.x.top = element_text(margin = margin(t = 5, b = 10)),
+              axis.text = element_text(color = '#607080'),
+              panel.grid.major = element_line(color = '#60708040'),
+              panel.grid.minor = element_line(color = '#60708033'))
+}
+
+theme_set(theme_rjw())
+
+mav <- function(x,n=5){stats::filter(x,rep(1/n,n), sides = 1)}
+```
+
+
+All of the journey history data is stored in the original CSV files emailed to me by Transport for London. At this point I’ve accrued quite a few.
+
+```{r}
+oyster_filenames <- dir(
+    '~/Documents/Oyster card/Journey history CSVs/',
+    pattern = '*.csv', full.names = TRUE)
+
+length(oyster_filenames)
+```
+
+Now we need to read in the data, but importantly we need to skip the initial header row and then combine all of the per-CSV data into one frame.
+
+```{r message=FALSE}
+oyster_data <- oyster_filenames %>%
+    map(~ read_csv(., skip = 1)) %>%
+    reduce(rbind)
+```
+
+The funky `%>%` operator pipes the data through, just like at the Unix command line. Using `map` and `~` allow us to specify arguments to `read_csv`, to skip the column headers. The last part of this pipeline reduces the 100-odd frames into a single one.
+
+Let’s take a look at our data before we start to clean it up.
+
+```{r}
+nrow(oyster_data)  # Number of rows
+head(oyster_data)
+```
+
+Just from the top few rows, you can spot that the data is untidy. Line 3 shows a top-up to the balance on the card being picked up, while the rest are records of journeys made.
+
+The date and time columns need combining. It’s unclear what we need out of Charge, Credit and Balance at the moment, but clearly not all three. There’s also a note column, but it’s mostly empty. (NA is R’s missing value.)
+
+```{r}
+sum( !(oyster_data$Note %>% is.na) ) # Number of non-NA Note fields
+oyster_data %>%
+    select(Note) %>%
+    distinct
+```
+
+This is a warning of some data-quality problems: no start or ending station for some journeys. We can safely leave rows mentioning fare capping, as well as journey continuation ([which is fairly new][hopper]).
+
+[hopper]: https://www.londonreconnections.com/2016/dont-fear-beeper-bus-hopper-tickets-future-oyster/
+
+While we mull over how or whether to handle the incomplete journey records, let’s see what might need doing to incomplete journeys where I’ve been able to say where I tapped in or out afterwards.
+
+```{r warning=FALSE}
+oyster_data %>%
+    filter( Note %>% startsWith('This incomplete') ) %>%
+    select('Journey/Action')
+```
+
+Angle brackets around the station that was added after-the-fact. Let’s see if any other rows contain angle brackets. (`grepl` returns a logical vector that `filter` can make use of.)
+
+```{r}
+oyster_data %>%
+    filter( grepl('[<>]', `Journey/Action`) ) %>%
+    nrow
+```
+
+Nope, OK. Let’s just trim out those brackets. (There must be a tidier way of doing this.)
+
+```{r}
+bracket_row <- grep('[<>]', oyster_data$`Journey/Action`)
+bracket_text <-  oyster_data$`Journey/Action`[bracket_row]
+oyster_data$`Journey/Action`[bracket_row] <- 
+    gsub('[<>]', '', bracket_text)
+print(oyster_data$`Journey/Action`[bracket_row])
+```
+
+Next, let’s find out what else is lurking in our data. We’ve already seen rail journeys, which start and end (ideally) at a station. But is there anything else in this data frame that doesn’t match that formulation?
+
+```{r}
+oyster_data %>%
+    select('Journey/Action') %>%
+    filter( !grepl('.+ to .+', `Journey/Action`) )
+```
+
+There’s still quite a few of these, but there’s a pattern: the activity type, then a comma, then more detail. What kinds of activity are we dealing with?
+
+```{r}
+unique((oyster_data %>%
+    select('Journey/Action') %>%
+    filter( !grepl('.+ to .+', `Journey/Action`) ) %>%
+    map(~ gsub('^([^,]+),.+$', '\\1', .))
+)$`Journey/Action`)
+```
+
+Things got a little weird there, with me somehow creating a list with a sole property of the name I selected from the frame. But hey ho, I’m still learning the ropes with R.
+
+Anyway, as far as travel goes, the bus journeys are the only interesting type here. (Well, the “Unknown transaction” rows caused me a little bit of concern! But it seems to tally, though still oddly, with my old commute.)
+
+```{r}
+oyster_data %>%
+    filter( grepl('Unknown transaction', `Journey/Action`) ) %>%
+    select(Date, `Start Time`, `Journey/Action`, `Charge`, `Credit`)
+```
+
+Anyway, we can draw up a list of row prefixes that we’ll exclude from the data we use for analysis:
+
+* Auto top-up
+* Automated Refund
+* Oyster helpline refund
+* Unknown transaction
+* Entered and exited Woolwich Arsenal DLR
+
+Let’s also jettison journeys where we don’t know the start or end station. Thankfully there are only a few of these.
+
+```{r}
+oyster_data %>%
+    filter(Note %>% startsWith('We are not able to show')) %>%
+    nrow
+```
+
+I’m also going to exclude bus journeys for the same reason, to make things simpler. I rarely take the bus so it’s no great loss.
+
+```{r}
+oyster_data %>%
+    filter(`Journey/Action` %>% startsWith('Bus journey')) %>%
+    nrow
+```
+
+Now, all but one of the cases mentioned above can be excluded by filtering for missing start or end times. The oddity case in when I entered and then immediately left Woolwich Arsenal, so we’ll handle that specifically.
+
+```{r}
+working_data <- oyster_data %>%
+    filter( !grepl('Entered and exited', `Journey/Action`)) %>%
+    drop_na(`Start Time`, `End Time`)
+```
+
+Let’s look at sorting out our dates. Really the start and finish times should be a datetime type, rather than times stored alongside a date. But there’s a possibility that the finish time journeys will actually be the following calendar day (after midnight).
+
+```{r}
+working_data <- working_data %>%
+    mutate(
+        start_dt = dmy_hms(paste(Date, `Start Time`),tz = 'Europe/London'),
+        ends_next_day = `End Time` < `Start Time`,
+        end_dt = dmy_hms(paste(Date, `End Time`), tz = 'Europe/London') + days(1 * ends_next_day))
+working_data %>%
+    select(start_dt, end_dt) %>%
+    head
+```
+
+Great. Now let’s split up the stations into where I entered and exited the network.
+
+```{r}
+working_data <- working_data %>%
+    mutate(
+        enter = gsub('(.+) to (.+)', '\\1', `Journey/Action`),
+        exit = gsub('(.+) to (.+)', '\\2', `Journey/Action`),
+    )
+working_data %>%
+    select(enter, exit) %>%
+    head
+```
+
+Fab. Let’s just have a quick look at the remaining journeys that have some kind of note attached to them, out of interest, excluding the corrected-incomplete journey from earlier.
+
+```{r}
+remaining_notes <- working_data %>%
+    filter(!is.na(Note), !grepl('incomplete', Note)) %>%
+    arrange(start_dt) %>%
+    select(start_dt, enter, exit, Charge, Note)
+```
+
+They’re all journeys where the fare reduced because I’d hit the cap for the day, but fewer than 20 across 3.5 years.
+
+Let’s at long last put our data into a tidy format.
+
+```{r}
+tidied <- working_data %>%
+    select(start = start_dt,
+           finish = end_dt,
+           enter, exit,
+           fare = Charge) %>%
+    arrange(start)
+head(tidied)
+```
+
+After much faffing about, we have the basics we want, and correctly converted. The journey start and finish times and stations, and the fare.
+
+
+### Plots
+
+Let’s now look at getting this reasonably clean data into some pretty pictures. To warm up, we’ll just plot the cumulative spending over the period.
+
+```{r}
+ggplot(data = tidied) +
+    geom_vline(xintercept = as.POSIXct('2016-08-01'),
+               alpha = 0.5) +
+    annotate(geom = 'text',
+             x = as.POSIXct('2017-01-15'), y = 325,
+             label = '← Moved nearer to work',
+             family = 'Source Sans Pro') +
+    geom_line(mapping = aes(x = start, y = cumsum(fare))) +
+    scale_x_datetime(date_breaks = '6 months',
+                     date_labels = '%b %Y',
+                     limits = as.POSIXct(c(ymd('2014-09-06'),
+                                           ymd('2018-04-25'))),
+                     expand = c(0, 0)) +
+    scale_y_continuous(labels = scales::dollar_format(prefix = '£'),
+                       breaks = c(0, 500, 1000, 1400, 1650)) +
+    labs(x = NULL, y = NULL,
+         title = 'Cumulative spending on London rail travel',
+         subtitle = 'September 6 2014 to April 25 2018')
+```
+
+Now let’s see if we can recreate the first plot I showed the first time I ran this kind of analysis, weekly totals with a running average.
+
+```{r}
+weekly_fares <- tidied %>%
+    group_by(year_week = format(start, '%G %V')) %>%
+    summarise(week_end = max(start),
+              week_total = sum(fare))
+
+ggplot(weekly_fares, mapping = aes(x = week_end, y = week_total)) +
+    geom_point() +
+    geom_smooth(method = 'loess') +
+    theme_rjw() +
+    scale_x_datetime(date_breaks = '6 months',
+                     date_labels = '%b %Y',
+                     limits = as.POSIXct(c(ymd('2014-09-01'),
+                                           ymd('2018-06-01'))),
+                     expand = c(0, 0)) +
+    scale_y_continuous(labels = scales::dollar_format(prefix = '£'),
+                       breaks = c(0, 10, 20, 30, 40),
+                       limits = c(0, 40),
+                       expand = c(0, 0))
+```
+
+But this isn’t ideal, because we’re missing weeks where I didn’t travel at all. So we need to add in those zero-expenditure weeks. Let’s create a sequence of weeks starting from the first in the data frame above, and then join that against the real data, keeping the zero values when there isn’t any data.
+
+```{r warning=FALSE}
+week_series <- seq(ymd('2014-09-07'),
+                   ymd('2018-04-25'),
+                   by = '1 week') %>%
+    tibble(
+        week_end = as_datetime(.),
+        year_week = format(., '%G %V'),
+        week_total = 0)
+
+week_series <- week_series %>%
+    select(year_week, week_end, week_total)
+
+joined_weeks <- full_join(week_series, weekly_fares,
+                          by = 'year_week') %>%
+    mutate(week_end = coalesce(week_end.y, week_end.x),
+           week_total = coalesce(week_total.y, week_total.x)) %>%
+    select(-contains('.'))
+
+ggplot(joined_weeks, mapping = aes(x = week_end, y = week_total)) +
+    geom_vline(xintercept = as.POSIXct('2016-08-01'),
+               alpha = 0.5) +
+    geom_point(size = .5, color = '#1369bf') +
+    geom_line(mapping = aes(x = week_end, y = mav(week_total, 6)),
+              color = '#bd3338', size = .75) +
+    scale_x_datetime(date_breaks = '6 months',
+                     date_labels = '%b ’%y',
+                     limits = as.POSIXct(c(ymd('2014-09-01'),
+                                           ymd('2018-06-01'))),
+                     expand = c(0, 0)) +
+    scale_y_continuous(labels = scales::dollar_format(prefix = '£'),
+                       breaks = c(0, 10, 20, 30, 40),
+                       limits = c(0, 40)) +
+    labs(x = NULL,
+         y = 'Weekly total cost',
+         title = 'Weekly transport spending and six-week moving average',
+         subtitle = 'September 6 2014 to April 25 2018; vertical line marks house move',
+         caption = 'This isn’t tremendously informative')
+```
+
+The number of weeks where I don’t travel at all increases notably after I moved house. Let’s focus in on that for a second.
+
+```{r fig.width=8, fig.height=2}
+joined_weeks %>%
+    ggplot(mapping = aes(x = year_week, y = 1,
+                         alpha = week_total == 0)) +
+    geom_col(width = 1) +
+    scale_y_discrete(limits = c(FALSE, TRUE),
+                     labels = NULL,
+                     breaks = NULL,
+                     expand = c(0, 0)) +
+    scale_x_discrete(breaks = NULL) +
+    scale_alpha_discrete(labels = c('Some', 'Zero')) +
+    labs(title = 'Weeks with no journeys made',
+         subtitle = 'September 6 2014 to April 25 2018',
+         x = NULL, y = NULL,
+         alpha = 'Number of journeys') +
+    theme(legend.position = 'bottom')
+```
+
+Now let’s see if we can plot a moving average of the data:
+
+```{r warning=FALSE}
+ggplot(joined_weeks) +
+    geom_vline(xintercept = as.POSIXct('2016-08-01'),
+               alpha = 0.5) +
+    geom_line(mapping = aes(x = week_end, y = mav(week_total, 13))) +
+    scale_x_datetime(date_breaks = '6 months',
+                     date_labels = '%b %Y',
+                     limits = as.POSIXct(c(ymd('2014-09-01'),
+                                           ymd('2018-06-01'))),
+                     expand = c(0, 0)) +
+    scale_y_continuous(labels = scales::dollar_format(prefix = '£'),
+                       breaks = c(0, 10, 20, 30, 40),
+                       limits = c(0, 40),
+                       expand = c(0, 0))
+```
+
+Let’s try to plot a moving average of zero-spending weeks:
+
+```{r warning=FALSE}
+ggplot(joined_weeks) +
+    geom_vline(xintercept = as.POSIXct('2016-08-01'),
+               alpha = 0.5) +
+    geom_line(aes(x = week_end, y = mav(week_total == 0, 26))) +
+    scale_x_datetime(date_breaks = '6 months',
+                     date_labels = '%b %Y',
+                     limits = as.POSIXct(c(ymd('2014-09-01'),
+                                           ymd('2018-06-01'))),
+                     expand = c(0, 0)) +
+    scale_y_continuous(limits = c(0, 1),
+                       labels = scales::percent_format(),
+                       expand = c(0, 0))
+```
+
+Now let’s look at the length of journeys:
+
+```{r}
+ggplot(tidied) +
+    geom_histogram(aes(finish - start),
+                   breaks = seq(0, 80, 5),
+                   fill = 'royalblue',
+                   closed = 'left',  # Important for matching previous
+                   colour = 'black',
+                   size = 0.2) +
+    scale_x_continuous(limits = c(0, 80),
+                       expand = c(0, 0),
+                       breaks = seq(0, 80, 10),
+                       minor_breaks = NULL,
+                       labels = seq(0, 80, 10)) +
+    scale_y_continuous(breaks = seq(0, 350, 50),
+                       minor_breaks = NULL,
+                       labels = seq(0, 350, 50),
+                       limits = c(0, 350),
+                       expand = c(0, 0))
+```
+
+So far, that looks like that histogram in my original post about this topic. Let’s plot the difference between journey lengths when I lived in Woolwich and after my move to Leyton:
+
+```{r warning=FALSE}
+ggplot(tidied) +
+    geom_histogram(aes(x = finish - start,
+                       fill = start > ymd('20160801')),
+                   breaks = seq(0, 80, 5),
+                   closed = 'left',  # Important for matching previous
+                   colour = 'black',
+                   size = 0.2) +
+    scale_x_continuous(limits = c(0, 80),
+                       expand = c(0, 0),
+                       breaks = seq(0, 80, 10),
+                       minor_breaks = NULL,
+                       labels = seq(0, 80, 10)) +
+    scale_y_continuous(breaks = seq(0, 350, 50),
+                       minor_breaks = NULL,
+                       labels = seq(0, 350, 50),
+                       limits = c(0, 350),
+                       expand = c(0, 0)) +
+    scale_fill_discrete(labels = c('Before move', 'After move'),
+                        position = 'top') +
+    labs(title = 'Journey length',
+         subtitle = 'Five-minute groups, bars stacked',
+         x = 'Duration (minutes)',
+         y = 'Number of journeys',
+         fill = NULL) +
+    theme(legend.position = 'bottom')
+```
+
+You can see that my post-move journeys tend to be shorter; this is likely because I can now easily get the high-speed train from Stratford International to St Pancras (for national rail services to, and from, my home town of Leicester). The high-speed journey itself is about 7 minutes, so a bit of waiting around at each end could easily push it up into the 10-minute bin.
+
+```{r warning=FALSE}
+paired <- tidied %>%
+    rowwise %>%
+    mutate(station_pair = paste(sort(c(enter, exit)),
+                                collapse = '\n'),
+           after_move = start > ymd('20160801'))
+top_pairs <- paired %>%
+    group_by(station_pair) %>%
+    summarise(count = n()) %>%
+    filter(count >= 10)
+
+# Bring the counts into the frame to make life easier
+subsetted <- subset(paired, station_pair %in% top_pairs$station_pair) %>%
+    left_join(top_pairs, by = 'station_pair')
+
+station_cleaner <- function(x) {
+    x %>%
+        str_replace_all(' DLR', '') %>%
+        str_replace_all('International', 'Int’l') %>%
+        str_replace_all(' \\[London [^\n]+', '')
+}
+
+ggplot(subsetted) +
+    geom_bar(aes(x = reorder(station_pair, count),
+                 fill = after_move),
+             stat = 'count',
+             position = 'stack',
+             width = 0.8) +
+    coord_flip() +
+    scale_x_discrete(labels = station_cleaner) +
+    scale_y_continuous(breaks = seq(0, 300, 50),
+                       minor_breaks = NULL) +
+    scale_fill_discrete(labels = c('Before move', 'After move')) +
+    labs(title = 'Most common journeys',
+         subtitle = 'In either direction between stations, 10 or more trips (bars stacked)',
+         y = NULL, x = NULL, fill = NULL) +
+    theme(legend.position = 'bottom',
+          panel.grid.major.y = element_blank(),
+          axis.text.y = element_text(
+              size = 9,
+              margin = unit(c(0, -4, 0, 0), 'mm')))
+```
+
+```{r warning=FALSE}
+ggplot(tidied, aes(x = start,
+                   y = mav(fare, 10))) +
+    geom_vline(xintercept = as.POSIXct('2016-08-01'),
+               alpha = 0.5) +
+    annotate(geom = 'rect',
+             xmin = as.POSIXct('2015-03-20'),
+             xmax = as.POSIXct('2016-02-05'),
+             ymin = 0.95, ymax = 1.40,
+             alpha = 0.2, fill = '#1369bf') +
+    annotate(geom = 'text',
+             x = as.POSIXct('2016-11-14'),
+             y = 1.10,
+             label = '← Off-peak railcard discount applied',
+             family = 'Source Sans Pro') +
+    geom_point(size = .75) +
+    scale_y_continuous(labels = scales::dollar_format(prefix = '£')) +
+    labs(x = NULL,
+         y = 'Fare',
+         title = 'Journey cost over time',
+         subtitle = '10-trip moving average. Vertical line marks house move')
+```
+
+```{r warning=FALSE}
+ggplot(tidied, aes(x = start,
+                   y = mav(finish - start, 10))) +
+    geom_vline(xintercept = as.POSIXct('2016-08-01'),
+               alpha = 0.5) +
+    geom_point(size = 0.75) +
+    scale_y_continuous() +
+    labs(x = NULL,
+         y = 'Duration (minutes)',
+         title = 'Journey length over time',
+         subtitle = '10-trip moving average. Vertical line marks house move')
+```
+
+
+```{r warning=FALSE}
+ggplot(tidied, aes(x = fare,
+                   y = finish - start,
+                   colour = start > ymd('20160801'))) +
+    geom_point(alpha = 0.5) +
+    facet_wrap(~ start > ymd('20160801'),
+               labeller = as_labeller(
+                   c(`TRUE` = 'After move', `FALSE` = 'Before move'))) +
+    scale_y_continuous(limits = c(0, 80)) +
+    scale_x_continuous(labels = scales::dollar_format(prefix = '£'),
+                       limits = c(0, 6)) +
+    labs(x = 'Fare',
+         y = 'Journey duration (minutes)',
+         title = 'Journey cost and duration',
+         subtitle = 'Are post-move journeys shorter and more expensive?') +
+    guides(colour = FALSE) +
+    theme(panel.border = element_rect(colour='black', fill=NA))
+```
+
+Now let’s go back to time and see when my journeys were most commonly made, and the difference before and after the move.
+
+```{r}
+tidied %>%
+    mutate(start_hour = case_when(
+        hour(start) == 0 ~ as.integer(24),
+        TRUE ~ hour(start)
+    )) %>%
+    ggplot(aes(x = start_hour,
+               y = ..density..,
+               fill = start > ymd('20160801'))) +
+    geom_histogram(binwidth = 1,
+                   closed = 'left',
+                   color = 'black',
+                   size = 0.2) +
+    facet_wrap(~ start > ymd('20160801'),
+               ncol = 1,
+               labeller = as_labeller(
+                   c(`TRUE` = 'After move', `FALSE` = 'Before move'))) +
+    scale_x_continuous(breaks = seq(5, 24, 1),
+                       labels = c(seq(5, 23, 1), c(0))) +
+    scale_y_continuous(labels = scales::percent_format()) +
+    theme(panel.grid.minor.x = element_blank(),
+          panel.grid.major.x = element_blank(),
+          legend.position = 'bottom') +
+    labs(title = 'Journeys by hour started',
+         x = 'Hour of the day',
+         y = 'Proportion of journeys') +
+    guides(fill = FALSE)
+```
+
+

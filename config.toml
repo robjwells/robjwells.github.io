@@ -1,0 +1,37 @@
+baseURL = "https://www.robjwells.com"
+languageCode = "en-gb"
+title = "Primary Unit on Hugo"
+theme = "robjwells-2020"
+copyright = "This work is licensed under a Creative Commons Attribution 4.0 International License."
+rssLimit = 10
+disableKinds = ["taxonomy", "taxonomyTerm"]
+
+[author]
+name = "Rob Wells"
+url = "https://www.robjwells.com/about"
+avatar = "https://www.robjwells.com/images/rob-scafell-pike.jpg"
+
+[permalinks]
+posts = "/:year/:month/:slug"
+
+[params]
+description = "A blog by Rob Wells, mostly about computer stuff."
+
+[outputFormats]
+    [outputFormats.jsonfeed]
+    mediaType = "application/json"
+    baseName = "feed"
+    isPlainText = true
+
+    [outputFormats.RSS]
+    baseName = "rss"
+
+[outputs]
+home = ["html", "rss", "jsonfeed"]
+section = ["html"]
+
+[markup.goldmark.renderer]
+unsafe = "true"
+
+[markup.highlight]
+style = "tango"

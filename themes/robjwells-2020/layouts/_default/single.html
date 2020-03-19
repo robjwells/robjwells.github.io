@@ -1,0 +1,11 @@
+{{ define "main" }}
+    <article>
+      <header>
+        <h2 class="mute-links"><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+        {{ with .Date }}
+        <p><time datetime='{{ .Format "2006-01-02T15:04:05-0700" }}'>{{ .Format "Monday, January 2 2006" }}</time></p>
+        {{ end }}
+      </header>
+      {{ .Content }}
+    </article>
+{{ end }}

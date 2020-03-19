@@ -1,0 +1,29 @@
+<head>
+  <meta charset="UTF-8">
+  <title>{{ if eq .Site.Title .Title -}}
+    {{ .Site.Title }}
+  {{- else -}}
+    {{ .Site.Title }} – {{ .Title }}
+  {{- end }}</title>
+
+  <!-- Load my combined stylesheet -->
+  {{- $reset := resources.Get "css/reset.css" -}}
+  {{- $mainCSS := resources.Get "css/styles.css" -}}
+  {{- $syntax := resources.Get "css/highlight.css" -}}
+  {{- $css := slice $reset $mainCSS $syntax | resources.Concat "all.css" | minify | fingerprint -}}
+  <link rel="stylesheet" href="{{ $css.Permalink }}">
+
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  {{ range .AlternativeOutputFormats -}}
+    {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+  {{ end -}}
+
+  <!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+  <link rel="mask-icon" href="/resources/favicon.svg" color="#1369BF">
+  <link rel="apple-touch-icon-precomposed" href="/resources/favicon.png">
+  <link rel="icon" href="/resources/favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ .Site.Params.Description }}">
+</head>

@@ -1,0 +1,54 @@
+==================================================================
+https://keybase.io/robjwells
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://www.robjwells.com
+  * I am robjwells (https://keybase.io/robjwells) on keybase.
+  * I have a public key ASDnQJInU4FvmFnK6bk3nMr8MLXCWSrMs68zOSzuH01ecQo
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "eldest_kid": "0101c764d7124ef858ebddf4b257afc2af4e2cb515ad23ced27bb71a63921eb2c96e0a",
+            "host": "keybase.io",
+            "kid": "0120e740922753816f9859cae9b9379ccafc30b5c2592accb3af33392cee1f4d5e710a",
+            "uid": "aeabae6431c4659d69cba67742a6e700",
+            "username": "robjwells"
+        },
+        "service": {
+            "hostname": "www.robjwells.com",
+            "protocol": "https:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "client": {
+        "name": "keybase.io go client",
+        "version": "1.0.18"
+    },
+    "ctime": 1486580029,
+    "expire_in": 504576000,
+    "merkle_root": {
+        "ctime": 1486580023,
+        "hash": "da001ad52c2ac374ab6df094cad198448bfab7c3b486fc1624676c31bd2eb4e0649bdcc8775a47058304d90aec513e33df1aeae30dd6746e323134b79d801b08",
+        "seqno": 843208
+    },
+    "prev": "40843c3f431c2b2923eeb400e9241c9b4e54c461b04de8533eaaaa1ac537b393",
+    "seqno": 12,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEg50CSJ1OBb5hZyum5N5zK/DC1wlkqzLOvMzks7h9NXnEKp3BheWxvYWTFAvt7ImJvZHkiOnsia2V5Ijp7ImVsZGVzdF9raWQiOiIwMTAxYzc2NGQ3MTI0ZWY4NThlYmRkZjRiMjU3YWZjMmFmNGUyY2I1MTVhZDIzY2VkMjdiYjcxYTYzOTIxZWIyYzk2ZTBhIiwiaG9zdCI6ImtleWJhc2UuaW8iLCJraWQiOiIwMTIwZTc0MDkyMjc1MzgxNmY5ODU5Y2FlOWI5Mzc5Y2NhZmMzMGI1YzI1OTJhY2NiM2FmMzMzOTJjZWUxZjRkNWU3MTBhIiwidWlkIjoiYWVhYmFlNjQzMWM0NjU5ZDY5Y2JhNjc3NDJhNmU3MDAiLCJ1c2VybmFtZSI6InJvYmp3ZWxscyJ9LCJzZXJ2aWNlIjp7Imhvc3RuYW1lIjoid3d3LnJvYmp3ZWxscy5jb20iLCJwcm90b2NvbCI6Imh0dHBzOiJ9LCJ0eXBlIjoid2ViX3NlcnZpY2VfYmluZGluZyIsInZlcnNpb24iOjF9LCJjbGllbnQiOnsibmFtZSI6ImtleWJhc2UuaW8gZ28gY2xpZW50IiwidmVyc2lvbiI6IjEuMC4xOCJ9LCJjdGltZSI6MTQ4NjU4MDAyOSwiZXhwaXJlX2luIjo1MDQ1NzYwMDAsIm1lcmtsZV9yb290Ijp7ImN0aW1lIjoxNDg2NTgwMDIzLCJoYXNoIjoiZGEwMDFhZDUyYzJhYzM3NGFiNmRmMDk0Y2FkMTk4NDQ4YmZhYjdjM2I0ODZmYzE2MjQ2NzZjMzFiZDJlYjRlMDY0OWJkY2M4Nzc1YTQ3MDU4MzA0ZDkwYWVjNTEzZTMzZGYxYWVhZTMwZGQ2NzQ2ZTMyMzEzNGI3OWQ4MDFiMDgiLCJzZXFubyI6ODQzMjA4fSwicHJldiI6IjQwODQzYzNmNDMxYzJiMjkyM2VlYjQwMGU5MjQxYzliNGU1NGM0NjFiMDRkZTg1MzNlYWFhYTFhYzUzN2IzOTMiLCJzZXFubyI6MTIsInRhZyI6InNpZ25hdHVyZSJ9o3NpZ8RANsb69iDLi8f07sGHxFIBfBKvvKj3620Nh+CqeGWn6O+u3k60CwO7G91uxAF1VrX8mAxzsAwJx042616oS+DGC6hzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIJHxNMfflybKxnZmu44SZdOwwEGUFSsFStD4Sg3IdFdJo3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/robjwells
+
+==================================================================
