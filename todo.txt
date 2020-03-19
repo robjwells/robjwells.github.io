@@ -1,4 +1,3 @@
-* Remove site search
 * Customise RSS feed (ie description)
 * Fix title when on front page
 * Redirect current RSS address in nginx
