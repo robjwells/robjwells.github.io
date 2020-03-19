@@ -16,7 +16,7 @@ Getting the greatest element from a sequence in Python is dead simple: just use 
 
 Storing the frequency of items is also dead easy with [collections.Counter][counter]:
 
-    pycon:
+    python:
     >>> from collections import Counter
     >>> c = Counter('abracadabra')
     >>> print(c)
@@ -24,7 +24,7 @@ Storing the frequency of items is also dead easy with [collections.Counter][coun
 
 The greatest item in a counter is obviously the most common, so surely we’ll just …
 
-    pycon:
+    python:
     >>> max(c)
     'r'
 
@@ -32,13 +32,13 @@ The greatest item in a counter is obviously the most common, so surely we’ll j
 
 To get the most common element you have to use — surprise! — `Counter.most_common()`. Without arguments this produces a list of tuples (item, count), sorted by count:
 
-    pycon:
+    python:
     >>> c.most_common()
     [('a', 5), ('b', 2), ('r', 2), ('c', 1), ('d', 1)]
 
 So to get the actual most common element, you do:
 
-    pycon:
+    python:
     >>> c.most_common(1)[0][0]
     'a'
 
@@ -46,7 +46,7 @@ Where the argument `1` limits it to the first tuple.
 
 But what if the counter’s empty? You’ll get an IndexError trying to index into the list returned by `most_common()`:
 
-    pycon:
+    python:
     >>> d = Counter()
     >>> d.most_common()
     []
@@ -64,4 +64,3 @@ This takes advantage of the "falsey" nature of an empty dictionary to give you `
 
 [max]: https://docs.python.org/3/library/functions.html?highlight=max#max
 [counter]: https://docs.python.org/3/library/collections.html?highlight=collections.counter#collections.Counter
-
