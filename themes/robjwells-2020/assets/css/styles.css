@@ -1,27 +1,26 @@
 @charset "utf-8";
 
-/*   ----------------------   */
-/*!  COLOUR REFERENCE         */
-/*                            */
-/*   #607080   Grey           */
-/*   #EFF0F2   10% Grey       */
-/*   #F7F8F9    5% Grey       */
-/*                            */
-/*   #BD3338   Red            */
-/*   #00800A   Green          */
-/*   #1369BF   Blue           */
-/*   #7436B3   Purple         */
-/*                            */
-/*   #F8EAEB   10% Red        */
-/*   #E8F3EC   10% Green      */
-/*   #E7EFF8   10% Blue       */
-/*   ----------------------   */
+:root {
+  --grey: #607080;
+  --grey10: #EFF0F2;
+  --grey5: #F7F8F9;
+
+  --blue: #1369BF;
+  --blue10: #E7EFF8;
+
+  --red: #BD3338;
+  --red10: #F8EAEB;
+
+  --green: #00800A;
+  --green10: #E8F3EC;
+
+  --purple: #7436B3;
+}
 
 /*! BASIC SETTINGS AND STRUCTURE */
-/* ------------------------------------------------------------------------- */
 
 body {
-  background-color: #607080;
+  background-color: --grey;
   font-family: 'Source Sans Pro', 'Trebuchet MS', 'Geneva', serif;
   font-size: 100%;        /* 16 */
   font-style: normal;
@@ -31,17 +30,14 @@ body {
 }
 
 .wrapper {
-  background-color: #F7F8F9;
+  background-color: --grey5;
   margin: 0 auto;
   max-width: 65rem;   /* 1040 */
   min-height: 100vh;
   padding: 1.375rem 1rem;   /* 22 | 16 */
 }
 
-
-
 /*! HEADINGS */
-/* ------------------------------------------------------------------------- */
 
 h1,
 h2,
@@ -64,29 +60,24 @@ h4 {
   font-style: italic;
 }
 
-
-
 /*! BASIC ELEMENTS */
-/* ------------------------------------------------------------------------- */
 
 blockquote,
 figure,
 p,
 pre,
-table, caption,
-dl, ol, ul,
+table,
+caption,
+dl,
+ol,
+ul,
 div.highlight {
   margin-bottom: 1.375rem;  /* 22 / 16 */
 }
 
-/* Fix for Hugo’s table-style numbers */
-td pre {
-  margin-bottom: 0;
-}
-
 blockquote,
 pre {
-  background-color: #EFF0F2;
+  background-color: --grey10;
   padding: 0.6875rem 1rem;  /* 11 & 16 */
 }
 
@@ -109,13 +100,13 @@ figcaption {
 
 hr {
   border: none;
-  border-top: 1px solid #607080;  /* Grey */
+  border-top: 1px solid --grey;  /* Grey */
   margin: 1.375rem 0;   /* 22 | 0 */
 }
 
 img,
 video {
-  border: 1px solid #607080;  /* Grey */
+  border: 1px solid --grey;  /* Grey */
   height: auto;               /* Prevent horizontal squishing */
   max-width: 100%;
 }
@@ -124,10 +115,7 @@ pre {
   overflow-x: auto;  /* auto not scroll to hide unneeded scrollbars */
 }
 
-
-
 /*! LISTS */
-/* ------------------------------------------------------------------------- */
 
 dl,
 ol,
@@ -149,30 +137,24 @@ ul {
   list-style-type: square;
 }
 
-
-
 /*! LINKS */
-/* ------------------------------------------------------------------------- */
 
 a:link {
-  color: #1369BF;   /* Blue */
+  color: --blue;   /* Blue */
   text-decoration: underline;
 }
 
 a:visited {
-  color: #7436B3;  /* Purple */
+  color: --purple;  /* Purple */
 }
 
 a:focus,
 a:hover,
 a:active {
-  background-color: #E7EFF8;  /* 10% Blue */
+  background-color: --blue10;  /* 10% Blue */
 }
 
-
-
 /*! PHRASING ELEMENTS (extra text styles) */
-/* ------------------------------------------------------------------------- */
 
 strong,
 b {
@@ -201,13 +183,10 @@ small {
 }
 
 small {
-  color: #607080;
+  color: --grey;
 }
 
-
-
 /*!  TABLES                   */
-/* ------------------------------------------------------------------------- */
 
 table {
   width: 100%;
@@ -224,11 +203,11 @@ caption {
 }
 
 thead {
-  border-bottom: 1px solid #607080;
+  border-bottom: 1px solid --grey;
 }
 
 tfoot {
-  border-top: 1px solid #607080;
+  border-top: 1px solid --grey;
 }
 
 th,
@@ -239,7 +218,7 @@ td {
 }
 
 th {
-  background-color: #EFF0F2;
+  background-color: --grey10;
   font-weight: bold;
   text-align: left;
 }
@@ -249,13 +228,10 @@ th {
   font-family: 'Source Code Pro', 'Consolas', 'Monaco', monospace;
 }
 
-
-
 /*! SITE HEADER */
-/* ------------------------------------------------------------------------- */
 
 .site-header {
-  border-left: 0.5rem solid #1369BF;  /*  8 / 16 */
+  border-left: 0.5rem solid --blue;  /*  8 / 16 */
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 1.375rem;            /* 22 / 16 */
@@ -283,7 +259,7 @@ th {
 }
 
 .site-links {
-  color: #607080;
+  color: --grey;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -301,7 +277,6 @@ th {
 }
 
 /*! SITE FOOTER */
-/* ------------------------------------------------------------------------- */
 
 .site-footer {
   flex-basis: 100%;
@@ -309,13 +284,10 @@ th {
   margin-top: 4.125rem;  /* 66 / 16 */
 }
 
-
-
 /*! ARTICLES */
-/* ------------------------------------------------------------------------- */
 
 article {
-  border-bottom: 1px solid #607080;
+  border-bottom: 1px solid --grey;
   margin-bottom: 4.125rem;  /* 66 / 16 */
 }
 
@@ -332,7 +304,7 @@ article header h2 {
 }
 
 article header time {
-  color: #607080;
+  color: --grey;
 }
 
 article p {
@@ -344,10 +316,7 @@ article li {
   max-width: 33rem;  /* p max-width - ol/ul padding-left (2rem) */
 }
 
-
-
 /*! PAGINATION */
-/* ------------------------------------------------------------------------- */
 
 .pagination {
   display: flex;
@@ -368,13 +337,10 @@ article li {
     content: " →";
 }
 
-
-
 /*! ARCHIVES */
-/* ------------------------------------------------------------------------- */
 
 .archive-date {
-  color: #607080;
+  color: --grey;
   flex: 0 0 6rem;   /* 0 0 96 */
   font-family: 'Source Code Pro', 'Consolas', 'Monaco', monospace;
   font-size: 0.875rem;    /* 14 / 16 */
@@ -395,14 +361,11 @@ article li {
   list-style-type: none;
 }
 
-
-
 /*! FLAGS */
-/* ------------------------------------------------------------------------- */
 
 .flag {
-  background-color: #E7EFF8;
-  border-left: 0.5rem solid #1369BF;  /* 8 */
+  background-color: --blue10;
+  border-left: 0.5rem solid --blue;  /* 8 */
   margin-bottom: 1.375rem;           /* 22 */
   padding: 0.6875rem 0.5rem;         /* 11 | 8 */
 }
@@ -411,11 +374,7 @@ article li {
   margin-bottom: 0;
 }
 
-
-
 /*! MODIFIER CLASSES     */
-/* ("Icing on the cake") */
-/* ------------------------------------------------------------------------- */
 
 .full-width {
   max-width: 100%;
@@ -443,10 +402,12 @@ article li {
   font-family: -apple-system, -apple-system-font, "Lucida Grande", sans-serif;
 }
 
-
+/*! Hugo line numbers margin fix */
+td pre {
+  margin-bottom: 0;
+}
 
 /*! MEDIA QUERY: Mid-sized screens */
-/* ------------------------------------------------------------------------- */
 
 /* 35rem == 560 == p max-width */
 @media screen and (min-width: 35rem) {
@@ -456,8 +417,6 @@ article li {
     padding: 1.375rem 2.5rem;   /* 22 | 40 */
   }
 
-
-
   /* Site header: adjust link layout */
   .site-links {
     justify-content: flex-start;
@@ -466,8 +425,6 @@ article li {
   .site-links li {
     margin-right: 5%;
   }
-
-
 
   /* Headings: larger font sizes for larger screens */
   h1,
@@ -489,8 +446,6 @@ article li {
     font-style: normal;
   }
 
-
-
   /* Enable floating modifier classes */
   .pull-left {
     float: left;
@@ -509,13 +464,9 @@ article li {
     display: block;
     margin-bottom: 1.375rem;
   }
-
 }
 
-
-
 /*! MEDIA QUERY: Larger screens */
-/* ------------------------------------------------------------------------- */
 
 /* 50rem == 800 */
 @media screen and (min-width: 50rem) {
@@ -532,8 +483,6 @@ article li {
     min-width: 0;  /* Fixes overflow in Firefox (needed as of 2015-08) */
   }
 
-
-
   /* Site header: switch to vertical layout */
   .site-header {
     border-left: 0;
@@ -544,7 +493,7 @@ article li {
   }
 
   .site-title-container {
-    border-left: 0.5rem solid #1369BF;  /*  8 / 16 */
+    border-left: 0.5rem solid --blue;  /*  8 / 16 */
     margin-right: 0;
     padding-left: 0.5rem;               /*  8 / 16 */
   }
@@ -557,5 +506,4 @@ article li {
   .site-links li {
     margin-right: 0;
   }
-
 }
