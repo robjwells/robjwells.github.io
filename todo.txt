@@ -1,1 +1,0 @@
-* Redirect current RSS address in nginx
