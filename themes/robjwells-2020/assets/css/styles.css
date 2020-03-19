@@ -304,27 +304,6 @@ article li {
   max-width: 33rem;  /* p max-width - ol/ul padding-left (2rem) */
 }
 
-/*! PAGINATION */
-
-.pagination {
-  display: flex;
-  justify-content: space-around;
-  max-width: 35rem;
-}
-
-.pagination-older,
-.pagination-newer {
-  margin-bottom: 0;
-}
-
-.pagination-older::before {
-    content: "← ";
-}
-
-.pagination-newer::after {
-    content: " →";
-}
-
 /*! ARCHIVES */
 
 .archive-date {
