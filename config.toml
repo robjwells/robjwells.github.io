@@ -32,3 +32,6 @@ section = ["html"]
 
 [markup.goldmark.renderer]
 unsafe = "true"
+
+[markup.highlight]
+style = "tango"
