@@ -1,6 +1,10 @@
 <head>
   <meta charset="UTF-8">
-  <title>{{ .Site.Title}} – {{ .Title }} </title>
+  <title>{{ if eq .Site.Title .Title -}}
+    {{ .Site.Title }}
+  {{- else -}}
+    {{ .Site.Title }} – {{ .Title }}
+  {{- end }}</title>
 
   <!-- Load my combined stylesheet -->
   {{- $reset := resources.Get "css/reset.css" -}}
