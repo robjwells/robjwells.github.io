@@ -383,7 +383,7 @@ td pre {
 
 /*! MEDIA QUERY: Mid-sized screens */
 
-@media screen and (min-width: 42rem) {
+@media screen and (min-width: 40rem) {
   /* Enable floating modifier classes */
   .pull-left {
     float: left;
