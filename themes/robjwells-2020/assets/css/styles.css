@@ -308,10 +308,9 @@ article li {
 
 .archive-date {
   color: var(--grey);
-  flex: 0 0 6rem;   /* 0 0 96 */
   font-family: 'Source Code Pro', 'Consolas', 'Monaco', monospace;
   font-size: 0.875rem;    /* 14 / 16 */
-  margin-right: var(--enSpace);   /* 8 */
+  margin-right: 1rem;
 }
 
 .archive-item {
