@@ -385,12 +385,6 @@ td pre {
 /*! MEDIA QUERY: Mid-sized screens */
 
 @media screen and (min-width: 42rem) {
-
-  /* Structure: increase padding */
-  .wrapper {
-    padding: var(--size22) var(--emSpace);  /* 22 | x */
-  }
-
   /* Enable floating modifier classes */
   .pull-left {
     float: left;
