@@ -18,6 +18,12 @@
   --halfLine: 0.6875rem;
   --bigGap: 4.125rem;
 
+  --huge: 1.8rem;     /* h1, h2 */
+  --big: 1.6rem;      /* h3 */
+  --medium: 1.4rem;   /* h4 */
+  --text: 1.125rem;   /* p */
+  --small: 0.875rem;  /* code */
+
   --monospace: 'Source Code Pro', 'Consolas', 'Monaco', monospace;
 }
 
@@ -26,7 +32,7 @@
 body {
   background-color: var(--grey5);
   font-family: 'Source Sans Pro', 'Trebuchet MS', 'Geneva', serif;
-  font-size: var(--size18);  /* 18 */
+  font-size: var(--text);  /* 18 */
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;  /* 27 */
@@ -51,16 +57,15 @@ h4 {
 
 h1,
 h2 {
-  font-size: 1.25rem;  /* 20 */
+  font-size: var(--huge);
 }
 
-h3,
-h4 {
-  font-size: var(--size18);  /* 18 */
+h3 {
+  font-size: var(--big);
 }
 
 h4 {
-  font-style: italic;
+  font-size: var(--medium);
 }
 
 /*! BASIC ELEMENTS */
@@ -384,26 +389,6 @@ td pre {
   /* Structure: increase padding */
   .wrapper {
     padding: var(--size22) var(--emSpace);  /* 22 | x */
-  }
-
-  /* Headings: larger font sizes for larger screens */
-  h1,
-  h2 {
-    line-height: 2.75rem;  /* 44 */
-  }
-
-  h1,
-  h2 {
-    font-size: 2.25rem;  /* 36 */
-  }
-
-  h3 {
-    font-size: 1.75rem;  /* 28 */
-  }
-
-  h4 {
-    font-size: 1.25rem;  /* 20 */
-    font-style: normal;
   }
 
   /* Enable floating modifier classes */
