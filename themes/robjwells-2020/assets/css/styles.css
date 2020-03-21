@@ -13,7 +13,7 @@
   --lineSpace: 1.75rem; /* text size * line height */
   --halfLine: calc(var(--lineSpace) / 2);
   --quarterLine: calc(var(--lineSpace) / 4);
-  --bigGap: 4.125rem;
+  --bigGap: calc(var(--lineSpace) * 2);
   --paragraphWidth: 40rem;
   --wrapperWidth: 50rem;
 
