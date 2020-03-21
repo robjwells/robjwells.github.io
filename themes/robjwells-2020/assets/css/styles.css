@@ -375,10 +375,6 @@ article li {
   max-width: none;
 }
 
-.osx-menu {
-  font-family: -apple-system, -apple-system-font, "Lucida Grande", sans-serif;
-}
-
 /*! Hugo line numbers margin fix */
 td pre {
   margin-bottom: 0;
