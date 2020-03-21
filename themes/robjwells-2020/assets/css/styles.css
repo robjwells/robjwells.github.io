@@ -379,8 +379,7 @@ td pre {
 
 /*! MEDIA QUERY: Mid-sized screens */
 
-/* 35rem == 560 == p max-width */
-@media screen and (min-width: 35rem) {
+@media screen and (min-width: 42rem) {
 
   /* Structure: increase padding */
   .wrapper {
