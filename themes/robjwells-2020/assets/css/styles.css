@@ -1,14 +1,14 @@
 @charset "utf-8";
 
 :root {
-  --grey: #607080;
-  --grey10: #EFF0F2;
+  --grey: hsl(210, 14%, 44%);
+  --grey10: hsl(220, 10%, 94%);
   --grey5: #F7F8F9;
 
-  --blue: #1369BF;
-  --blue10: #E7EFF8;
+  --blue: hsl(210, 82%, 41%);
+  --blue10: hsl(212, 55%, 94%);
 
-  --purple: #7436B3;
+  --purple: hsl(270, 54%, 46%);;
 
   --lineSpace: 1.75rem; /* text size * line height */
   --halfLine: calc(var(--lineSpace) / 2);
