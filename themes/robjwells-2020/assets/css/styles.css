@@ -319,7 +319,8 @@ article li {
   color: var(--grey);
   font-family: var(--monospace);
   font-size: var(--small);
-  min-width: 6rem;
+  min-width: 6rem;  /* This is to prevent the browser breaking the
+                      date at the hyphens when it’s short on space */
   margin-right: var(--halfLine);
 }
 
