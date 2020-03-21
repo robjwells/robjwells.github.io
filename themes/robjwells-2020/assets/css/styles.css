@@ -22,7 +22,7 @@
 body {
   background-color: var(--grey5);
   font-family: 'Source Sans Pro', 'Trebuchet MS', 'Geneva', serif;
-  font-size: 112.5%;        /* 18 */
+  font-size: 1.125rem;  /* 18 */
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;  /* 27 */
