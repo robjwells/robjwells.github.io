@@ -17,6 +17,8 @@
   --twoEmSpace: 2rem;
   --halfLine: calc(var(--lineSpace) / 2);
   --bigGap: 4.125rem;
+  --paragraphWidth: 40rem;
+  --wrapperWidth: 50rem;
 
   --huge: 1.8rem;     /* h2 -- h1 only used for the site title */
   --big: 1.6rem;      /* h3 */
@@ -41,7 +43,7 @@ body {
 
 .wrapper {
   margin: 0 auto;
-  max-width: 50rem;   /* 800 */
+  max-width: var(--wrapperWidth);   /* 800 */
   min-height: 100vh;
   padding: var(--lineSpace) var(--emSpace);   /* 22 | 16 */
 }
@@ -176,7 +178,7 @@ i {
 .syntax,
 code,
 small {
-  font-size: 0.875rem; /* 14 / 16 */
+  font-size: var(--small); /* 14 / 16 */
 }
 
 .syntax,
@@ -304,12 +306,12 @@ article header time {
 }
 
 article p {
-  max-width: 40rem;  /* 640 */
+  max-width: var(--paragraphWidth);
 }
 
 article li {
   margin-bottom: var(--lineSpace);
-  max-width: 38rem;  /* p max-width - ol/ul padding-left */
+  max-width: calc(var(--paragraphWidth) - var(--twoEmSpace));  /* p max-width - ol/ul padding-left */
 }
 
 /*! ARCHIVES */
@@ -317,7 +319,7 @@ article li {
 .archive-date {
   color: var(--grey);
   font-family: var(--monospace);
-  font-size: 0.875rem;    /* 14 / 16 */
+  font-size: var(--small);    /* 14 / 16 */
   margin-right: var(--emSpace);
 }
 
