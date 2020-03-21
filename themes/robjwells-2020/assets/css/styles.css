@@ -13,6 +13,8 @@
   --size18: 1.125rem;
   --size22: 1.375rem;
   --enSpace: 0.5rem;
+  --emSpace: 1rem;
+  --twoEmSpace: 2rem;
   --halfLine: 0.6875rem;
   --bigGap: 4.125rem;
 
@@ -35,7 +37,7 @@ body {
   margin: 0 auto;
   max-width: 50rem;   /* 800 */
   min-height: 100vh;
-  padding: var(--size22) 1rem;   /* 22 | 16 */
+  padding: var(--size22) var(--emSpace);   /* 22 | 16 */
 }
 
 /*! HEADINGS */
@@ -79,7 +81,7 @@ div.highlight {
 blockquote,
 pre {
   background-color: var(--grey10);
-  padding: var(--halfLine) 1rem;  /* 11 & 16 */
+  padding: var(--halfLine) var(--emSpace);  /* 11 & 16 */
 }
 
 blockquote {
@@ -127,7 +129,7 @@ ul {
 ol,
 ul {
   list-style-position: outside;
-  padding-left: 2rem;   /* 32 */
+  padding-left: var(--twoEmSpace);   /* 32 */
 }
 
 ol {
@@ -241,7 +243,7 @@ th {
 
 .site-title-container {
   flex-shrink: 0;
-  margin-right: 2rem;   /* 32 */
+  margin-right: var(--twoEmSpace);   /* 32 */
   max-width: 100%;      /* Prevent title from spilling out */
 }
 
@@ -312,7 +314,7 @@ article li {
   color: var(--grey);
   font-family: var(--monospace);
   font-size: 0.875rem;    /* 14 / 16 */
-  margin-right: 1rem;
+  margin-right: var(--emSpace);
 }
 
 .archive-item {
@@ -382,7 +384,7 @@ td pre {
 
   /* Structure: increase padding */
   .wrapper {
-    padding: var(--size22) 1rem;  /* 22 | x */
+    padding: var(--size22) var(--emSpace);  /* 22 | x */
   }
 
   /* Headings: larger font sizes for larger screens */
@@ -409,13 +411,13 @@ td pre {
   .pull-left {
     float: left;
     clear: left;
-    margin-right: 1rem;
+    margin-right: var(--emSpace);
   }
 
   .pull-right {
     float: right;
     clear: right;
-    margin-left: 1rem;
+    margin-left: var(--emSpace);
   }
 
   .pull-left img,
