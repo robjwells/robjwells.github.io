@@ -303,7 +303,7 @@ article p {
 
 article li {
   margin-bottom: var(--size22);  /* 22 / 16 */
-  max-width: 33rem;  /* p max-width - ol/ul padding-left (2rem) */
+  max-width: 38rem;  /* p max-width - ol/ul padding-left */
 }
 
 /*! ARCHIVES */
