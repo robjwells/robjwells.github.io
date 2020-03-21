@@ -31,7 +31,7 @@ body {
 
 .wrapper {
   margin: 0 auto;
-  max-width: 42rem;   /* 756 */
+  max-width: 50rem;   /* 800 */
   min-height: 100vh;
   padding: 1.375rem 1rem;   /* 22 | x */
 }
