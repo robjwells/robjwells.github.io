@@ -41,7 +41,6 @@ body {
 .wrapper {
   margin: 0 auto;
   max-width: var(--wrapperWidth);
-  min-height: 100vh;
   padding: var(--lineSpace) var(--halfLine);
 }
 
