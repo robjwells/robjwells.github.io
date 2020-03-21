@@ -319,6 +319,7 @@ article li {
   color: var(--grey);
   font-family: var(--monospace);
   font-size: var(--small);
+  min-width: 6rem;
   margin-right: var(--halfLine);
 }
 
