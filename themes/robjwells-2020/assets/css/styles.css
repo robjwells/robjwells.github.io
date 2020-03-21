@@ -23,7 +23,7 @@
   --text: 1.125rem;   /* p */
   --small: 0.875rem;  /* code */
 
-  --monospace: 'Source Code Pro', 'Consolas', 'Monaco', monospace;
+  --monospace: 'Source Code Pro', 'Consolas', 'Menlo', 'Monaco', monospace;
 }
 
 /*! BASIC SETTINGS AND STRUCTURE */
