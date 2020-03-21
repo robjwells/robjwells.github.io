@@ -17,9 +17,9 @@
   --paragraphWidth: 40rem;  /* 640 */
   --wrapperWidth: 50rem;    /* 800 */
 
-  --huge: 1.8rem;     /* h2 -- h1 only used for the site title */
-  --big: 1.6rem;      /* h3 */
-  --medium: 1.4rem;   /* h4 */
+  --huge: 1.75rem;    /* h2 -- also h1, but h1 only used for the site title */
+  --big: 1.5625rem;    /* h3 */
+  --medium: 1.375rem;   /* h4 */
   --text: 1.125rem;   /* p */
   --small: 0.875rem;  /* code */
 
@@ -250,8 +250,8 @@ th {
 }
 
 .site-title {
-  font-size: var(--lineSpace);
-  line-height: var(--lineSpace);
+  font-size: var(--huge);
+  line-height: var(--huge);
   margin-bottom: 0;
 }
 
