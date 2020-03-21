@@ -15,6 +15,11 @@
   --green10: #E8F3EC;
 
   --purple: #7436B3;
+
+  --size22: 1.375rem;
+  --enSpace: 0.5rem;
+  --halfLine: 0.6875rem;
+  --bigGap: 4.125rem;
 }
 
 /*! BASIC SETTINGS AND STRUCTURE */
@@ -33,7 +38,7 @@ body {
   margin: 0 auto;
   max-width: 50rem;   /* 800 */
   min-height: 100vh;
-  padding: 1.375rem 1rem;   /* 22 | x */
+  padding: var(--size22) 1rem;   /* 22 | 16 */
 }
 
 /*! HEADINGS */
@@ -42,7 +47,7 @@ h1,
 h2,
 h3,
 h4 {
-  margin: 0 0 1.375rem;  /* 22 bottom margin */
+  margin: 0 0 var(--size22);  /* 22 bottom margin */
 }
 
 h1,
@@ -71,13 +76,13 @@ dl,
 ol,
 ul,
 div.highlight {
-  margin-bottom: 1.375rem;  /* 22 / 16 */
+  margin-bottom: var(--size22);  /* 22 / 16 */
 }
 
 blockquote,
 pre {
   background-color: var(--grey10);
-  padding: 0.6875rem 1rem;  /* 11 & 16 */
+  padding: var(--halfLine) 1rem;  /* 11 & 16 */
 }
 
 blockquote {
@@ -100,7 +105,7 @@ figcaption {
 hr {
   border: none;
   border-top: 1px solid var(--grey);  /* Grey */
-  margin: 1.375rem 0;   /* 22 | 0 */
+  margin: var(--size22) 0;   /* 22 | 0 */
 }
 
 img,
@@ -119,7 +124,7 @@ pre {
 dl,
 ol,
 ul {
-  margin-bottom: 1.375rem;    /* 22 */
+  margin-bottom: var(--size22);    /* 22 */
 }
 
 ol,
@@ -212,7 +217,7 @@ tfoot {
 th,
 td {
   width: auto;
-  padding: 0.6875rem;  /* 11 / 16 */
+  padding: var(--halfLine);  /* 11 / 16 */
   overflow: auto;
 }
 
@@ -230,11 +235,11 @@ th {
 /*! SITE HEADER */
 
 .site-header {
-  border-left: 0.5rem solid var(--blue);  /*  8 / 16 */
+  border-left: var(--enSpace) solid var(--blue);  /*  8 / 16 */
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 1.375rem;            /* 22 / 16 */
-  padding-left: 0.5rem;               /*  8 / 16 */
+  margin-bottom: var(--size22);            /* 22 / 16 */
+  padding-left: var(--enSpace);               /*  8 / 16 */
 }
 
 .site-title-container {
@@ -244,8 +249,8 @@ th {
 }
 
 .site-title {
-  font-size: 1.375rem;    /* 22 */
-  line-height: 1.375rem;  /* 22 */
+  font-size: var(--size22);    /* 22 */
+  line-height: var(--size22);  /* 22 */
   margin-bottom: 0;
 }
 
@@ -269,14 +274,14 @@ th {
 .site-footer {
   flex-basis: 100%;
   align-self: flex-end;
-  margin-top: 4.125rem;  /* 66 / 16 */
+  margin-top: var(--bigGap);  /* 66 / 16 */
 }
 
 /*! ARTICLES */
 
 article {
   border-bottom: 1px solid var(--grey);
-  margin-bottom: 4.125rem;  /* 66 / 16 */
+  margin-bottom: var(--bigGap);  /* 66 / 16 */
 }
 
 article:last-of-type {
@@ -284,7 +289,7 @@ article:last-of-type {
 }
 
 article header {
-  margin-bottom: 1.375rem; /* 22 / 16 */
+  margin-bottom: var(--size22); /* 22 / 16 */
 }
 
 article header h2 {
@@ -296,11 +301,11 @@ article header time {
 }
 
 article p {
-  max-width: 40rem;  /* 720 / 18 */
+  max-width: 40rem;  /* 640 */
 }
 
 article li {
-  margin-bottom: 1.375rem;  /* 22 / 16 */
+  margin-bottom: var(--size22);  /* 22 / 16 */
   max-width: 33rem;  /* p max-width - ol/ul padding-left (2rem) */
 }
 
@@ -311,11 +316,11 @@ article li {
   flex: 0 0 6rem;   /* 0 0 96 */
   font-family: 'Source Code Pro', 'Consolas', 'Monaco', monospace;
   font-size: 0.875rem;    /* 14 / 16 */
-  margin-right: 0.5rem;   /* 8 */
+  margin-right: var(--enSpace);   /* 8 */
 }
 
 .archive-item {
-  margin-bottom: 0.6875rem;  /* 11 */
+  margin-bottom: var(--halfLine);  /* 11 */
 }
 
 .archive-link {
@@ -332,9 +337,9 @@ article li {
 
 .flag {
   background-color: var(--blue10);
-  border-left: 0.5rem solid var(--blue);  /* 8 */
-  margin-bottom: 1.375rem;           /* 22 */
-  padding: 0.6875rem 0.5rem;         /* 11 | 8 */
+  border-left: var(--enSpace) solid var(--blue);  /* 8 */
+  margin-bottom: var(--size22);           /* 22 */
+  padding: var(--halfLine) var(--enSpace);         /* 11 | 8 */
 }
 
 .flag :last-child {
@@ -381,7 +386,7 @@ td pre {
 
   /* Structure: increase padding */
   .wrapper {
-    padding: 1.375rem 1rem;  /* 22 | x */
+    padding: var(--size22) 1rem;  /* 22 | x */
   }
 
   /* Headings: larger font sizes for larger screens */
@@ -420,6 +425,6 @@ td pre {
   .pull-left img,
   .pull-right img {
     display: block;
-    margin-bottom: 1.375rem;
+    margin-bottom: var(--size22);
   }
 }
