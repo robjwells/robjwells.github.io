@@ -106,13 +106,13 @@ figcaption {
 
 hr {
   border: none;
-  border-top: 1px solid var(--grey);  /* Grey */
+  border-top: 1px solid var(--grey);
   margin: var(--lineSpace) 0;
 }
 
 img,
 video {
-  border: 1px solid var(--grey);  /* Grey */
+  border: 1px solid var(--grey);
   height: auto;               /* Prevent horizontal squishing */
   max-width: 100%;
 }
@@ -146,18 +146,18 @@ ul {
 /*! LINKS */
 
 a:link {
-  color: var(--blue);   /* Blue */
+  color: var(--blue);
   text-decoration: underline;
 }
 
 a:visited {
-  color: var(--purple);  /* Purple */
+  color: var(--purple);
 }
 
 a:focus,
 a:hover,
 a:active {
-  background-color: var(--blue10);  /* 10% Blue */
+  background-color: var(--blue10);
 }
 
 /*! PHRASING ELEMENTS (extra text styles) */
