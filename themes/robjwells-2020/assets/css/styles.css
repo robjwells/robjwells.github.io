@@ -33,7 +33,7 @@ body {
   margin: 0 auto;
   max-width: 42rem;   /* 756 */
   min-height: 100vh;
-  padding: 1.375rem 1rem;   /* 22 | 16 */
+  padding: 1.375rem 1rem;   /* 22 | x */
 }
 
 /*! HEADINGS */
@@ -381,7 +381,7 @@ td pre {
 
   /* Structure: increase padding */
   .wrapper {
-    padding: 1.375rem 2.5rem;   /* 22 | 40 */
+    padding: 1.375rem 1rem;  /* 22 | x */
   }
 
   /* Headings: larger font sizes for larger screens */
