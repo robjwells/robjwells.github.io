@@ -307,7 +307,7 @@ article p {
 }
 
 article li {
-  margin-bottom: var(--lineSpace);
+  margin-bottom: var(--halfLine);
   max-width: calc(var(--paragraphWidth) - var(--lineSpace));  /* p max-width - ol/ul padding-left */
 }
 
