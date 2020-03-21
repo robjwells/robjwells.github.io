@@ -14,8 +14,8 @@
   --halfLine: calc(var(--lineSpace) / 2);
   --quarterLine: calc(var(--lineSpace) / 4);
   --bigGap: calc(var(--lineSpace) * 2);
-  --paragraphWidth: 40rem;
-  --wrapperWidth: 50rem;
+  --paragraphWidth: 40rem;  /* 640 */
+  --wrapperWidth: 50rem;    /* 800 */
 
   --huge: 1.8rem;     /* h2 -- h1 only used for the site title */
   --big: 1.6rem;      /* h3 */
@@ -31,16 +31,16 @@
 body {
   background-color: var(--grey5);
   font-family: 'Source Sans Pro', 'Trebuchet MS', 'Geneva', serif;
-  font-size: var(--text);  /* 18 */
+  font-size: var(--text);
   font-style: normal;
   font-weight: 400;
-  line-height: 1.55555;  /* 28 */
+  line-height: 1.55555;
   letter-spacing: 0.01rem;
 }
 
 .wrapper {
   margin: 0 auto;
-  max-width: var(--wrapperWidth);   /* 800 */
+  max-width: var(--wrapperWidth);
   min-height: 100vh;
   padding: var(--lineSpace) var(--halfLine);
 }
@@ -175,7 +175,7 @@ i {
 .syntax,
 code,
 small {
-  font-size: var(--small); /* 14 / 16 */
+  font-size: var(--small);
 }
 
 .syntax,
@@ -316,12 +316,12 @@ article li {
 .archive-date {
   color: var(--grey);
   font-family: var(--monospace);
-  font-size: var(--small);    /* 14 / 16 */
+  font-size: var(--small);
   margin-right: var(--halfLine);
 }
 
 .archive-item {
-  margin-bottom: var(--halfLine);  /* 11 */
+  margin-bottom: var(--halfLine);
 }
 
 .archive-link {
