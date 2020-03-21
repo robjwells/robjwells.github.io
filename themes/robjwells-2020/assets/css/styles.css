@@ -11,7 +11,7 @@
   --purple: #7436B3;
 
   --size18: 1.125rem;
-  --size22: 1.375rem;
+  --lineSpace: 1.6875rem; /* text size * line height */
   --enSpace: 0.5rem;
   --emSpace: 1rem;
   --twoEmSpace: 2rem;
@@ -43,7 +43,7 @@ body {
   margin: 0 auto;
   max-width: 50rem;   /* 800 */
   min-height: 100vh;
-  padding: var(--size22) var(--emSpace);   /* 22 | 16 */
+  padding: var(--lineSpace) var(--emSpace);   /* 22 | 16 */
 }
 
 /*! HEADINGS */
@@ -52,7 +52,7 @@ body {
 h2,
 h3,
 h4 {
-  margin: 0 0 var(--size22);  /* 22 bottom margin */
+  margin: 0 0 var(--lineSpace);  /* 22 bottom margin */
 }
 
 h2 {
@@ -79,7 +79,7 @@ dl,
 ol,
 ul,
 div.highlight {
-  margin-bottom: var(--size22);  /* 22 / 16 */
+  margin-bottom: var(--lineSpace);  /* 22 / 16 */
 }
 
 blockquote,
@@ -108,7 +108,7 @@ figcaption {
 hr {
   border: none;
   border-top: 1px solid var(--grey);  /* Grey */
-  margin: var(--size22) 0;   /* 22 | 0 */
+  margin: var(--lineSpace) 0;   /* 22 | 0 */
 }
 
 img,
@@ -127,7 +127,7 @@ pre {
 dl,
 ol,
 ul {
-  margin-bottom: var(--size22);    /* 22 */
+  margin-bottom: var(--lineSpace);    /* 22 */
 }
 
 ol,
@@ -241,7 +241,7 @@ th {
   border-left: var(--enSpace) solid var(--blue);  /*  8 / 16 */
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: var(--size22);            /* 22 / 16 */
+  margin-bottom: var(--lineSpace);
   padding-left: var(--enSpace);               /*  8 / 16 */
 }
 
@@ -252,8 +252,8 @@ th {
 }
 
 .site-title {
-  font-size: var(--size22);    /* 22 */
-  line-height: var(--size22);  /* 22 */
+  font-size: var(--lineSpace);
+  line-height: var(--lineSpace);
   margin-bottom: 0;
 }
 
@@ -292,7 +292,7 @@ article:last-of-type {
 }
 
 article header {
-  margin-bottom: var(--size22); /* 22 / 16 */
+  margin-bottom: var(--lineSpace);
 }
 
 article header h2 {
@@ -308,7 +308,7 @@ article p {
 }
 
 article li {
-  margin-bottom: var(--size22);  /* 22 / 16 */
+  margin-bottom: var(--lineSpace);
   max-width: 38rem;  /* p max-width - ol/ul padding-left */
 }
 
@@ -340,7 +340,7 @@ article li {
 .flag {
   background-color: var(--blue10);
   border-left: var(--enSpace) solid var(--blue);  /* 8 */
-  margin-bottom: var(--size22);           /* 22 */
+  margin-bottom: var(--lineSpace);
   padding: var(--halfLine) var(--enSpace);         /* 11 | 8 */
 }
 
@@ -400,6 +400,6 @@ td pre {
   .pull-left img,
   .pull-right img {
     display: block;
-    margin-bottom: var(--size22);
+    margin-bottom: var(--lineSpace);
   }
 }
