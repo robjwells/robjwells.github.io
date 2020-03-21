@@ -18,7 +18,7 @@
   --halfLine: 0.6875rem;
   --bigGap: 4.125rem;
 
-  --huge: 1.8rem;     /* h1, h2 */
+  --huge: 1.8rem;     /* h2 -- h1 only used for the site title */
   --big: 1.6rem;      /* h3 */
   --medium: 1.4rem;   /* h4 */
   --text: 1.125rem;   /* p */
@@ -47,15 +47,14 @@ body {
 }
 
 /*! HEADINGS */
+/* h1 is only ever used for the site title, which has a specific style */
 
-h1,
 h2,
 h3,
 h4 {
   margin: 0 0 var(--size22);  /* 22 bottom margin */
 }
 
-h1,
 h2 {
   font-size: var(--huge);
 }
