@@ -1,4 +1,7 @@
 {{ define "main" }}
+    <header>
+      <h2>Blog posts</h2>
+    </header>
     {{ with .Site.GetPage "section" "posts" }}
     {{ range .Pages.GroupByDate "2006" }}
     <h3>{{ .Key }}</h3>
