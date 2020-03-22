@@ -6,11 +6,11 @@
   <ul class="archive-list">
   {{ range sort .Pages ".Params.finish-date" "desc" }}
     <li class="archive-item">
-      {{ if .Content }}<a class="archive-link" href="{{ .Permalink }}">{{ else }}<div class="archive-link">{{ end }}
         <time class="archive-date"
           datetime='{{ .Param "finish-date" }}'>{{ .Param "finish-date" }}</time>
         <span class="archive-title">{{ .Title }}, by {{ .Param "author" }}</span>
-      {{if .Content }}</a>{{ else }}</div>{{ end }}
+      {{ if .Content }}<a class="archive-link" href="{{ .Permalink }}">{{ else }}<span class="archive-link">{{ end }}
+      {{if .Content }}</a>{{ else }}</span>{{ end }}
     </li>
   {{ end }}
   </ul>
