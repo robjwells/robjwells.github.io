@@ -6,8 +6,8 @@
       {{ range .Pages }}
       <li class="archive-item">
         <a class="archive-link" href="{{ .Permalink }}">
-          <span class="archive-title">{{ .Title }}</span>
           <time class="archive-date" datetime='{{ .Date.Format "2006-01-02T15:04:05-0700" }}'>{{ .Date.Format "2006-01-02" }}</time>
+          <span>{{ .Title }}</span>
         </a>
       </li>
       {{ end }}
