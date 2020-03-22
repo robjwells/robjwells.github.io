@@ -1,7 +1,7 @@
 ---
 title: "The Power of Habit"
 author: "Charles Duhigg"
-finish-date: 2020-02-15T21:30:00Z
+finish-date: 2020-02-15
 publisher-link: "https://www.penguin.co.uk/books/1087134/the-power-of-habit/9781847946249.html"
 author-link: "https://www.charlesduhigg.com/the-power-of-habit/"
 ---

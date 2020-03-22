@@ -1,10 +1,9 @@
 ---
 title: "The Art of Breathing"
 author: "Danny Penman"
-finish-date: 2020-01-05T21:07:25Z
+finish-date: 2020-01-05
 publisher-link: "https://www.hqstories.co.uk/products/the-art-of-breathing-9780008211509/"
 author-link: "http://franticworld.com/"
-draft: true
 ---
 
 This is a beautiful, short introduction to mindfulness meditation.

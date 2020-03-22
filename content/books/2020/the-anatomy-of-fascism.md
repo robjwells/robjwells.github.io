@@ -1,7 +1,7 @@
 ---
 title: "The Anatomy of Fascism"
 author: "Robert O Paxton"
-finish-date: 2020-01-04T18:03:56Z
+finish-date: 2020-01-04
 publisher-link: "https://www.penguin.co.uk/books/54710/the-anatomy-of-fascism/9780141014326.html"
 author-link: "https://history.columbia.edu/faculty/paxton-robert-o/"
 ---
@@ -21,7 +21,7 @@ In Paxton’s definition,
 He is exceedingly cautious about offering this defintion, stating immediately beforehand “that it encompasses its subject no better than a snapshot encompasses a person.”
 If you read the book this will be very clear from the preceding chapters.
 
-At the end is a bibliographical essay with lots of relevant other works listed and some commentary. 
+At the end is a bibliographical essay with lots of relevant other works listed and some commentary.
 Highly recommended.
 
 ---
