@@ -9,12 +9,9 @@
   <!-- Load my combined stylesheet -->
   {{- $reset := resources.Get "css/reset.css" -}}
   {{- $mainCSS := resources.Get "css/styles.css" -}}
-  {{- $css := slice $reset $mainCSS | resources.Concat "styles.css" | minify | fingerprint -}}
+  {{- $syntax := resources.Get "css/highlight.css" -}}
+  {{- $css := slice $reset $mainCSS $syntax | resources.Concat "all.css" | minify | fingerprint -}}
   <link rel="stylesheet" href="{{ $css.Permalink }}">
-  {{ if findRE "class=.highlight." .Content}}
-  {{- $syntax := resources.Get "css/highlight.css" | minify -}}
-  <link rel="stylesheet" href="{{ $syntax.Permalink }}">
-  {{- end }}
 
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
 
