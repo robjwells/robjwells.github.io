@@ -84,7 +84,8 @@ div.highlight {
 }
 
 blockquote,
-pre {
+pre,
+div.highlight {
   background-color: var(--grey10);
   padding: var(--halfLine);
 }
