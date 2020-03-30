@@ -223,6 +223,7 @@ td {
   width: auto;
   padding: var(--halfLine);
   overflow: auto;
+  text-align: left;
 }
 
 th {
