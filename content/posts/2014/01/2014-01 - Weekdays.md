@@ -94,7 +94,7 @@ $ dayshift last Wednesday
 But, returning to the original use case, I recommend two approaches.
 
 You can set up individual snippets to find the next or last occurrence of a certain weekday. Add a new shell script snippet, with code similar to this:
-    
+
 ```
 #!/bin/bash
 /path/to/dayshift next Monday -i
