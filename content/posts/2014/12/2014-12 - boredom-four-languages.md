@@ -30,19 +30,19 @@ do shell script ("echo '\\n\\n\\n\\n' >> ~/Desktop/web_strip.txt")
 
 Here we take the content of the selected InDesign frames and use a shell script snippet to append it to a file on the desktop, followed by a bunch of newlines to separate the appended text.
 
-It's straightforward, but `the contents of the selection` in line 3 could return anything: more than one selected frame and you get a list, just one and you get whatever data is in the frame. So, instead of iterating over several pieces of text in line 7, you iterate over each character in one piece of text. Bonus points: InDesign CS4 (which we use at work) doesn't preserve the order in which you select frames, meaning you have to go one-by-one (and use a different script Ñ I'm showing the one I use at home here).
+It's straightforward, but `the contents of the selection` in line 3 could return anything: more than one selected frame and you get a list, just one and you get whatever data is in the frame. So, instead of iterating over several pieces of text in line 7, you iterate over each character in one piece of text. Bonus points: InDesign CS4 (which we use at work) doesn't preserve the order in which you select frames, meaning you have to go one-by-one (and use a different script â€” I'm showing the one I use at home here).
 
-Ok, now we've got a text file with all the copy in. Once that's been cleaned up Ñ any unnoticed mistakes corrected, print-focussed formatting removed Ñ it's time to enter it into the CMS.
+Ok, now we've got a text file with all the copy in. Once that's been cleaned up â€” any unnoticed mistakes corrected, print-focussed formatting removed â€” it's time to enter it into the CMS.
 
 For ages, this is where the automation stopped. The editor used in the CMS interprets pasted text oddly, requiring people to paste the plain text into (shock horror) TextEdit in rich-text mode, and from there into the field in the CMS. Lots of copying and pasting. Lots of boredom. Gross.
 
 But these are just fields on a web page. And, of course, the page uses jQuery. And Safari lets you `do JavaScript` through AppleScript. This should be trivial. (Chrome also lets you execute JavaScript through AppleScript, but it threw up a weird error that I couldn't be bothered to dig into.)
 
-A bit of poking around in the inspector revealed that most of the interesting fields could be set through a simple `.val(foo)` on the element, while the body of the article could be set through `.html('bar')` Ñ and wrapping paragraphs in `<p>` tags ensured that the text displayed correctly.
+A bit of poking around in the inspector revealed that most of the interesting fields could be set through a simple `.val(foo)` on the element, while the body of the article could be set through `.html('bar')` â€” and wrapping paragraphs in `<p>` tags ensured that the text displayed correctly.
 
-But how to get the text from a file in BBEdit into the fields? We need to use AppleScript to tell Safari to execute JavaScript, but you do not want to do any kind of text processing in AppleScript Ñ nor do you really want to do it by hand for tens of articles.
+But how to get the text from a file in BBEdit into the fields? We need to use AppleScript to tell Safari to execute JavaScript, but you do not want to do any kind of text processing in AppleScript â€” nor do you really want to do it by hand for tens of articles.
 
-I decided on a Python text filter. Not entirely appropriate Ñ we don't transform and return the text Ñ but it's a dead simple way of working with the selection and removing it once we're done.
+I decided on a Python text filter. Not entirely appropriate â€” we don't transform and return the text â€” but it's a dead simple way of working with the selection and removing it once we're done.
 
 Using Python lets us do all sorts of wonderful things too other than just preparing the InDesign text to be entered into the fields. Here's the code, before I dive in any further:
 
@@ -122,7 +122,7 @@ print('', end='')
 
 I like to put data at the top of my scripts and the code beneath, so let's start on line 35, where we read in the text from BBEdit. Line 36 breaks that text apart: I use a four-part structure, where the first line is the headline, then the standfirst and byline (both of which can be blank) and then any remaining lines form the body.
 
-In line 43 we index into the names dictionary (abbreviated to protect the guilty, lines 6Ð9) using the cleaned-up byline, with 4 the value for the default author. This and the story type stuff below are presented as drop-down menus, which is where the integers come from.
+In line 43 we index into the names dictionary (abbreviated to protect the guilty, lines 6â€“9) using the cleaned-up byline, with 4 the value for the default author. This and the story type stuff below are presented as drop-down menus, which is where the integers come from.
 
 Next we crudely count the words in the body to work out the story type, which are roughly differentiated by length. I iterate over a dictionary of lambdas instead of a lengthy `if-elif` block, mostly because it lets me use the dictionary keys to store the strings associated with the values. (You could do the same with comments in the `if-else`. I don't think there's a big advantage to either method.)
 
@@ -134,6 +134,6 @@ Then we format a string containing the AppleScript, which runs the JavaScript, a
 
 [drang]: http://www.leancrew.com/all-this/2013/03/combining-python-and-applescript/
 
-And finally we print an empty string to delete the current selection in BBEdit Ñ time to move on to the next story.
+And finally we print an empty string to delete the current selection in BBEdit â€” time to move on to the next story.
 
-By using this script and opening up a dozen or two 'new article' tabs in Safari, moving between each one and using the text filter to populate the fields, I can effectively do work in parallel instead of one task at a time Ñ filling in new articles while I wait for the website to catch up and show the publishing time options. And no more copy & paste from TextEdit.
+By using this script and opening up a dozen or two 'new article' tabs in Safari, moving between each one and using the text filter to populate the fields, I can effectively do work in parallel instead of one task at a time â€” filling in new articles while I wait for the website to catch up and show the publishing time options. And no more copy & paste from TextEdit.
