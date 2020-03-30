@@ -25,7 +25,7 @@ Counter({'a': 5, 'b': 2, 'r': 2, 'c': 1, 'd': 1})
 
 The greatest item in a counter is obviously the most common, so surely we’ll just …
 
-```python:
+```python
 >>> max(c)
 'r'
 ```
