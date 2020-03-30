@@ -374,11 +374,6 @@ article li {
   max-width: none;
 }
 
-/*! Hugo line numbers margin fix */
-td pre {
-  margin-bottom: 0;
-}
-
 /*! MEDIA QUERY: Mid-sized screens */
 
 @media screen and (min-width: 40rem) {
