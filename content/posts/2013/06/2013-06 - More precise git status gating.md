@@ -17,7 +17,7 @@ At the end of my post about having [Hazel][] [check a file’s commit status][po
 
 It has been on my mind all day, so I decided to have a crack at it:
 
-```{linenos=true}
+```bash {linenos=true}
 cd $(dirname $1)
 FILENAME=$(basename $1)
 GITSTATUS=$(git status -s "$FILENAME")
