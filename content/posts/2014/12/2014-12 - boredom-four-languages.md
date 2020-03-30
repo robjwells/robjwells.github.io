@@ -46,7 +46,7 @@ I decided on a Python text filter. Not entirely appropriate Ñ we don't transform
 
 Using Python lets us do all sorts of wonderful things too other than just preparing the InDesign text to be entered into the fields. Here's the code, before I dive in any further:
 
-```python3 {linenos=true}
+```python {linenos=true}
 #!/usr/local/bin/python3
 
 import sys
