@@ -80,18 +80,18 @@ We can take a look at the data to get an idea of its structure:
 head(oyster_data)
 ```
 
-<!-- Comment to separate R code and output -->
-
-    ## # A tibble: 6 x 8
-    ##   Date   `Start Time` `End Time` `Journey/Action`    Charge Credit Balance
-    ##   <chr>  <time>       <time>     <chr>                <dbl> <chr>    <dbl>
-    ## 1 31-Oc… 23:22        23:50      North Greenwich to…    1.5 <NA>     26.0
-    ## 2 31-Oc… 18:39        18:59      Woolwich Arsenal D…    1.6 <NA>     27.6
-    ## 3 31-Oc… 18:39           NA      Auto top-up, Woolw…   NA   20       29.2
-    ## 4 31-Oc… 17:10        17:37      Stratford to Woolw…    1.6 <NA>      9.15
-    ## 5 31-Oc… 16:26        16:53      Woolwich Arsenal D…    1.6 <NA>     10.8
-    ## 6 30-Oc… 22:03        22:39      Pudding Mill Lane …    1.5 <NA>     12.4
-    ## # ... with 1 more variable: Note <chr>
+```
+## # A tibble: 6 x 8
+##   Date   `Start Time` `End Time` `Journey/Action`    Charge Credit Balance
+##   <chr>  <time>       <time>     <chr>                <dbl> <chr>    <dbl>
+## 1 31-Oc… 23:22        23:50      North Greenwich to…    1.5 <NA>     26.0
+## 2 31-Oc… 18:39        18:59      Woolwich Arsenal D…    1.6 <NA>     27.6
+## 3 31-Oc… 18:39           NA      Auto top-up, Woolw…   NA   20       29.2
+## 4 31-Oc… 17:10        17:37      Stratford to Woolw…    1.6 <NA>      9.15
+## 5 31-Oc… 16:26        16:53      Woolwich Arsenal D…    1.6 <NA>     10.8
+## 6 30-Oc… 22:03        22:39      Pudding Mill Lane …    1.5 <NA>     12.4
+## # ... with 1 more variable: Note <chr>
+```
 
 It’s clearly in need of a clean-up. The journey history file appears to be a record of every action involving the card. It’s interesting to note that the Oyster card isn’t just a “key” to pass through the ticket barriers, but a core part of how the account is managed (note that having an online account is entirely optional).
 
@@ -107,16 +107,16 @@ oyster_data %>%
     count(Note, sort = TRUE)
 ```
 
-<!-- Comment to separate R code and output -->
-
-    ## # A tibble: 5 x 2
-    ##   Note                                                                   n
-    ##   <chr>                                                              <int>
-    ## 1 The fare for this journey was capped as you reached the daily cha…    18
-    ## 2 We are not able to show where you touched out during this journey      6
-    ## 3 This incomplete journey has been updated to show the <station> yo…     1
-    ## 4 We are not able to show where you touched in during this journey       1
-    ## 5 You have not been charged for this journey as it is viewed as a c…     1
+```
+## # A tibble: 5 x 2
+##   Note                                                                   n
+##   <chr>                                                              <int>
+## 1 The fare for this journey was capped as you reached the daily cha…    18
+## 2 We are not able to show where you touched out during this journey      6
+## 3 This incomplete journey has been updated to show the <station> yo…     1
+## 4 We are not able to show where you touched in during this journey       1
+## 5 You have not been charged for this journey as it is viewed as a c…     1
+```
 
 OK, not much here, but there are some troublesome rail journeys missing either a starting or finishing station. The “incomplete journey” line also hints at something to be aware of:
 
@@ -127,9 +127,9 @@ oyster_data %>%
     first()
 ```
 
-<!-- Comment to separate R code and output -->
-
-    ## [1] "Woolwich Arsenal DLR to <Blackheath [National Rail]>"
+```
+## [1] "Woolwich Arsenal DLR to <Blackheath [National Rail]>"
+```
 
 Note the angle brackets surrounding the substituted station. We’ll come back to this later.
 
@@ -147,22 +147,22 @@ oyster_data %>%
     count(abbr, sort = TRUE)
 ```
 
-<!-- Comment to separate R code and output -->
-
-    ## # A tibble: 11 x 2
-    ##    abbr                                              n
-    ##    <chr>                                         <int>
-    ##  1 Auto top-up                                      84
-    ##  2 Bus journey                                      26
-    ##  3 Automated Refund                                  7
-    ##  4 Woolwich Arsenal DLR to [No touch-out]            3
-    ##  5 Oyster helpline refund                            2
-    ##  6 Unknown transaction                               2
-    ##  7 [No touch-in] to Woolwich Arsenal DLR             1
-    ##  8 Entered and exited Woolwich Arsenal DLR           1
-    ##  9 Monument to [No touch-out]                        1
-    ## 10 Stratford International DLR to [No touch-out]     1
-    ## 11 Stratford to [No touch-out]                       1
+```
+## # A tibble: 11 x 2
+##    abbr                                              n
+##    <chr>                                         <int>
+##  1 Auto top-up                                      84
+##  2 Bus journey                                      26
+##  3 Automated Refund                                  7
+##  4 Woolwich Arsenal DLR to [No touch-out]            3
+##  5 Oyster helpline refund                            2
+##  6 Unknown transaction                               2
+##  7 [No touch-in] to Woolwich Arsenal DLR             1
+##  8 Entered and exited Woolwich Arsenal DLR           1
+##  9 Monument to [No touch-out]                        1
+## 10 Stratford International DLR to [No touch-out]     1
+## 11 Stratford to [No touch-out]                       1
+```
 
 ### Tidying the data
 
@@ -214,17 +214,17 @@ tidy_journeys <- rail_journeys %>%
 head(tidy_journeys)
 ```
 
-<!-- Comment to separate R code and output -->
-
-    ## # A tibble: 6 x 6
-    ##   start               end                 duration enter    exit      fare
-    ##   <dttm>              <dttm>              <time>   <chr>    <chr>    <dbl>
-    ## 1 2014-09-06 13:14:00 2014-09-06 13:42:00 28       Woolwic… Stratfo…   1.5
-    ## 2 2014-09-06 13:59:00 2014-09-06 14:08:00 9        Stratfo… Hackney…   1.5
-    ## 3 2014-09-06 20:47:00 2014-09-06 21:02:00 15       Hackney… Highbur…   1.5
-    ## 4 2014-09-06 23:22:00 2014-09-07 00:10:00 48       Highbur… Woolwic…   2.7
-    ## 5 2014-09-07 10:00:00 2014-09-07 10:30:00 30       Woolwic… Pudding…   1.5
-    ## 6 2014-09-07 20:43:00 2014-09-07 21:15:00 32       Pudding… Woolwic…   1.5
+```
+## # A tibble: 6 x 6
+##   start               end                 duration enter    exit      fare
+##   <dttm>              <dttm>              <time>   <chr>    <chr>    <dbl>
+## 1 2014-09-06 13:14:00 2014-09-06 13:42:00 28       Woolwic… Stratfo…   1.5
+## 2 2014-09-06 13:59:00 2014-09-06 14:08:00 9        Stratfo… Hackney…   1.5
+## 3 2014-09-06 20:47:00 2014-09-06 21:02:00 15       Hackney… Highbur…   1.5
+## 4 2014-09-06 23:22:00 2014-09-07 00:10:00 48       Highbur… Woolwic…   2.7
+## 5 2014-09-07 10:00:00 2014-09-07 10:30:00 30       Woolwic… Pudding…   1.5
+## 6 2014-09-07 20:43:00 2014-09-07 21:15:00 32       Pudding… Woolwic…   1.5
+```
 
 Great. The duration variable isn’t strictly necessary but it’ll make things a tad clearer later on.
 
@@ -249,17 +249,17 @@ blank_weeks <- seq(min(tidy_journeys$start),
 head(blank_weeks)
 ```
 
-<!-- Comment to separate R code and output -->
-
-    ## # A tibble: 6 x 2
-    ##   start               week
-    ##   <dttm>              <chr>
-    ## 1 2014-09-06 13:14:00 2014-W36
-    ## 2 2014-09-13 13:14:00 2014-W37
-    ## 3 2014-09-20 13:14:00 2014-W38
-    ## 4 2014-09-27 13:14:00 2014-W39
-    ## 5 2014-10-04 13:14:00 2014-W40
-    ## 6 2014-10-11 13:14:00 2014-W41
+```
+## # A tibble: 6 x 2
+##   start               week
+##   <dttm>              <chr>
+## 1 2014-09-06 13:14:00 2014-W36
+## 2 2014-09-13 13:14:00 2014-W37
+## 3 2014-09-20 13:14:00 2014-W38
+## 4 2014-09-27 13:14:00 2014-W39
+## 5 2014-10-04 13:14:00 2014-W40
+## 6 2014-10-11 13:14:00 2014-W41
+```
 
 The format string uses the ISO week year (%G) and the ISO week number (%V), which may differ from what you might intuitively expect. I’ve included a somewhat arbitrary start time, as it’s a bit easier to plot and label datetimes rather than the year-week strings.
 
@@ -281,17 +281,17 @@ complete_week_totals <- left_join(blank_weeks,
 tail(complete_week_totals)
 ```
 
-<!-- Comment to separate R code and output -->
-
-    ## # A tibble: 6 x 3
-    ##   start               week     total
-    ##   <dttm>              <chr>    <dbl>
-    ## 1 2018-03-17 12:14:00 2018-W11   0
-    ## 2 2018-03-24 12:14:00 2018-W12   0
-    ## 3 2018-03-31 13:14:00 2018-W13  21.1
-    ## 4 2018-04-07 13:14:00 2018-W14   9.5
-    ## 5 2018-04-14 13:14:00 2018-W15   0
-    ## 6 2018-04-21 13:14:00 2018-W16   7.8
+```
+## # A tibble: 6 x 3
+##   start               week     total
+##   <dttm>              <chr>    <dbl>
+## 1 2018-03-17 12:14:00 2018-W11   0
+## 2 2018-03-24 12:14:00 2018-W12   0
+## 3 2018-03-31 13:14:00 2018-W13  21.1
+## 4 2018-04-07 13:14:00 2018-W14   9.5
+## 5 2018-04-14 13:14:00 2018-W15   0
+## 6 2018-04-21 13:14:00 2018-W16   7.8
+```
 
 With this summary frame assembled, we can now plot the totals. I’m also going to mark roughly when I moved house so we can try to see if there’s any particular shift.
 
