@@ -187,7 +187,7 @@ But there’s more tidying-up to do:
 
 Let’s have a crack at it, proceeding in that order:
 
-```
+```r
 tidy_journeys <- rail_journeys %>%
     mutate(
         start = dmy_hms(
