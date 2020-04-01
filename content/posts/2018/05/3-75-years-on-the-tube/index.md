@@ -51,8 +51,6 @@ mav <- function(x, n) {
 }
 ```
 
-<!-- Comment to separate R code and output -->
-
 ### Data import
 
 I keep all the CSV files as received, just dating the filenames with the date I got them. (Sorry, I won’t be sharing the data.) Let’s load all the files:
@@ -64,8 +62,6 @@ oyster_filenames <- dir(
     full.names = TRUE)
 ```
 
-<!-- Comment to separate R code and output -->
-
 There are 109 CSV files that we need to open, load, and combine.
 
 ```r
@@ -73,8 +69,6 @@ oyster_data <- oyster_filenames %>%
     map(~ read_csv(., skip = 1)) %>%
     reduce(rbind)
 ```
-
-<!-- Comment to separate R code and output -->
 
 Here we’re piping `oyster_filenames` through `map`, where we use an R formula to supply arguments to `read_csv` to skip the header line in each file. Finally we `reduce` the 109 data frames by binding them by row.
 
@@ -91,12 +85,12 @@ head(oyster_data)
     ## # A tibble: 6 x 8
     ##   Date   `Start Time` `End Time` `Journey/Action`    Charge Credit Balance
     ##   <chr>  <time>       <time>     <chr>                <dbl> <chr>    <dbl>
-    ## 1 31-Oc… 23:22        23:50      North Greenwich to…    1.5 <NA>     26.0 
-    ## 2 31-Oc… 18:39        18:59      Woolwich Arsenal D…    1.6 <NA>     27.6 
-    ## 3 31-Oc… 18:39           NA      Auto top-up, Woolw…   NA   20       29.2 
+    ## 1 31-Oc… 23:22        23:50      North Greenwich to…    1.5 <NA>     26.0
+    ## 2 31-Oc… 18:39        18:59      Woolwich Arsenal D…    1.6 <NA>     27.6
+    ## 3 31-Oc… 18:39           NA      Auto top-up, Woolw…   NA   20       29.2
     ## 4 31-Oc… 17:10        17:37      Stratford to Woolw…    1.6 <NA>      9.15
-    ## 5 31-Oc… 16:26        16:53      Woolwich Arsenal D…    1.6 <NA>     10.8 
-    ## 6 30-Oc… 22:03        22:39      Pudding Mill Lane …    1.5 <NA>     12.4 
+    ## 5 31-Oc… 16:26        16:53      Woolwich Arsenal D…    1.6 <NA>     10.8
+    ## 6 30-Oc… 22:03        22:39      Pudding Mill Lane …    1.5 <NA>     12.4
     ## # ... with 1 more variable: Note <chr>
 
 It’s clearly in need of a clean-up. The journey history file appears to be a record of every action involving the card. It’s interesting to note that the Oyster card isn’t just a “key” to pass through the ticket barriers, but a core part of how the account is managed (note that having an online account is entirely optional).
@@ -183,8 +177,6 @@ rail_journeys <- oyster_data %>%
         !str_detect(`Journey/Action`, stations_regex)))
 ```
 
-<!-- Comment to separate R code and output -->
-
 That leaves us with 993 rail journeys to have a look at.
 
 But there’s more tidying-up to do:
@@ -260,8 +252,8 @@ head(blank_weeks)
 <!-- Comment to separate R code and output -->
 
     ## # A tibble: 6 x 2
-    ##   start               week    
-    ##   <dttm>              <chr>   
+    ##   start               week
+    ##   <dttm>              <chr>
     ## 1 2014-09-06 13:14:00 2014-W36
     ## 2 2014-09-13 13:14:00 2014-W37
     ## 3 2014-09-20 13:14:00 2014-W38
@@ -279,8 +271,6 @@ real_week_totals <- tidy_journeys %>%
     summarise(total = sum(fare))
 ```
 
-<!-- Comment to separate R code and output -->
-
 That done, we can use an SQL-like join operation to take every week in our giant list and match it against the week summaries from our real data. The join leaves missing values (`NA`) in the total column for weeks where no journeys were made (and so weren’t present in the data to summarise) so we replace them with zero.
 
 ```r
@@ -296,11 +286,11 @@ tail(complete_week_totals)
     ## # A tibble: 6 x 3
     ##   start               week     total
     ##   <dttm>              <chr>    <dbl>
-    ## 1 2018-03-17 12:14:00 2018-W11   0  
-    ## 2 2018-03-24 12:14:00 2018-W12   0  
+    ## 1 2018-03-17 12:14:00 2018-W11   0
+    ## 2 2018-03-24 12:14:00 2018-W12   0
     ## 3 2018-03-31 13:14:00 2018-W13  21.1
     ## 4 2018-04-07 13:14:00 2018-W14   9.5
-    ## 5 2018-04-14 13:14:00 2018-W15   0  
+    ## 5 2018-04-14 13:14:00 2018-W15   0
     ## 6 2018-04-21 13:14:00 2018-W16   7.8
 
 With this summary frame assembled, we can now plot the totals. I’m also going to mark roughly when I moved house so we can try to see if there’s any particular shift.
@@ -339,8 +329,6 @@ ggplot(data = complete_week_totals,
     scale_y_continuous(
         labels = pound_scale)
 ```
-
-<!-- Comment to separate R code and output -->
 
 <p class="full-width">
     <img
@@ -381,8 +369,6 @@ ggplot(data = tidy_journeys,
     theme(
         legend.position = 'bottom')
 ```
-
-<!-- Comment to separate R code and output -->
 
 <p class="full-width">
     <img
@@ -427,8 +413,6 @@ ggplot(complete_week_totals,
     theme(
         legend.position = 'bottom')
 ```
-
-<!-- Comment to separate R code and output -->
 
 <p class="full-width">
     <img
@@ -481,8 +465,6 @@ duration_over_time <- ggplot(tidy_journeys,
     common_point &
     labs(x = NULL)
 ```
-
-<!-- Comment to separate R code and output -->
 
 <p class="full-width">
     <img
@@ -540,8 +522,6 @@ ggplot(tidy_journeys,
         colour = 'House move')
 ```
 
-<!-- Comment to separate R code and output -->
-
 <p class="full-width">
     <img
         src="/images/2018-05-03-fare-duration-scatter-1.svg"
@@ -569,8 +549,6 @@ journeys_without_extremes <- tidy_journeys %>%
     anti_join(high_speed_journeys)
 ```
 
-<!-- Comment to separate R code and output -->
-
 Let’s look how the journey durations compare:
 
 ```r
@@ -596,8 +574,6 @@ ggplot(journeys_without_extremes,
         y = 'Number of journeys',
         fill = 'House move')
 ```
-
-<!-- Comment to separate R code and output -->
 
 <p class="full-width">
     <img
@@ -634,8 +610,6 @@ ggplot(journeys_without_extremes,
         fill = 'House move')
 ```
 
-<!-- Comment to separate R code and output -->
-
 <p class="full-width">
     <img
         src="/images/2018-05-03-fare-hist-without-extremes-1.svg"
@@ -658,4 +632,3 @@ Fares are higher because I’ve transferred classes of journeys to cycling — n
 If you made it this far, well done, and thanks for reading. There’s a lot of R code in this post, probably too much. But there are two reasons for that: as a reference for myself, and to show that there’s not any magic going on behind the curtain, and very little hard work. (In my code at least, there’s plenty of both in the libraries!)
 
 Working in R with ggplot2 and the other packages really is a pleasure; it doesn’t take very long to grasp how the different tools fit together into nice, composable pieces, and to assemble them in ways that produce something that matches what you have pictured in your mind.
-
