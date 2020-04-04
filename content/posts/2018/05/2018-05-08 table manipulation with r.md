@@ -117,17 +117,17 @@ tidy <- wide %>%
 head(tidy)
 ```
 
-<!-- Comment to separate R code and output -->
-
-    ## # A tibble: 6 x 3
-    ##   name           date     status
-    ##   <chr>          <chr>    <chr>
-    ## 1 Alice Jones    Sun 29/4 Off
-    ## 2 Bob Smith      Sun 29/4 Sick
-    ## 3 Carol Williams Sun 29/4 Booked
-    ## 4 Dan Taylor     Sun 29/4 <NA>
-    ## 5 Alice Jones    Mon 30/4 <NA>
-    ## 6 Bob Smith      Mon 30/4 Off
+```
+## # A tibble: 6 x 3
+##   name           date     status
+##   <chr>          <chr>    <chr>
+## 1 Alice Jones    Sun 29/4 Off
+## 2 Bob Smith      Sun 29/4 Sick
+## 3 Carol Williams Sun 29/4 Booked
+## 4 Dan Taylor     Sun 29/4 <NA>
+## 5 Alice Jones    Mon 30/4 <NA>
+## 6 Bob Smith      Mon 30/4 Off
+```
 
 We now have a row for each person for each day, along with their “status” for the day.
 
@@ -145,17 +145,17 @@ all <- tidy %>%
 tail(all)
 ```
 
-<!-- Comment to separate R code and output -->
-
-    ## # A tibble: 6 x 3
-    ##   name       date      status
-    ##   <chr>      <chr>     <chr>
-    ## 1 Dan Taylor Sun 30/12 Ch Sub
-    ## 2 Dan Taylor Mon 31/12 Ch Sub
-    ## 3 Dan Taylor Tue 1/1   Ch Sub
-    ## 4 Dan Taylor Wed 2/1   Ch Sub
-    ## 5 Dan Taylor Thu 3/1   Ch Sub
-    ## 6 Dan Taylor Fri 4/1   Ch Sub
+```
+## # A tibble: 6 x 3
+##   name       date      status
+##   <chr>      <chr>     <chr>
+## 1 Dan Taylor Sun 30/12 Ch Sub
+## 2 Dan Taylor Mon 31/12 Ch Sub
+## 3 Dan Taylor Tue 1/1   Ch Sub
+## 4 Dan Taylor Wed 2/1   Ch Sub
+## 5 Dan Taylor Thu 3/1   Ch Sub
+## 6 Dan Taylor Fri 4/1   Ch Sub
+```
 
 Great. But poor Dan, he’s working every day over New Year 2018-2019. In reality, I haven’t done that far on the rota, just up to October. We’ll convert all those dates now, and filter out all the newly missing entries where the month was outside our range.
 
@@ -177,17 +177,17 @@ chsub <- dated %>%
 head(chsub)
 ```
 
-<!-- Comment to separate R code and output -->
-
-    ## # A tibble: 6 x 2
-    ##   date       chief_sub
-    ##   <date>     <chr>
-    ## 1 2018-04-29 Dan Taylor
-    ## 2 2018-04-30 Dan Taylor
-    ## 3 2018-05-01 Dan Taylor
-    ## 4 2018-05-02 Bob Smith
-    ## 5 2018-05-03 Dan Taylor
-    ## 6 2018-05-04 Carol Williams
+```
+## # A tibble: 6 x 2
+##   date       chief_sub
+##   <date>     <chr>
+## 1 2018-04-29 Dan Taylor
+## 2 2018-04-30 Dan Taylor
+## 3 2018-05-01 Dan Taylor
+## 4 2018-05-02 Bob Smith
+## 5 2018-05-03 Dan Taylor
+## 6 2018-05-04 Carol Williams
+```
 
 Exactly what we want. Now time for a bit of formatting to make this giant list somewhat acceptable for other people. This is also where my knowledge of R runs out.
 
@@ -212,20 +212,20 @@ with open('output.txt') as f:
         print(line, end='')
 ```
 
-<!-- Comment to separate R code and output -->
+```
+Sun 2018-08-19  Carol Williams
+Mon 2018-08-20  Carol Williams
+Tue 2018-08-21  Alice Jones
+Wed 2018-08-22  Carol Williams
+Thu 2018-08-23  Carol Williams
+Fri 2018-08-24  Carol Williams
 
-    Sun 2018-08-19  Carol Williams
-    Mon 2018-08-20  Carol Williams
-    Tue 2018-08-21  Alice Jones
-    Wed 2018-08-22  Carol Williams
-    Thu 2018-08-23  Carol Williams
-    Fri 2018-08-24  Carol Williams
-
-    Sun 2018-08-26  Carol Williams
-    Mon 2018-08-27  Carol Williams
-    Tue 2018-08-28  Carol Williams
-    Wed 2018-08-29  Dan Taylor
-    Thu 2018-08-30  Dan Taylor
-    Fri 2018-08-31  Dan Taylor
+Sun 2018-08-26  Carol Williams
+Mon 2018-08-27  Carol Williams
+Tue 2018-08-28  Carol Williams
+Wed 2018-08-29  Dan Taylor
+Thu 2018-08-30  Dan Taylor
+Fri 2018-08-31  Dan Taylor
+```
 
 Perfect. And ready for whenever I get time to update the rota again.
