@@ -8,7 +8,7 @@
     <ul class="archive-list mute-links">
       {{ range .Pages }}
       <li class="archive-item">
-        <a class="archive-link" href="{{ .Permalink }}">
+        <a class="archive-link" href="{{ .RelPermalink }}">
           <time class="archive-date" datetime='{{ .Date.Format "2006-01-02T15:04:05-0700" }}'>{{ .Date.Format "2006-01-02" }}</time>
           <span>{{ .Title }}</span>
         </a>

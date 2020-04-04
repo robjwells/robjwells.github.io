@@ -1,7 +1,7 @@
 {{ define "main" }}
     <article>
       <header>
-        <h2 class="mute-links"><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+        <h2 class="mute-links"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
       </header>
       <p>
         {{ .Title }}, by {{ .Params.author }}
