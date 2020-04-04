@@ -1,7 +1,8 @@
+<!-- . is .Site -->
   <header class="site-header">
 
     <div class="site-title-container mute-links">
-      <h1 class="site-title"><a href="/">{{ .Site.Title }}</a></h1>
+      <h1 class="site-title"><a href="/">{{ .Title }}</a></h1>
       <p class="site-byline"><i>by</i> Rob Wells</p>
     </div>
 
@@ -13,8 +14,8 @@
           <li><a href="/books/">Books I’ve read</a></li>
           <li>
             Feed:
-            {{ with .Site.Home.OutputFormats.Get "jsonfeed"}}<a href="{{ .RelPermalink }}">JSON</a>{{ end }},
-            {{ with .Site.Home.OutputFormats.Get "rss"}}<a href="{{ .RelPermalink }}">RSS</a>{{ end }}
+            {{ with .Home.OutputFormats.Get "jsonfeed"}}<a href="{{ .RelPermalink }}">JSON</a>{{ end }},
+            {{ with .Home.OutputFormats.Get "rss"}}<a href="{{ .RelPermalink }}">RSS</a>{{ end }}
           </li>
         </ul>
       </nav>

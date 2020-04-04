@@ -1,0 +1,23 @@
+<!-- . is .Site -->
+<meta charset="utf-8">
+
+<!-- Load my combined stylesheet -->
+{{- $reset := resources.Get "css/reset.css" -}}
+{{- $mainCSS := resources.Get "css/styles.css" -}}
+{{- $syntax := resources.Get "css/highlight.css" -}}
+{{- $css := slice $reset $mainCSS $syntax | resources.Concat "all.css" | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}">
+
+<link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+{{ range .Home.AlternativeOutputFormats -}}
+  {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .RelPermalink $.Title | safeHTML }}
+{{ end -}}
+
+<!-- Apple pinned sites icon, Apple touch icon, Favicon -->
+<link rel="mask-icon" href="/favicon.svg" color="#1369BF">
+<link rel="apple-touch-icon-precomposed" href="/favicon.png">
+<link rel="icon" href="/favicon.ico">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="{{ .Params.Description }}">
