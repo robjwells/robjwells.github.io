@@ -1,6 +1,6 @@
 <head>
   <meta charset="UTF-8">
-  <title>{{ if eq .Site.Title .Title -}}
+  <title>{{ if .IsHome -}}
     {{ .Site.Title }}
   {{- else -}}
     {{ .Site.Title }} – {{ .Title }}
