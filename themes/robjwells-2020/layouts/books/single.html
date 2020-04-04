@@ -2,10 +2,9 @@
     <article>
       <header>
         <h2 class="mute-links"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+        <h3>by {{ .Params.author }}</h3>
       </header>
       <p>
-        {{ .Title }}, by {{ .Params.author }}
-        <br/>
         {{ with .Param "finish-date" }}
         Finished on <time datetime='{{ dateFormat "2006-01-02" . }}'>{{ dateFormat "January 2 2006" . }}</time>
         <br/>
