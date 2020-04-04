@@ -5,12 +5,14 @@
         <h3>by {{ .Params.author }}</h3>
       </header>
       <p>
-        {{ with .Param "finish-date" }}
+        {{ with .Param "finish-date" -}}
         Finished on <time datetime='{{ dateFormat "2006-01-02" . }}'>{{ dateFormat "January 2 2006" . }}</time>
         <br/>
-        {{ end }}
-        {{ with .Param "author-link" }}<a href="{{ . }}">Author’s site</a><br/>{{ end }}
-        {{ with .Param "publisher-link" }}<a href="{{ . }}">Publisher’s site</a>{{ end }}
+        {{- end }}{{ with .Param "author-link" }}
+        <a href="{{ . }}">Author’s site</a>
+        <br/>
+        {{- end }}{{ with .Param "publisher-link" }}
+        <a href="{{ . }}">Publisher’s site</a>{{ end }}
       </p>
       {{ .Content }}
     </article>
