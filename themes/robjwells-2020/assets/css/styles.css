@@ -30,7 +30,7 @@
   --monospace: 'Source Code Pro', 'Consolas', 'Menlo', 'Monaco', monospace;
 }
 
-/*! BASIC SETTINGS AND STRUCTURE */
+/* BASIC SETTINGS AND STRUCTURE */
 
 body {
   background-color: var(--grey5);
@@ -48,7 +48,7 @@ body {
   padding: var(--lineSpace) var(--halfLine);
 }
 
-/*! HEADINGS */
+/* HEADINGS */
 /* h1 is only ever used for the site title, which has a specific style */
 
 h2,
@@ -69,7 +69,7 @@ h4 {
   font-size: var(--medium);
 }
 
-/*! BASIC ELEMENTS */
+/* BASIC ELEMENTS */
 
 blockquote,
 figure,
@@ -125,7 +125,7 @@ pre {
   overflow-x: auto;  /* auto not scroll to hide unneeded scrollbars */
 }
 
-/*! LISTS */
+/* LISTS */
 
 dl,
 ol,
@@ -147,7 +147,7 @@ ul {
   list-style-type: square;
 }
 
-/*! LINKS */
+/* LINKS */
 
 a:link {
   color: var(--blue);
@@ -164,7 +164,7 @@ a:active {
   background-color: var(--blue10);
 }
 
-/*! PHRASING ELEMENTS (extra text styles) */
+/* PHRASING ELEMENTS (extra text styles) */
 
 strong,
 b {
@@ -196,7 +196,7 @@ small {
   color: var(--grey);
 }
 
-/*!  TABLES                   */
+/*  TABLES                   */
 
 table {
   width: 100%;
@@ -238,7 +238,7 @@ th {
   font-family: var(--monospace);
 }
 
-/*! SITE HEADER */
+/* SITE HEADER */
 
 .site-header {
   border-left: var(--quarterLine) solid var(--blue);
@@ -271,13 +271,13 @@ th {
   padding: 0;
 }
 
-/*! SITE FOOTER */
+/* SITE FOOTER */
 
 .site-footer {
   margin-top: var(--bigGap);
 }
 
-/*! ARTICLES */
+/* ARTICLES */
 
 article {
   border-bottom: 1px solid var(--grey);
@@ -309,7 +309,7 @@ article li {
   max-width: calc(var(--paragraphWidth) - var(--lineSpace));  /* p max-width - ol/ul padding-left */
 }
 
-/*! ARCHIVES */
+/* ARCHIVES */
 
 .archive-date {
   color: var(--grey);
@@ -334,7 +334,7 @@ article li {
   list-style-type: none;
 }
 
-/*! FLAGS */
+/* FLAGS */
 
 .flag {
   background-color: var(--blue10);
@@ -347,7 +347,7 @@ article li {
   margin-bottom: 0;
 }
 
-/*! MODIFIER CLASSES     */
+/* MODIFIER CLASSES     */
 
 .full-width {
   max-width: 100%;
@@ -371,7 +371,7 @@ article li {
   max-width: none;
 }
 
-/*! MEDIA QUERY: Mid-sized screens */
+/* MEDIA QUERY: Mid-sized screens */
 
 @media screen and (min-width: 40rem) {
   /* Enable floating modifier classes */
