@@ -6,20 +6,16 @@
       <p class="site-byline"><i>by</i> Rob Wells</p>
     </div>
 
-    <div class="site-menu-container">
-
-      <nav id="site-nav">
-        <ul class="site-links mute-links">
-          <li><a href="/about/">About</a></li>
-          <li><a href="/books/">Books I’ve read</a></li>
-          <li>
-            Feed:
-            {{ with .Home.OutputFormats.Get "jsonfeed"}}<a href="{{ .RelPermalink }}">JSON</a>{{ end }},
-            {{ with .Home.OutputFormats.Get "rss"}}<a href="{{ .RelPermalink }}">RSS</a>{{ end }}
-          </li>
-        </ul>
-      </nav>
-
-    </div> <!-- .site-menu-container -->
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/books/">Books I’ve read</a></li>
+        <li>
+          Feed:
+          {{ with .Home.OutputFormats.Get "jsonfeed"}}<a href="{{ .RelPermalink }}">JSON</a>{{ end }},
+          {{ with .Home.OutputFormats.Get "rss"}}<a href="{{ .RelPermalink }}">RSS</a>{{ end }}
+        </li>
+      </ul>
+    </nav>
 
   </header> <!-- .site-header -->

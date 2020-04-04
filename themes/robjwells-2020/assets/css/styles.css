@@ -264,10 +264,6 @@ th {
   margin-bottom: 0;
 }
 
-.site-menu-container {
-  flex-grow: 1;
-}
-
 .site-links {
   color: var(--grey);
   list-style-type: none;
