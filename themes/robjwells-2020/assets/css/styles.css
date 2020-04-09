@@ -22,7 +22,13 @@
   --medium: 1.375rem;   /* h4 */
   --text: 1.125rem;   /* p */
   --small: 0.875rem;  /* code */
-
+  /*
+    Not that this next size is in *em* and not *rem*,
+    so that the size of code in a paragraph (or whatever else)
+    is a function of the size of the surrounding text.
+    This is import if the standard text size is not 1rem.
+  */
+  --codeInText: 0.875em;
   --bodyFonts: system-ui, -apple-system, BlinkMacSystemFont,
                "Segoe UI", Roboto, "Oxygen", Ubuntu, Cantarell,
                "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -178,8 +184,12 @@ i {
   font-style: italic;
 }
 
+code {
+  font-size: var(--codeInText);
+}
+
 .syntax,
-code,
+pre code,
 small {
   font-size: var(--small);
 }
