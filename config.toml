@@ -14,6 +14,9 @@ avatar = "https://www.robjwells.com/images/rob-scafell-pike.jpg"
 [permalinks]
 posts = "/:year/:month/:slug"
 
+[frontmatter]
+date = ["publishDate", "date", ":default"]
+
 [params]
 description = "A blog by Rob Wells, mostly about computer stuff."
 
