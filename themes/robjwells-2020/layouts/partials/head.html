@@ -4,5 +4,6 @@
   {{- else -}}
     {{ .Site.Title }} – {{ .Title }}
   {{- end }}</title>
-  {{ partialCached "headContentsWithoutTitle.html" .Site }} <!-- footer does not require any input-->
+  <!-- rest of the head does not require any per-page input -->
+  {{ partialCached "headContentsWithoutTitle.html" .Site }}
 </head>
