@@ -1,7 +1,7 @@
 ---
 title: "Listing shortlog files chronologically with LaunchBar"
 date: 2020-04-17T12:40:52+01:00
-publishDate: 2020-04-25T09:00:00+01:00
+publishDate: 2020-04-25T06:00:00+01:00
 ---
 
 Building on [my introductory post about maintaining “shortlog” diary files][shortlogging], I quite often want to have a look at recent shortlog files.
