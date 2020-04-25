@@ -1,0 +1,2 @@
+{{- $syntax := resources.Get "css/highlight.css" | minify -}}
+{{- with $syntax }}<style>{{ .Content | safeCSS }}</style>{{ end }}

@@ -1,14 +1,6 @@
 <!-- . is .Site -->
 <meta charset="utf-8">
 
-<!-- Load my combined stylesheet -->
-{{- $reset := resources.Get "css/reset.css" -}}
-{{- $mainCSS := resources.Get "css/styles.css" -}}
-{{- $syntax := resources.Get "css/highlight.css" -}}
-{{- $css := slice $reset $mainCSS $syntax | resources.Concat "all.css" | minify -}}
-<!-- <link rel="stylesheet" href="{{ $css.RelPermalink }}"> -->
-{{- with $css }}<style>{{ .Content | safeCSS }}</style>{{ end }}
-
 <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
 
 {{ range .Home.AlternativeOutputFormats -}}
@@ -22,3 +14,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="{{ .Params.Description }}">
+
+<!-- Load the non-syntax highlighting styles -->
+{{- $reset := resources.Get "css/reset.css" -}}
+{{- $mainCSS := resources.Get "css/styles.css" -}}
+{{- $css := slice $reset $mainCSS | resources.Concat "all.css" | minify -}}
+{{- with $css }}<style>{{ .Content | safeCSS }}</style>{{ end -}}
