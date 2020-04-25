@@ -29,10 +29,7 @@
     This is import if the standard text size is not 1rem.
   */
   --codeInText: 0.875em;
-  --bodyFonts: system-ui, -apple-system, BlinkMacSystemFont,
-               "Segoe UI", Roboto, "Oxygen", Ubuntu, Cantarell,
-               "Fira Sans", "Droid Sans", "Helvetica Neue",
-               Helvetica, sans-serif;
+  --bodyFonts: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Oxygen", Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, sans-serif;
   --monospace: 'Source Code Pro', 'Consolas', 'Menlo', 'Monaco', monospace;
 }
 
