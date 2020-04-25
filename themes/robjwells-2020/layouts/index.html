@@ -5,11 +5,11 @@
     {{ with .Site.GetPage "section" "posts" }}
     {{ range .Pages.GroupByDate "2006" }}
     <h3>{{ .Key }}</h3>
-    <ul class="archive-list mute-links">
+    <ul class="index-list mute-links">
       {{ range .Pages }}
-      <li class="archive-item">
-        <a class="archive-link" href="{{ .RelPermalink }}">
-          <time class="archive-date" datetime='{{ .Date.Format "2006-01-02T15:04:05-0700" }}'>{{ .Date.Format "2006-01-02" }}</time>
+      <li class="index-item">
+        <a class="index-link" href="{{ .RelPermalink }}">
+          <time class="index-date" datetime='{{ .Date.Format "2006-01-02T15:04:05-0700" }}'>{{ .Date.Format "2006-01-02" }}</time>
           <span>{{ .Title }}</span>
         </a>
       </li>

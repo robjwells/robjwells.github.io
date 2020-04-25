@@ -314,7 +314,7 @@ article li {
 
 /* ARCHIVES */
 
-.archive-date {
+.index-date {
   color: var(--grey);
   font-family: var(--monospace);
   font-size: var(--small);
@@ -323,16 +323,16 @@ article li {
   margin-right: var(--halfLine);
 }
 
-.archive-item {
+.index-item {
   margin-bottom: var(--halfLine);
 }
 
-.archive-link {
+.index-link {
   align-items: baseline;
   display: flex;
 }
 
-.archive-list {
+.index-list {
   padding-left: 0;
   list-style-type: none;
 }

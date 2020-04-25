@@ -3,11 +3,11 @@
     <h2>Books I’ve read</h2>
     <p>Here’s a list of books that I’ve read, listed by finish date, with summaries of some.</p>
   </header>
-  <ul class="archive-list">
+  <ul class="index-list">
   {{ range sort .Pages ".Params.finish-date" "desc" }}
-    <li class="archive-item">
-      {{ if .Content }}<a class="archive-link" href="{{ .RelPermalink }}">{{ else }}<span class="archive-link">{{ end }}
-        <time class="archive-date" datetime='{{ .Param "finish-date" }}'>{{ .Param "finish-date" }}</time>
+    <li class="index-item">
+      {{ if .Content }}<a class="index-link" href="{{ .RelPermalink }}">{{ else }}<span class="index-link">{{ end }}
+        <time class="index-date" datetime='{{ .Param "finish-date" }}'>{{ .Param "finish-date" }}</time>
         <span>{{ .Title }}, by {{ .Param "author" }}</span>
       {{if .Content }}</a>{{ else }}</span>{{ end }}
     </li>
