@@ -5,8 +5,9 @@
 {{- $reset := resources.Get "css/reset.css" -}}
 {{- $mainCSS := resources.Get "css/styles.css" -}}
 {{- $syntax := resources.Get "css/highlight.css" -}}
-{{- $css := slice $reset $mainCSS $syntax | resources.Concat "all.css" | minify | fingerprint -}}
-<link rel="stylesheet" href="{{ $css.RelPermalink }}">
+{{- $css := slice $reset $mainCSS $syntax | resources.Concat "all.css" | minify -}}
+<!-- <link rel="stylesheet" href="{{ $css.RelPermalink }}"> -->
+{{- with $css }}<style>{{ .Content | safeCSS }}</style>{{ end }}
 
 <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
 
