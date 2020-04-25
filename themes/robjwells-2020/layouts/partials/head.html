@@ -5,5 +5,9 @@
     {{ .Site.Title }} – {{ .Title }}
   {{- end }}</title>
   <!-- rest of the head does not require any per-page input -->
-  {{ partialCached "headContentsWithoutTitle.html" .Site }}
+  {{ partialCached "headContentsUnchanging.html" .Site }}
+  <!-- Load syntax styles -->
+  {{ if (ne (len (findRE "data-lang" .Content 1)) 0) }}
+    {{- partialCached "headSyntaxStyles.html" nil -}}
+  {{ end }}
 </head>
