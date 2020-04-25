@@ -187,13 +187,13 @@ code {
   font-size: var(--codeInText);
 }
 
-.syntax,
+.highlight,
 pre code,
 small {
   font-size: var(--small);
 }
 
-.syntax,
+.highlight,
 code {
   font-family: var(--monospace);
 }
