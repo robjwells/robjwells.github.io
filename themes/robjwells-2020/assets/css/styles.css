@@ -198,11 +198,6 @@ code {
   font-family: var(--monospace);
 }
 
-code,
-small {
-  line-height: 1;  /* Prevent height of content box exceeding p line-height */
-}
-
 small {
   color: var(--grey);
 }
