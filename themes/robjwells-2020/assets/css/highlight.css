@@ -1,13 +1,13 @@
 /* Prevent double-padding */
-pre.chroma {
+div.highlight > pre.chroma {
   padding: 0;
   margin: 0;
 }
 
 /* Line numbers margin fix */
-td pre {
+/* td pre {
   margin-bottom: 0;
-}
+} */
 
 :root {
   /* A few colours adjusted to meet WCAG AA accessibility guidelines on colour contrast. */
@@ -19,21 +19,31 @@ td pre {
 /* Hugo exported styles for tango theme */
 /* Other */ .chroma .x { color: #000000 }
 /* Error */ .chroma .err { color: #a40000 }
-/* LineTableTD */ .chroma .lntd {
-  vertical-align: top;
+
+/* Disable line number table styles */
+/* I’m using inline numbers as table numbers can give an odd double-scroll effect
+   when the viewport width is small (table scrolls *and* the td/pre scrolls). */
+/* LineTableTD */
+/* .chroma .lntd { */
+  /* vertical-align: top; */
   /*
     Additional padding between line numbers and code, put in after
     after increasing the line number contrast.
     --quarterLine is defined in the main styles.css file.
   */
-  padding: 0 var(--quarterLine) 0 0;
-  margin: 0;
-  border: 0;
+  /* padding: 0 var(--quarterLine) 0 0; margin: 0; border: 0; } */
+/* LineTable */
+/* .chroma .lntable { border-spacing: 0; padding: 0; margin: 0; border: 0; width: auto; overflow: auto; display: block; } */
+/* LineNumbersTable */
+/* .chroma .lnt { margin-right: 0.4em; padding: 0 0.4em 0 0.4em;color: var(--lineNumberGrey) } */
+/* LineHighlight */
+/* .chroma .hl { display: block; width: 100%;background-color: #ffffcc } */
+
+/* LineNumbers */ .chroma .ln {
+    margin-right: var(--halfLine);
+    padding: 0;
+    color: var(--lineNumberGrey)
 }
-/* LineTable */ .chroma .lntable { border-spacing: 0; padding: 0; margin: 0; border: 0; width: auto; overflow: auto; display: block; }
-/* LineHighlight */ .chroma .hl { display: block; width: 100%;background-color: #ffffcc }
-/* LineNumbersTable */ .chroma .lnt { margin-right: 0.4em; padding: 0 0.4em 0 0.4em;color: var(--lineNumberGrey) }
-/* LineNumbers */ .chroma .ln { margin-right: 0.4em; padding: 0 0.4em 0 0.4em;color: var(--lineNumberGrey) }
 /* Keyword */ .chroma .k { color: #204a87; font-weight: bold }
 /* KeywordConstant */ .chroma .kc { color: #204a87; font-weight: bold }
 /* KeywordDeclaration */ .chroma .kd { color: #204a87; font-weight: bold }
