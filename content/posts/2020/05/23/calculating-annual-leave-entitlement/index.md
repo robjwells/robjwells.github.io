@@ -65,14 +65,14 @@ Crossing a leave-year boundary isn’t as simple as adding additional leave, as 
 
 There’s also little error-handling, so if you enter something that parses but is nonsensical (negative amount of leave, an end date earlier than the start date) then the result will be nonsensical.
 
-Until I refactored the script today, I’d made assumptions about the leave year that meant you’d have to edit the script more than a little to use leave years that don’t match the calendar years.
-I changed that today by prompting the user for the start of the leave year (defaulting the January 1) and calculating the leave year end with some basic date manipulation in lines 14-16.
+Until I refactored the script today, I’d made assumptions about the leave year that meant you’d have to edit the script more than a little to use leave years that don’t match the calendar year.
+I changed that today by prompting the user for the start of the leave year (defaulting to January 1) and calculating the leave year end with some basic date manipulation in lines 14-16.
 (This was to fix a regression I introduced, not the result of any great foresight!)
 
 This manipulation isn’t completely robust, but if you say your leave year starts on February 29 then that’s your responsibility.
 
 Lines 21 & 22 are noteworthy for the `+ 1`, so that you get an inclusive range of days, with the assumption being that the person works on the “start day” and also on the “finish day”.
-There’s some redundancy between lines 16 and 21, calculating the leave year by subtracting a day and adding it back later, but that’s to fit my mental model that the leave year runs eg from January 1 to December 31.
+There’s some redundancy between lines 16 and 21, calculating the leave year by subtracting a day and adding it back later, but that’s to fit my mental model that the leave year runs eg from January 1 to December 31, and not January 1 to January 1.
 
 The rest of the script just works out the proportion of the leave year worked against the length of the full leave year, and computes the same proportion of the total number of leave days available for the full year.
 
