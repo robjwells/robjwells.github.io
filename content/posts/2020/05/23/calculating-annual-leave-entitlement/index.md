@@ -1,8 +1,7 @@
 ---
 title: "Calculating annual leave entitlement"
 date: 2020-05-23T14:21:02+01:00
-publishDate: 2020-05-24T06:00:00+01:00
-draft: true
+publishDate: 2020-05-23T18:00:00+01:00
 ---
 
 In my current job, and for much of my last job, I induct new employees and make some of the arrangements for leaving employees.
