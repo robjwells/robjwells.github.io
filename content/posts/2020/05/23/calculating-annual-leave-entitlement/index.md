@@ -89,3 +89,18 @@ Employee finish date [2021-03-31]: 2020-06-05
 ```
 
 It’s a bit awkward to put in a “start date” for employees who have been employed since before the start of the leave year, and similar for employees who (you hope!) will continue past the end of the leave year, but the prompting helpers take a default value which you can accept by pressing return.
+
+There’s no need to review the prompting helper functions but I will take a moment to appreciate the signature of the typed wrapper around `input()`.
+It is generic over some type `T`, takes a function `str → T`, and a default `T`, which is returned if the user input is empty.
+
+```python
+T = TypeVar("T")
+def _prompt_wrapper(
+    message: str,
+    parser: Callable[[str], T],
+    default: T
+) -> T: ...
+```
+
+A more general version would probably take a `T?` as the default and perhaps have `T?` as the return type also if parsing fails.
+But in this case all callers supply a default and, as far as the callers are concerned, parsing never fails because the user is prompted repeatedly until they enter something that does parse (or they accept the default).
