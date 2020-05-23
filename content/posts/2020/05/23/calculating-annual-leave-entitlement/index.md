@@ -77,3 +77,15 @@ There’s some redundancy between lines 16 and 21, calculating the leave year by
 The rest of the script just works out the proportion of the leave year worked against the length of the full leave year, and computes the same proportion of the total number of leave days available for the full year.
 
 Nothing really tricky, but I work in a small company so it’s easy to misremember the process when you only do it a couple of times a year.
+
+Here’s an example session:
+
+```
+How many days annual leave for the full year? [28] 30
+Leave year start date [2020-01-01]: 2020-04-01
+Employee start date [2020-04-01]:
+Employee finish date [2021-03-31]: 2020-06-05
+5.42 days annual leave
+```
+
+It’s a bit awkward to put in a “start date” for employees who have been employed since before the start of the leave year, and similar for employees who (you hope!) will continue past the end of the leave year, but the prompting helpers take a default value which you can accept by pressing return.
