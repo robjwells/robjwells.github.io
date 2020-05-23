@@ -365,6 +365,10 @@ article li {
   border: 0;
 }
 
+.no-border img {
+  border: 0;
+}
+
 /* Swap img max-width resizing for scroll */
 /* Place on the img's container */
 .no-squish {
