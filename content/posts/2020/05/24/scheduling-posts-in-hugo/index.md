@@ -38,6 +38,24 @@ I have a script on my server that cron runs every 15 minutes that pulls from [th
 
 This set-up is made easy thanks to Hugo being a single binary, so it’s simple to install on the server, whereas [before][majestic] I would generally build the site locally and upload it to my server with rsync.
 
+Hugo can list posts that are scheduled in the future:
+
+```zsh
+$ hugo list future
+content/posts/2020/05/24/scheduling-posts-in-hugo/index.md,2020-06-06T06:00:00+01:00
+content/posts/2020/05/24/keyboard-maestro-macro-to-insert-images-into-blog-posts/index.md,2020-05-30T06:00:00+01:00
+```
+
+This is a bit noisy, so here’s a sed one-liner to improve things slightly:
+
+```zsh
+$ hugo list future | sed -E 's/^.+\/([^\/]+)\/index.md,(.+)/\2 - \1/'
+2020-06-06T06:00:00+01:00 - scheduling-posts-in-hugo
+2020-05-30T06:00:00+01:00 - keyboard-maestro-macro-to-insert-images-into-blog-posts
+```
+
+(This assumes that you’re using [page bundles][].)
+
 ---
 
 I actually now have a [Beeminder goal][bm] to ensure that I write a post a month — well, I was being lenient with myself so it’s every 31 days. It’s also set for a maximum 31 safe days, so I feel that scheduling once a week is enough to tamp down any short-term blog-mania while also not gaming the Beeminder goal too much by scheduling posts at 31-day intervals. (Perhaps this is a sign though that I can set the goal to have a shorter period, but at the moment I have enough commitments that I don’t feel comfortable doing so.)
@@ -49,3 +67,4 @@ I actually now have a [Beeminder goal][bm] to ensure that I write a post a month
 [repo]: https://github.com/robjwells/primaryunit
 [majestic]: https://github.com/robjwells/majestic/
 [bm]: https://www.beeminder.com/robjwells/blog
+[page bundles]: https://gohugo.io/content-management/page-bundles/
