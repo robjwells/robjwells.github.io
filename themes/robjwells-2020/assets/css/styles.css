@@ -120,6 +120,9 @@ hr {
 
 img,
 video {
+  /* Prevent having to account for border when setting image widths and heights */
+  box-sizing: content-box;
+
   border: 1px solid var(--grey);
   height: auto;               /* Prevent horizontal squishing */
   max-width: 100%;
