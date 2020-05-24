@@ -10,7 +10,7 @@ Here’s a quick Keyboard Maestro macro to make it easier to insert images into 
 
 You can [download the macro file here][macro], but the whole thing ended up being a bit long so I’m not going to include the usual image of the whole macro (which is 1,965 pixels tall). Let’s step through it.
 
-[macro]: insert-hugo-figure.kmlibrary
+[macro]: insert-hugo-figure.kmmacros
 
 {{% figure src="macro-1-prompt-and-read.png" alt="A screenshot showing a portion of a Keyboard Maestro macro, prompting the user for a file and then reading it." caption="The first stage of the macro, prompting for the image file and then loading it onto a named clipboard." link="macro-1-prompt-and-read.png" class="full-width no-border" width=551 height=275 %}}
 
