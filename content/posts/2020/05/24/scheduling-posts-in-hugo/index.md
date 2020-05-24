@@ -40,7 +40,7 @@ This set-up is made easy thanks to Hugo being a single binary, so it’s simple 
 
 ---
 
-I actually now have a [Beeminder goal][bm] to ensure that I write a post a month — well, I was being lenient with myself so it’s every 31 days. It’s set for a maximum 31 safe days, so I feel that scheduling once a week is enough to tamp down any short-term blog-mania while also not gaming the Beeminder goal too much by scheduling posts at 31-day intervals. (Perhaps this is a sign though that I can set the goal to have a shorter period, but at the moment I have enough commitments that I feel comfortable doing so.)
+I actually now have a [Beeminder goal][bm] to ensure that I write a post a month — well, I was being lenient with myself so it’s every 31 days. It’s also set for a maximum 31 safe days, so I feel that scheduling once a week is enough to tamp down any short-term blog-mania while also not gaming the Beeminder goal too much by scheduling posts at 31-day intervals. (Perhaps this is a sign though that I can set the goal to have a shorter period, but at the moment I have enough commitments that I don’t feel comfortable doing so.)
 
 [Hugo]: https://gohugo.io/
 [figure-post]: /2020/05/keyboard-maestro-macro-to-insert-images-into-blog-posts/
