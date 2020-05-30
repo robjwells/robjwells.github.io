@@ -6,12 +6,20 @@
   <ul class="index-list">
   {{ range sort .Pages ".Params.finish-date" "desc" }}
     <li class="index-item">
-      {{ if .Content }}<a class="index-link" href="{{ .RelPermalink }}">{{ else }}<span class="index-link">{{ end }}
+      <a class="index-link" href="{{ .RelPermalink }}">
         <time class="index-date" datetime='{{ .Param "finish-date" }}'>{{ .Param "finish-date" }}</time>
         <span>{{ .Title }}, by {{ .Param "author" }}</span>
-      {{if .Content }}</a>{{ else }}</span>{{ end }}
+      </a>
     </li>
   {{ end }}
+    <!-- Below here are books that don’t have an associated notes or links.
+
+         These are included statically here to simplify the rendering above
+         and to allow for books to have a year but not a full date while
+         preserving the sort order (ie Hugo would otherwise lump all the
+         books without a full date together, away from books read that
+         year with a full date attached).
+    -->
     <li class="index-item">
       <span class="index-link">
         <time class="index-date" datetime='2018-12-30'>2018-12-30</time>
