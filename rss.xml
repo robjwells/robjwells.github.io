@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Primary Unit</title>
+    <link>https://www.robjwells.com</link>
+    <description>A blog by Rob Wells, mostly about computer stuff.</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-gb</language>
+    <copyright>This work is licensed under a Creative Commons Attribution 4.0 International License.</copyright>
+    <lastBuildDate>Wed, 08 Jul 2020 06:00:00 +0100</lastBuildDate>
+    
+	<atom:link href="https://www.robjwells.com/rss.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Give Python’s static typing a go</title>
+      <link>https://www.robjwells.com/2020/07/give-pythons-static-typing-a-go/</link>
+      <pubDate>Wed, 08 Jul 2020 06:00:00 +0100</pubDate>
+      
+      <guid>https://www.robjwells.com/2020/07/give-pythons-static-typing-a-go/</guid>
+      <description>&lt;p&gt;While my go-to language is still Python, at &lt;a href=&#34;https://www.dcs.bbk.ac.uk/&#34;&gt;university&lt;/a&gt; I’ve also used Java and C#.
+I have to say, there was a huge amount to like — much to my surprise initially!&lt;/p&gt;
+&lt;p&gt;Previously I’d kind of written off Java as being a &lt;a href=&#34;https://github.com/EnterpriseQualityCoding/FizzBuzzEnterpriseEdition&#34;&gt;boring language for boring businesspeople&lt;/a&gt;.
+There are certainly elements of that (&lt;code&gt;package com.robjwells.MyPackage;&lt;/code&gt; in &lt;code&gt;src/main/java/com/robjwells/MyPackage.java&lt;/code&gt;) but there’s a lot to like.
+Streams are great, lambdas are great, the standard library is great (though not without its rough edges, such as the repeated attempts at date and time), and the tooling is great (I have actually come round to really like &lt;a href=&#34;https://www.jetbrains.com/idea/&#34;&gt;IntelliJ IDEA&lt;/a&gt; — certainly buying a full licence when my academic licence expires).
+Plus, it’s really coming along at a clip now with the shorter release cycle.&lt;/p&gt;
+&lt;p&gt;And C# was an even more pleasant surprise. It’s easy to get the impression that it’s “Microsoft’s Java”, but that’s really selling it short.
+&lt;a href=&#34;https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/&#34;&gt;LINQ&lt;/a&gt; is a joy that makes &lt;a href=&#34;https://www.youtube.com/watch?v=ei71YpmfRX4&#34;&gt;comprehensions in Python&lt;/a&gt; (of which I am a huge fan!) seem… just a bit clunky. But C# is full of features, not just LINQ, that make working in it a real pleasure. (I will say, though, that at least on the Mac &lt;a href=&#34;https://www.jetbrains.com/rider/&#34;&gt;Rider&lt;/a&gt; is a far superior editor than Visual Studio.)&lt;/p&gt;
+&lt;p&gt;All of this is to say, in a round-about way, that those &lt;em&gt;weird verbose enterprise-y languages&lt;/em&gt; have a lot going for them — even in the still small-scale things that I’m working on where without this exposure I would just use Python.&lt;/p&gt;
+&lt;p&gt;Now, I still &lt;em&gt;am&lt;/em&gt; using Python, but there are things that I miss.
+Chief among them in Python is having the type system actively help me out. &lt;a href=&#34;https://www.executeprogram.com/blog/porting-to-typescript-solved-our-api-woes&#34;&gt;Gary Bernhardt writes a bit about this in the context of Ruby and TypeScript&lt;/a&gt;. (Be warned there are trivial examples ahead.)&lt;/p&gt;
+&lt;p&gt;Now, I’m using &lt;a href=&#34;https://code.visualstudio.com/&#34;&gt;VSCode&lt;/a&gt; so actually the editor will step in and help you even if you do nothing to aid it. For instance, in the following situation:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# untyped.py v1&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;ultimate_answer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;42&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;u&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ultimate_answer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;VSCode (using the &lt;a href=&#34;https://marketplace.visualstudio.com/items?itemName=ms-python.python&#34;&gt;Python extension&lt;/a&gt;) will correctly infer that the type of &lt;code&gt;u&lt;/code&gt; is &lt;code&gt;int&lt;/code&gt;. So let’s do something with that:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# untyped.py v2&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;ultimate_answer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;42&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;do_something&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;11&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;u&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;do_something&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ultimate_answer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;())&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;VSCode still correctly infers &lt;code&gt;u&lt;/code&gt; to be an &lt;code&gt;int&lt;/code&gt;. Great! But let’s be clear: this is VSCode doing the work so that it can offer you handy things like code completion.&lt;/p&gt;
+&lt;p&gt;What happens if we have a change in requirements and we change our API… only we don’t catch everything so we end up with the following:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# untyped.py v3&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;ultimate_answer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;42&amp;#34;&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;do_something&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;11&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;u&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;do_something&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ultimate_answer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;())&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;At this point, VSCode gives up: &lt;code&gt;u&lt;/code&gt; is an &lt;code&gt;int&lt;/code&gt; or it’s a &lt;code&gt;str&lt;/code&gt;. In fact it’s neither, because &lt;code&gt;do_something()&lt;/code&gt; raises a &lt;code&gt;TypeError&lt;/code&gt; so &lt;code&gt;u&lt;/code&gt; is never assigned. This is “obvious” to a human reading the code, in this simple example, but it’s easy to imagine a complex system where the types get out of line but the definitions are far apart from each other and the eventual call site.&lt;/p&gt;
+&lt;p&gt;There are type checkers for Python, the main one being &lt;a href=&#34;http://www.mypy-lang.org/&#34;&gt;mypy&lt;/a&gt; (which is great!). Can mypy help us here?&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ mypy untyped.py
+Success: no issues found in 1 source file
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Oh, success! Great.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ python3 untyped.py
+Traceback (most recent call last):
+  File &amp;quot;untyped.py&amp;quot;, line 10, in &amp;lt;module&amp;gt;
+    main()
+  File &amp;quot;untyped.py&amp;quot;, line 8, in main
+    u = do_something(ultimate_answer())
+  File &amp;quot;untyped.py&amp;quot;, line 5, in do_something
+    return n - 11
+TypeError: unsupported operand type(s) for -: &#39;str&#39; and &#39;int&#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Ah, no, no magic was performed and we still have a &lt;code&gt;TypeError&lt;/code&gt;. It’s worth pointing out here that mypy is all about gradual typing — adding type annotations to your programs as and when. If there are no annotations, there are no checks performed. It’s not clairvoyant.&lt;/p&gt;
+&lt;p&gt;If we switch back to VSCode, what if we try &lt;a href=&#34;https://devblogs.microsoft.com/python/announcing-pylance-fast-feature-rich-language-support-for-python-in-visual-studio-code/&#34;&gt;Microsoft’s shiny new Pylance extension&lt;/a&gt;? In the basic type-checking mode it reports that the type of &lt;code&gt;u&lt;/code&gt; is unknown which … is a step in the right direction? But no warnings.&lt;/p&gt;
+&lt;p&gt;If we ratchet up the type-checking mode to strict it reports, with a bunch of red error squiggles, that the return type of &lt;code&gt;do_something()&lt;/code&gt; is unknown and the type of &lt;code&gt;u&lt;/code&gt; is unknown. We get a similar result if we pass the &lt;code&gt;--strict&lt;/code&gt; flag to mypy, which essentially tells the type checker “forget about this gradual business” and attempts to check the whole file. This effectively fails, because we’ve done nothing to help it. Let’s do that now.&lt;/p&gt;
+&lt;p&gt;In fact, very little is needed before Pylance starts to push you in the right direction, only this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# typed.py v1 excerpt&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;do_something&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;11&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After which we’re rewarded with red squiggles underneath the call to &lt;code&gt;ultimate_answer()&lt;/code&gt; that provides the argument inline to &lt;code&gt;do_something()&lt;/code&gt;. The message we get is interesting because it reveals something about the knowledge of the type-checker:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Argument of type &amp;quot;Literal[&#39;42&#39;]&amp;quot; cannot be assigned to
+parameter &amp;quot;n&amp;quot; of type &amp;quot;int&amp;quot; in function &amp;quot;do_something&amp;quot;
+  &amp;quot;Literal[&#39;42&#39;]&amp;quot; is incompatible with &amp;quot;int&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We haven’t typed &lt;code&gt;ultimate_answer()&lt;/code&gt;, but it knows that &amp;ldquo;42&amp;rdquo; can’t be treated as an &lt;code&gt;int&lt;/code&gt;. Mypy needs a little more help to get there:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# typed.py v2 excerpt&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;ultimate_answer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;str&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;42&amp;#34;&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;do_something&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;11&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;So, at this point we’ve said that &lt;code&gt;ultimate_answer()&lt;/code&gt; returns a string and that &lt;code&gt;do_something()&lt;/code&gt; takes an integer. What does mypy think?&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt; $ mypy typed.py
+Success: no issues found in 1 source file
+
+&amp;gt; $ mypy --strict typed.py
+[…snip…]
+typed.py:8: error: Argument 1 to &amp;quot;do_something&amp;quot; has
+    incompatible type &amp;quot;str&amp;quot;; expected &amp;quot;int&amp;quot;
+[…snip…]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This is an interesting situation because &amp;ldquo;normal&amp;rdquo; mode mypy reports that this is fine, no problems here. Strict mode complains — among other things — that the types don’t match. Finally, this is what we want.&lt;/p&gt;
+&lt;p&gt;But why doesn’t “normal” mode mypy not see the problem? I think this is to do with what is considered a “typed context”. By using &lt;code&gt;--strict&lt;/code&gt; we force everything to be a typed context, so we get a lot more warnings and errors from mypy. But without this, &lt;code&gt;main()&lt;/code&gt; is not a typed context — it has no typed arguments, and no explicit return type, so “normal” mode mypy just skips over it.&lt;/p&gt;
+&lt;p&gt;The strength of gradual typing is that if you don’t want to or aren’t ready to add type information, you don’t. But even in this toy example, the standard Python type-checker under its default settings does not pick up this “obvious” (to us!) type error. In &lt;a href=&#34;https://www.youtube.com/watch?v=ST33zDM9vOE&amp;amp;feature=youtu.be&#34;&gt;Dustin Ingram’s Pycon talk about static typing&lt;/a&gt; he says you should use static typing everywhere — for a few reasons, but here we can see that failing to do so leaves a clear error undetected..&lt;/p&gt;
+&lt;p&gt;It doesn’t take much to rectify that for mypy, just a return type on &lt;code&gt;main()&lt;/code&gt;, yielding the following:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# typed.py v3&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;ultimate_answer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;str&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;42&amp;#34;&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;do_something&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;11&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;None&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;u&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;do_something&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ultimate_answer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;())&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;And now &lt;code&gt;mypy typed.py&lt;/code&gt; gives the same error that strict mode did for the previous example. Adding the explicit return type to &lt;code&gt;main()&lt;/code&gt; is honestly pretty useless, but now it opens up the definition of &lt;code&gt;main()&lt;/code&gt; to be type checked, at which point the error is spotted.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;I wrote the title of this blog post before I really knew where I was going (I have a Beeminder deadline to hit!) so at this point it feels to me like I haven’t quite delivered on (why you should) “Give Python’s static typing a go”. Really we’re at “If you decide to use Python’s static typing you need to go all-in.” Which actually is something I do believe! I think the strictest settings are the most useful, but leaving something untyped leaves a hole for type errors to sneak through.&lt;/p&gt;
+&lt;p&gt;But it is useful in itself. It’s unfamiliar and, honestly, a bit clunky in Python. (The dance for declaring a &lt;code&gt;TypeVar&lt;/code&gt; for a generic function taking some type &lt;code&gt;T&lt;/code&gt; is … Not Good and looks worse once you run your code through a formatter, with it then two lines away.)&lt;/p&gt;
+&lt;p&gt;But thinking about types is thinking about design, and thinking about the contract that you’re willing to offer to the outside world. I’ve found that in Java and C# sometimes I’m ready to bound straight into defining a function … only to stop after realising that I haven’t really clarified what expectations I have of the outside world (parameter types) and what expectations the outside world has of me (return type).&lt;/p&gt;
+&lt;p&gt;Here’s a dead-obvious example from a simple exercise on &lt;a href=&#34;https://exercism.io/&#34;&gt;Exercism&lt;/a&gt; (sorry for any spoilers but I should hope this one is straightforward to anyone with any knowledge of the &lt;code&gt;datetime&lt;/code&gt; module!):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;datetime&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;datetime&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;timedelta&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;GIGASECOND&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;timedelta&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;seconds&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_000_000_000&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;moment&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;datetime&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;datetime&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;moment&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;GIGASECOND&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now, &lt;code&gt;add()&lt;/code&gt; is a bad name in general but fine in this confined case, but it’s the simple addition of the &lt;code&gt;datetime&lt;/code&gt; annotations that make it clear what we’re handling here. You give a datetime, receive a datetime. Nothing fancy, but compare with the following signature:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;moment&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;It’s concise, sure, but is the cost in understanding worth it? Explicitly annotating the types forces you to consider what the interface is and, in return, tools like mypy will give you a hand in finding bugs.&lt;/p&gt;
+&lt;p&gt;Anyway, give &lt;a href=&#34;https://www.youtube.com/watch?v=ST33zDM9vOE&amp;amp;feature=youtu.be&#34;&gt;Dustin Ingram’s talk&lt;/a&gt; a watch (check out those t-shirts!) as it’s informative, straightforward and short. Do check out the &lt;a href=&#34;https://mypy.readthedocs.io/en/stable/index.html&#34;&gt;mypy documentation&lt;/a&gt;, as there’s plenty of descriptive information in there beyond the interface to the command line tool and the &lt;code&gt;typing&lt;/code&gt; module. &lt;a href=&#34;https://www.youtube.com/watch?v=7ZbwZgrXnwY&#34;&gt;Jukka Lehtosalo and David Fisher spoke in some detail at Pycon 2017 about mypy&lt;/a&gt;, and I highly recommend &lt;a href=&#34;https://dropbox.tech/application/our-journey-to-type-checking-4-million-lines-of-python&#34;&gt;Jukka’s article on the Dropbox tech blog that looks at the history and practical aspects of mypy&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;It’s clear also that this is the direction of travel for Python — there is a lot on the horizon that will make life easier (see &lt;a href=&#34;https://www.python.org/dev/peps/&#34;&gt;the list of PEPs&lt;/a&gt;), and I’m particularly looking forward to seeing what becomes of &lt;a href=&#34;https://www.python.org/dev/peps/pep-0622/&#34;&gt;PEP 622&lt;/a&gt; as at the moment it looks like it will bring with it &lt;a href=&#34;https://fsharpforfunandprofit.com/posts/discriminated-unions/&#34;&gt;sum types&lt;/a&gt;, even if it is a year or two off at this point.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Scheduling posts in Hugo</title>
+      <link>https://www.robjwells.com/2020/06/scheduling-posts-in-hugo/</link>
+      <pubDate>Sat, 06 Jun 2020 06:00:00 +0100</pubDate>
+      
+      <guid>https://www.robjwells.com/2020/06/scheduling-posts-in-hugo/</guid>
+      <description>&lt;p&gt;My enthusiasm for writing posts here tends to come in reasonably short bursts, usually over a weekend, so I’ve taken to scheduling the two or three posts I might write over the following weeks.&lt;/p&gt;
+&lt;p&gt;It’s reasonably straightforward to schedule publication with &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt; by using the &lt;code&gt;publishDate&lt;/code&gt; attribute in your post frontmatter. For instance, this is the frontmatter for this post right now:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;nt&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Scheduling posts in Hugo&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;ld&#34;&gt;2020-05-24T09:25:44&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;+01&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;00&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;publishDate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;ld&#34;&gt;2020-06-06T06:00:00&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;+01&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;00&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;draft&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The &lt;code&gt;date&lt;/code&gt; attribute is filled in by Hugo when I create the post bundle skeleton. I tend to leave this as a marker for when I started writing a post (though I have changed it for posts that I start, leave for a while, and &lt;a href=&#34;https://www.robjwells.com/2020/05/keyboard-maestro-macro-to-insert-images-into-blog-posts/&#34;&gt;finish later&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;publishDate&lt;/code&gt; attribute controls when the post is actually published. Hugo by default doesn’t build posts with this set in the future.&lt;/p&gt;
+&lt;p&gt;One important change that I made from the defaults, though, is to define the handling of dates in my site-wide config file (&lt;code&gt;config.toml&lt;/code&gt;) like so:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-toml&#34; data-lang=&#34;toml&#34;&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;frontmatter&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;date&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;publishDate&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;date&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;:default&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;What this means is that Hugo will prefer the &lt;code&gt;publishDate&lt;/code&gt; as the date of the post, before falling back to the &lt;code&gt;date&lt;/code&gt; attribute, and then resuming its default lookup, which is listed &lt;a href=&#34;https://gohugo.io/getting-started/configuration/#configure-dates&#34;&gt;in the Hugo documentation&lt;/a&gt;.
+(At the moment, the only other thing in the default lookup order is the file modification time, but mostly I include &amp;ldquo;:default&amp;rdquo; to be safe if this changes in the future.)&lt;/p&gt;
+&lt;p&gt;Otherwise, you might end up with a situation where you write “Post Future”, set a publish date in the future, then write “Post Now” and publish immediately, and when “Post Future” is published it will be shown as being published earlier than “Post Now” because its &lt;code&gt;date&lt;/code&gt; is earlier. Changing the date lookup order in the config will preserve your deliberate schedule.&lt;/p&gt;
+&lt;p&gt;(Thanks to “n m” on StackOverflow who got me started &lt;a href=&#34;https://stackoverflow.com/questions/59655470/hugo-date-vs-publishdate/59760977#59760977&#34;&gt;with this answer&lt;/a&gt;.)&lt;/p&gt;
+&lt;p&gt;Obviously, just having a bunch of files with the dates set properly doesn’t mean your post will actually be published automatically at the right time.
+I have a script on my server that cron runs every 15 minutes that pulls from &lt;a href=&#34;https://github.com/robjwells/primaryunit&#34;&gt;the GitHub repository&lt;/a&gt; and rebuilds the site.&lt;/p&gt;
+&lt;p&gt;This set-up is made easy thanks to Hugo being a single binary, so it’s simple to install on the server, whereas &lt;a href=&#34;https://github.com/robjwells/majestic/&#34;&gt;before&lt;/a&gt; I would generally build the site locally and upload it to my server with rsync.&lt;/p&gt;
+&lt;p&gt;Hugo can list posts that are scheduled in the future:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;$ hugo list future
+content/posts/2020/05/24/scheduling-posts-in-hugo/index.md,2020-06-06T06:00:00+01:00
+content/posts/2020/05/24/keyboard-maestro-macro-to-insert-images-into-blog-posts/index.md,2020-05-30T06:00:00+01:00
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This is a bit noisy, so here’s a sed one-liner to improve things slightly:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;$ hugo list future &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sed -E &lt;span class=&#34;s1&#34;&gt;&amp;#39;s/^.+\/([^\/]+)\/index.md,(.+)/\2 - \1/&amp;#39;&lt;/span&gt;
+2020-06-06T06:00:00+01:00 - scheduling-posts-in-hugo
+2020-05-30T06:00:00+01:00 - keyboard-maestro-macro-to-insert-images-into-blog-posts
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;(This assumes that you’re using &lt;a href=&#34;https://gohugo.io/content-management/page-bundles/&#34;&gt;page bundles&lt;/a&gt;.)&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;I actually now have a &lt;a href=&#34;https://www.beeminder.com/robjwells/blog&#34;&gt;Beeminder goal&lt;/a&gt; to ensure that I write a post a month — well, I was being lenient with myself so it’s every 31 days. It’s also set for a maximum 31 safe days, so I feel that scheduling once a week is enough to tamp down any short-term blog-mania while also not gaming the Beeminder goal too much by scheduling posts at 31-day intervals. (Perhaps this is a sign though that I can set the goal to have a shorter period, but at the moment I have enough commitments that I don’t feel comfortable doing so.)&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Keyboard Maestro macro to insert images into blog posts</title>
+      <link>https://www.robjwells.com/2020/05/keyboard-maestro-macro-to-insert-images-into-blog-posts/</link>
+      <pubDate>Sat, 30 May 2020 06:00:00 +0100</pubDate>
+      
+      <guid>https://www.robjwells.com/2020/05/keyboard-maestro-macro-to-insert-images-into-blog-posts/</guid>
+      <description>&lt;p&gt;Here’s a quick Keyboard Maestro macro to make it easier to insert images into blog posts, or any other markdown or HTML document really. The details of the macro are set up to create a &lt;a href=&#34;https://gohugo.io/content-management/shortcodes/#figure&#34;&gt;Hugo figure shortcode&lt;/a&gt;, but the Hugo-specific bits are just scaffolding and could be swapped out for whatever you need.&lt;/p&gt;
+&lt;p&gt;You can &lt;a href=&#34;insert-hugo-figure.kmmacros&#34;&gt;download the macro file here&lt;/a&gt;, but the whole thing ended up being a bit long so I’m not going to include the usual image of the whole macro (which is 1,965 pixels tall). Let’s step through it.&lt;/p&gt;
+&lt;figure class=&#34;full-width no-border&#34;&gt;&lt;a href=&#34;macro-1-prompt-and-read.png&#34;&gt;
+    &lt;img src=&#34;macro-1-prompt-and-read.png&#34;
+         alt=&#34;A screenshot showing a portion of a Keyboard Maestro macro, prompting the user for a file and then reading it.&#34; width=&#34;551&#34; height=&#34;275&#34;/&gt; &lt;/a&gt;&lt;figcaption&gt;
+            &lt;p&gt;The first stage of the macro, prompting for the image file and then loading it onto a named clipboard.&lt;/p&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;After selecting the image, we need to load it onto a named clipboard because Keyboard Maestro’s image actions generally work on the contents of a clipboard.&lt;/p&gt;
+&lt;figure class=&#34;full-width no-border&#34;&gt;&lt;a href=&#34;macro-2-store-properties.png&#34;&gt;
+    &lt;img src=&#34;macro-2-store-properties.png&#34;
+         alt=&#34;A screenshot showing a portion of a Keyboard Maestro macro, reading image properties into variables.&#34; width=&#34;551&#34; height=&#34;312&#34;/&gt; &lt;/a&gt;&lt;figcaption&gt;
+            &lt;p&gt;Next we extract needed properties from the image into Keyboard Maestro variables.&lt;/p&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;Then we need to prompt the user to confirm the attributes of the figure.&lt;/p&gt;
+&lt;figure class=&#34;full-width no-border&#34;&gt;&lt;a href=&#34;macro-3-prompt-attributes.png&#34;&gt;
+    &lt;img src=&#34;macro-3-prompt-attributes.png&#34;
+         alt=&#34;A screenshot showing a portion of a Keyboard Maestro macro, of a prompt to the user to confirm attributes for the figure to be inserted.&#34; width=&#34;551&#34; height=&#34;377&#34;/&gt; &lt;/a&gt;&lt;figcaption&gt;
+            &lt;p&gt;The prompt set-up.&lt;/p&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;figure class=&#34;full-width no-border&#34;&gt;&lt;a href=&#34;macro-prompt.png&#34;&gt;
+    &lt;img src=&#34;macro-prompt.png&#34;
+         alt=&#34;A screenshot showing a Keyboard Maestro prompt asking for attributes to complete an HTML figure&#34; width=&#34;537&#34; height=&#34;267&#34;/&gt; &lt;/a&gt;&lt;figcaption&gt;
+            &lt;p&gt;And the prompt itself.&lt;/p&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;Any of these can be empty, so after assembling the shortcode text blank attributes are removed:&lt;/p&gt;
+&lt;figure class=&#34;full-width no-border&#34;&gt;&lt;a href=&#34;macro-4-assemble-figure.png&#34;&gt;
+    &lt;img src=&#34;macro-4-assemble-figure.png&#34;
+         alt=&#34;A screenshot showing a portion of a Keyboard Maestro macro, creating the figure shortcode from provided attributes and using a regular expression to remove any empty attributes.&#34; width=&#34;551&#34; height=&#34;631&#34;/&gt; &lt;/a&gt;
+&lt;/figure&gt;
+&lt;p&gt;And then lastly the figure shortcode text is inserted by pasting, which is handy because it end up on the clipboard if anything goes wrong — like it did when I changed the focus when inserting the previous screenshot!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>The Atom: A Love Affair</title>
+      <link>https://www.robjwells.com/2020/05/the-atom-a-love-affair/</link>
+      <pubDate>Sun, 24 May 2020 08:15:00 +0100</pubDate>
+      
+      <guid>https://www.robjwells.com/2020/05/the-atom-a-love-affair/</guid>
+      <description>&lt;p&gt;I watched &lt;a href=&#34;https://theatomfilm.com/&#34;&gt;The Atom: A Love Affair&lt;/a&gt; last night, a new documentary about the history of nuclear power, and it’s really great. It charts the ups and downs of nuclear power, its promoters and opponents, and looks at where we are today. I think its great strength is that it sets out the surrounding context. It doesn’t take a side but gives a fair accounting (which &lt;a href=&#34;https://cnduk.org/campaigns/no-nuclear-power/&#34;&gt;I think leads to a clear conclusion&lt;/a&gt;, though I would, wouldn’t I?).&lt;/p&gt;
+&lt;p&gt;You can &lt;a href=&#34;https://www.curzonhomecinema.com/film/watch-atom-a-love-affair-online&#34;&gt;stream it online at Curzon Home Cinema&lt;/a&gt;, and I highly recommend it.&lt;/p&gt;
+&lt;p&gt;There’s &lt;a href=&#34;https://www.youtube.com/watch?v=RqUnaEi9UgM&#34;&gt;a Q&amp;amp;A session held after the film’s premiere&lt;/a&gt;, and more info on &lt;a href=&#34;https://www.facebook.com/theatomfilm&#34;&gt;the Facebook page&lt;/a&gt;. There’s also &lt;a href=&#34;https://www.bbc.co.uk/sounds/play/m000jg85&#34;&gt;an episode of Radio 3’s Sound of Cinema with the film’s composer Paul Honey&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Calculating annual leave entitlement</title>
+      <link>https://www.robjwells.com/2020/05/calculating-annual-leave-entitlement/</link>
+      <pubDate>Sat, 23 May 2020 18:00:00 +0100</pubDate>
+      
+      <guid>https://www.robjwells.com/2020/05/calculating-annual-leave-entitlement/</guid>
+      <description>&lt;p&gt;In my current job, and for much of my last job, I induct new employees and make some of the arrangements for leaving employees.
+Part of that is working out how much annual leave they’re entitled to.
+Unfortunately people tend not to start exactly at the beginning of the leave year and leave exactly at the end of the leave year.&lt;/p&gt;
+&lt;p&gt;Many years ago I wrote a simple Python script to do this for me — it asks for the start and end dates, and prints out how much annual leave the person would accrue over that period.&lt;/p&gt;
+&lt;p&gt;You can &lt;a href=&#34;https://annualleavecalculator-end-date.robjwells.repl.run/&#34;&gt;run the calculator in your browser at Repl.it&lt;/a&gt;.
+(It has an odd name in the URL because originally the script only handled new starts, not leavers, and I don’t want to break the URL for my old colleagues who use it.)&lt;/p&gt;
+&lt;p&gt;I’ve cleaned it up today after seeing that &lt;a href=&#34;https://repl.it/talk/announcements/Feedback-for-git-support-the-new-GitHub-integration/21631&#34;&gt;Repl.it can publish new repos to GitHub&lt;/a&gt; (though that feature has some &lt;a href=&#34;https://repl.it/talk/announcements/1-to-this-feature-thanks-but-I-came/21631/175353&#34;&gt;rough edges&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;You can &lt;a href=&#34;https://github.com/robjwells/annual_leave_calculator/blob/master/main.py&#34;&gt;find the code on GitHub&lt;/a&gt;.
+Mostly it’s uninteresting, the first 40 lines being the module docstring and the last 30 being mostly wrappers around &lt;code&gt;input()&lt;/code&gt;, so here’s the meat of it:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# Modify these constants to suit your circumstances&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;DEFAULT_AL_YEAR_START&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;today&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;replace&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;month&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;day&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;DEFAULT_AL&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;28&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;RESULT_DECIMAL_PLACES&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;None&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;al_for_full_year&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;prompt_for_al_amount&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;al_year_start&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;prompt_for_date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;        &lt;span class=&#34;s2&#34;&gt;&amp;#34;Leave year start&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;default&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;DEFAULT_AL_YEAR_START&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;al_year_end&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;al_year_start&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;replace&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;year&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;al_year_start&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;year&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;timedelta&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;days&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;start_date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;prompt_for_date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Employee start&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;default&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;al_year_start&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;end_date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;prompt_for_date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Employee finish&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;default&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;al_year_end&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;21&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;al_year_days&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;al_year_end&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;al_year_start&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;days&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;22&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;employed_days&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;end_date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;start_date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;days&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;23&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;# +1 as we assume, eg, starting and leaving on Jan 1 accrues&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;24&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;# 1 day&amp;#39;s worth of leave, not zero&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;25&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;26&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;proportion_of_al_year_worked&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;employed_days&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;al_year_days&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;27&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;al_days_available&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;al_for_full_year&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;proportion_of_al_year_worked&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;28&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;29&lt;/span&gt;        &lt;span class=&#34;nb&#34;&gt;round&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;al_days_available&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;RESULT_DECIMAL_PLACES&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;30&lt;/span&gt;        &lt;span class=&#34;s2&#34;&gt;&amp;#34;days annual leave&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;31&lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;One thing to state up front is that this only considers leave accrual within a single annual leave year.
+Crossing a leave-year boundary isn’t as simple as adding additional leave, as it’ll typically involve some limit on how much leave can be carried across (which may be zero).&lt;/p&gt;
+&lt;p&gt;There’s also little error-handling, so if you enter something that parses but is nonsensical (negative amount of leave, an end date earlier than the start date) then the result will be nonsensical.&lt;/p&gt;
+&lt;p&gt;Until I refactored the script today, I’d made assumptions about the leave year that meant you’d have to edit the script more than a little to use leave years that don’t match the calendar year.
+I changed that today by prompting the user for the start of the leave year (defaulting to January 1) and calculating the leave year end with some basic date manipulation in lines 14-16.
+(This was to fix a regression I introduced, not the result of any great foresight!)&lt;/p&gt;
+&lt;p&gt;This manipulation isn’t completely robust, but if you say your leave year starts on February 29 then that’s your responsibility.&lt;/p&gt;
+&lt;p&gt;Lines 21 &amp;amp; 22 are noteworthy for the &lt;code&gt;+ 1&lt;/code&gt;, so that you get an inclusive range of days, with the assumption being that the person works on the “start day” and also on the “finish day”.
+There’s some redundancy between lines 16 and 21, calculating the leave year by subtracting a day and adding it back later, but that’s to fit my mental model that the leave year runs eg from January 1 to December 31, and not January 1 to January 1.&lt;/p&gt;
+&lt;p&gt;The rest of the script just works out the proportion of the leave year worked against the length of the full leave year, and computes the same proportion of the total number of leave days available for the full year.&lt;/p&gt;
+&lt;p&gt;Nothing really tricky, but I work in a small company so it’s easy to misremember the process when you only do it a couple of times a year.&lt;/p&gt;
+&lt;p&gt;Here’s an example session:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;How many days annual leave for the full year? [28] 30
+Leave year start date [2020-01-01]: 2020-04-01
+Employee start date [2020-04-01]:
+Employee finish date [2021-03-31]: 2020-06-05
+5.42 days annual leave
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It’s a bit awkward to put in a “start date” for employees who have been employed since before the start of the leave year, and similar for employees who (you hope!) will continue past the end of the leave year, but the prompting helpers take a default value which you can accept by pressing return.&lt;/p&gt;
+&lt;p&gt;There’s no need to review the prompting helper functions but I will take a moment to appreciate the signature of the typed wrapper around &lt;code&gt;input()&lt;/code&gt;.
+It is generic over some type &lt;code&gt;T&lt;/code&gt;, takes a function &lt;code&gt;str → T&lt;/code&gt;, and a default &lt;code&gt;T&lt;/code&gt;, which is returned if the user input is empty.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;n&#34;&gt;T&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;TypeVar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;T&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;_prompt_wrapper&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;message&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;str&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;parser&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Callable&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[[&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;str&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;T&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;default&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;T&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;T&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;A more general version would probably take a &lt;code&gt;T?&lt;/code&gt; as the default and perhaps have &lt;code&gt;T?&lt;/code&gt; as the return type also if parsing fails.
+But in this case all callers supply a default and, as far as the callers are concerned, parsing never fails because the user is prompted repeatedly until they enter something that does parse (or they accept the default).&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Listing shortlog files chronologically with LaunchBar</title>
+      <link>https://www.robjwells.com/2020/04/listing-shortlog-files-chronologically-with-launchbar/</link>
+      <pubDate>Sat, 25 Apr 2020 06:00:00 +0100</pubDate>
+      
+      <guid>https://www.robjwells.com/2020/04/listing-shortlog-files-chronologically-with-launchbar/</guid>
+      <description>&lt;p&gt;Building on &lt;a href=&#34;https://www.robjwells.com/2020/04/shortlogging/&#34;&gt;my introductory post about maintaining “shortlog” diary files&lt;/a&gt;, I quite often want to have a look at recent shortlog files.&lt;/p&gt;
+&lt;p&gt;I have my shortlog folder indexed by &lt;a href=&#34;https://www.obdev.at/products/launchbar/index.html&#34;&gt;LaunchBar&lt;/a&gt;, so I can browse the files that way. By default these are listed in lexicographically ascending order. You can reverse this by holding down command when navigating into the folder in LaunchBar.&lt;/p&gt;
+&lt;p&gt;However, that doesn’t resolve the problem that it’s not always easy to realise that 2020-04-13 is “Monday”.&lt;/p&gt;
+&lt;p&gt;So I thought I would write a &lt;a href=&#34;https://developer.obdev.at/launchbar-developer-documentation/#/actions-overview&#34;&gt;LaunchBar action&lt;/a&gt; to do both.&lt;/p&gt;
+&lt;p&gt;Despite being my first, it was really very easy. I wrote it in JavaScript as the documentation leads you that way, and you don’t have to serialise to JSON and write to stdout to return values. LaunchBar provides some additional tools to make interacting with the system straightforward from JavaScript. (And, to be clear, this isn’t &lt;a href=&#34;https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/index.html&#34;&gt;JXA&lt;/a&gt; either.)&lt;/p&gt;
+&lt;p&gt;Here are the settings in the scripts pane in LaunchBar’s Action Editor:&lt;/p&gt;
+&lt;figure class=&#34;full-width&#34;&gt;&lt;a href=&#34;action-editor-script-settings.png&#34;&gt;
+    &lt;img src=&#34;action-editor-script-settings.png&#34;
+         alt=&#34;A screenshot of the scripts pane settings in LaunchBar’s action editor for a default script, showing the default settings except that it returns an Item&#34; width=&#34;510&#34; height=&#34;250&#34;/&gt; &lt;/a&gt;
+&lt;/figure&gt;
+&lt;p&gt;This is a default script, taking no input. One thing to note is that it returns a result of type “Item” — an array of JavaScript objects with particular keys. You can read about the properties items can have &lt;a href=&#34;https://developer.obdev.at/launchbar-developer-documentation/#/actions-overview&#34;&gt;in the LaunchBar action developer documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;And here’s the code:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-JavaScript&#34; data-lang=&#34;JavaScript&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;run&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;argument&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;  &lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;shortlogDir&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;~/Dropbox/notes/shortlog/&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;File&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;getDirectoryContents&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;    &lt;span class=&#34;nx&#34;&gt;shortlogDir&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;filter&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;fileName&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&amp;gt;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;    &lt;span class=&#34;o&#34;&gt;/^&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;shortlog&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;20&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;\&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;d&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;\&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;d&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;\&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;d&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;txt$&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;test&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;fileName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;map&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;fileName&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;    &lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;isoString&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;fileName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;substring&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;9&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;19&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;    &lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;dateString&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;LaunchBar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;formatDate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;      &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;Date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;isoString&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;      &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;        &lt;span class=&#34;nx&#34;&gt;timeStyle&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;none&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;        &lt;span class=&#34;nx&#34;&gt;dateStyle&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;full&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;        &lt;span class=&#34;nx&#34;&gt;relativeDateFormatting&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;      &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;      &lt;span class=&#34;nx&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;dateString&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt;      &lt;span class=&#34;nx&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;shortlogDir&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;fileName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt;      &lt;span class=&#34;cm&#34;&gt;/* Use the ISO string as LaunchBar rejects returned objects
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;21&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;         containing types other than strings, numbers, arrays
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;22&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;         and objects (dictionaries) */&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;23&lt;/span&gt;      &lt;span class=&#34;nx&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;isoString&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;24&lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;25&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;}).&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;sort&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;26&lt;/span&gt;    &lt;span class=&#34;cm&#34;&gt;/* Note this is a string comparison, but it’s OK as
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;27&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;       we’re comparing ISO date strings. */&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;28&lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;second&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;second&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;?&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;29&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;30&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This is just a “default script”, and while &lt;code&gt;run&lt;/code&gt; takes an argument, it’s ignored.&lt;/p&gt;
+&lt;p&gt;We treat this as a simple pipeline of transformations on data:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;reading the contents of a directory (lines 3 &amp;amp; 4)&lt;/li&gt;
+&lt;li&gt;keeping only those whose filenames match dated shortlog files (lines 5 &amp;amp; 6)&lt;/li&gt;
+&lt;li&gt;creating an object containing a human-readable date, the path to the file, and an ISO-format date string (lines 7–24)&lt;/li&gt;
+&lt;li&gt;sorting those objects on the ISO date string, newest to oldest (lines 25–29).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In line 3, we make use of the &lt;code&gt;File&lt;/code&gt; object, which is provided by LaunchBar. And in lines 9–12 we use the &lt;code&gt;formatDate&lt;/code&gt; function on the &lt;code&gt;LaunchBar&lt;/code&gt; object, which gives us access to the system’s date formatting, which is both locale-aware and respects the user’s date &amp;amp; time preferences.&lt;/p&gt;
+&lt;figure class=&#34;pull-right&#34;&gt;&lt;a href=&#34;shortlogs-action-result.png&#34;&gt;
+    &lt;img src=&#34;shortlogs-action-result.png&#34;
+         alt=&#34;A screenshot showing the resulting list of files in reverse date order in LaunchBar&#34; width=&#34;310&#34; height=&#34;459&#34;/&gt; &lt;/a&gt;
+&lt;/figure&gt;
+&lt;p&gt;By providing the path in the result object, LaunchBar treats each entry in the list as a file, so you can press return to open it, or press the right arrow to inspect its details.&lt;/p&gt;
+&lt;p&gt;One oddity: I did try to store a JavaScript &lt;code&gt;Date&lt;/code&gt; in the result objects, to use in the final sorting, but LaunchBar displays an error if a &lt;code&gt;Date&lt;/code&gt; in the returned items. You could strip out any of your custom properties, but here I just use the ISO-format date string from the filename as it works just as well for the sorting comparison.&lt;/p&gt;
+&lt;p&gt;(Another oddity: I initially created the &lt;code&gt;Date&lt;/code&gt; (now in line 10) manually with the date components extracted from the ISO-format date string. I learned that the constructor doesn’t take a &lt;code&gt;month&lt;/code&gt; argument but instead a &lt;code&gt;monthIndex&lt;/code&gt;, in the range 0–11. &lt;a href=&#34;https://stackoverflow.com/questions/2552483/why-does-the-month-argument-range-from-0-to-11-in-javascripts-date-constructor&#34;&gt;Some background on why this is&lt;/a&gt;.)&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>macOS transpose shortcut in Firefox</title>
+      <link>https://www.robjwells.com/2020/04/macos-transpose-shortcut-in-firefox/</link>
+      <pubDate>Sat, 18 Apr 2020 06:00:00 +0100</pubDate>
+      
+      <guid>https://www.robjwells.com/2020/04/macos-transpose-shortcut-in-firefox/</guid>
+      <description>&lt;p&gt;macOS has a built-in shortcut to transpose characters, ⌃T, which is really handy. Sadly, Firefox doesn’t support it. This has been the case for at least the past seven years, as I remember telling a colleague at my previous job about useful macOS shortcuts, only for him to immediately try and find it “didn’t work.”&lt;/p&gt;
+&lt;p&gt;Firefox is my main browser at the moment (because of &lt;a href=&#34;https://github.com/el1t/uBlock-Safari/issues/158&#34;&gt;the changes to content-blocking in Safari&lt;/a&gt;), so this has become a bit of an irritation.&lt;/p&gt;
+&lt;p&gt;Here’s a Keyboard Maestro macro to poorly replicate ⌃T in Firefox:&lt;/p&gt;
+&lt;figure&gt;&lt;a href=&#34;transpose-macro.kmmacros&#34;&gt;
+    &lt;img src=&#34;transpose-macro.png&#34;
+         alt=&#34;A screenshot of a Keyboard Maestro macro to transpose characters in Firefox on macOS.&#34; width=&#34;473&#34; height=&#34;471&#34;/&gt; &lt;/a&gt;
+&lt;/figure&gt;
+&lt;p&gt;“Poorly” because it’s slower than ⌃T usually is in supporting applications, and it makes no attempt to clean up your clipboard history.&lt;/p&gt;
+&lt;p&gt;If you’re interested, you’d probably want to implement some clipboard-repair, but I use LaunchBar’s clipboard history and I can’t find a way of using the &lt;a href=&#34;https://wiki.keyboardmaestro.com/action/Delete_Past_Clipboard&#34;&gt;Delete Past Clipboard&lt;/a&gt; action in a way that doesn’t put additional unwanted items into my clipboard history. Keyboard Maestro has its own clipboard history manager, so if you’re using that (or not using one at all) then you should be well served by Delete Past Clipboard.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Shortlogging</title>
+      <link>https://www.robjwells.com/2020/04/shortlogging/</link>
+      <pubDate>Sat, 11 Apr 2020 10:47:05 +0100</pubDate>
+      
+      <guid>https://www.robjwells.com/2020/04/shortlogging/</guid>
+      <description>&lt;p&gt;Back in 2018, I was trying to think of a way where I could record work or personal activities, and what I came up with was to create a daily log file for my life, like you might have from a program with &lt;code&gt;logger.setLevel(INFO)&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;I set up a &lt;a href=&#34;https://getdrafts.com/&#34;&gt;Drafts&lt;/a&gt; action on my phone, and stuck with it for a couple of months. But there was always a certain amount of friction, more so after I changed jobs to one where I use a fairly locked-down Windows PC for most of the day.&lt;/p&gt;
+&lt;p&gt;In 2018 I stuck with it for a few months. Now, with the current coronavirus lockdown in Britain, I’m working from home and thought it might be a good idea to revive it. But I had to resolve the problem that caused me to stop in the first place: friction.&lt;/p&gt;
+&lt;p&gt;I use &lt;a href=&#34;https://www.beeminder.com&#34;&gt;Beeminder&lt;/a&gt; and knew they had something along these lines, called &lt;a href=&#34;https://github.com/tagtime/TagTime&#34;&gt;TagTime&lt;/a&gt;. But it’s not quite what I was after — it’s more of a time-tracking approach, for which I use &lt;a href=&#34;https://www.rescuetime.com/&#34;&gt;RescueTime&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;RescueTime itself has a &lt;a href=&#34;https://blog.rescuetime.com/highlights/&#34;&gt;highlights feature&lt;/a&gt;, which is philosophically what I want — record the meaningful things that you did to complement time-tracking — but recording the highlights has the same problem. I actually came to resent RescueTime a bit as I had an alert set (I think it’s one of the suggested ones) that prompts you to enter highlights after a certain amount of “productive” time. The problem was, this alert would activate my web browser and open a new tab on the highlights page, typically while I was in the middle of working on something!&lt;/p&gt;
+&lt;p&gt;Brett Terpstra has a tool called &lt;a href=&#34;https://github.com/ttscoff/doing&#34;&gt;doing&lt;/a&gt;, which now that I look at it behaves how I want (recording activities as complete) but it’s very featureful and a bit much for me.&lt;/p&gt;
+&lt;p&gt;So, obviously, I decided to roll my own.&lt;/p&gt;
+&lt;p&gt;The core of my setup is a folder which I keep at &lt;code&gt;~/Dropbox/notes/shortlog/&lt;/code&gt;, in which reside files like &lt;code&gt;shortlog-2020-04-09.txt&lt;/code&gt;. The contents of these files looks like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;2020-04-09 09:46:36 | Read Kirk Baker’s SVD notes (…)
+2020-04-09 10:00:15 | Set up Python environment for NLP coursework 2 (…)
+2020-04-09 11:30:07 | Had CND Team Meeting
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I created a &lt;a href=&#34;https://www.keyboardmaestro.com/main/&#34;&gt;Keyboard Maestro&lt;/a&gt; macro to make logging easy (&lt;a href=&#34;shortlog-prompt.kmmacros&#34;&gt;click to download&lt;/a&gt;):&lt;/p&gt;
+&lt;figure class=&#34;full-width&#34;&gt;&lt;a href=&#34;shortlog-prompt.kmmacros&#34;&gt;
+    &lt;img src=&#34;shortlog-prompt-kmmacro.png&#34;
+         alt=&#34;A screenshot showing the Keyboard Maestro macro I use to enter shortlog entries.&#34;/&gt; &lt;/a&gt;
+&lt;/figure&gt;
+&lt;p&gt;When you invoke the macro, you get a pop-up dialog like this:&lt;/p&gt;
+&lt;figure&gt;
+    &lt;img src=&#34;shortlog-prompt.png&#34;
+         alt=&#34;A screenshot of the shortlog pop-up window prompting for an entry, with a text entry field and buttons labelled “More”, “Cancel” and “Done”.&#34;/&gt; 
+&lt;/figure&gt;
+&lt;p&gt;“More” lets you log more than one entry. For convenience, if the entry field is empty and you choose “Done”, it exits without logging anything.&lt;/p&gt;
+&lt;p&gt;These entries get prepended with the date and then appended to a file named after the current date.&lt;/p&gt;
+&lt;p&gt;TagTime randomly polls you at an interval drawn from a Poisson distribution. I didn’t want to get into the weeds on that, so I took their average poll time (45 minutes) and set up another macro to invoke the shortlog entry macro that often during my normal waking hours. This can be a bit annoying if you’re focussed on a particular task, in a similar way to the RescueTime highlight prompt, so I found it useful to create a macro that toggles the automatic prompting (which I invoke through Keyboard Maestro’s find-by-name palette as it doesn’t need its own shortcut).&lt;/p&gt;
+&lt;p&gt;On my iPhone, I’ve kept the Drafts action (&lt;a href=&#34;https://actions.getdrafts.com/a/17R&#34;&gt;which is available online&lt;/a&gt;). It’s just a single Dropbox step, with the following attributes:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Attribute&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;em&gt;fileNameTemplate&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;shortlog-[[date\|%Y-%m-%d]].txt&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;em&gt;folderTemplate&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;/notes/shortlog/&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;em&gt;template&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;[[date\|%Y-%m-%d %H:%M:%S]] \| [[draft]]&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;em&gt;writeType&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;append&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Drafts writes a newline before the content defined in &lt;em&gt;template&lt;/em&gt;, which I can’t seem to disable. (Advice greatly appreciated.) I’ve got a simple &lt;code&gt;sed&lt;/code&gt; command I run occasionally to remove the blank lines if it’s bugging me.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;sed -i &lt;span class=&#34;s1&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt; -e &lt;span class=&#34;s1&#34;&gt;&amp;#39;/^\s*$/d&amp;#39;&lt;/span&gt;
+    &lt;span class=&#34;s2&#34;&gt;&amp;#34;/Users/&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$USER&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/Dropbox/notes/shortlog/shortlog-&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;date +%Y-%m-%d&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;.txt&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Lastly, I also wanted these shortlog entries available as RescueTime highlights, as it allows you to review your tracked time with your manual “annotations” alongside. I wrote a fairly short Python script to do this (&lt;a href=&#34;https://github.com/robjwells/shortlog_to_rescuetime_highlights&#34;&gt;repo&lt;/a&gt;, &lt;a href=&#34;https://github.com/robjwells/shortlog_to_rescuetime_highlights/blob/master/shortlog_to_rescuetime.py&#34;&gt;script itself&lt;/a&gt;), which runs each morning and logs the previous days’s entries as highlights by POSTing them to the RescueTime API. It’s nuts-and-bolts so I won’t review the code here.&lt;/p&gt;
+&lt;p&gt;The one thing that I do want to note is that I have a job set up in &lt;a href=&#34;https://www.peterborgapps.com/lingon/&#34;&gt;Lingon&lt;/a&gt; (a friendly interface to &lt;code&gt;launchd&lt;/code&gt;) to do this each day, and that &lt;code&gt;launchd&lt;/code&gt; will run jobs missed while asleep (though not those missed if the computer is powered off) at the next opportunity:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Unlike &lt;code&gt;cron&lt;/code&gt; which skips job invocations when the computer is asleep, &lt;code&gt;launchd&lt;/code&gt; will start the job the next time the computer wakes up. If multiple intervals transpire before the computer is woken, those events will be coalesced into one event upon wake from sleep.
+(From &lt;code&gt;man launchd.plist&lt;/code&gt;)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I don’t believe that you can achieve this with Keyboard Maestro, as the &lt;a href=&#34;https://wiki.keyboardmaestro.com/trigger/Time_of_Day&#34;&gt;wiki page for the time of day trigger&lt;/a&gt; contains this warning:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Remember that the Mac must be awake for the trigger to happen, and if the Mac is sleeping the macro will not fire at a later time.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;But I’d be very happy to be corrected if there’s a way to achieve the &lt;code&gt;launchd&lt;/code&gt; behaviour through Keyboard Maestro.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Permanent</title>
+      <link>https://www.robjwells.com/2020/03/permanent/</link>
+      <pubDate>Sun, 29 Mar 2020 13:39:14 +0100</pubDate>
+      
+      <guid>https://www.robjwells.com/2020/03/permanent/</guid>
+      <description>&lt;p&gt;Over the past couple of days I’ve cleared through my Pinboard bookmarks, getting my “unread” count down from a ludicrous 1,000 or so to just six as of right now, and tagging or deleting the 200-odd untagged bookmarks.&lt;/p&gt;
+&lt;p&gt;I ran the “find dead bookmarks” command in &lt;a href=&#34;https://bananafishsoftware.com/products/spillo/&#34;&gt;Spillo&lt;/a&gt; this morning and got about 100.
+Some of those are entire sites going offline, including ones active fairly recently, one deleted despite posting a searing set of essays last May.
+One is a site that I knew had stopped publishing, after several years of great articles and interviews, but has now vanished from the web.
+(Thankfully I still have a cached copy; Pinboard’s archiving feature is absolutely worth paying for.)&lt;/p&gt;
+&lt;p&gt;One site, of an economics thinktank, fairly recently redesigned its site and its URL structure.
+It would have been a simple job to redirect the URLS, as the page portion of the URL remained the same, but instead they were left broken.&lt;/p&gt;
+&lt;p&gt;It was an interesting experience, rediscovering some interesting links from my 10 years of bookmarking (of varying intensity over that period).
+It was interesting also to see who was still around and who had gone, and who had decided to delete parts of their output.&lt;/p&gt;
+&lt;p&gt;When I moved this site off Tumblr in autumn 2015, and made it static, I redirected the URLs of the 50 posts I wanted to keep (since I don’t write much, this is about 50% of the current total; I didn’t republish some that I was particularly embarrassed by or were at that point entirely out of date and irrelevant).
+This couldn&amp;rsquo;t be done algorithmically, as I had to map an opaque number to a more traditional date-title URL, rather than just chopping out or rewriting part of the URL.
+It surprises me that people who otherwise take care over their website don’t do this.
+(After all, &lt;a href=&#34;https://www.w3.org/Provider/Style/URI&#34;&gt;Cool URIs don’t change&lt;/a&gt;.)&lt;/p&gt;
+&lt;p&gt;And for those that have gone away, they’d put real time and effort into that writing, and now it’s entirely gone, except for wherever it’s cached online.
+Obviously people have reasons for pulling articles from the web, beyond simply not caring anymore.
+But for those that have simply stopped… does that work need to come down?
+I switched this site over to Hugo recently, which wasn’t a huge job (sorry if you saw items repeat in the RSS feed).
+Still a technical task, true, but we’re at a point now where creating a static version of a site that you can just throw up somewhere like S3 or GitHub is well within the capabilities of someone who’s already bought a domain and set up Wordpress with a custom theme.&lt;/p&gt;
+&lt;p&gt;It’s just sad to see people’s hard work vanish like this.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Books of 2019</title>
+      <link>https://www.robjwells.com/2019/12/books-of-2019/</link>
+      <pubDate>Tue, 31 Dec 2019 00:50:00 +0000</pubDate>
+      
+      <guid>https://www.robjwells.com/2019/12/books-of-2019/</guid>
+      <description>&lt;p&gt;This year I finished nine books, which is the fewest since 2014 (when I finished eight books).
+I say “finished” because I track the finishing dates of books in a tab-separated values file as I’ve a habit of starting a book and then switching to something else.&lt;/p&gt;
+&lt;p&gt;The total’s significantly lower than last year’s (15), which I think can be partly attributed to &lt;a href=&#34;https://www.dcs.bbk.ac.uk/study/postgraduate/msc-computer-science/&#34;&gt;university&lt;/a&gt;, for which I’ve read bits and pieces but no books in full.
+Otherwise, 2019 has been a year of personal challenges.
+Here’s to smoother sailing in 2020!&lt;/p&gt;
+&lt;p&gt;Since there are so few, let’s look at all of them.&lt;/p&gt;
+&lt;h3 id=&#34;narcoland-by-anabel-hernández&#34;&gt;Narcoland, by Anabel Hernández&lt;/h3&gt;
+&lt;p&gt;I read most of this in 2018 and finished it off in the first week of January.
+I’d had it for a while but picked it up after watching the Mexico season of Narcos (which, as with previous seasons, unsurprisingly treats the DEA very softly), and I raced through it.
+The depth of the collusion between the state and the cartels is astonishing.
+Hernández’s revelations will force you to seriously think about what’s really going on when you hear of wars between the gangs.&lt;/p&gt;
+&lt;h3 id=&#34;mindset-by-carol-s-dweck&#34;&gt;Mindset, by Carol S Dweck&lt;/h3&gt;
+&lt;p&gt;Allison Kaptur talks about Mindset and Dweck’s findings in &lt;a href=&#34;https://pyvideo.org/pycon-us-2018/love-your-bugs.html&#34;&gt;her Pycon talk Love your Bugs&lt;/a&gt; (which is great!).
+The lessons of studying the two mindsets in different fields are very interesting, as are the sections where Dweck discusses how the two mindsets can be induced and reinforced.&lt;/p&gt;
+&lt;h3 id=&#34;code-by-charles-petzold&#34;&gt;Code, by Charles Petzold&lt;/h3&gt;
+&lt;p&gt;Code is easily one of my favourite books.
+It builds up a computer from simple pieces, and the journey is very fun.
+I first read it in 2013, and re-read it this year during my computer architecture &amp;amp; operating systems module.
+I will happily talk your ear off about how great it is, but you’re probably better served by reading the book itself.&lt;/p&gt;
+&lt;h3 id=&#34;blackshirts-and-reds-by-michael-parenti&#34;&gt;Blackshirts and Reds, by Michael Parenti&lt;/h3&gt;
+&lt;p&gt;Parenti starts with a look at how fascism serves the interests of capital, follows with a clear-eyed defence of communism and communist states (&lt;a href=&#34;https://www.youtube.com/watch?v=6Tmi7JN3LkA&#34;&gt;here’s a short video summary of his position&lt;/a&gt;), and spells out the disaster wrought by the restoration of capitalism in eastern Europe.&lt;/p&gt;
+&lt;p&gt;It’s well worth reading, and I’d highly recommend it to anyone drawn to left politics or curious about the Soviet Union.&lt;/p&gt;
+&lt;h3 id=&#34;the-century-of-revolution-by-christopher-hill&#34;&gt;The Century of Revolution, by Christopher Hill&lt;/h3&gt;
+&lt;p&gt;Eric Hobsbawm, in his The Age of Revolution, which summarises the French and Industrial revolutions and their effects, talks about the way that bourgeois revolutions established support for domestic capitalism as the primary role of the state.
+He makes a sort-of off-hand comment about how the English revolution (or civil wars if you don’t like the R-word) had established that position here 150 years before France.&lt;/p&gt;
+&lt;p&gt;Hill’s book shows you how and why that happened. I’d recommend it.&lt;/p&gt;
+&lt;p&gt;Some snippets felt a bit alien as I had relatively little knowledge of the period — presumably a difference between being an adult in 1960 and 2019 — but it’s very readable and understandable.&lt;/p&gt;
+&lt;p&gt;Hill covers “the long 17th century” — 1603–1714 — and it can be quite detailed in parts.
+Verso have recently reissued his &lt;a href=&#34;https://www.versobooks.com/books/2683-reformation-to-industrial-revolution&#34;&gt;Reformation to Industrial Revolution&lt;/a&gt;, which covers a longer sweep (1530–1780) in fewer pages so presumably focuses on the core trends and events.
+I have a copy but have yet to read it.
+A quick glance suggests it doesn’t dig into the how or why of the Reformation, so you’ll want to look elsewhere if that’s something you’re interested in.&lt;/p&gt;
+&lt;h3 id=&#34;a-history-of-modern-computing-1e-by-paul-e-ceruzzi&#34;&gt;A History of Modern Computing (1e), by Paul E Ceruzzi&lt;/h3&gt;
+&lt;p&gt;This is the first edition, written in the mid-1990s, so stops amid the personal computer era. There’s a second edition published in 2003, and Ceruzzi has written a concise history for MIT Press which is far, far shorter and should be considered entirely separately.&lt;/p&gt;
+&lt;p&gt;It’s one for the enthusiast, I’ll grant you, but I very much enjoyed this book.
+I was mostly interested in learning about early electronic computers, and here we start really with &lt;a href=&#34;https://en.wikipedia.org/wiki/Eckert%E2%80%93Mauchly_Computer_Corporation&#34;&gt;Eckert and Mauchly&lt;/a&gt; and the UNIVAC, through IBM, DEC and so on.
+Ceruzzi does a good job of explaining both the technical and business-military aspects of the computer industry’s development.&lt;/p&gt;
+&lt;p&gt;It’s very well written, and I’d recommend it to those interested in how we got from ENIAC and Colossus to here.&lt;/p&gt;
+&lt;h3 id=&#34;mindhunter-by-john-douglas-and-mark-olshaker&#34;&gt;Mindhunter, by John Douglas and Mark Olshaker&lt;/h3&gt;
+&lt;p&gt;The TV series is phenomenal, but it’s fictionalised to make for gripping viewing.
+John Douglas is the “real” Holden Ford, and his book details how the profiling programme got going and how it worked, and digs into more of the detail of profiling than you get in the show.
+There’s a good deal of colour and, strange enough given the horrific crimes, personal warmth in the book.
+Very interesting and readable.&lt;/p&gt;
+&lt;h3 id=&#34;turings-cathedral-by-george-dyson&#34;&gt;Turing’s Cathedral, by George Dyson&lt;/h3&gt;
+&lt;p&gt;The subtitle is “The Origins of the Digital Universe,” though if you really want that see Code for the technical aspects and Ceruzzi’s History for the story.
+The book does not live up to the subtitle and this seems to have irked some reviewers at Amazon and Goodreads.
+The &lt;a href=&#34;https://en.wikipedia.org/wiki/IAS_machine&#34;&gt;IAS machine&lt;/a&gt; at the heart of it was not nearly the first digital computer (&lt;a href=&#34;https://en.wikipedia.org/wiki/List_of_vacuum_tube_computers&#34;&gt;see this list&lt;/a&gt;) nor itself hugely significant in the history of computers.
+Ceruzzi refers to it as being the basis of the &lt;a href=&#34;https://en.wikipedia.org/wiki/IBM_701&#34;&gt;IBM 701&lt;/a&gt; — John von Neumann, in charge of the IAS project, consulted for IBM — but otherwise it doesn’t feature in his book, save for an aside about one of the reports written as part of the project.&lt;/p&gt;
+&lt;p&gt;This, however, is to entirely miss the point.&lt;/p&gt;
+&lt;p&gt;Dyson has written an incredibly human book about the beginning of the computing age.
+While the book might appear to be about the computer built at the IAS, it is really about the people who were involved, what their ideas and concerns were and, maybe, what computers meant or would mean to them.&lt;/p&gt;
+&lt;p&gt;It’s a book about people and ideas, only tangentially about technology.
+Recommended.&lt;/p&gt;
+&lt;h3 id=&#34;surveillance-valley-by-yasha-levine&#34;&gt;Surveillance Valley, by Yasha Levine&lt;/h3&gt;
+&lt;p&gt;I only came across Yasha Levine this year, and I believe it was about something “more” political.&lt;/p&gt;
+&lt;p&gt;I say “more” with the scare-quotes because the internet is political.
+Its creation was political, its existence is political, its ramifications for everyday life are political.&lt;/p&gt;
+&lt;p&gt;Surveillance Valley made me grasp that.
+Yasha’s quip that “the internet is a weapon” took me aback at first.
+It was created to serve US imperialism and still today serves US imperialism.&lt;/p&gt;
+&lt;p&gt;An inexact analogy: computers are a weapon. The IAS machine described in Turing’s Cathedral and its siblings were used to create &lt;a href=&#34;https://en.wikipedia.org/wiki/Thermonuclear_weapon&#34;&gt;weapons that threaten all life on Earth&lt;/a&gt;, and modern machines are used in &lt;a href=&#34;https://www.thebureauinvestigates.com/stories/2017-01-17/obamas-covert-drone-war-in-numbers-ten-times-more-strikes-than-bush&#34;&gt;killer robots&lt;/a&gt; and to &lt;a href=&#34;https://morningstaronline.co.uk/article/w/cuba-brands-cyber-attack-on-venezuelas-electricity-system-an-act-of-terror&#34;&gt;damage civilian infrastructure&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;That doesn’t capture the scope of Surveillance Valley, though.
+Ultimately it’s about the importance of taking political control over our societies, control currently held by capital and the state and military machinery it controls.&lt;/p&gt;
+&lt;p&gt;I recommend it to anyone — it’s incredibly well written and several sections made me laugh out loud, and its subject is more important than ever.&lt;/p&gt;
+&lt;h3 id=&#34;reading-resolutions-for-2020&#34;&gt;Reading resolutions for 2020&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Read more books.&lt;/p&gt;
+&lt;p&gt;It’s probably too much to aim for 31 (the number I read in 2015 and 2016), but I think 20 is probably achievable.
+My university project is due in by September 14, so after that I’ll have no excuse(!).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Buy fewer books.&lt;/p&gt;
+&lt;p&gt;I… don’t really want to work out how many books I’ve bought this year. It’s more than nine.
+I’d quite like to buy no books “for pleasure” in 2020, given that I’ve got enough unread for several years.
+The same goes for books that I might class as technical-education but I don’t &lt;em&gt;need&lt;/em&gt; to buy. I have enough for a long time.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Write summaries as I go.&lt;/p&gt;
+&lt;p&gt;Writing this post has been enjoyable, but it’s done nothing to disprove my nagging feeling that writing posts on here takes hours every time.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

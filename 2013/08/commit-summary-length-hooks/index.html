@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <title>Primary Unit – Commit summary length hooks</title>
+  
+  
+<meta charset="utf-8">
+
+<link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+<link rel="alternate" type="application/rss+xml" href="/rss.xml" title="Primary Unit" />
+<link rel="alternate" type="application/json" href="/feed.json" title="Primary Unit" />
+
+<link rel="mask-icon" href="/favicon.svg" color="#1369BF">
+<link rel="apple-touch-icon-precomposed" href="/favicon.png">
+<link rel="icon" href="/favicon.ico">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A blog by Rob Wells, mostly about computer stuff.">
+
+<style>html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strong,sub,sup,var,b,u,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,menu,nav,output,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}input,button{font-family:inherit}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section{display:block}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}html{box-sizing:border-box;text-size-adjust:100%}*,*:before,*:after{box-sizing:inherit}:root{--grey: #607080;--grey10: #eff0f2;--grey5: #f7f8f9;--blue: #1369bf;--blue10: #e7eff8;--purple: #7436b3;--lineSpace: 1.75rem;--halfLine: calc(var(--lineSpace) / 2);--quarterLine: calc(var(--lineSpace) / 4);--bigGap: calc(var(--lineSpace) * 2);--paragraphWidth: 40rem;--wrapperWidth: 50rem;--huge: 1.75rem;--big: 1.5625rem;--medium: 1.375rem;--text: 1.125rem;--small: 0.875rem;--codeInText: 0.875em;--bodyFonts: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Oxygen", Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, sans-serif;--monospace: 'Source Code Pro', 'Consolas', 'Menlo', 'Monaco', monospace}body{background-color:var(--grey5);font-family:var(--bodyFonts);font-size:var(--text);font-style:normal;font-weight:400;line-height:1.55555;text-size-adjust:100%;-webkit-text-size-adjust:100%}.wrapper{margin:0 auto;max-width:var(--wrapperWidth);padding:var(--lineSpace)var(--halfLine)}h2,h3,h4{margin:0 0 var(--lineSpace)}h2{font-size:var(--huge)}h3{font-size:var(--big)}h4{font-size:var(--medium)}blockquote,figure,p,pre,table,caption,dl,ol,ul,div.highlight{margin-bottom:var(--lineSpace)}blockquote,pre,div.highlight{background-color:var(--grey10);padding:var(--halfLine)}blockquote{font-style:italic}blockquote em,blockquote i{font-style:normal}blockquote p:last-child{margin-bottom:0}figcaption{font-style:italic}hr{border:none;border-top:1px solid var(--grey);margin:var(--lineSpace)0}img,video{box-sizing:content-box;border:1px solid var(--grey);height:auto;max-width:100%}pre{overflow-x:auto}dl,ol,ul{margin-bottom:var(--lineSpace)}ol,ul{list-style-position:outside;padding-left:var(--lineSpace)}ol{list-style-type:decimal}ul{list-style-type:square}a:link{color:var(--blue);text-decoration:underline}a:visited{color:var(--purple)}a:focus,a:hover,a:active{background-color:var(--blue10)}strong,b{font-weight:700}em,i{font-style:italic}code{font-size:var(--codeInText)}.highlight,pre code,small{font-size:var(--small)}.highlight,code{font-family:var(--monospace)}small{color:var(--grey)}table{width:100%}.table-container{overflow-x:auto}caption{font-style:italic}thead{border-bottom:1px solid var(--grey)}tfoot{border-top:1px solid var(--grey)}th,td{width:auto;padding:var(--halfLine);overflow:auto;text-align:left}th{background-color:var(--grey10);font-weight:700}.table-figures{text-align:right;font-family:var(--monospace)}.site-header{border-left:var(--quarterLine)solid var(--blue);display:flex;flex-wrap:wrap;margin-bottom:var(--lineSpace);padding-left:var(--quarterLine)}.site-title-container{flex-shrink:0;margin-right:var(--lineSpace);max-width:100%}.site-title{font-size:var(--huge);line-height:var(--huge);margin-bottom:0}.site-byline{margin-bottom:0}.site-links{color:var(--grey);list-style-type:none;margin-bottom:0;padding:0}.site-footer{margin-top:var(--bigGap)}article{border-bottom:1px solid var(--grey);margin-bottom:var(--bigGap)}article:last-of-type{border-bottom:none}article header{margin-bottom:var(--lineSpace)}article header h2{margin-bottom:0}article header time{color:var(--grey)}article p{max-width:var(--paragraphWidth)}article li{margin-bottom:var(--halfLine);max-width:calc(var(--paragraphWidth) - var(--lineSpace))}.index-date{color:var(--grey);font-family:var(--monospace);font-size:var(--small);min-width:6rem;margin-right:var(--halfLine)}.index-item{margin-bottom:var(--halfLine)}.index-link{align-items:baseline;display:flex}.index-list{padding-left:0;list-style-type:none}.flag{background-color:var(--blue10);border-left:var(--quarterLine)solid var(--blue);margin-bottom:var(--lineSpace);padding:var(--halfLine)var(--quarterLine)}.flag :last-child{margin-bottom:0}.full-width{max-width:100%}.mute-links a{text-decoration:none;color:inherit}.no-border{border:0}.no-border img{border:0}.no-squish{overflow:auto}.no-squish img{max-width:none}@media screen and (min-width:40rem){.pull-left{float:left;clear:left;margin-right:var(--halfLine)}.pull-right{float:right;clear:right;margin-left:var(--halfLine)}.pull-left img,.pull-right img{display:block;margin-bottom:var(--lineSpace)}}</style>
+  
+  <style>div.highlight>pre.chroma{padding:0;margin:0}:root{--lineNumberGrey: #6D6D6D;--operatorOrange: #B45000;--stringGreen: #357D06}.chroma .x{color:#000}.chroma .err{color:#a40000}.chroma .ln{margin-right:var(--halfLine);padding:0;color:var(--lineNumberGrey)}.chroma .k{color:#204a87;font-weight:700}.chroma .kc{color:#204a87;font-weight:700}.chroma .kd{color:#204a87;font-weight:700}.chroma .kn{color:#204a87;font-weight:700}.chroma .kp{color:#204a87;font-weight:700}.chroma .kr{color:#204a87;font-weight:700}.chroma .kt{color:#204a87;font-weight:700}.chroma .n{color:#000}.chroma .na{color:#c4a000}.chroma .nb{color:#204a87}.chroma .bp{color:#3465a4}.chroma .nc{color:#000}.chroma .no{color:#000}.chroma .nd{color:#5c35cc;font-weight:700}.chroma .ni{color:var(--operatorOrange)}.chroma .ne{color:#c00;font-weight:700}.chroma .nf{color:#000}.chroma .fm{color:#000}.chroma .nl{color:#f57900}.chroma .nn{color:#000}.chroma .nx{color:#000}.chroma .py{color:#000}.chroma .nt{color:#204a87;font-weight:700}.chroma .nv{color:#000}.chroma .vc{color:#000}.chroma .vg{color:#000}.chroma .vi{color:#000}.chroma .vm{color:#000}.chroma .l{color:#000}.chroma .ld{color:#000}.chroma .s{color:var(--stringGreen)}.chroma .sa{color:var(--stringGreen)}.chroma .sb{color:var(--stringGreen)}.chroma .sc{color:var(--stringGreen)}.chroma .dl{color:var(--stringGreen)}.chroma .sd{color:#8f5902;font-style:italic}.chroma .s2{color:var(--stringGreen)}.chroma .se{color:var(--stringGreen)}.chroma .sh{color:var(--stringGreen)}.chroma .si{color:var(--stringGreen)}.chroma .sx{color:var(--stringGreen)}.chroma .sr{color:var(--stringGreen)}.chroma .s1{color:var(--stringGreen)}.chroma .ss{color:var(--stringGreen)}.chroma .m{color:#0000cf;font-weight:700}.chroma .mb{color:#0000cf;font-weight:700}.chroma .mf{color:#0000cf;font-weight:700}.chroma .mh{color:#0000cf;font-weight:700}.chroma .mi{color:#0000cf;font-weight:700}.chroma .il{color:#0000cf;font-weight:700}.chroma .mo{color:#0000cf;font-weight:700}.chroma .o{color:var(--operatorOrange);font-weight:700}.chroma .ow{color:#204a87;font-weight:700}.chroma .p{color:#000;font-weight:700}.chroma .c{color:#8f5902;font-style:italic}.chroma .ch{color:#8f5902;font-style:italic}.chroma .cm{color:#8f5902;font-style:italic}.chroma .c1{color:#8f5902;font-style:italic}.chroma .cs{color:#8f5902;font-style:italic}.chroma .cp{color:#8f5902;font-style:italic}.chroma .cpf{color:#8f5902;font-style:italic}.chroma .g{color:#000}.chroma .gd{color:#a40000}.chroma .ge{color:#000;font-style:italic}.chroma .gr{color:#ef2929}.chroma .gh{color:navy;font-weight:700}.chroma .gi{color:#00a000}.chroma .go{color:#000;font-style:italic}.chroma .gp{color:#8f5902}.chroma .gs{color:#000;font-weight:700}.chroma .gu{color:purple;font-weight:700}.chroma .gt{color:#a40000;font-weight:700}.chroma .gl{color:#000;text-decoration:underline}.chroma .w{color:#f8f8f8;text-decoration:underline}</style>
+
+</head>
+
+  <body>
+    <div class="wrapper">
+      
+  <header class="site-header">
+
+    <div class="site-title-container mute-links">
+      <h1 class="site-title"><a href="/">Primary Unit</a></h1>
+      <p class="site-byline"><i>by</i> Rob Wells</p>
+    </div>
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/books/">Books I’ve read</a></li>
+        <li>
+          Feed:
+          <a href="/feed.json">JSON</a>,
+          <a href="/rss.xml">RSS</a>
+        </li>
+      </ul>
+    </nav>
+
+  </header> 
+
+      <main>
+        
+    <article>
+      <header>
+        <h2 class="mute-links"><a href="/2013/08/commit-summary-length-hooks/">Commit summary length hooks</a></h2>
+        
+        <p><time datetime='2013-08-03T13:31:00&#43;0000'>Saturday, August 3 2013</time></p>
+        
+      </header>
+      <p>Despite planning to take a break from doing computer work in my spare time, I’ve haven’t stopped playing with Mercurial and Git.</p>
+<p>Right now I’m learning towards Mercurial (and am using it to track these blog posts) but I will still be using Git, not least because of <a href="https://github.com/robjwells">GitHub</a>.</p>
+<p>So when I wrote my first commit hook I did it in both flavours. It’s a simple Python script that rejects a commit if the first-line summary is too long (over 50 characters) or too short (10 characters). The idea is to make sure <code>hg log</code> and <code>git log (--oneline|--pretty=short)</code> are informative but brief.</p>
+<h3 id="mercurial">Mercurial</h3>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ln"> 1</span><span class="ch">#!/usr/bin/env python3</span>
+<span class="ln"> 2</span>
+<span class="ln"> 3</span><span class="kn">import</span> <span class="nn">os</span>
+<span class="ln"> 4</span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="ln"> 5</span><span class="kn">from</span> <span class="nn">termtools</span> <span class="kn">import</span> <span class="n">colour</span>
+<span class="ln"> 6</span><span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">check_output</span>
+<span class="ln"> 7</span>
+<span class="ln"> 8</span><span class="n">node</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&#34;HG_NODE&#34;</span><span class="p">]</span>
+<span class="ln"> 9</span><span class="n">message</span> <span class="o">=</span> <span class="n">check_output</span><span class="p">([</span><span class="s2">&#34;hg&#34;</span><span class="p">,</span> <span class="s2">&#34;log&#34;</span><span class="p">,</span> <span class="s2">&#34;-r&#34;</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span>
+<span class="ln">10</span>                        <span class="s2">&#34;--template&#34;</span><span class="p">,</span> <span class="s2">&#34;{desc}&#34;</span><span class="p">])</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+<span class="ln">11</span><span class="n">summary_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="ln">12</span>
+<span class="ln">13</span><span class="k">if</span> <span class="n">summary_length</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">:</span>
+<span class="ln">14</span>  <span class="k">print</span><span class="p">(</span><span class="n">colour</span><span class="p">(</span><span class="s2">&#34;! Changeset summary is too long (&gt; 50c)&#34;</span><span class="p">,</span> <span class="s2">&#34;red&#34;</span><span class="p">))</span>
+<span class="ln">15</span>  <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="ln">16</span><span class="k">elif</span> <span class="n">summary_length</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+<span class="ln">17</span>  <span class="k">print</span><span class="p">(</span><span class="n">colour</span><span class="p">(</span><span class="s2">&#34;! Changeset summary is too short (&lt; 10c)&#34;</span><span class="p">,</span> <span class="s2">&#34;red&#34;</span><span class="p">))</span>
+<span class="ln">18</span>  <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div><p>Many of <a href="http://www.selenic.com/mercurial/hgrc.5.html#hooks">Mercurial’s hook types</a> provide useful data as shell variables. In line 8 we get the node (hash) of the changeset about to be committed and use that on line 9 &amp; 10 to fetch the commit message.</p>
+<p>The call to check_output on those lines is a little confusing, but it’s essentially the equivalent of this terminal command:</p>
+<pre><code>hg log -r $HG_NODE --template {desc}
+</code></pre>
+<p>Line 11 finds the length of the first line of the commit message, and lines 13–18 checks its length. If the summary is too long or short a warning is printed and the script exits with a non-zero status to tell Mercurial to reject the commit.</p>
+<p>The colour function called on lines 14 and 17 is used to turn the warning text red. I’ll explain it below.</p>
+<h3 id="git">Git</h3>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">termtools</span> <span class="kn">import</span> <span class="n">colour</span>
+
+<span class="n">message</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">summary_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="k">if</span> <span class="n">summary_length</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">:</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">colour</span><span class="p">(</span><span class="s2">&#34;! Commit summary is too long (&gt; 50c)&#34;</span><span class="p">,</span> <span class="s2">&#34;red&#34;</span><span class="p">))</span>
+  <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">summary_length</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">colour</span><span class="p">(</span><span class="s2">&#34;! Commit summary is too short (&lt; 10c)&#34;</span><span class="p">,</span> <span class="s2">&#34;red&#34;</span><span class="p">))</span>
+  <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div><p><a href="http://git-scm.com/docs/githooks">Git’s hooks</a> include one specifically for the commit message, and when it is called Git feeds it a file containing the message — that’s what we open on line 6.</p>
+<p>We read a single line from the file on line 7, but still use the splitlines method as in the Mercurial version in order to gracefully handle newlines at the end — I don’t want to unconditionally chop the last character in case it’s actually part of the summary.</p>
+<p>The if block at the end is almost identical to the Mercurial version, save for the “commit” replacing “changeset”. This is just me trying to avoid blindly using Git terminology when discussing Mercurial.</p>
+<h3 id="usage">Usage</h3>
+<p>I include the hook in my main Mercurial config file (<code>~/.hgrc</code>), which means it applies to all repositories:</p>
+<pre><code>[hooks]
+pretxncommit.summary_length = path/to/hook/file.py
+</code></pre>
+<p>The first part of the second line is the hook type, which sets when the script should be called, and the bit after the dot is a custom name — this lets you have multiple scripts attached to a certain hook type.</p>
+<p>With Git things are a little more tricky, as the script (or a link to it) must appear in each repository’s <code>.git/hooks/</code> directory. As far as I’m aware there isn’t a built-in way of setting global hooks. I’ve toyed with the idea of writing my own little program to help set up hooks but I’m not sure if I can be bothered. I guess it will come down to how often I use hooks (and Git itself).</p>
+<p>(Benjamin Meyer’s <a href="https://github.com/icefox/git-hooks">git-hooks</a> tool is designed to help with this, but it’s written as a shell script and I can’t quite get my head round it.)</p>
+<h3 id="terminal-colouring">Terminal colouring</h3>
+<p>In both scripts the printed warnings are run through a colour function, which is something I whipped up with exactly this situation in mind.</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">colour</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+  <span class="n">COLOURS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;black&#39;</span><span class="p">:</span> <span class="s2">&#34;30&#34;</span><span class="p">,</span>
+             <span class="s1">&#39;red&#39;</span><span class="p">:</span> <span class="s2">&#34;31&#34;</span><span class="p">,</span>
+             <span class="s1">&#39;green&#39;</span><span class="p">:</span> <span class="s2">&#34;32&#34;</span><span class="p">,</span>
+             <span class="s1">&#39;yellow&#39;</span><span class="p">:</span> <span class="s2">&#34;33&#34;</span><span class="p">,</span>
+             <span class="s1">&#39;blue&#39;</span><span class="p">:</span> <span class="s2">&#34;34&#34;</span><span class="p">,</span>
+             <span class="s1">&#39;magenta&#39;</span><span class="p">:</span> <span class="s2">&#34;35&#34;</span><span class="p">,</span>
+             <span class="s1">&#39;cyan&#39;</span><span class="p">:</span> <span class="s2">&#34;36&#34;</span><span class="p">,</span>
+             <span class="s1">&#39;white&#39;</span><span class="p">:</span> <span class="s2">&#34;37&#34;</span><span class="p">}</span>
+  <span class="n">escape</span> <span class="o">=</span> <span class="s2">&#34;</span><span class="se">\x1b</span><span class="s2">&#34;</span>
+  <span class="n">reset</span> <span class="o">=</span> <span class="n">escape</span> <span class="o">+</span> <span class="s2">&#34;[0m&#34;</span>
+  <span class="n">reverse</span> <span class="o">=</span> <span class="s2">&#34;;7&#34;</span>
+
+  <span class="n">colour_code</span> <span class="o">=</span> <span class="n">COLOURS</span><span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+  <span class="n">start</span> <span class="o">=</span> <span class="n">escape</span> <span class="o">+</span> <span class="s2">&#34;[&#34;</span> <span class="o">+</span> <span class="n">colour_code</span>
+  <span class="k">if</span> <span class="n">background</span><span class="p">:</span>
+    <span class="n">start</span> <span class="o">+=</span> <span class="n">reverse</span>
+  <span class="n">start</span> <span class="o">+=</span> <span class="s2">&#34;m&#34;</span>
+
+  <span class="k">return</span> <span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="nb">str</span> <span class="o">+</span> <span class="n">reset</span><span class="p">)</span>
+</code></pre></div><p>It wraps <a href="http://en.wikipedia.org/wiki/ANSI_escape_code#Colors">ANSI colour codes</a> around a string and returns it. The action occurs in lines 14-18, where control codes are concatenated with the colour number fetched from the dictionary on lines 2-9. There’s an option to colour the background instead of the text, using the reverse code. The colour codes get stuck on the front of the string and a reset code is put on the end.</p>
+<p>You could keep this function in the hook script itself, but I keep it inside a module in Python’s search path (hence the import statements in the hooks).</p>
+<p>If you want more features the <a href="https://pypi.python.org/pypi/termcolor">termcolor module on PyPI</a> allows for setting different foreground and background colours as well as bold text, underlines, etc.</p>
+<p>I decided against using termcolor as I wanted to write my own as a test and because most of those options end up looking very ugly or are unnecessary. Coloured and reversed text is enough for me.</p>
+
+    </article>
+    
+
+      </main>
+      <footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> 
+
+    </div> 
+  </body>
+</html>

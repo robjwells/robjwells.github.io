@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <title>Primary Unit – Backups: the change</title>
+  
+  
+<meta charset="utf-8">
+
+<link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+<link rel="alternate" type="application/rss+xml" href="/rss.xml" title="Primary Unit" />
+<link rel="alternate" type="application/json" href="/feed.json" title="Primary Unit" />
+
+<link rel="mask-icon" href="/favicon.svg" color="#1369BF">
+<link rel="apple-touch-icon-precomposed" href="/favicon.png">
+<link rel="icon" href="/favicon.ico">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A blog by Rob Wells, mostly about computer stuff.">
+
+<style>html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strong,sub,sup,var,b,u,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,menu,nav,output,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}input,button{font-family:inherit}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section{display:block}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}html{box-sizing:border-box;text-size-adjust:100%}*,*:before,*:after{box-sizing:inherit}:root{--grey: #607080;--grey10: #eff0f2;--grey5: #f7f8f9;--blue: #1369bf;--blue10: #e7eff8;--purple: #7436b3;--lineSpace: 1.75rem;--halfLine: calc(var(--lineSpace) / 2);--quarterLine: calc(var(--lineSpace) / 4);--bigGap: calc(var(--lineSpace) * 2);--paragraphWidth: 40rem;--wrapperWidth: 50rem;--huge: 1.75rem;--big: 1.5625rem;--medium: 1.375rem;--text: 1.125rem;--small: 0.875rem;--codeInText: 0.875em;--bodyFonts: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Oxygen", Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, sans-serif;--monospace: 'Source Code Pro', 'Consolas', 'Menlo', 'Monaco', monospace}body{background-color:var(--grey5);font-family:var(--bodyFonts);font-size:var(--text);font-style:normal;font-weight:400;line-height:1.55555;text-size-adjust:100%;-webkit-text-size-adjust:100%}.wrapper{margin:0 auto;max-width:var(--wrapperWidth);padding:var(--lineSpace)var(--halfLine)}h2,h3,h4{margin:0 0 var(--lineSpace)}h2{font-size:var(--huge)}h3{font-size:var(--big)}h4{font-size:var(--medium)}blockquote,figure,p,pre,table,caption,dl,ol,ul,div.highlight{margin-bottom:var(--lineSpace)}blockquote,pre,div.highlight{background-color:var(--grey10);padding:var(--halfLine)}blockquote{font-style:italic}blockquote em,blockquote i{font-style:normal}blockquote p:last-child{margin-bottom:0}figcaption{font-style:italic}hr{border:none;border-top:1px solid var(--grey);margin:var(--lineSpace)0}img,video{box-sizing:content-box;border:1px solid var(--grey);height:auto;max-width:100%}pre{overflow-x:auto}dl,ol,ul{margin-bottom:var(--lineSpace)}ol,ul{list-style-position:outside;padding-left:var(--lineSpace)}ol{list-style-type:decimal}ul{list-style-type:square}a:link{color:var(--blue);text-decoration:underline}a:visited{color:var(--purple)}a:focus,a:hover,a:active{background-color:var(--blue10)}strong,b{font-weight:700}em,i{font-style:italic}code{font-size:var(--codeInText)}.highlight,pre code,small{font-size:var(--small)}.highlight,code{font-family:var(--monospace)}small{color:var(--grey)}table{width:100%}.table-container{overflow-x:auto}caption{font-style:italic}thead{border-bottom:1px solid var(--grey)}tfoot{border-top:1px solid var(--grey)}th,td{width:auto;padding:var(--halfLine);overflow:auto;text-align:left}th{background-color:var(--grey10);font-weight:700}.table-figures{text-align:right;font-family:var(--monospace)}.site-header{border-left:var(--quarterLine)solid var(--blue);display:flex;flex-wrap:wrap;margin-bottom:var(--lineSpace);padding-left:var(--quarterLine)}.site-title-container{flex-shrink:0;margin-right:var(--lineSpace);max-width:100%}.site-title{font-size:var(--huge);line-height:var(--huge);margin-bottom:0}.site-byline{margin-bottom:0}.site-links{color:var(--grey);list-style-type:none;margin-bottom:0;padding:0}.site-footer{margin-top:var(--bigGap)}article{border-bottom:1px solid var(--grey);margin-bottom:var(--bigGap)}article:last-of-type{border-bottom:none}article header{margin-bottom:var(--lineSpace)}article header h2{margin-bottom:0}article header time{color:var(--grey)}article p{max-width:var(--paragraphWidth)}article li{margin-bottom:var(--halfLine);max-width:calc(var(--paragraphWidth) - var(--lineSpace))}.index-date{color:var(--grey);font-family:var(--monospace);font-size:var(--small);min-width:6rem;margin-right:var(--halfLine)}.index-item{margin-bottom:var(--halfLine)}.index-link{align-items:baseline;display:flex}.index-list{padding-left:0;list-style-type:none}.flag{background-color:var(--blue10);border-left:var(--quarterLine)solid var(--blue);margin-bottom:var(--lineSpace);padding:var(--halfLine)var(--quarterLine)}.flag :last-child{margin-bottom:0}.full-width{max-width:100%}.mute-links a{text-decoration:none;color:inherit}.no-border{border:0}.no-border img{border:0}.no-squish{overflow:auto}.no-squish img{max-width:none}@media screen and (min-width:40rem){.pull-left{float:left;clear:left;margin-right:var(--halfLine)}.pull-right{float:right;clear:right;margin-left:var(--halfLine)}.pull-left img,.pull-right img{display:block;margin-bottom:var(--lineSpace)}}</style>
+  
+  <style>div.highlight>pre.chroma{padding:0;margin:0}:root{--lineNumberGrey: #6D6D6D;--operatorOrange: #B45000;--stringGreen: #357D06}.chroma .x{color:#000}.chroma .err{color:#a40000}.chroma .ln{margin-right:var(--halfLine);padding:0;color:var(--lineNumberGrey)}.chroma .k{color:#204a87;font-weight:700}.chroma .kc{color:#204a87;font-weight:700}.chroma .kd{color:#204a87;font-weight:700}.chroma .kn{color:#204a87;font-weight:700}.chroma .kp{color:#204a87;font-weight:700}.chroma .kr{color:#204a87;font-weight:700}.chroma .kt{color:#204a87;font-weight:700}.chroma .n{color:#000}.chroma .na{color:#c4a000}.chroma .nb{color:#204a87}.chroma .bp{color:#3465a4}.chroma .nc{color:#000}.chroma .no{color:#000}.chroma .nd{color:#5c35cc;font-weight:700}.chroma .ni{color:var(--operatorOrange)}.chroma .ne{color:#c00;font-weight:700}.chroma .nf{color:#000}.chroma .fm{color:#000}.chroma .nl{color:#f57900}.chroma .nn{color:#000}.chroma .nx{color:#000}.chroma .py{color:#000}.chroma .nt{color:#204a87;font-weight:700}.chroma .nv{color:#000}.chroma .vc{color:#000}.chroma .vg{color:#000}.chroma .vi{color:#000}.chroma .vm{color:#000}.chroma .l{color:#000}.chroma .ld{color:#000}.chroma .s{color:var(--stringGreen)}.chroma .sa{color:var(--stringGreen)}.chroma .sb{color:var(--stringGreen)}.chroma .sc{color:var(--stringGreen)}.chroma .dl{color:var(--stringGreen)}.chroma .sd{color:#8f5902;font-style:italic}.chroma .s2{color:var(--stringGreen)}.chroma .se{color:var(--stringGreen)}.chroma .sh{color:var(--stringGreen)}.chroma .si{color:var(--stringGreen)}.chroma .sx{color:var(--stringGreen)}.chroma .sr{color:var(--stringGreen)}.chroma .s1{color:var(--stringGreen)}.chroma .ss{color:var(--stringGreen)}.chroma .m{color:#0000cf;font-weight:700}.chroma .mb{color:#0000cf;font-weight:700}.chroma .mf{color:#0000cf;font-weight:700}.chroma .mh{color:#0000cf;font-weight:700}.chroma .mi{color:#0000cf;font-weight:700}.chroma .il{color:#0000cf;font-weight:700}.chroma .mo{color:#0000cf;font-weight:700}.chroma .o{color:var(--operatorOrange);font-weight:700}.chroma .ow{color:#204a87;font-weight:700}.chroma .p{color:#000;font-weight:700}.chroma .c{color:#8f5902;font-style:italic}.chroma .ch{color:#8f5902;font-style:italic}.chroma .cm{color:#8f5902;font-style:italic}.chroma .c1{color:#8f5902;font-style:italic}.chroma .cs{color:#8f5902;font-style:italic}.chroma .cp{color:#8f5902;font-style:italic}.chroma .cpf{color:#8f5902;font-style:italic}.chroma .g{color:#000}.chroma .gd{color:#a40000}.chroma .ge{color:#000;font-style:italic}.chroma .gr{color:#ef2929}.chroma .gh{color:navy;font-weight:700}.chroma .gi{color:#00a000}.chroma .go{color:#000;font-style:italic}.chroma .gp{color:#8f5902}.chroma .gs{color:#000;font-weight:700}.chroma .gu{color:purple;font-weight:700}.chroma .gt{color:#a40000;font-weight:700}.chroma .gl{color:#000;text-decoration:underline}.chroma .w{color:#f8f8f8;text-decoration:underline}</style>
+
+</head>
+
+  <body>
+    <div class="wrapper">
+      
+  <header class="site-header">
+
+    <div class="site-title-container mute-links">
+      <h1 class="site-title"><a href="/">Primary Unit</a></h1>
+      <p class="site-byline"><i>by</i> Rob Wells</p>
+    </div>
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/books/">Books I’ve read</a></li>
+        <li>
+          Feed:
+          <a href="/feed.json">JSON</a>,
+          <a href="/rss.xml">RSS</a>
+        </li>
+      </ul>
+    </nav>
+
+  </header> 
+
+      <main>
+        
+    <article>
+      <header>
+        <h2 class="mute-links"><a href="/2017/03/backups-the-change/">Backups: the change</a></h2>
+        
+        <p><time datetime='2017-03-21T01:05:00&#43;0000'>Tuesday, March 21 2017</time></p>
+        
+      </header>
+      <p>To recount from <a href="/2017/03/backups-before/">last time</a>, our backup strategy was a mess. The tools were solid but used in such a way that the common case (fast file restoration) was likely to fail, even if the rare case (complete disk failure) was covered.</p>
+<p>That alone should have made me act sooner than I did. But ultimately the common case was so rare that the pain it caused wasn’t sufficiently motivating. That combined with an already set plan to make the change when the server hardware was changed, a reluctance to spend money that delayed the hardware change, and a near-total lack of time. So it didn’t happen for about 2.5 years after I got the job.</p>
+<p>What finally prompted me to overhaul the backups was a nerve-wracking hour late last year when the Mac Mini server became unresponsive and would fail to start up with its external drives attached.</p>
+<p>Detaching the drives, booting and then reattaching the drives got us back to normal. (This had happened before; I think it might have been connected to the third-party RAID driver we were using, but I don’t know that for sure.)</p>
+<p>As a precaution I checked the server’s backups. None had completed in five days. Understand that there was no monitoring; checking required logging in to the machine and looking at the Arq interface and SuperDuper’s schedule.</p>
+<p>The <a href="https://www.arqbackup.com">Arq</a> agent had hung and I believe <a href="http://www.shirt-pocket.com">SuperDuper</a> had too, just frozen in the middle of a scheduled copy. As I noted <a href="/2017/03/backups-before/">before</a>, these are both solid pieces of software so I’m very much blaming the machine itself and the way it was set up.</p>
+<p>Shortly after I ordered a replacement Mac Mini (with a 1TB <a href="https://support.apple.com/en-gb/HT202574">Fusion</a> drive that feels nearly as fast as my SSD at home) and a bunch of new external drives.</p>
+<h3 id="hardware">Hardware</h3>
+<p>Previously we had been using various 3.5″ drives in various enclosures.</p>
+<p>I don’t know what the professional advice about using internal drives in enclosures versus external drives, but my preference is for “real” external drives, mostly because they’re better-designed when it comes to using several of them, they seem to be better ventilated and quieter, and they’re less hassle.</p>
+<p>All of our existing drives were several years old, the newest 2.5 years (and I managed to brick that one through impatience — a separate story), so they all needed replacing.</p>
+<p>I bought four <a href="http://www.techradar.com/reviews/pc-mac/pc-components/storage/toshiba-4tb-canvio-usb-3-0-external-hard-drive-1261227/review">4TB USB3 Toshiba</a> drives, which run at 7,200 RPM using drives apparently manufactured by someone else. That <a href="http://www.techradar.com/reviews/pc-mac/pc-components/storage/toshiba-4tb-canvio-usb-3-0-external-hard-drive-1261227/review">review</a> says they’re noisy, but I’ve had all four next to my desk (in an office) since the start of the year, with at least one reading constantly (more on that later), and they’re OK. I might feel differently if I was using one in my quiet bedroom at home, but it’s hard to tell.</p>
+<p>Funnily enough, you can no longer buy these drives from the retailer where we got them. But from memory they were about £100 each, maybe a bit less.</p>
+<p>More recently I bought a 1TB USB3 Toshiba Canvio 2.5″ external drive to serve as a SuperDuper clone. (Not to match the 4TB Toshiba drives, but because it was well reviewed and cheaper than others.)</p>
+<p>In sum, here’s our stock of drives:</p>
+<ul>
+<li>1 in the Mac Mini. (You can’t buy dual-drive Minis anymore.)</li>
+<li>2 Time Machine drives.</li>
+<li>1 nightly SuperDuper clone.</li>
+<li>1 for the 2002-2016 archives.</li>
+<li>1 for the post-2016 archives.</li>
+</ul>
+<h4 id="redundancy">Redundancy</h4>
+<p>One of the biggest changes is one that’s basically invisible. Beforehand we had loads of drives, not all of which I mentioned last time.</p>
+<ul>
+<li>2 in the Mac Mini server.</li>
+<li>2 for daily/3-hourly clones (each drive containing two partitions).</li>
+<li>2 for the 2002-2011 archives.</li>
+<li>2 for the post-2011 archives.</li>
+</ul>
+<p>All of them were in <a href="https://en.wikipedia.org/wiki/Standard_RAID_levels#RAID_1">RAID 1</a>, where each drive contains a copy of the data. The idea behind this is that one drive can fail and you can keep going.</p>
+<p>We were using a third-party RAID driver by a long-standing vendor. I won’t name them because I didn’t get on with the product, but I don’t want to slight it unfairly.</p>
+<p>The RAID software frequently cried wolf — including on a new external drive that lasted 2.5 years until I broke it accidentally — so I got to a point where I just didn’t believe any of its warnings.</p>
+<p>The worst was a pop-up once a day warning that one of the drives inside the Mini was likely to fail within the next few weeks. I got that message for over two years. I’d only infrequently log in to the Mini, so I’d have to click through weeks of pop-ups. The drive still hasn’t died.</p>
+<p>As I’ve made clear, the machine itself was a pain to work with and that may have been the root problem. But I won’t be using the RAID driver again.</p>
+<p>That experience didn’t encourage me to carry over the RAID setup, but the main factor in deciding against using RAID was cost. As we openly admit in the paper, our place isn’t flush with cash so we try to make the best use of what we’ve got.</p>
+<p>The demise of the dual-drive Mini means that the internal drive isn’t mirrored, and that would have been the obvious candidate. So if I were to buy extra drives for a RAID mirror, it might be for the external archive drives. They are backed up but if either drive were to snuff it most of their contents would be unavailable for a period.</p>
+<p>But buying mirror drives means that money isn’t available for other, more pressing needs.</p>
+<h3 id="backup-strategy">Backup strategy</h3>
+<p>OK, with that out of the way, let’s talk about what we <em>are</em> doing now. In short:</p>
+<ul>
+<li>Time Machine backups every 20 minutes, rotated between two drives.</li>
+<li>Nightly SuperDuper clones to a dedicated external drive.</li>
+<li>Arq backups once an hour.</li>
+<li>“Continuous” <a href="https://www.backblaze.com">Backblaze</a> backups.</li>
+</ul>
+<h4 id="time-machine">Time Machine</h4>
+<p>I’m a big fan of Time Machine; I’ve been using it for years and very rarely had problems. But Time Machine <a href="http://mjtsai.com/blog/tag/timemachine/">does have</a> <a href="https://joeontech.net//why-i-dont-rely-on-time-machine.html">problems</a>. I wouldn’t recommend using Time Machine by itself, particularly not if you’ve just got a single external disk.</p>
+<p>There are a couple of reasons for using two drives for Time Machine:</p>
+<ul>
+<li>Keep backup history if one drive dies.</li>
+<li>Perform backups frequently without unduly stressing a drive.</li>
+<li>Potentially a better chance of withstanding <a href="https://joeontech.net//why-i-dont-rely-on-time-machine.html">a Time Machine problem</a>. (Perhaps? Fortunately this hasn’t happened to me yet.)</li>
+</ul>
+<p>Because of the nature of our work in the newsroom, a lot can change with a page or an article in a very short span of time, yet as we approach deadline there may not be any time to recreate lost work. So I run Time Machine every 20 minutes via a script.</p>
+<p>It started off life as <a href="https://nathangrigg.com/2014/03/automounting-time-machine">a shell script by Nathan Grigg</a>, which I was first attracted to because at home my Time Machine drives sit next to my iMac — so between backups I wanted them unmounted and not making any noise. I’ve since recreated it in Python and expanded its logging.</p>
+<p>Here’s the version I use at home:</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ln"> 1</span><span class="ch">#!/usr/local/bin/python3</span>
+<span class="ln"> 2</span><span class="s2">&#34;&#34;&#34;Automatically start TimeMachine backups, with rotation&#34;&#34;&#34;</span>
+<span class="ln"> 3</span>
+<span class="ln"> 4</span><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="ln"> 5</span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="ln"> 6</span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="ln"> 7</span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="ln"> 8</span>
+<span class="ln"> 9</span><span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+<span class="ln">10</span>  <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+<span class="ln">11</span>  <span class="n">style</span><span class="o">=</span><span class="s1">&#39;{&#39;</span><span class="p">,</span>
+<span class="ln">12</span>  <span class="n">format</span><span class="o">=</span><span class="s1">&#39;{asctime}  {levelname}  {message}&#39;</span><span class="p">,</span>
+<span class="ln">13</span>  <span class="n">datefmt</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M&#39;</span>
+<span class="ln">14</span><span class="p">)</span>
+<span class="ln">15</span>
+<span class="ln">16</span><span class="n">TM_DRIVE_NAMES</span> <span class="o">=</span> <span class="p">[</span>
+<span class="ln">17</span>  <span class="s1">&#39;HG&#39;</span><span class="p">,</span>
+<span class="ln">18</span>  <span class="s1">&#39;Orson-A&#39;</span><span class="p">,</span>
+<span class="ln">19</span>  <span class="s1">&#39;Orson-B&#39;</span><span class="p">,</span>
+<span class="ln">20</span>  <span class="p">]</span>
+<span class="ln">21</span>
+<span class="ln">22</span><span class="n">DiskutilAction</span> <span class="o">=</span> <span class="n">Enum</span><span class="p">(</span><span class="s1">&#39;DiskutilAction&#39;</span><span class="p">,</span> <span class="s1">&#39;mount unmount&#39;</span><span class="p">)</span>
+<span class="ln">23</span>
+<span class="ln">24</span>
+<span class="ln">25</span><span class="k">def</span> <span class="nf">_diskutil_interface</span><span class="p">(</span><span class="n">drive_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">DiskutilAction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="ln">26</span>  <span class="s2">&#34;&#34;&#34;Run diskutil through subprocess interface
+</span><span class="ln">27</span><span class="s2">
+</span><span class="ln">28</span><span class="s2">  This is abstracted out because other the two (un)mounting functions
+</span><span class="ln">29</span><span class="s2">  would duplicate much of their code.
+</span><span class="ln">30</span><span class="s2">
+</span><span class="ln">31</span><span class="s2">  Returns True if the return code is 0 (success), False on failure
+</span><span class="ln">32</span><span class="s2">  &#34;&#34;&#34;</span>
+<span class="ln">33</span>  <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;diskutil&#39;</span><span class="p">,</span> <span class="s1">&#39;quiet&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">drive_name</span><span class="p">]</span>
+<span class="ln">34</span>  <span class="k">return</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="ln">35</span>
+<span class="ln">36</span>
+<span class="ln">37</span><span class="k">def</span> <span class="nf">mount_drive</span><span class="p">(</span><span class="n">drive_name</span><span class="p">):</span>
+<span class="ln">38</span>  <span class="s2">&#34;&#34;&#34;Try to mount drive using diskutil and return status code&#34;&#34;&#34;</span>
+<span class="ln">39</span>  <span class="k">return</span> <span class="n">_diskutil_interface</span><span class="p">(</span><span class="n">drive_name</span><span class="p">,</span> <span class="n">DiskutilAction</span><span class="o">.</span><span class="n">mount</span><span class="p">)</span>
+<span class="ln">40</span>
+<span class="ln">41</span>
+<span class="ln">42</span><span class="k">def</span> <span class="nf">unmount_drive</span><span class="p">(</span><span class="n">drive_name</span><span class="p">):</span>
+<span class="ln">43</span>  <span class="s2">&#34;&#34;&#34;Try to unmount drive using diskutil and return status code&#34;&#34;&#34;</span>
+<span class="ln">44</span>  <span class="k">return</span> <span class="n">_diskutil_interface</span><span class="p">(</span><span class="n">drive_name</span><span class="p">,</span> <span class="n">DiskutilAction</span><span class="o">.</span><span class="n">unmount</span><span class="p">)</span>
+<span class="ln">45</span>
+<span class="ln">46</span>
+<span class="ln">47</span><span class="k">def</span> <span class="nf">begin_backup</span><span class="p">():</span>
+<span class="ln">48</span>  <span class="s2">&#34;&#34;&#34;Back up using tmutil and return backup summary&#34;&#34;&#34;</span>
+<span class="ln">49</span>  <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;tmutil&#39;</span><span class="p">,</span> <span class="s1">&#39;startbackup&#39;</span><span class="p">,</span> <span class="s1">&#39;--auto&#39;</span><span class="p">,</span> <span class="s1">&#39;--rotation&#39;</span><span class="p">,</span> <span class="s1">&#39;--block&#39;</span><span class="p">]</span>
+<span class="ln">50</span>  <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+<span class="ln">51</span>    <span class="n">args</span><span class="p">,</span>
+<span class="ln">52</span>    <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+<span class="ln">53</span>    <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span>
+<span class="ln">54</span>    <span class="p">)</span>
+<span class="ln">55</span>  <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="ln">56</span>    <span class="k">return</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">returncode</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+<span class="ln">57</span>  <span class="k">else</span><span class="p">:</span>
+<span class="ln">58</span>    <span class="k">return</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">returncode</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+<span class="ln">59</span>
+<span class="ln">60</span>
+<span class="ln">61</span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="ln">62</span>  <span class="n">drives_to_eject</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="ln">63</span>
+<span class="ln">64</span>  <span class="k">for</span> <span class="n">drive_name</span> <span class="ow">in</span> <span class="n">TM_DRIVE_NAMES</span><span class="p">:</span>
+<span class="ln">65</span>    <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;/Volumes&#39;</span><span class="p">,</span> <span class="n">drive_name</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+<span class="ln">66</span>      <span class="k">continue</span>
+<span class="ln">67</span>    <span class="k">elif</span> <span class="n">mount_drive</span><span class="p">(</span><span class="n">drive_name</span><span class="p">):</span>
+<span class="ln">68</span>      <span class="n">drives_to_eject</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">drive_name</span><span class="p">)</span>
+<span class="ln">69</span>    <span class="k">else</span><span class="p">:</span>
+<span class="ln">70</span>      <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Failed to mount {drive_name}&#39;</span><span class="p">)</span>
+<span class="ln">71</span>
+<span class="ln">72</span>  <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Beginning backup&#39;</span><span class="p">)</span>
+<span class="ln">73</span>  <span class="n">return_code</span><span class="p">,</span> <span class="n">log_messages</span> <span class="o">=</span> <span class="n">begin_backup</span><span class="p">()</span>
+<span class="ln">74</span>  <span class="n">log_func</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">info</span> <span class="k">if</span> <span class="n">return_code</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">logging</span><span class="o">.</span><span class="n">warning</span>
+<span class="ln">75</span>  <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">log_messages</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+<span class="ln">76</span>    <span class="n">log_func</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+<span class="ln">77</span>  <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Backup finished&#39;</span><span class="p">)</span>
+<span class="ln">78</span>
+<span class="ln">79</span>  <span class="k">for</span> <span class="n">drive_name</span> <span class="ow">in</span> <span class="n">drives_to_eject</span><span class="p">:</span>
+<span class="ln">80</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">unmount_drive</span><span class="p">(</span><span class="n">drive_name</span><span class="p">):</span>
+<span class="ln">81</span>      <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Failed to unmount {drive_name}, trying again…&#39;</span><span class="p">)</span>
+<span class="ln">82</span>      <span class="k">if</span> <span class="ow">not</span> <span class="n">unmount_drive</span><span class="p">(</span><span class="n">drive_name</span><span class="p">):</span>
+<span class="ln">83</span>        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+<span class="ln">84</span>          <span class="n">f</span><span class="s1">&#39;Failed to unmount {drive_name} on second attempt&#39;</span><span class="p">)</span>
+<span class="ln">85</span>
+<span class="ln">86</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="ln">87</span>  <span class="n">main</span><span class="p">()</span>
+</code></pre></div><p>The basic idea is the same: mount the backup drives if they’re not already, perform the backup using <code>tmutil</code>, and eject the drives that were mounted by the script afterwards. There’s nothing tricky in the script, except maybe the enum on line 22 — that’s to replace strings and risking a typo.</p>
+<p>The arguments to <code>tmutil</code> on line 49 get Time Machine to behave as if it were running its ordinary, automatic hourly backups. The <a href="https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man8/tmutil.8.html"><code>tmutil</code> online man page</a> is out of date but does contain information on those options.</p>
+<p>The version at work is the same except that it contains some code to skip backups overnight:</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">TIME_LIMITS</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">23</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">check_time</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="n">TIME_LIMITS</span><span class="p">):</span>
+  <span class="s2">&#34;&#34;&#34;Return True if backup should proceed based on time of day&#34;&#34;&#34;</span>
+  <span class="n">early_limit</span><span class="p">,</span> <span class="n">late_limit</span> <span class="o">=</span> <span class="n">limits</span>
+  <span class="k">return</span> <span class="n">early_limit</span> <span class="o">&lt;=</span> <span class="n">time</span> <span class="o">&lt;=</span> <span class="n">late_limit</span>
+
+<span class="c1"># And called like so:</span>
+<span class="n">check_time</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span>
+</code></pre></div><p>This was written pretty late at night so it’s not the best, but it does work.</p>
+<h4 id="superduper">SuperDuper!</h4>
+<p><a href="http://www.shirt-pocket.com">SuperDuper</a> is great, if you use it as it’s meant to be used. It runs after everyone’s gone home each evening.</p>
+<p>I don’t look forward to booting from the 2.5″ clone drive but an external SSD was too expensive. In any case, should the Mini’s internal drive die the emergency plan is just to set up file sharing on one of our two SSD-equipped iMacs, copy over as many files as needed, and finish off the paper.</p>
+<p>We’ve done this before when our internal network went down (a dead rack switch) and when a fire (at a nearby premises) forced us to produce the paper from a staff member’s kitchen. If such a thing happens again and the Mini is still functioning, I’d move that too as it’s not dog-slow like the old one.</p>
+<p>In an ideal world we’d have a spare Mini ready to go, but that’s money we don’t have.</p>
+<h4 id="arq">Arq</h4>
+<p>The Mini’s internal drive is backed up to S3. The <a href="https://aws.amazon.com/s3/storage-classes/#Infrequent_Access">infrequent access</a> storage class is used to keep the costs down, but using S3 over Glacier means we can restore files quickly.</p>
+<p>The current year’s archive and last year’s are also kept in S3, because if the archive drives die we’re more likely to need more recent editions.</p>
+<p>All of the archives are kept in <a href="https://aws.amazon.com/s3/storage-classes/#Amazon_Glacier">Glacier</a>, but the modern storage class rather than the legacy vaults. This includes the years that are kept in S3, so that we don’t suddenly have to upload 350GB of stuff as we remove them from the more expensive storage.</p>
+<p>I’m slowly removing the legacy Glacier vaults, but it takes forever. You first have to empty the vault, then wait some time so you can actually remove the vault from the list in the management console. I use <a href="https://github.com/leeroybrun/glacier-vault-remove">Leeroy Brun’s glacier-vault-remove</a> tool, to which I had to make a minor change for it to work with Python 3.6 but it was straightforward to get running. (I think it was a missing <code>str.encode()</code> or something. Yes, I know, I should submit a pull request. But it was a one-second job.)</p>
+<p>Depending on the size of your vaults, be prepared to have the script run for a long time — this is because of the way that Glacier works (slowly). It took a couple of days for me to remove a 1.5TB-ish vault, followed by a little wait (because the vault had been “recently accessed” — to create the inventory for deletion).</p>
+<p>Arq’s ability to set hours during which backups should be paused is great — I could easily ensure our internet connection was fully available during the busiest part of the day.</p>
+<p>These are set per-destination (good!) but if one destination is mid-backup and paused, your backups to other destinations won’t run. Consider this case:</p>
+<ul>
+<li>Our archive is being backed up to Glacier.</li>
+<li>Archive backup is paused between 3pm and 7pm.</li>
+<li>Backups of the server’s internal drive won’t run during 3pm to 7pm because the archive backup is “ongoing” — even if it is paused.</li>
+</ul>
+<p>What that meant in practice is that the internal drive wasn’t being backed up to S3 hourly during the (weeks-long) archive backup, except if “Stop backup” is pressed during the pause interval to allow other destinations to backup.</p>
+<p>Ideally, paused backups would be put to one side during that window of time and other destinations allowed to run.</p>
+<h4 id="backblaze">Backblaze</h4>
+<p>Our initial 3.5TB <a href="https://secure.backblaze.com/r/010t3l">Backblaze</a> (Star affiliate link) backup is still ongoing, at about 50GB a day over one of our two 17mbps-up fibre lines. In all it’ll have taken a couple of months, compared to a couple of weeks for Arq to S3 &amp; Glacier.</p>
+<p>One thing I’ve noticed from personal use at home is that Arq has no qualms about using your entire bandwidth, whereas Backblaze does seem to try not to clog your whole connection. That’s fine at home, but at work with more than one line it matters less.</p>
+<p>I was hesitant to write this post up before we’re all set with Backblaze, but it’s got about a week to run still.</p>
+<p>I’m interested in seeing what “continuous” backups means in practice, but the <a href="https://help.backblaze.com/hc/en-us/articles/217666288-Schedule-Settings-Mac-">scheduling help page</a> says: “For most computers, this results in roughly 1 backup per hour.” The important thing for me is having an additional regular remote backup separate to Arq (mostly paranoia).</p>
+<h3 id="enhancements">Enhancements?</h3>
+<p>Were money no object, I have some ideas for improvements.</p>
+<p>First would be to add <a href="https://cloud.google.com/storage/">Google Cloud Storage</a> as an Arq backup destination, replicating our S3-IA/Glacier split with Google’s <a href="https://cloud.google.com/storage/archival/">Nearline/Coldline</a> storage. It would “just” give us an additional Arq backup, not dependent on AWS.</p>
+<p>A big reason why I added Backblaze is to have a remote backup that neither relied on AWS nor Arq. (That’s really not to say that I don’t trust Arq, it’s an eggs-in-one-basket thing.)</p>
+<p>Next I’d add an additional Time Machine drive (for a total of three). Running every 20 minutes means that the load on each drive is 50% higher over two hours than the ordinary one backup per hour. Adding a third drive would mean that each drive is being backed up only once per hour. And it would also mean that there is backup history stored on <em>two</em> drives should one fail.</p>
+<p>An external SSD to hold a SuperDuper clone is tempting, for the speed and because it might mean that we could continue to use the Mini as usual until we could get the internal drive replaced. (Though that might well be a bad idea.) Our server contains nowhere near its 1TB capacity, so we might get away with a smaller SSD.</p>
+<p>And, maybe, instead of extra drives for RAID mirrors (as discussed above), a network-attached storage (NAS) device. But I have no experience with them nor any idea about how best to make use of one. And they seem to be a bit of a black box to me, and a major goal for our setup (Mac Mini, external drives, GUI backup programs) is to be reasonably understandable to any member of production staff — after all, we’re all journalists, not IT workers.</p>
+
+    </article>
+    
+
+      </main>
+      <footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> 
+
+    </div> 
+  </body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <title>Primary Unit – Promptless Mercurial</title>
+  
+  
+<meta charset="utf-8">
+
+<link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+<link rel="alternate" type="application/rss+xml" href="/rss.xml" title="Primary Unit" />
+<link rel="alternate" type="application/json" href="/feed.json" title="Primary Unit" />
+
+<link rel="mask-icon" href="/favicon.svg" color="#1369BF">
+<link rel="apple-touch-icon-precomposed" href="/favicon.png">
+<link rel="icon" href="/favicon.ico">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A blog by Rob Wells, mostly about computer stuff.">
+
+<style>html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strong,sub,sup,var,b,u,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,menu,nav,output,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}input,button{font-family:inherit}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section{display:block}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}html{box-sizing:border-box;text-size-adjust:100%}*,*:before,*:after{box-sizing:inherit}:root{--grey: #607080;--grey10: #eff0f2;--grey5: #f7f8f9;--blue: #1369bf;--blue10: #e7eff8;--purple: #7436b3;--lineSpace: 1.75rem;--halfLine: calc(var(--lineSpace) / 2);--quarterLine: calc(var(--lineSpace) / 4);--bigGap: calc(var(--lineSpace) * 2);--paragraphWidth: 40rem;--wrapperWidth: 50rem;--huge: 1.75rem;--big: 1.5625rem;--medium: 1.375rem;--text: 1.125rem;--small: 0.875rem;--codeInText: 0.875em;--bodyFonts: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Oxygen", Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, sans-serif;--monospace: 'Source Code Pro', 'Consolas', 'Menlo', 'Monaco', monospace}body{background-color:var(--grey5);font-family:var(--bodyFonts);font-size:var(--text);font-style:normal;font-weight:400;line-height:1.55555;text-size-adjust:100%;-webkit-text-size-adjust:100%}.wrapper{margin:0 auto;max-width:var(--wrapperWidth);padding:var(--lineSpace)var(--halfLine)}h2,h3,h4{margin:0 0 var(--lineSpace)}h2{font-size:var(--huge)}h3{font-size:var(--big)}h4{font-size:var(--medium)}blockquote,figure,p,pre,table,caption,dl,ol,ul,div.highlight{margin-bottom:var(--lineSpace)}blockquote,pre,div.highlight{background-color:var(--grey10);padding:var(--halfLine)}blockquote{font-style:italic}blockquote em,blockquote i{font-style:normal}blockquote p:last-child{margin-bottom:0}figcaption{font-style:italic}hr{border:none;border-top:1px solid var(--grey);margin:var(--lineSpace)0}img,video{box-sizing:content-box;border:1px solid var(--grey);height:auto;max-width:100%}pre{overflow-x:auto}dl,ol,ul{margin-bottom:var(--lineSpace)}ol,ul{list-style-position:outside;padding-left:var(--lineSpace)}ol{list-style-type:decimal}ul{list-style-type:square}a:link{color:var(--blue);text-decoration:underline}a:visited{color:var(--purple)}a:focus,a:hover,a:active{background-color:var(--blue10)}strong,b{font-weight:700}em,i{font-style:italic}code{font-size:var(--codeInText)}.highlight,pre code,small{font-size:var(--small)}.highlight,code{font-family:var(--monospace)}small{color:var(--grey)}table{width:100%}.table-container{overflow-x:auto}caption{font-style:italic}thead{border-bottom:1px solid var(--grey)}tfoot{border-top:1px solid var(--grey)}th,td{width:auto;padding:var(--halfLine);overflow:auto;text-align:left}th{background-color:var(--grey10);font-weight:700}.table-figures{text-align:right;font-family:var(--monospace)}.site-header{border-left:var(--quarterLine)solid var(--blue);display:flex;flex-wrap:wrap;margin-bottom:var(--lineSpace);padding-left:var(--quarterLine)}.site-title-container{flex-shrink:0;margin-right:var(--lineSpace);max-width:100%}.site-title{font-size:var(--huge);line-height:var(--huge);margin-bottom:0}.site-byline{margin-bottom:0}.site-links{color:var(--grey);list-style-type:none;margin-bottom:0;padding:0}.site-footer{margin-top:var(--bigGap)}article{border-bottom:1px solid var(--grey);margin-bottom:var(--bigGap)}article:last-of-type{border-bottom:none}article header{margin-bottom:var(--lineSpace)}article header h2{margin-bottom:0}article header time{color:var(--grey)}article p{max-width:var(--paragraphWidth)}article li{margin-bottom:var(--halfLine);max-width:calc(var(--paragraphWidth) - var(--lineSpace))}.index-date{color:var(--grey);font-family:var(--monospace);font-size:var(--small);min-width:6rem;margin-right:var(--halfLine)}.index-item{margin-bottom:var(--halfLine)}.index-link{align-items:baseline;display:flex}.index-list{padding-left:0;list-style-type:none}.flag{background-color:var(--blue10);border-left:var(--quarterLine)solid var(--blue);margin-bottom:var(--lineSpace);padding:var(--halfLine)var(--quarterLine)}.flag :last-child{margin-bottom:0}.full-width{max-width:100%}.mute-links a{text-decoration:none;color:inherit}.no-border{border:0}.no-border img{border:0}.no-squish{overflow:auto}.no-squish img{max-width:none}@media screen and (min-width:40rem){.pull-left{float:left;clear:left;margin-right:var(--halfLine)}.pull-right{float:right;clear:right;margin-left:var(--halfLine)}.pull-left img,.pull-right img{display:block;margin-bottom:var(--lineSpace)}}</style>
+  
+  
+</head>
+
+  <body>
+    <div class="wrapper">
+      
+  <header class="site-header">
+
+    <div class="site-title-container mute-links">
+      <h1 class="site-title"><a href="/">Primary Unit</a></h1>
+      <p class="site-byline"><i>by</i> Rob Wells</p>
+    </div>
+
+    <nav id="site-nav">
+      <ul class="site-links mute-links">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/books/">Books I’ve read</a></li>
+        <li>
+          Feed:
+          <a href="/feed.json">JSON</a>,
+          <a href="/rss.xml">RSS</a>
+        </li>
+      </ul>
+    </nav>
+
+  </header> 
+
+      <main>
+        
+    <article>
+      <header>
+        <h2 class="mute-links"><a href="/2013/08/promptless-mercurial/">Promptless Mercurial</a></h2>
+        
+        <p><time datetime='2013-08-24T13:04:00&#43;0000'>Saturday, August 24 2013</time></p>
+        
+      </header>
+      <p>My time-wasting with Git and Mercurial continues apace — although I think I’m largely done learning how to use each — and I’m at the point where I start fussing over trivial details.</p>
+<p>This time it’s prompts. I’ve had <a href="https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh">Git’s status</a> in my prompt for quite a while, since it comes bundled, but as I’ve been spending so much time mucking about with Mercurial I decided to give Steve Losh’s <a href="https://bitbucket.org/sjl/hg-prompt/src">hg-prompt</a> a try.</p>
+<p>It’s nice and you use it in a similar way to <a href="http://selenic.com/hg/help/templates">Mercurial’s own templates</a>, which are very powerful. But it does introduce a slight delay at the command line, which I haven’t noticed with the Git prompt. Maybe I’ll decide this isn’t a big deal and change my mind in the future, but at the moment it was just enough to put me off.</p>
+<p>I also like to keep my prompt nice and short. Right now it’s just the basename of the working directory and the dollar sign (or hash if root). The prompt in my home directory is just:</p>
+<pre><code>~ $
+</code></pre>
+<p>So I’ve decided to go promptless and ditch the additions for both Git and Mercurial. This should help get me in the habit of checking each kind of repository in a similar way, instead of glancing at the prompt for Git and typing commands for Mercurial.</p>
+<p>If you use the <code>-sb</code> options with Git’s <code>status</code> command it gives you a short status with the current branch on top, which is adequate for my needs.</p>
+<p>By default there isn’t a Mercurial command to do this, but it’s trivial to create one using an alias — and one that’s superior to <code>git status -sb</code>. Here’s what I’ve got in my .hgrc file (line breaks added for clarity):</p>
+<pre><code>now = !$HG log -r . --template
+      &quot;{label('log.changeset', rev)}
+      {label('branches.active', '    {branch}')}
+      {label('bookmarks.current', '    {bookmarks}')}\n&quot; ; $HG status
+</code></pre>
+<p>The exclamation mark at the start tells Mercurial to interpret it as a shell alias — this lets us call <code>hg status</code> at the end. The alias calls <code>hg log</code> for the parent of the working directory (the commit you currently have checked out).</p>
+<p>Using the template system we ask for that changeset’s revision number, branch and any bookmarks associated with it. The <code>label</code> stuff surrounding <code>rev</code>, <code>branch</code> and <code>bookmarks</code> colours the output — you can otherwise ignore it.</p>
+<p><a href="http://mercurial.selenic.com/wiki/RevisionNumber">Revision numbers</a> are a convenient but <em>strictly local</em> way of referring to changesets. I include the branch name and bookmarks because you can use either (or both) to branch your work; there’s no point just printing the named branch if you’re using bookmarks, and vice versa.</p>
+<p>When called inside a repository, <code>hg now</code> prints something like this:</p>
+<pre><code>hgrepo $ hg now
+20    experimental    super-duper
+</code></pre>
+<p>If there are any changes in the working directory that’s followed by the usual output of <code>hg status</code>, like so:</p>
+<img src="/images/2013-08-24_hgnow.png" alt="Image of the output of hg now when there are changes in the working directory.">
+
+    </article>
+    
+
+      </main>
+      <footer class="site-footer">
+  <small class="mute-links">
+    This work is licensed under a
+    <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+  </small>
+</footer> 
+
+    </div> 
+  </body>
+</html>
