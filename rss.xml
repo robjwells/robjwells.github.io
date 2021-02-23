@@ -1,4 +1,56 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Primary Unit</title><link>https://www.robjwells.com</link><description>A blog by Rob Wells, mostly about computer stuff.</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution 4.0 International License.</copyright><lastBuildDate>Wed, 08 Jul 2020 06:00:00 +0100</lastBuildDate><atom:link href="https://www.robjwells.com/rss.xml" rel="self" type="application/rss+xml"/><item><title>Give Python’s static typing a go</title><link>https://www.robjwells.com/2020/07/give-pythons-static-typing-a-go/</link><pubDate>Wed, 08 Jul 2020 06:00:00 +0100</pubDate><guid>https://www.robjwells.com/2020/07/give-pythons-static-typing-a-go/</guid><description>&lt;p>While my go-to language is still Python, at &lt;a href="https://www.dcs.bbk.ac.uk/">university&lt;/a> I’ve also used Java and C#.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Primary Unit</title><link>https://www.robjwells.com</link><description>A blog by Rob Wells, mostly about computer stuff.</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution 4.0 International License.</copyright><lastBuildDate>Tue, 23 Feb 2021 18:14:00 +0000</lastBuildDate><atom:link href="https://www.robjwells.com/rss.xml" rel="self" type="application/rss+xml"/><item><title>How to wrap bc to do calculations</title><link>https://www.robjwells.com/2021/02/how-to-wrap-bc-to-do-calculations/</link><pubDate>Tue, 23 Feb 2021 18:14:00 +0000</pubDate><guid>https://www.robjwells.com/2021/02/how-to-wrap-bc-to-do-calculations/</guid><description>&lt;aside class="flag">
+&lt;p>This was &lt;a href="https://github.com/robjwells/til/blob/main/shell/202102230701%20How%20to%20wrap%20bc%20to%20do%20calculations.md">original published as a TIL&lt;/a> but I thought it was interesting enough to post on its own.&lt;/p>
+&lt;p>Funnily enough, the planets seem to have aligned and &lt;a href="https://leancrew.com/all-this/2021/02/some-bc-stuff/">Dr Drang has also written about &lt;code>bc&lt;/code> today&lt;/a>.&lt;/p>
+&lt;/aside>
+&lt;hr>
+&lt;p>I find &lt;a href="https://www.gnu.org/software/bc/">&lt;code>bc&lt;/code>&lt;/a> trips me up when I try to calculations at the shell, so I wrapped it.&lt;/p>
+&lt;p>There are two hazards for me:&lt;/p>
+&lt;ol>
+&lt;li>Failure to handle expressions without a final newline.&lt;/li>
+&lt;li>Integer division.&lt;/li>
+&lt;/ol>
+&lt;h3 id="final-newline-missing">Final newline missing&lt;/h3>
+&lt;p>No 1 often occurs when I produce a list of numbers in &lt;a href="https://www.barebones.com/products/bbedit/">BBEdit&lt;/a>, usually extracted and transformed via regexes.&lt;/p>
+&lt;p>For example, we get a PDF receipt from Sainbury’s for our online shopping, and to work out my share I like to edit the text from &lt;a href="https://linux.die.net/man/1/pdftotext">&lt;code>pdftotext&lt;/code>&lt;/a> in BBEdit, then run the line totals through a pipeline to calculate the total.&lt;/p>
+&lt;p>That used to look like this:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">$ pbpaste &lt;span class="p">|&lt;/span> paste -s -d &lt;span class="s1">&amp;#39;+&amp;#39;&lt;/span> - &lt;span class="p">|&lt;/span> bc
+&lt;span class="m">609&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>pbpaste&lt;/code> pastes the macOS system clipboard, &lt;a href="https://linux.die.net/man/1/paste">&lt;code>paste&lt;/code>&lt;/a> joins those lines with &lt;code>+&lt;/code>, and &lt;code>bc&lt;/code> (should!) print the total.&lt;/p>
+&lt;p>Except this happens if you’re missing a final newline:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">$ pbpaste &lt;span class="p">|&lt;/span> paste -s -d &lt;span class="s1">&amp;#39;+&amp;#39;&lt;/span> - &lt;span class="p">|&lt;/span> bc
+&lt;span class="o">(&lt;/span>standard_in&lt;span class="o">)&lt;/span> 1: parse error
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="integer-division">Integer division&lt;/h2>
+&lt;p>And secondly, with the default settings, &lt;code>bc&lt;/code> does integer division:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">$ bc &lt;span class="o">&amp;lt;&amp;lt;&amp;lt;&lt;/span> 9/2
+&lt;span class="m">4&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Which can be fixed by setting &lt;code>scale&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">$ bc &lt;span class="o">&amp;lt;&amp;lt;&amp;lt;&lt;/span> &lt;span class="s1">&amp;#39;scale=2; 9/2&amp;#39;&lt;/span>
+4.50
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>(&lt;code>&amp;lt;&amp;lt;&amp;lt;&lt;/code> starts a “here-string”, which you can learn more about at &lt;code>man -P &amp;quot;less -p '&amp;lt;&amp;lt;&amp;lt;'&amp;quot; zshmisc&lt;/code>, which will take you directly to the right part of the &lt;code>zshmisc&lt;/code> man page. Search the &lt;code>bash&lt;/code> man page if you’re using &lt;code>bash&lt;/code>, but it’s significantly more terse than the &lt;code>zsh&lt;/code> explanation.)&lt;/p>
+&lt;h3 id="wrapping-bc">Wrapping &lt;code>bc&lt;/code>&lt;/h3>
+&lt;p>So I wrote a simple wrapper script, &lt;code>calc&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="cp">#!/usr/local/bin/zsh
+&lt;/span>&lt;span class="cp">&lt;/span>&lt;span class="nb">set&lt;/span> -euo pipefail
+&lt;span class="c1"># Read expression from $1 or stdin.&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="nv">$#&lt;/span> -ge &lt;span class="m">1&lt;/span> &lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;span class="nv">expression&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="nv">$1&lt;/span>
+&lt;span class="k">else&lt;/span>
+&lt;span class="nb">read&lt;/span> expression &lt;span class="o">||&lt;/span> &lt;span class="nb">true&lt;/span> &lt;span class="c1"># Force successful exit&lt;/span>
+&lt;span class="k">fi&lt;/span>
+&lt;span class="c1"># Default scale to 3 (.123) if $2 is not given.&lt;/span>
+bc &lt;span class="o">&amp;lt;&amp;lt;&amp;lt;&lt;/span> &lt;span class="s2">&amp;#34;scale=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">2&lt;/span>&lt;span class="k">:-&lt;/span>&lt;span class="nv">3&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">; &lt;/span>&lt;span class="nv">$expression&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The conditional in the middle just handles being called in a pipe, with the expression coming on standard input, or having the expression provided as the first argument. The &lt;code>|| true&lt;/code> is necessary after &lt;code>read&lt;/code> as &lt;a href="https://stackoverflow.com/questions/40547032/bash-read-returns-with-exit-code-1-even-though-it-runs-as-expected">&lt;code>read&lt;/code> only exits with a success code if it encounters EOF&lt;/a>, and since I have &lt;code>-e&lt;/code> set in the file, that would cause the whole script to exit.&lt;/p>
+&lt;p>I set the scale to 3 by default (showing 3 decimal places), but you can configure that with the second argument.&lt;/p>
+&lt;p>Using a here-string for &lt;code>bc&lt;/code>’s input means that it should work whether or not there is a final newline.&lt;/p>
+&lt;p>The use of &lt;code>read&lt;/code> also allows the use of &lt;code>calc&lt;/code> by itself to print the result of one expression, for example:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">$ calc
+&lt;span class="o">(&lt;/span>&lt;span class="m">2&lt;/span> + 2&lt;span class="o">)&lt;/span> / &lt;span class="o">(&lt;/span>&lt;span class="m">10&lt;/span> / 2&lt;span class="o">)&lt;/span>↩
+.800
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="wrapping-summation">Wrapping summation&lt;/h3>
+&lt;p>I use the “sum this list of numbers” pipeline fairly often, and it’s easy to pull out into its own command. I’m just using an alias, which I’ve added to my &lt;code>.zshrc&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="nb">alias&lt;/span> ∑&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;paste -s -d &amp;#39;+&amp;#39; - | calc&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;a href="https://linux.die.net/man/1/sum">&lt;code>sum&lt;/code>&lt;/a> is already taken, so &lt;a href="https://en.wikipedia.org/wiki/Summation#Capital-sigma_notation">∑&lt;/a> seemed appropriate. On macOS you can type it with ⌥w.&lt;/p>
+&lt;p>So my pipeline from before just becomes &lt;code>pbpaste | ∑&lt;/code>.&lt;/p></description></item><item><title>Give Python’s static typing a go</title><link>https://www.robjwells.com/2020/07/give-pythons-static-typing-a-go/</link><pubDate>Wed, 08 Jul 2020 06:00:00 +0100</pubDate><guid>https://www.robjwells.com/2020/07/give-pythons-static-typing-a-go/</guid><description>&lt;p>While my go-to language is still Python, at &lt;a href="https://www.dcs.bbk.ac.uk/">university&lt;/a> I’ve also used Java and C#.
 I have to say, there was a huge amount to like — much to my surprise initially!&lt;/p>
 &lt;p>Previously I’d kind of written off Java as being a &lt;a href="https://github.com/EnterpriseQualityCoding/FizzBuzzEnterpriseEdition">boring language for boring businesspeople&lt;/a>.
 There are certainly elements of that (&lt;code>package com.robjwells.MyPackage;&lt;/code> in &lt;code>src/main/java/com/robjwells/MyPackage.java&lt;/code>) but there’s a lot to like.
@@ -373,84 +425,4 @@ Obviously people have reasons for pulling articles from the web, beyond simply n
 But for those that have simply stopped… does that work need to come down?
 I switched this site over to Hugo recently, which wasn’t a huge job (sorry if you saw items repeat in the RSS feed).
 Still a technical task, true, but we’re at a point now where creating a static version of a site that you can just throw up somewhere like S3 or GitHub is well within the capabilities of someone who’s already bought a domain and set up Wordpress with a custom theme.&lt;/p>
-&lt;p>It’s just sad to see people’s hard work vanish like this.&lt;/p></description></item><item><title>Books of 2019</title><link>https://www.robjwells.com/2019/12/books-of-2019/</link><pubDate>Tue, 31 Dec 2019 00:50:00 +0000</pubDate><guid>https://www.robjwells.com/2019/12/books-of-2019/</guid><description>&lt;p>This year I finished nine books, which is the fewest since 2014 (when I finished eight books).
-I say “finished” because I track the finishing dates of books in a tab-separated values file as I’ve a habit of starting a book and then switching to something else.&lt;/p>
-&lt;p>The total’s significantly lower than last year’s (15), which I think can be partly attributed to &lt;a href="https://www.dcs.bbk.ac.uk/study/postgraduate/msc-computer-science/">university&lt;/a>, for which I’ve read bits and pieces but no books in full.
-Otherwise, 2019 has been a year of personal challenges.
-Here’s to smoother sailing in 2020!&lt;/p>
-&lt;p>Since there are so few, let’s look at all of them.&lt;/p>
-&lt;h3 id="narcoland-by-anabel-hernández">Narcoland, by Anabel Hernández&lt;/h3>
-&lt;p>I read most of this in 2018 and finished it off in the first week of January.
-I’d had it for a while but picked it up after watching the Mexico season of Narcos (which, as with previous seasons, unsurprisingly treats the DEA very softly), and I raced through it.
-The depth of the collusion between the state and the cartels is astonishing.
-Hernández’s revelations will force you to seriously think about what’s really going on when you hear of wars between the gangs.&lt;/p>
-&lt;h3 id="mindset-by-carol-s-dweck">Mindset, by Carol S Dweck&lt;/h3>
-&lt;p>Allison Kaptur talks about Mindset and Dweck’s findings in &lt;a href="https://pyvideo.org/pycon-us-2018/love-your-bugs.html">her Pycon talk Love your Bugs&lt;/a> (which is great!).
-The lessons of studying the two mindsets in different fields are very interesting, as are the sections where Dweck discusses how the two mindsets can be induced and reinforced.&lt;/p>
-&lt;h3 id="code-by-charles-petzold">Code, by Charles Petzold&lt;/h3>
-&lt;p>Code is easily one of my favourite books.
-It builds up a computer from simple pieces, and the journey is very fun.
-I first read it in 2013, and re-read it this year during my computer architecture &amp;amp; operating systems module.
-I will happily talk your ear off about how great it is, but you’re probably better served by reading the book itself.&lt;/p>
-&lt;h3 id="blackshirts-and-reds-by-michael-parenti">Blackshirts and Reds, by Michael Parenti&lt;/h3>
-&lt;p>Parenti starts with a look at how fascism serves the interests of capital, follows with a clear-eyed defence of communism and communist states (&lt;a href="https://www.youtube.com/watch?v=6Tmi7JN3LkA">here’s a short video summary of his position&lt;/a>), and spells out the disaster wrought by the restoration of capitalism in eastern Europe.&lt;/p>
-&lt;p>It’s well worth reading, and I’d highly recommend it to anyone drawn to left politics or curious about the Soviet Union.&lt;/p>
-&lt;h3 id="the-century-of-revolution-by-christopher-hill">The Century of Revolution, by Christopher Hill&lt;/h3>
-&lt;p>Eric Hobsbawm, in his The Age of Revolution, which summarises the French and Industrial revolutions and their effects, talks about the way that bourgeois revolutions established support for domestic capitalism as the primary role of the state.
-He makes a sort-of off-hand comment about how the English revolution (or civil wars if you don’t like the R-word) had established that position here 150 years before France.&lt;/p>
-&lt;p>Hill’s book shows you how and why that happened. I’d recommend it.&lt;/p>
-&lt;p>Some snippets felt a bit alien as I had relatively little knowledge of the period — presumably a difference between being an adult in 1960 and 2019 — but it’s very readable and understandable.&lt;/p>
-&lt;p>Hill covers “the long 17th century” — 1603–1714 — and it can be quite detailed in parts.
-Verso have recently reissued his &lt;a href="https://www.versobooks.com/books/2683-reformation-to-industrial-revolution">Reformation to Industrial Revolution&lt;/a>, which covers a longer sweep (1530–1780) in fewer pages so presumably focuses on the core trends and events.
-I have a copy but have yet to read it.
-A quick glance suggests it doesn’t dig into the how or why of the Reformation, so you’ll want to look elsewhere if that’s something you’re interested in.&lt;/p>
-&lt;h3 id="a-history-of-modern-computing-1e-by-paul-e-ceruzzi">A History of Modern Computing (1e), by Paul E Ceruzzi&lt;/h3>
-&lt;p>This is the first edition, written in the mid-1990s, so stops amid the personal computer era. There’s a second edition published in 2003, and Ceruzzi has written a concise history for MIT Press which is far, far shorter and should be considered entirely separately.&lt;/p>
-&lt;p>It’s one for the enthusiast, I’ll grant you, but I very much enjoyed this book.
-I was mostly interested in learning about early electronic computers, and here we start really with &lt;a href="https://en.wikipedia.org/wiki/Eckert%E2%80%93Mauchly_Computer_Corporation">Eckert and Mauchly&lt;/a> and the UNIVAC, through IBM, DEC and so on.
-Ceruzzi does a good job of explaining both the technical and business-military aspects of the computer industry’s development.&lt;/p>
-&lt;p>It’s very well written, and I’d recommend it to those interested in how we got from ENIAC and Colossus to here.&lt;/p>
-&lt;h3 id="mindhunter-by-john-douglas-and-mark-olshaker">Mindhunter, by John Douglas and Mark Olshaker&lt;/h3>
-&lt;p>The TV series is phenomenal, but it’s fictionalised to make for gripping viewing.
-John Douglas is the “real” Holden Ford, and his book details how the profiling programme got going and how it worked, and digs into more of the detail of profiling than you get in the show.
-There’s a good deal of colour and, strange enough given the horrific crimes, personal warmth in the book.
-Very interesting and readable.&lt;/p>
-&lt;h3 id="turings-cathedral-by-george-dyson">Turing’s Cathedral, by George Dyson&lt;/h3>
-&lt;p>The subtitle is “The Origins of the Digital Universe,” though if you really want that see Code for the technical aspects and Ceruzzi’s History for the story.
-The book does not live up to the subtitle and this seems to have irked some reviewers at Amazon and Goodreads.
-The &lt;a href="https://en.wikipedia.org/wiki/IAS_machine">IAS machine&lt;/a> at the heart of it was not nearly the first digital computer (&lt;a href="https://en.wikipedia.org/wiki/List_of_vacuum_tube_computers">see this list&lt;/a>) nor itself hugely significant in the history of computers.
-Ceruzzi refers to it as being the basis of the &lt;a href="https://en.wikipedia.org/wiki/IBM_701">IBM 701&lt;/a> — John von Neumann, in charge of the IAS project, consulted for IBM — but otherwise it doesn’t feature in his book, save for an aside about one of the reports written as part of the project.&lt;/p>
-&lt;p>This, however, is to entirely miss the point.&lt;/p>
-&lt;p>Dyson has written an incredibly human book about the beginning of the computing age.
-While the book might appear to be about the computer built at the IAS, it is really about the people who were involved, what their ideas and concerns were and, maybe, what computers meant or would mean to them.&lt;/p>
-&lt;p>It’s a book about people and ideas, only tangentially about technology.
-Recommended.&lt;/p>
-&lt;h3 id="surveillance-valley-by-yasha-levine">Surveillance Valley, by Yasha Levine&lt;/h3>
-&lt;p>I only came across Yasha Levine this year, and I believe it was about something “more” political.&lt;/p>
-&lt;p>I say “more” with the scare-quotes because the internet is political.
-Its creation was political, its existence is political, its ramifications for everyday life are political.&lt;/p>
-&lt;p>Surveillance Valley made me grasp that.
-Yasha’s quip that “the internet is a weapon” took me aback at first.
-It was created to serve US imperialism and still today serves US imperialism.&lt;/p>
-&lt;p>An inexact analogy: computers are a weapon. The IAS machine described in Turing’s Cathedral and its siblings were used to create &lt;a href="https://en.wikipedia.org/wiki/Thermonuclear_weapon">weapons that threaten all life on Earth&lt;/a>, and modern machines are used in &lt;a href="https://www.thebureauinvestigates.com/stories/2017-01-17/obamas-covert-drone-war-in-numbers-ten-times-more-strikes-than-bush">killer robots&lt;/a> and to &lt;a href="https://morningstaronline.co.uk/article/w/cuba-brands-cyber-attack-on-venezuelas-electricity-system-an-act-of-terror">damage civilian infrastructure&lt;/a>.&lt;/p>
-&lt;p>That doesn’t capture the scope of Surveillance Valley, though.
-Ultimately it’s about the importance of taking political control over our societies, control currently held by capital and the state and military machinery it controls.&lt;/p>
-&lt;p>I recommend it to anyone — it’s incredibly well written and several sections made me laugh out loud, and its subject is more important than ever.&lt;/p>
-&lt;h3 id="reading-resolutions-for-2020">Reading resolutions for 2020&lt;/h3>
-&lt;ul>
-&lt;li>
-&lt;p>Read more books.&lt;/p>
-&lt;p>It’s probably too much to aim for 31 (the number I read in 2015 and 2016), but I think 20 is probably achievable.
-My university project is due in by September 14, so after that I’ll have no excuse(!).&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Buy fewer books.&lt;/p>
-&lt;p>I… don’t really want to work out how many books I’ve bought this year. It’s more than nine.
-I’d quite like to buy no books “for pleasure” in 2020, given that I’ve got enough unread for several years.
-The same goes for books that I might class as technical-education but I don’t &lt;em>need&lt;/em> to buy. I have enough for a long time.&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Write summaries as I go.&lt;/p>
-&lt;p>Writing this post has been enjoyable, but it’s done nothing to disprove my nagging feeling that writing posts on here takes hours every time.&lt;/p>
-&lt;/li>
-&lt;/ul></description></item></channel></rss>
+&lt;p>It’s just sad to see people’s hard work vanish like this.&lt;/p></description></item></channel></rss>
