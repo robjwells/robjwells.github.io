@@ -1,4 +1,32 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Primary Unit</title><link>https://www.robjwells.com</link><description>A blog by Rob Wells, mostly about computer stuff.</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution 4.0 International License.</copyright><lastBuildDate>Tue, 23 Feb 2021 18:14:00 +0000</lastBuildDate><atom:link href="https://www.robjwells.com/rss.xml" rel="self" type="application/rss+xml"/><item><title>How to wrap bc to do calculations</title><link>https://www.robjwells.com/2021/02/how-to-wrap-bc-to-do-calculations/</link><pubDate>Tue, 23 Feb 2021 18:14:00 +0000</pubDate><guid>https://www.robjwells.com/2021/02/how-to-wrap-bc-to-do-calculations/</guid><description>&lt;aside class="flag">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Primary Unit</title><link>https://www.robjwells.com</link><description>A blog by Rob Wells, mostly about computer stuff.</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution 4.0 International License.</copyright><lastBuildDate>Sun, 09 Jan 2022 20:48:27 +0000</lastBuildDate><atom:link href="https://www.robjwells.com/rss.xml" rel="self" type="application/rss+xml"/><item><title>Ejecting all disks</title><link>https://www.robjwells.com/2022/01/ejecting-all-disks/</link><pubDate>Sun, 09 Jan 2022 20:48:27 +0000</pubDate><guid>https://www.robjwells.com/2022/01/ejecting-all-disks/</guid><description>&lt;p>David Sparks posted this week about &lt;a href="https://www.macsparky.com/blog/2022/01/using-keyboard-maestro-and-applescript-to-eject-external-drives/">ejecting disks using AppleScript
+and Keyboard Maestro&lt;/a>. I’m grateful to David for posting
+about this — it’s something I’ve needed for a while but hadn’t got
+around to doing. Currently I plug my laptop into several external drives
+when I’m sat at my desk, and have to eject them before taking it
+somewhere more relaxed.&lt;/p>
+&lt;p>But David’s script didn’t quite work for me in that a blunt &lt;code>eject the disks&lt;/code> command to the Finder will attempt to eject all the disks that
+are considered “ejectable”. For me, this includes APFS snapshots that
+aren’t obviously visible in the user interface, where trying to eject
+them pops up a dialog referencing &amp;ldquo;Macintosh HD – Data@snap…&amp;rdquo;.&lt;/p>
+&lt;p>My alternative is to filter out any drives that contain &amp;ldquo;Macintosh HD&amp;rdquo;
+in their displayed name:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-applescript" data-lang="applescript">&lt;span class="k">tell&lt;/span> &lt;span class="nb">application&lt;/span> &lt;span class="s2">&amp;#34;Finder&amp;#34;&lt;/span>
+&lt;span class="nv">eject&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nb">every&lt;/span> &lt;span class="nv">disk&lt;/span> &lt;span class="nb">where&lt;/span> &lt;span class="s2">&amp;#34;Macintosh HD&amp;#34;&lt;/span> &lt;span class="ow">is not&lt;/span> &lt;span class="k">in&lt;/span> &lt;span class="k">its&lt;/span> &lt;span class="nv">displayed&lt;/span> &lt;span class="na">name&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="k">end&lt;/span> &lt;span class="k">tell&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Note that it’s important to use the &lt;em>displayed name&lt;/em> property as the
+APFS snapshots have UUIDs as their name property.&lt;/p>
+&lt;p>I’ve also stripped out David’s error handling, as I find that if there’s
+an error ejecting the disk it’s usually communicated by the Finder
+itself rather than via an error code visible to AppleScript.&lt;/p>
+&lt;p>This doesn’t tackle the problem of the Finder refusing to eject a drive
+containing opened files, even if those files are opened by (from the
+user’s perspective) unimportant background commands. I spent a chunk of
+the morning mulling this over (and looking at &lt;code>lsof&lt;/code>’s inscrutable man
+page!), and think I might try to run the output of &lt;code>lsof -F&lt;/code> through AWK
+to enable a prompt-to-terminate interface. This is particularly
+important for me as I keep my music and photo libraries on an external
+drive; the photo library in particular is often opened by background
+system tasks, I think as iCloud syncs across new photos from my phone.&lt;/p></description></item><item><title>How to wrap bc to do calculations</title><link>https://www.robjwells.com/2021/02/how-to-wrap-bc-to-do-calculations/</link><pubDate>Tue, 23 Feb 2021 18:14:00 +0000</pubDate><guid>https://www.robjwells.com/2021/02/how-to-wrap-bc-to-do-calculations/</guid><description>&lt;aside class="flag">
 &lt;p>This was &lt;a href="https://github.com/robjwells/til/blob/main/shell/202102230701%20How%20to%20wrap%20bc%20to%20do%20calculations.md">original published as a TIL&lt;/a> but I thought it was interesting enough to post on its own.&lt;/p>
 &lt;p>Funnily enough, the planets seem to have aligned and &lt;a href="https://leancrew.com/all-this/2021/02/some-bc-stuff/">Dr Drang has also written about &lt;code>bc&lt;/code> today&lt;/a>.&lt;/p>
 &lt;/aside>
@@ -13,23 +41,23 @@
 &lt;p>No 1 often occurs when I produce a list of numbers in &lt;a href="https://www.barebones.com/products/bbedit/">BBEdit&lt;/a>, usually extracted and transformed via regexes.&lt;/p>
 &lt;p>For example, we get a PDF receipt from Sainbury’s for our online shopping, and to work out my share I like to edit the text from &lt;a href="https://linux.die.net/man/1/pdftotext">&lt;code>pdftotext&lt;/code>&lt;/a> in BBEdit, then run the line totals through a pipeline to calculate the total.&lt;/p>
 &lt;p>That used to look like this:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">$ pbpaste &lt;span class="p">|&lt;/span> paste -s -d &lt;span class="s1">&amp;#39;+&amp;#39;&lt;/span> - &lt;span class="p">|&lt;/span> bc
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">$ pbpaste &lt;span class="p">|&lt;/span> paste -s -d &lt;span class="s1">&amp;#39;+&amp;#39;&lt;/span> - &lt;span class="p">|&lt;/span> bc
 &lt;span class="m">609&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>pbpaste&lt;/code> pastes the macOS system clipboard, &lt;a href="https://linux.die.net/man/1/paste">&lt;code>paste&lt;/code>&lt;/a> joins those lines with &lt;code>+&lt;/code>, and &lt;code>bc&lt;/code> (should!) print the total.&lt;/p>
 &lt;p>Except this happens if you’re missing a final newline:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">$ pbpaste &lt;span class="p">|&lt;/span> paste -s -d &lt;span class="s1">&amp;#39;+&amp;#39;&lt;/span> - &lt;span class="p">|&lt;/span> bc
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">$ pbpaste &lt;span class="p">|&lt;/span> paste -s -d &lt;span class="s1">&amp;#39;+&amp;#39;&lt;/span> - &lt;span class="p">|&lt;/span> bc
 &lt;span class="o">(&lt;/span>standard_in&lt;span class="o">)&lt;/span> 1: parse error
 &lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="integer-division">Integer division&lt;/h2>
 &lt;p>And secondly, with the default settings, &lt;code>bc&lt;/code> does integer division:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">$ bc &lt;span class="o">&amp;lt;&amp;lt;&amp;lt;&lt;/span> 9/2
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">$ bc &lt;span class="o">&amp;lt;&amp;lt;&amp;lt;&lt;/span> 9/2
 &lt;span class="m">4&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>Which can be fixed by setting &lt;code>scale&lt;/code>&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">$ bc &lt;span class="o">&amp;lt;&amp;lt;&amp;lt;&lt;/span> &lt;span class="s1">&amp;#39;scale=2; 9/2&amp;#39;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">$ bc &lt;span class="o">&amp;lt;&amp;lt;&amp;lt;&lt;/span> &lt;span class="s1">&amp;#39;scale=2; 9/2&amp;#39;&lt;/span>
 4.50
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>(&lt;code>&amp;lt;&amp;lt;&amp;lt;&lt;/code> starts a “here-string”, which you can learn more about at &lt;code>man -P &amp;quot;less -p '&amp;lt;&amp;lt;&amp;lt;'&amp;quot; zshmisc&lt;/code>, which will take you directly to the right part of the &lt;code>zshmisc&lt;/code> man page. Search the &lt;code>bash&lt;/code> man page if you’re using &lt;code>bash&lt;/code>, but it’s significantly more terse than the &lt;code>zsh&lt;/code> explanation.)&lt;/p>
 &lt;h3 id="wrapping-bc">Wrapping &lt;code>bc&lt;/code>&lt;/h3>
 &lt;p>So I wrote a simple wrapper script, &lt;code>calc&lt;/code>:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="cp">#!/usr/local/bin/zsh
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="cp">#!/usr/local/bin/zsh
 &lt;/span>&lt;span class="cp">&lt;/span>&lt;span class="nb">set&lt;/span> -euo pipefail
 &lt;span class="c1"># Read expression from $1 or stdin.&lt;/span>
 &lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="nv">$#&lt;/span> -ge &lt;span class="m">1&lt;/span> &lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
@@ -43,12 +71,12 @@ bc &lt;span class="o">&amp;lt;&amp;lt;&amp;lt;&lt;/span> &lt;span class="s2">&am
 &lt;p>I set the scale to 3 by default (showing 3 decimal places), but you can configure that with the second argument.&lt;/p>
 &lt;p>Using a here-string for &lt;code>bc&lt;/code>’s input means that it should work whether or not there is a final newline.&lt;/p>
 &lt;p>The use of &lt;code>read&lt;/code> also allows the use of &lt;code>calc&lt;/code> by itself to print the result of one expression, for example:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">$ calc
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">$ calc
 &lt;span class="o">(&lt;/span>&lt;span class="m">2&lt;/span> + 2&lt;span class="o">)&lt;/span> / &lt;span class="o">(&lt;/span>&lt;span class="m">10&lt;/span> / 2&lt;span class="o">)&lt;/span>↩
 .800
 &lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="wrapping-summation">Wrapping summation&lt;/h3>
 &lt;p>I use the “sum this list of numbers” pipeline fairly often, and it’s easy to pull out into its own command. I’m just using an alias, which I’ve added to my &lt;code>.zshrc&lt;/code>:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="nb">alias&lt;/span> ∑&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;paste -s -d &amp;#39;+&amp;#39; - | calc&amp;#34;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="nb">alias&lt;/span> ∑&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;paste -s -d &amp;#39;+&amp;#39; - | calc&amp;#34;&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;a href="https://linux.die.net/man/1/sum">&lt;code>sum&lt;/code>&lt;/a> is already taken, so &lt;a href="https://en.wikipedia.org/wiki/Summation#Capital-sigma_notation">∑&lt;/a> seemed appropriate. On macOS you can type it with ⌥w.&lt;/p>
 &lt;p>So my pipeline from before just becomes &lt;code>pbpaste | ∑&lt;/code>.&lt;/p></description></item><item><title>Give Python’s static typing a go</title><link>https://www.robjwells.com/2020/07/give-pythons-static-typing-a-go/</link><pubDate>Wed, 08 Jul 2020 06:00:00 +0100</pubDate><guid>https://www.robjwells.com/2020/07/give-pythons-static-typing-a-go/</guid><description>&lt;p>While my go-to language is still Python, at &lt;a href="https://www.dcs.bbk.ac.uk/">university&lt;/a> I’ve also used Java and C#.
 I have to say, there was a huge amount to like — much to my surprise initially!&lt;/p>
@@ -62,13 +90,13 @@ Plus, it’s really coming along at a clip now with the shorter release cycle.&l
 &lt;p>Now, I still &lt;em>am&lt;/em> using Python, but there are things that I miss.
 Chief among them in Python is having the type system actively help me out. &lt;a href="https://www.executeprogram.com/blog/porting-to-typescript-solved-our-api-woes">Gary Bernhardt writes a bit about this in the context of Ruby and TypeScript&lt;/a>. (Be warned there are trivial examples ahead.)&lt;/p>
 &lt;p>Now, I’m using &lt;a href="https://code.visualstudio.com/">VSCode&lt;/a> so actually the editor will step in and help you even if you do nothing to aid it. For instance, in the following situation:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="c1"># untyped.py v1&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="c1"># untyped.py v1&lt;/span>
 &lt;span class="k">def&lt;/span> &lt;span class="nf">ultimate_answer&lt;/span>&lt;span class="p">():&lt;/span>
 &lt;span class="k">return&lt;/span> &lt;span class="mi">42&lt;/span>
 &lt;span class="k">def&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">():&lt;/span>
 &lt;span class="n">u&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">ultimate_answer&lt;/span>&lt;span class="p">()&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>VSCode (using the &lt;a href="https://marketplace.visualstudio.com/items?itemName=ms-python.python">Python extension&lt;/a>) will correctly infer that the type of &lt;code>u&lt;/code> is &lt;code>int&lt;/code>. So let’s do something with that:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="c1"># untyped.py v2&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="c1"># untyped.py v2&lt;/span>
 &lt;span class="k">def&lt;/span> &lt;span class="nf">ultimate_answer&lt;/span>&lt;span class="p">():&lt;/span>
 &lt;span class="k">return&lt;/span> &lt;span class="mi">42&lt;/span>
 &lt;span class="k">def&lt;/span> &lt;span class="nf">do_something&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">):&lt;/span>
@@ -77,7 +105,7 @@ Chief among them in Python is having the type system actively help me out. &lt;a
 &lt;span class="n">u&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">do_something&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ultimate_answer&lt;/span>&lt;span class="p">())&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>VSCode still correctly infers &lt;code>u&lt;/code> to be an &lt;code>int&lt;/code>. Great! But let’s be clear: this is VSCode doing the work so that it can offer you handy things like code completion.&lt;/p>
 &lt;p>What happens if we have a change in requirements and we change our API… only we don’t catch everything so we end up with the following:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="c1"># untyped.py v3&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="c1"># untyped.py v3&lt;/span>
 &lt;span class="k">def&lt;/span> &lt;span class="nf">ultimate_answer&lt;/span>&lt;span class="p">():&lt;/span>
 &lt;span class="k">return&lt;/span> &lt;span class="s2">&amp;#34;42&amp;#34;&lt;/span>
 &lt;span class="k">def&lt;/span> &lt;span class="nf">do_something&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">):&lt;/span>
@@ -86,10 +114,10 @@ Chief among them in Python is having the type system actively help me out. &lt;a
 &lt;span class="n">u&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">do_something&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ultimate_answer&lt;/span>&lt;span class="p">())&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>At this point, VSCode gives up: &lt;code>u&lt;/code> is an &lt;code>int&lt;/code> or it’s a &lt;code>str&lt;/code>. In fact it’s neither, because &lt;code>do_something()&lt;/code> raises a &lt;code>TypeError&lt;/code> so &lt;code>u&lt;/code> is never assigned. This is “obvious” to a human reading the code, in this simple example, but it’s easy to imagine a complex system where the types get out of line but the definitions are far apart from each other and the eventual call site.&lt;/p>
 &lt;p>There are type checkers for Python, the main one being &lt;a href="http://www.mypy-lang.org/">mypy&lt;/a> (which is great!). Can mypy help us here?&lt;/p>
-&lt;pre>&lt;code>$ mypy untyped.py
+&lt;pre tabindex="0">&lt;code>$ mypy untyped.py
 Success: no issues found in 1 source file
 &lt;/code>&lt;/pre>&lt;p>Oh, success! Great.&lt;/p>
-&lt;pre>&lt;code>$ python3 untyped.py
+&lt;pre tabindex="0">&lt;code>$ python3 untyped.py
 Traceback (most recent call last):
 File &amp;quot;untyped.py&amp;quot;, line 10, in &amp;lt;module&amp;gt;
 main()
@@ -102,21 +130,21 @@ TypeError: unsupported operand type(s) for -: 'str' and 'int'
 &lt;p>If we switch back to VSCode, what if we try &lt;a href="https://devblogs.microsoft.com/python/announcing-pylance-fast-feature-rich-language-support-for-python-in-visual-studio-code/">Microsoft’s shiny new Pylance extension&lt;/a>? In the basic type-checking mode it reports that the type of &lt;code>u&lt;/code> is unknown which … is a step in the right direction? But no warnings.&lt;/p>
 &lt;p>If we ratchet up the type-checking mode to strict it reports, with a bunch of red error squiggles, that the return type of &lt;code>do_something()&lt;/code> is unknown and the type of &lt;code>u&lt;/code> is unknown. We get a similar result if we pass the &lt;code>--strict&lt;/code> flag to mypy, which essentially tells the type checker “forget about this gradual business” and attempts to check the whole file. This effectively fails, because we’ve done nothing to help it. Let’s do that now.&lt;/p>
 &lt;p>In fact, very little is needed before Pylance starts to push you in the right direction, only this:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="c1"># typed.py v1 excerpt&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="c1"># typed.py v1 excerpt&lt;/span>
 &lt;span class="k">def&lt;/span> &lt;span class="nf">do_something&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">int&lt;/span>&lt;span class="p">):&lt;/span>
 &lt;span class="k">return&lt;/span> &lt;span class="n">n&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="mi">11&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>After which we’re rewarded with red squiggles underneath the call to &lt;code>ultimate_answer()&lt;/code> that provides the argument inline to &lt;code>do_something()&lt;/code>. The message we get is interesting because it reveals something about the knowledge of the type-checker:&lt;/p>
-&lt;pre>&lt;code>Argument of type &amp;quot;Literal['42']&amp;quot; cannot be assigned to
+&lt;pre tabindex="0">&lt;code>Argument of type &amp;quot;Literal['42']&amp;quot; cannot be assigned to
 parameter &amp;quot;n&amp;quot; of type &amp;quot;int&amp;quot; in function &amp;quot;do_something&amp;quot;
 &amp;quot;Literal['42']&amp;quot; is incompatible with &amp;quot;int&amp;quot;
 &lt;/code>&lt;/pre>&lt;p>We haven’t typed &lt;code>ultimate_answer()&lt;/code>, but it knows that &amp;ldquo;42&amp;rdquo; can’t be treated as an &lt;code>int&lt;/code>. Mypy needs a little more help to get there:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="c1"># typed.py v2 excerpt&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="c1"># typed.py v2 excerpt&lt;/span>
 &lt;span class="k">def&lt;/span> &lt;span class="nf">ultimate_answer&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">-&amp;gt;&lt;/span> &lt;span class="nb">str&lt;/span>&lt;span class="p">:&lt;/span>
 &lt;span class="k">return&lt;/span> &lt;span class="s2">&amp;#34;42&amp;#34;&lt;/span>
 &lt;span class="k">def&lt;/span> &lt;span class="nf">do_something&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">int&lt;/span>&lt;span class="p">):&lt;/span>
 &lt;span class="k">return&lt;/span> &lt;span class="n">n&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="mi">11&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>So, at this point we’ve said that &lt;code>ultimate_answer()&lt;/code> returns a string and that &lt;code>do_something()&lt;/code> takes an integer. What does mypy think?&lt;/p>
-&lt;pre>&lt;code>&amp;gt; $ mypy typed.py
+&lt;pre tabindex="0">&lt;code>&amp;gt; $ mypy typed.py
 Success: no issues found in 1 source file
 &amp;gt; $ mypy --strict typed.py
 […snip…]
@@ -127,12 +155,12 @@ incompatible type &amp;quot;str&amp;quot;; expected &amp;quot;int&amp;quot;
 &lt;p>But why doesn’t “normal” mode mypy not see the problem? I think this is to do with what is considered a “typed context”. By using &lt;code>--strict&lt;/code> we force everything to be a typed context, so we get a lot more warnings and errors from mypy. But without this, &lt;code>main()&lt;/code> is not a typed context — it has no typed arguments, and no explicit return type, so “normal” mode mypy just skips over it.&lt;/p>
 &lt;p>The strength of gradual typing is that if you don’t want to or aren’t ready to add type information, you don’t. But even in this toy example, the standard Python type-checker under its default settings does not pick up this “obvious” (to us!) type error. In &lt;a href="https://www.youtube.com/watch?v=ST33zDM9vOE&amp;amp;feature=youtu.be">Dustin Ingram’s Pycon talk about static typing&lt;/a> he says you should use static typing everywhere — for a few reasons, but here we can see that failing to do so leaves a clear error undetected..&lt;/p>
 &lt;p>It doesn’t take much to rectify that for mypy, just a return type on &lt;code>main()&lt;/code>, yielding the following:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="c1"># typed.py v3&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="c1"># typed.py v3&lt;/span>
 &lt;span class="k">def&lt;/span> &lt;span class="nf">ultimate_answer&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">-&amp;gt;&lt;/span> &lt;span class="nb">str&lt;/span>&lt;span class="p">:&lt;/span>
 &lt;span class="k">return&lt;/span> &lt;span class="s2">&amp;#34;42&amp;#34;&lt;/span>
 &lt;span class="k">def&lt;/span> &lt;span class="nf">do_something&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">int&lt;/span>&lt;span class="p">):&lt;/span>
 &lt;span class="k">return&lt;/span> &lt;span class="n">n&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="mi">11&lt;/span>
-&lt;span class="k">def&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">-&amp;gt;&lt;/span> &lt;span class="bp">None&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="k">def&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">-&amp;gt;&lt;/span> &lt;span class="kc">None&lt;/span>&lt;span class="p">:&lt;/span>
 &lt;span class="n">u&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">do_something&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ultimate_answer&lt;/span>&lt;span class="p">())&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>And now &lt;code>mypy typed.py&lt;/code> gives the same error that strict mode did for the previous example. Adding the explicit return type to &lt;code>main()&lt;/code> is honestly pretty useless, but now it opens up the definition of &lt;code>main()&lt;/code> to be type checked, at which point the error is spotted.&lt;/p>
 &lt;hr>
@@ -140,24 +168,24 @@ incompatible type &amp;quot;str&amp;quot;; expected &amp;quot;int&amp;quot;
 &lt;p>But it is useful in itself. It’s unfamiliar and, honestly, a bit clunky in Python. (The dance for declaring a &lt;code>TypeVar&lt;/code> for a generic function taking some type &lt;code>T&lt;/code> is … Not Good and looks worse once you run your code through a formatter, with it then two lines away.)&lt;/p>
 &lt;p>But thinking about types is thinking about design, and thinking about the contract that you’re willing to offer to the outside world. I’ve found that in Java and C# sometimes I’m ready to bound straight into defining a function … only to stop after realising that I haven’t really clarified what expectations I have of the outside world (parameter types) and what expectations the outside world has of me (return type).&lt;/p>
 &lt;p>Here’s a dead-obvious example from a simple exercise on &lt;a href="https://exercism.io/">Exercism&lt;/a> (sorry for any spoilers but I should hope this one is straightforward to anyone with any knowledge of the &lt;code>datetime&lt;/code> module!):&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="kn">from&lt;/span> &lt;span class="nn">datetime&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">datetime&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">timedelta&lt;/span>
-&lt;span class="n">GIGASECOND&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">timedelta&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">seconds&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="n">_000_000_000&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="kn">from&lt;/span> &lt;span class="nn">datetime&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">datetime&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">timedelta&lt;/span>
+&lt;span class="n">GIGASECOND&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">timedelta&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">seconds&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1_000_000_000&lt;/span>&lt;span class="p">)&lt;/span>
 &lt;span class="k">def&lt;/span> &lt;span class="nf">add&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">moment&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">datetime&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">-&amp;gt;&lt;/span> &lt;span class="n">datetime&lt;/span>&lt;span class="p">:&lt;/span>
 &lt;span class="k">return&lt;/span> &lt;span class="n">moment&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">GIGASECOND&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>Now, &lt;code>add()&lt;/code> is a bad name in general but fine in this confined case, but it’s the simple addition of the &lt;code>datetime&lt;/code> annotations that make it clear what we’re handling here. You give a datetime, receive a datetime. Nothing fancy, but compare with the following signature:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="k">def&lt;/span> &lt;span class="nf">add&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">moment&lt;/span>&lt;span class="p">):&lt;/span> &lt;span class="o">...&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="k">def&lt;/span> &lt;span class="nf">add&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">moment&lt;/span>&lt;span class="p">):&lt;/span> &lt;span class="o">...&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>It’s concise, sure, but is the cost in understanding worth it? Explicitly annotating the types forces you to consider what the interface is and, in return, tools like mypy will give you a hand in finding bugs.&lt;/p>
 &lt;p>Anyway, give &lt;a href="https://www.youtube.com/watch?v=ST33zDM9vOE&amp;amp;feature=youtu.be">Dustin Ingram’s talk&lt;/a> a watch (check out those t-shirts!) as it’s informative, straightforward and short. Do check out the &lt;a href="https://mypy.readthedocs.io/en/stable/index.html">mypy documentation&lt;/a>, as there’s plenty of descriptive information in there beyond the interface to the command line tool and the &lt;code>typing&lt;/code> module. &lt;a href="https://www.youtube.com/watch?v=7ZbwZgrXnwY">Jukka Lehtosalo and David Fisher spoke in some detail at Pycon 2017 about mypy&lt;/a>, and I highly recommend &lt;a href="https://dropbox.tech/application/our-journey-to-type-checking-4-million-lines-of-python">Jukka’s article on the Dropbox tech blog that looks at the history and practical aspects of mypy&lt;/a>.&lt;/p>
 &lt;p>It’s clear also that this is the direction of travel for Python — there is a lot on the horizon that will make life easier (see &lt;a href="https://www.python.org/dev/peps/">the list of PEPs&lt;/a>), and I’m particularly looking forward to seeing what becomes of &lt;a href="https://www.python.org/dev/peps/pep-0622/">PEP 622&lt;/a> as at the moment it looks like it will bring with it &lt;a href="https://fsharpforfunandprofit.com/posts/discriminated-unions/">sum types&lt;/a>, even if it is a year or two off at this point.&lt;/p></description></item><item><title>Scheduling posts in Hugo</title><link>https://www.robjwells.com/2020/06/scheduling-posts-in-hugo/</link><pubDate>Sat, 06 Jun 2020 06:00:00 +0100</pubDate><guid>https://www.robjwells.com/2020/06/scheduling-posts-in-hugo/</guid><description>&lt;p>My enthusiasm for writing posts here tends to come in reasonably short bursts, usually over a weekend, so I’ve taken to scheduling the two or three posts I might write over the following weeks.&lt;/p>
 &lt;p>It’s reasonably straightforward to schedule publication with &lt;a href="https://gohugo.io/">Hugo&lt;/a> by using the &lt;code>publishDate&lt;/code> attribute in your post frontmatter. For instance, this is the frontmatter for this post right now:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="nt">title&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;Scheduling posts in Hugo&amp;#34;&lt;/span>&lt;span class="w">
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="nt">title&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;Scheduling posts in Hugo&amp;#34;&lt;/span>&lt;span class="w">
 &lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">date&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="ld">2020-05-24T09:25:44&lt;/span>&lt;span class="m">+01&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="m">00&lt;/span>&lt;span class="w">
 &lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">publishDate&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="ld">2020-06-06T06:00:00&lt;/span>&lt;span class="m">+01&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="m">00&lt;/span>&lt;span class="w">
 &lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">draft&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The &lt;code>date&lt;/code> attribute is filled in by Hugo when I create the post bundle skeleton. I tend to leave this as a marker for when I started writing a post (though I have changed it for posts that I start, leave for a while, and &lt;a href="https://www.robjwells.com/2020/05/keyboard-maestro-macro-to-insert-images-into-blog-posts/">finish later&lt;/a>).&lt;/p>
 &lt;p>The &lt;code>publishDate&lt;/code> attribute controls when the post is actually published. Hugo by default doesn’t build posts with this set in the future.&lt;/p>
 &lt;p>One important change that I made from the defaults, though, is to define the handling of dates in my site-wide config file (&lt;code>config.toml&lt;/code>) like so:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-toml" data-lang="toml">&lt;span class="p">[&lt;/span>&lt;span class="nx">frontmatter&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-toml" data-lang="toml">&lt;span class="p">[&lt;/span>&lt;span class="nx">frontmatter&lt;/span>&lt;span class="p">]&lt;/span>
 &lt;span class="nx">date&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;publishDate&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;date&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;:default&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>What this means is that Hugo will prefer the &lt;code>publishDate&lt;/code> as the date of the post, before falling back to the &lt;code>date&lt;/code> attribute, and then resuming its default lookup, which is listed &lt;a href="https://gohugo.io/getting-started/configuration/#configure-dates">in the Hugo documentation&lt;/a>.
 (At the moment, the only other thing in the default lookup order is the file modification time, but mostly I include &amp;ldquo;:default&amp;rdquo; to be safe if this changes in the future.)&lt;/p>
@@ -167,47 +195,42 @@ incompatible type &amp;quot;str&amp;quot;; expected &amp;quot;int&amp;quot;
 I have a script on my server that cron runs every 15 minutes that pulls from &lt;a href="https://github.com/robjwells/primaryunit">the GitHub repository&lt;/a> and rebuilds the site.&lt;/p>
 &lt;p>This set-up is made easy thanks to Hugo being a single binary, so it’s simple to install on the server, whereas &lt;a href="https://github.com/robjwells/majestic/">before&lt;/a> I would generally build the site locally and upload it to my server with rsync.&lt;/p>
 &lt;p>Hugo can list posts that are scheduled in the future:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-zsh" data-lang="zsh">$ hugo list future
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-zsh" data-lang="zsh">$ hugo list future
 content/posts/2020/05/24/scheduling-posts-in-hugo/index.md,2020-06-06T06:00:00+01:00
 content/posts/2020/05/24/keyboard-maestro-macro-to-insert-images-into-blog-posts/index.md,2020-05-30T06:00:00+01:00
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>This is a bit noisy, so here’s a sed one-liner to improve things slightly:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-zsh" data-lang="zsh">$ hugo list future &lt;span class="p">|&lt;/span> sed -E &lt;span class="s1">&amp;#39;s/^.+\/([^\/]+)\/index.md,(.+)/\2 - \1/&amp;#39;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-zsh" data-lang="zsh">$ hugo list future &lt;span class="p">|&lt;/span> sed -E &lt;span class="s1">&amp;#39;s/^.+\/([^\/]+)\/index.md,(.+)/\2 - \1/&amp;#39;&lt;/span>
 2020-06-06T06:00:00+01:00 - scheduling-posts-in-hugo
 2020-05-30T06:00:00+01:00 - keyboard-maestro-macro-to-insert-images-into-blog-posts
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>(This assumes that you’re using &lt;a href="https://gohugo.io/content-management/page-bundles/">page bundles&lt;/a>.)&lt;/p>
 &lt;hr>
 &lt;p>I actually now have a &lt;a href="https://www.beeminder.com/robjwells/blog">Beeminder goal&lt;/a> to ensure that I write a post a month — well, I was being lenient with myself so it’s every 31 days. It’s also set for a maximum 31 safe days, so I feel that scheduling once a week is enough to tamp down any short-term blog-mania while also not gaming the Beeminder goal too much by scheduling posts at 31-day intervals. (Perhaps this is a sign though that I can set the goal to have a shorter period, but at the moment I have enough commitments that I don’t feel comfortable doing so.)&lt;/p></description></item><item><title>Keyboard Maestro macro to insert images into blog posts</title><link>https://www.robjwells.com/2020/05/keyboard-maestro-macro-to-insert-images-into-blog-posts/</link><pubDate>Sat, 30 May 2020 06:00:00 +0100</pubDate><guid>https://www.robjwells.com/2020/05/keyboard-maestro-macro-to-insert-images-into-blog-posts/</guid><description>&lt;p>Here’s a quick Keyboard Maestro macro to make it easier to insert images into blog posts, or any other markdown or HTML document really. The details of the macro are set up to create a &lt;a href="https://gohugo.io/content-management/shortcodes/#figure">Hugo figure shortcode&lt;/a>, but the Hugo-specific bits are just scaffolding and could be swapped out for whatever you need.&lt;/p>
 &lt;p>You can &lt;a href="insert-hugo-figure.kmmacros">download the macro file here&lt;/a>, but the whole thing ended up being a bit long so I’m not going to include the usual image of the whole macro (which is 1,965 pixels tall). Let’s step through it.&lt;/p>
-&lt;figure class="full-width no-border">&lt;a href="macro-1-prompt-and-read.png">
-&lt;img src="macro-1-prompt-and-read.png"
-alt="A screenshot showing a portion of a Keyboard Maestro macro, prompting the user for a file and then reading it." width="551" height="275"/> &lt;/a>&lt;figcaption>
+&lt;figure class="full-width no-border">&lt;a href="macro-1-prompt-and-read.png">&lt;img src="macro-1-prompt-and-read.png"
+alt="A screenshot showing a portion of a Keyboard Maestro macro, prompting the user for a file and then reading it." width="551" height="275"/>&lt;/a>&lt;figcaption>
 &lt;p>The first stage of the macro, prompting for the image file and then loading it onto a named clipboard.&lt;/p>
 &lt;/figcaption>
 &lt;/figure>
 &lt;p>After selecting the image, we need to load it onto a named clipboard because Keyboard Maestro’s image actions generally work on the contents of a clipboard.&lt;/p>
-&lt;figure class="full-width no-border">&lt;a href="macro-2-store-properties.png">
-&lt;img src="macro-2-store-properties.png"
-alt="A screenshot showing a portion of a Keyboard Maestro macro, reading image properties into variables." width="551" height="312"/> &lt;/a>&lt;figcaption>
+&lt;figure class="full-width no-border">&lt;a href="macro-2-store-properties.png">&lt;img src="macro-2-store-properties.png"
+alt="A screenshot showing a portion of a Keyboard Maestro macro, reading image properties into variables." width="551" height="312"/>&lt;/a>&lt;figcaption>
 &lt;p>Next we extract needed properties from the image into Keyboard Maestro variables.&lt;/p>
 &lt;/figcaption>
 &lt;/figure>
 &lt;p>Then we need to prompt the user to confirm the attributes of the figure.&lt;/p>
-&lt;figure class="full-width no-border">&lt;a href="macro-3-prompt-attributes.png">
-&lt;img src="macro-3-prompt-attributes.png"
-alt="A screenshot showing a portion of a Keyboard Maestro macro, of a prompt to the user to confirm attributes for the figure to be inserted." width="551" height="377"/> &lt;/a>&lt;figcaption>
+&lt;figure class="full-width no-border">&lt;a href="macro-3-prompt-attributes.png">&lt;img src="macro-3-prompt-attributes.png"
+alt="A screenshot showing a portion of a Keyboard Maestro macro, of a prompt to the user to confirm attributes for the figure to be inserted." width="551" height="377"/>&lt;/a>&lt;figcaption>
 &lt;p>The prompt set-up.&lt;/p>
 &lt;/figcaption>
 &lt;/figure>
-&lt;figure class="full-width no-border">&lt;a href="macro-prompt.png">
-&lt;img src="macro-prompt.png"
-alt="A screenshot showing a Keyboard Maestro prompt asking for attributes to complete an HTML figure" width="537" height="267"/> &lt;/a>&lt;figcaption>
+&lt;figure class="full-width no-border">&lt;a href="macro-prompt.png">&lt;img src="macro-prompt.png"
+alt="A screenshot showing a Keyboard Maestro prompt asking for attributes to complete an HTML figure" width="537" height="267"/>&lt;/a>&lt;figcaption>
 &lt;p>And the prompt itself.&lt;/p>
 &lt;/figcaption>
 &lt;/figure>
 &lt;p>Any of these can be empty, so after assembling the shortcode text blank attributes are removed:&lt;/p>
-&lt;figure class="full-width no-border">&lt;a href="macro-4-assemble-figure.png">
-&lt;img src="macro-4-assemble-figure.png"
-alt="A screenshot showing a portion of a Keyboard Maestro macro, creating the figure shortcode from provided attributes and using a regular expression to remove any empty attributes." width="551" height="631"/> &lt;/a>
+&lt;figure class="full-width no-border">&lt;a href="macro-4-assemble-figure.png">&lt;img src="macro-4-assemble-figure.png"
+alt="A screenshot showing a portion of a Keyboard Maestro macro, creating the figure shortcode from provided attributes and using a regular expression to remove any empty attributes." width="551" height="631"/>&lt;/a>
 &lt;/figure>
 &lt;p>And then lastly the figure shortcode text is inserted by pasting, which is handy because it end up on the clipboard if anything goes wrong — like it did when I changed the focus when inserting the previous screenshot!&lt;/p></description></item><item><title>The Atom: A Love Affair</title><link>https://www.robjwells.com/2020/05/the-atom-a-love-affair/</link><pubDate>Sun, 24 May 2020 08:15:00 +0100</pubDate><guid>https://www.robjwells.com/2020/05/the-atom-a-love-affair/</guid><description>&lt;p>I watched &lt;a href="https://theatomfilm.com/">The Atom: A Love Affair&lt;/a> last night, a new documentary about the history of nuclear power, and it’s really great. It charts the ups and downs of nuclear power, its promoters and opponents, and looks at where we are today. I think its great strength is that it sets out the surrounding context. It doesn’t take a side but gives a fair accounting (which &lt;a href="https://cnduk.org/campaigns/no-nuclear-power/">I think leads to a clear conclusion&lt;/a>, though I would, wouldn’t I?).&lt;/p>
 &lt;p>You can &lt;a href="https://www.curzonhomecinema.com/film/watch-atom-a-love-affair-online">stream it online at Curzon Home Cinema&lt;/a>, and I highly recommend it.&lt;/p>
@@ -220,13 +243,13 @@ Unfortunately people tend not to start exactly at the beginning of the leave yea
 &lt;p>I’ve cleaned it up today after seeing that &lt;a href="https://repl.it/talk/announcements/Feedback-for-git-support-the-new-GitHub-integration/21631">Repl.it can publish new repos to GitHub&lt;/a> (though that feature has some &lt;a href="https://repl.it/talk/announcements/1-to-this-feature-thanks-but-I-came/21631/175353">rough edges&lt;/a>).&lt;/p>
 &lt;p>You can &lt;a href="https://github.com/robjwells/annual_leave_calculator/blob/master/main.py">find the code on GitHub&lt;/a>.
 Mostly it’s uninteresting, the first 40 lines being the module docstring and the last 30 being mostly wrappers around &lt;code>input()&lt;/code>, so here’s the meat of it:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln"> 1&lt;/span>&lt;span class="c1"># Modify these constants to suit your circumstances&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln"> 1&lt;/span>&lt;span class="c1"># Modify these constants to suit your circumstances&lt;/span>
 &lt;span class="ln"> 2&lt;/span>&lt;span class="n">DEFAULT_AL_YEAR_START&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">date&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">today&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">replace&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">month&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">day&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>
 &lt;span class="ln"> 3&lt;/span>&lt;span class="n">DEFAULT_AL&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">28&lt;/span>
 &lt;span class="ln"> 4&lt;/span>&lt;span class="n">RESULT_DECIMAL_PLACES&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">2&lt;/span>
 &lt;span class="ln"> 5&lt;/span>
 &lt;span class="ln"> 6&lt;/span>
-&lt;span class="ln"> 7&lt;/span>&lt;span class="k">def&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">-&amp;gt;&lt;/span> &lt;span class="bp">None&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln"> 7&lt;/span>&lt;span class="k">def&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">-&amp;gt;&lt;/span> &lt;span class="kc">None&lt;/span>&lt;span class="p">:&lt;/span>
 &lt;span class="ln"> 8&lt;/span> &lt;span class="n">al_for_full_year&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">prompt_for_al_amount&lt;/span>&lt;span class="p">()&lt;/span>
 &lt;span class="ln"> 9&lt;/span>
 &lt;span class="ln">10&lt;/span> &lt;span class="n">al_year_start&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">prompt_for_date&lt;/span>&lt;span class="p">(&lt;/span>
@@ -247,7 +270,7 @@ Mostly it’s uninteresting, the first 40 lines being the module docstring and t
 &lt;span class="ln">25&lt;/span>
 &lt;span class="ln">26&lt;/span> &lt;span class="n">proportion_of_al_year_worked&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">employed_days&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="n">al_year_days&lt;/span>
 &lt;span class="ln">27&lt;/span> &lt;span class="n">al_days_available&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">al_for_full_year&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">proportion_of_al_year_worked&lt;/span>
-&lt;span class="ln">28&lt;/span> &lt;span class="k">print&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;span class="ln">28&lt;/span> &lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>
 &lt;span class="ln">29&lt;/span> &lt;span class="nb">round&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">al_days_available&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">RESULT_DECIMAL_PLACES&lt;/span>&lt;span class="p">),&lt;/span>
 &lt;span class="ln">30&lt;/span> &lt;span class="s2">&amp;#34;days annual leave&amp;#34;&lt;/span>
 &lt;span class="ln">31&lt;/span> &lt;span class="p">)&lt;/span>
@@ -263,7 +286,7 @@ There’s some redundancy between lines 16 and 21, calculating the leave year by
 &lt;p>The rest of the script just works out the proportion of the leave year worked against the length of the full leave year, and computes the same proportion of the total number of leave days available for the full year.&lt;/p>
 &lt;p>Nothing really tricky, but I work in a small company so it’s easy to misremember the process when you only do it a couple of times a year.&lt;/p>
 &lt;p>Here’s an example session:&lt;/p>
-&lt;pre>&lt;code>How many days annual leave for the full year? [28] 30
+&lt;pre tabindex="0">&lt;code>How many days annual leave for the full year? [28] 30
 Leave year start date [2020-01-01]: 2020-04-01
 Employee start date [2020-04-01]:
 Employee finish date [2021-03-31]: 2020-06-05
@@ -271,7 +294,7 @@ Employee finish date [2021-03-31]: 2020-06-05
 &lt;/code>&lt;/pre>&lt;p>It’s a bit awkward to put in a “start date” for employees who have been employed since before the start of the leave year, and similar for employees who (you hope!) will continue past the end of the leave year, but the prompting helpers take a default value which you can accept by pressing return.&lt;/p>
 &lt;p>There’s no need to review the prompting helper functions but I will take a moment to appreciate the signature of the typed wrapper around &lt;code>input()&lt;/code>.
 It is generic over some type &lt;code>T&lt;/code>, takes a function &lt;code>str → T&lt;/code>, and a default &lt;code>T&lt;/code>, which is returned if the user input is empty.&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="n">T&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">TypeVar&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;T&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="n">T&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">TypeVar&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;T&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
 &lt;span class="k">def&lt;/span> &lt;span class="nf">_prompt_wrapper&lt;/span>&lt;span class="p">(&lt;/span>
 &lt;span class="n">message&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">str&lt;/span>&lt;span class="p">,&lt;/span>
 &lt;span class="n">parser&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Callable&lt;/span>&lt;span class="p">[[&lt;/span>&lt;span class="nb">str&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="n">T&lt;/span>&lt;span class="p">],&lt;/span>
@@ -284,13 +307,12 @@ But in this case all callers supply a default and, as far as the callers are con
 &lt;p>So I thought I would write a &lt;a href="https://developer.obdev.at/launchbar-developer-documentation/#/actions-overview">LaunchBar action&lt;/a> to do both.&lt;/p>
 &lt;p>Despite being my first, it was really very easy. I wrote it in JavaScript as the documentation leads you that way, and you don’t have to serialise to JSON and write to stdout to return values. LaunchBar provides some additional tools to make interacting with the system straightforward from JavaScript. (And, to be clear, this isn’t &lt;a href="https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/index.html">JXA&lt;/a> either.)&lt;/p>
 &lt;p>Here are the settings in the scripts pane in LaunchBar’s Action Editor:&lt;/p>
-&lt;figure class="full-width">&lt;a href="action-editor-script-settings.png">
-&lt;img src="action-editor-script-settings.png"
-alt="A screenshot of the scripts pane settings in LaunchBar’s action editor for a default script, showing the default settings except that it returns an Item" width="510" height="250"/> &lt;/a>
+&lt;figure class="full-width">&lt;a href="action-editor-script-settings.png">&lt;img src="action-editor-script-settings.png"
+alt="A screenshot of the scripts pane settings in LaunchBar’s action editor for a default script, showing the default settings except that it returns an Item" width="510" height="250"/>&lt;/a>
 &lt;/figure>
 &lt;p>This is a default script, taking no input. One thing to note is that it returns a result of type “Item” — an array of JavaScript objects with particular keys. You can read about the properties items can have &lt;a href="https://developer.obdev.at/launchbar-developer-documentation/#/actions-overview">in the LaunchBar action developer documentation&lt;/a>.&lt;/p>
 &lt;p>And here’s the code:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-JavaScript" data-lang="JavaScript">&lt;span class="ln"> 1&lt;/span>&lt;span class="kd">function&lt;/span> &lt;span class="nx">run&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">argument&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-JavaScript" data-lang="JavaScript">&lt;span class="ln"> 1&lt;/span>&lt;span class="kd">function&lt;/span> &lt;span class="nx">run&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">argument&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
 &lt;span class="ln"> 2&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">shortlogDir&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;~/Dropbox/notes/shortlog/&amp;#34;&lt;/span>
 &lt;span class="ln"> 3&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="nx">File&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">getDirectoryContents&lt;/span>&lt;span class="p">(&lt;/span>
 &lt;span class="ln"> 4&lt;/span> &lt;span class="nx">shortlogDir&lt;/span>
@@ -329,18 +351,16 @@ alt="A screenshot of the scripts pane settings in LaunchBar’s action editor fo
 &lt;li>sorting those objects on the ISO date string, newest to oldest (lines 25–29).&lt;/li>
 &lt;/ul>
 &lt;p>In line 3, we make use of the &lt;code>File&lt;/code> object, which is provided by LaunchBar. And in lines 9–12 we use the &lt;code>formatDate&lt;/code> function on the &lt;code>LaunchBar&lt;/code> object, which gives us access to the system’s date formatting, which is both locale-aware and respects the user’s date &amp;amp; time preferences.&lt;/p>
-&lt;figure class="pull-right">&lt;a href="shortlogs-action-result.png">
-&lt;img src="shortlogs-action-result.png"
-alt="A screenshot showing the resulting list of files in reverse date order in LaunchBar" width="310" height="459"/> &lt;/a>
+&lt;figure class="pull-right">&lt;a href="shortlogs-action-result.png">&lt;img src="shortlogs-action-result.png"
+alt="A screenshot showing the resulting list of files in reverse date order in LaunchBar" width="310" height="459"/>&lt;/a>
 &lt;/figure>
 &lt;p>By providing the path in the result object, LaunchBar treats each entry in the list as a file, so you can press return to open it, or press the right arrow to inspect its details.&lt;/p>
 &lt;p>One oddity: I did try to store a JavaScript &lt;code>Date&lt;/code> in the result objects, to use in the final sorting, but LaunchBar displays an error if a &lt;code>Date&lt;/code> in the returned items. You could strip out any of your custom properties, but here I just use the ISO-format date string from the filename as it works just as well for the sorting comparison.&lt;/p>
 &lt;p>(Another oddity: I initially created the &lt;code>Date&lt;/code> (now in line 10) manually with the date components extracted from the ISO-format date string. I learned that the constructor doesn’t take a &lt;code>month&lt;/code> argument but instead a &lt;code>monthIndex&lt;/code>, in the range 0–11. &lt;a href="https://stackoverflow.com/questions/2552483/why-does-the-month-argument-range-from-0-to-11-in-javascripts-date-constructor">Some background on why this is&lt;/a>.)&lt;/p></description></item><item><title>macOS transpose shortcut in Firefox</title><link>https://www.robjwells.com/2020/04/macos-transpose-shortcut-in-firefox/</link><pubDate>Sat, 18 Apr 2020 06:00:00 +0100</pubDate><guid>https://www.robjwells.com/2020/04/macos-transpose-shortcut-in-firefox/</guid><description>&lt;p>macOS has a built-in shortcut to transpose characters, ⌃T, which is really handy. Sadly, Firefox doesn’t support it. This has been the case for at least the past seven years, as I remember telling a colleague at my previous job about useful macOS shortcuts, only for him to immediately try and find it “didn’t work.”&lt;/p>
 &lt;p>Firefox is my main browser at the moment (because of &lt;a href="https://github.com/el1t/uBlock-Safari/issues/158">the changes to content-blocking in Safari&lt;/a>), so this has become a bit of an irritation.&lt;/p>
 &lt;p>Here’s a Keyboard Maestro macro to poorly replicate ⌃T in Firefox:&lt;/p>
-&lt;figure>&lt;a href="transpose-macro.kmmacros">
-&lt;img src="transpose-macro.png"
-alt="A screenshot of a Keyboard Maestro macro to transpose characters in Firefox on macOS." width="473" height="471"/> &lt;/a>
+&lt;figure>&lt;a href="transpose-macro.kmmacros">&lt;img src="transpose-macro.png"
+alt="A screenshot of a Keyboard Maestro macro to transpose characters in Firefox on macOS." width="473" height="471"/>&lt;/a>
 &lt;/figure>
 &lt;p>“Poorly” because it’s slower than ⌃T usually is in supporting applications, and it makes no attempt to clean up your clipboard history.&lt;/p>
 &lt;p>If you’re interested, you’d probably want to implement some clipboard-repair, but I use LaunchBar’s clipboard history and I can’t find a way of using the &lt;a href="https://wiki.keyboardmaestro.com/action/Delete_Past_Clipboard">Delete Past Clipboard&lt;/a> action in a way that doesn’t put additional unwanted items into my clipboard history. Keyboard Maestro has its own clipboard history manager, so if you’re using that (or not using one at all) then you should be well served by Delete Past Clipboard.&lt;/p></description></item><item><title>Shortlogging</title><link>https://www.robjwells.com/2020/04/shortlogging/</link><pubDate>Sat, 11 Apr 2020 10:47:05 +0100</pubDate><guid>https://www.robjwells.com/2020/04/shortlogging/</guid><description>&lt;p>Back in 2018, I was trying to think of a way where I could record work or personal activities, and what I came up with was to create a daily log file for my life, like you might have from a program with &lt;code>logger.setLevel(INFO)&lt;/code>.&lt;/p>
@@ -351,17 +371,15 @@ alt="A screenshot of a Keyboard Maestro macro to transpose characters in Firefox
 &lt;p>Brett Terpstra has a tool called &lt;a href="https://github.com/ttscoff/doing">doing&lt;/a>, which now that I look at it behaves how I want (recording activities as complete) but it’s very featureful and a bit much for me.&lt;/p>
 &lt;p>So, obviously, I decided to roll my own.&lt;/p>
 &lt;p>The core of my setup is a folder which I keep at &lt;code>~/Dropbox/notes/shortlog/&lt;/code>, in which reside files like &lt;code>shortlog-2020-04-09.txt&lt;/code>. The contents of these files looks like this:&lt;/p>
-&lt;pre>&lt;code>2020-04-09 09:46:36 | Read Kirk Baker’s SVD notes (…)
+&lt;pre tabindex="0">&lt;code>2020-04-09 09:46:36 | Read Kirk Baker’s SVD notes (…)
 2020-04-09 10:00:15 | Set up Python environment for NLP coursework 2 (…)
 2020-04-09 11:30:07 | Had CND Team Meeting
 &lt;/code>&lt;/pre>&lt;p>I created a &lt;a href="https://www.keyboardmaestro.com/main/">Keyboard Maestro&lt;/a> macro to make logging easy (&lt;a href="shortlog-prompt.kmmacros">click to download&lt;/a>):&lt;/p>
-&lt;figure class="full-width">&lt;a href="shortlog-prompt.kmmacros">
-&lt;img src="shortlog-prompt-kmmacro.png"
-alt="A screenshot showing the Keyboard Maestro macro I use to enter shortlog entries."/> &lt;/a>
+&lt;figure class="full-width">&lt;a href="shortlog-prompt.kmmacros">&lt;img src="shortlog-prompt-kmmacro.png"
+alt="A screenshot showing the Keyboard Maestro macro I use to enter shortlog entries."/>&lt;/a>
 &lt;/figure>
 &lt;p>When you invoke the macro, you get a pop-up dialog like this:&lt;/p>
-&lt;figure>
-&lt;img src="shortlog-prompt.png"
+&lt;figure>&lt;img src="shortlog-prompt.png"
 alt="A screenshot of the shortlog pop-up window prompting for an entry, with a text entry field and buttons labelled “More”, “Cancel” and “Done”."/>
 &lt;/figure>
 &lt;p>“More” lets you log more than one entry. For convenience, if the entry field is empty and you choose “Done”, it exits without logging anything.&lt;/p>
@@ -378,7 +396,7 @@ alt="A screenshot of the shortlog pop-up window prompting for an entry, with a t
 &lt;tbody>
 &lt;tr>
 &lt;td>&lt;em>fileNameTemplate&lt;/em>&lt;/td>
-&lt;td>&lt;code>shortlog-[[date\|%Y-%m-%d]].txt&lt;/code>&lt;/td>
+&lt;td>&lt;code>shortlog-[[date|%Y-%m-%d]].txt&lt;/code>&lt;/td>
 &lt;/tr>
 &lt;tr>
 &lt;td>&lt;em>folderTemplate&lt;/em>&lt;/td>
@@ -386,7 +404,7 @@ alt="A screenshot of the shortlog pop-up window prompting for an entry, with a t
 &lt;/tr>
 &lt;tr>
 &lt;td>&lt;em>template&lt;/em>&lt;/td>
-&lt;td>&lt;code>[[date\|%Y-%m-%d %H:%M:%S]] \| [[draft]]&lt;/code>&lt;/td>
+&lt;td>&lt;code>[[date|%Y-%m-%d %H:%M:%S]] | [[draft]]&lt;/code>&lt;/td>
 &lt;/tr>
 &lt;tr>
 &lt;td>&lt;em>writeType&lt;/em>&lt;/td>
@@ -395,7 +413,7 @@ alt="A screenshot of the shortlog pop-up window prompting for an entry, with a t
 &lt;/tbody>
 &lt;/table>
 &lt;p>Drafts writes a newline before the content defined in &lt;em>template&lt;/em>, which I can’t seem to disable. (Advice greatly appreciated.) I’ve got a simple &lt;code>sed&lt;/code> command I run occasionally to remove the blank lines if it’s bugging me.&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-zsh" data-lang="zsh">sed -i &lt;span class="s1">&amp;#39;&amp;#39;&lt;/span> -e &lt;span class="s1">&amp;#39;/^\s*$/d&amp;#39;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-zsh" data-lang="zsh">sed -i &lt;span class="s1">&amp;#39;&amp;#39;&lt;/span> -e &lt;span class="s1">&amp;#39;/^\s*$/d&amp;#39;&lt;/span>
 &lt;span class="s2">&amp;#34;/Users/&lt;/span>&lt;span class="nv">$USER&lt;/span>&lt;span class="s2">/Dropbox/notes/shortlog/shortlog-&lt;/span>&lt;span class="k">$(&lt;/span>date +%Y-%m-%d&lt;span class="k">)&lt;/span>&lt;span class="s2">.txt&amp;#34;&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>Lastly, I also wanted these shortlog entries available as RescueTime highlights, as it allows you to review your tracked time with your manual “annotations” alongside. I wrote a fairly short Python script to do this (&lt;a href="https://github.com/robjwells/shortlog_to_rescuetime_highlights">repo&lt;/a>, &lt;a href="https://github.com/robjwells/shortlog_to_rescuetime_highlights/blob/master/shortlog_to_rescuetime.py">script itself&lt;/a>), which runs each morning and logs the previous days’s entries as highlights by POSTing them to the RescueTime API. It’s nuts-and-bolts so I won’t review the code here.&lt;/p>
 &lt;p>The one thing that I do want to note is that I have a job set up in &lt;a href="https://www.peterborgapps.com/lingon/">Lingon&lt;/a> (a friendly interface to &lt;code>launchd&lt;/code>) to do this each day, and that &lt;code>launchd&lt;/code> will run jobs missed while asleep (though not those missed if the computer is powered off) at the next opportunity:&lt;/p>
@@ -407,22 +425,4 @@ alt="A screenshot of the shortlog pop-up window prompting for an entry, with a t
 &lt;blockquote>
 &lt;p>Remember that the Mac must be awake for the trigger to happen, and if the Mac is sleeping the macro will not fire at a later time.&lt;/p>
 &lt;/blockquote>
-&lt;p>But I’d be very happy to be corrected if there’s a way to achieve the &lt;code>launchd&lt;/code> behaviour through Keyboard Maestro.&lt;/p></description></item><item><title>Permanent</title><link>https://www.robjwells.com/2020/03/permanent/</link><pubDate>Sun, 29 Mar 2020 13:39:14 +0100</pubDate><guid>https://www.robjwells.com/2020/03/permanent/</guid><description>&lt;p>Over the past couple of days I’ve cleared through my Pinboard bookmarks, getting my “unread” count down from a ludicrous 1,000 or so to just six as of right now, and tagging or deleting the 200-odd untagged bookmarks.&lt;/p>
-&lt;p>I ran the “find dead bookmarks” command in &lt;a href="https://bananafishsoftware.com/products/spillo/">Spillo&lt;/a> this morning and got about 100.
-Some of those are entire sites going offline, including ones active fairly recently, one deleted despite posting a searing set of essays last May.
-One is a site that I knew had stopped publishing, after several years of great articles and interviews, but has now vanished from the web.
-(Thankfully I still have a cached copy; Pinboard’s archiving feature is absolutely worth paying for.)&lt;/p>
-&lt;p>One site, of an economics thinktank, fairly recently redesigned its site and its URL structure.
-It would have been a simple job to redirect the URLS, as the page portion of the URL remained the same, but instead they were left broken.&lt;/p>
-&lt;p>It was an interesting experience, rediscovering some interesting links from my 10 years of bookmarking (of varying intensity over that period).
-It was interesting also to see who was still around and who had gone, and who had decided to delete parts of their output.&lt;/p>
-&lt;p>When I moved this site off Tumblr in autumn 2015, and made it static, I redirected the URLs of the 50 posts I wanted to keep (since I don’t write much, this is about 50% of the current total; I didn’t republish some that I was particularly embarrassed by or were at that point entirely out of date and irrelevant).
-This couldn&amp;rsquo;t be done algorithmically, as I had to map an opaque number to a more traditional date-title URL, rather than just chopping out or rewriting part of the URL.
-It surprises me that people who otherwise take care over their website don’t do this.
-(After all, &lt;a href="https://www.w3.org/Provider/Style/URI">Cool URIs don’t change&lt;/a>.)&lt;/p>
-&lt;p>And for those that have gone away, they’d put real time and effort into that writing, and now it’s entirely gone, except for wherever it’s cached online.
-Obviously people have reasons for pulling articles from the web, beyond simply not caring anymore.
-But for those that have simply stopped… does that work need to come down?
-I switched this site over to Hugo recently, which wasn’t a huge job (sorry if you saw items repeat in the RSS feed).
-Still a technical task, true, but we’re at a point now where creating a static version of a site that you can just throw up somewhere like S3 or GitHub is well within the capabilities of someone who’s already bought a domain and set up Wordpress with a custom theme.&lt;/p>
-&lt;p>It’s just sad to see people’s hard work vanish like this.&lt;/p></description></item></channel></rss>
+&lt;p>But I’d be very happy to be corrected if there’s a way to achieve the &lt;code>launchd&lt;/code> behaviour through Keyboard Maestro.&lt;/p></description></item></channel></rss>

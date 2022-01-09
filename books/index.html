@@ -1,149 +1,922 @@
-<!doctype html><html lang=en><head><title>Primary Unit – Books</title><meta charset=utf-8><meta http-equiv=content-security-policy content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; block-all-mixed-content; base-uri 'self'"><link rel=license href=https://creativecommons.org/licenses/by/4.0/><link rel=alternate type=application/rss+xml href=/rss.xml title="Primary Unit"><link rel=alternate type=application/json href=/feed.json title="Primary Unit"><link rel=mask-icon href=/favicon.svg color=#1369bf><link rel=apple-touch-icon-precomposed href=/favicon.png><link rel=icon href=/favicon.ico><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="A blog by Rob Wells, mostly about computer stuff."><style>html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strong,sub,sup,var,b,u,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,menu,nav,output,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}input,button{font-family:inherit}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section{display:block}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}html{box-sizing:border-box;text-size-adjust:100%}*,*:before,*:after{box-sizing:inherit}:root{--grey: #607080;--grey10: #eff0f2;--grey5: #f7f8f9;--blue: #1369bf;--blue10: #e7eff8;--purple: #7436b3;--lineSpace: 1.75rem;--halfLine: calc(var(--lineSpace) / 2);--quarterLine: calc(var(--lineSpace) / 4);--bigGap: calc(var(--lineSpace) * 2);--paragraphWidth: 40rem;--wrapperWidth: 50rem;--huge: 1.75rem;--big: 1.5625rem;--medium: 1.375rem;--text: 1.125rem;--small: 0.875rem;--codeInText: 0.875em;--bodyFonts: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Oxygen", Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, sans-serif;--monospace: 'Source Code Pro', 'Consolas', 'Menlo', 'Monaco', monospace}body{background-color:var(--grey5);font-family:var(--bodyFonts);font-size:var(--text);font-style:normal;font-weight:400;line-height:1.55555;text-size-adjust:100%;-webkit-text-size-adjust:100%}.wrapper{margin:0 auto;max-width:var(--wrapperWidth);padding:var(--lineSpace)var(--halfLine)}h2,h3,h4{margin:0 0 var(--lineSpace)}h2{font-size:var(--huge)}h3{font-size:var(--big)}h4{font-size:var(--medium)}blockquote,figure,p,pre,table,caption,dl,ol,ul,div.highlight{margin-bottom:var(--lineSpace)}blockquote,pre,div.highlight{background-color:var(--grey10);padding:var(--halfLine)}blockquote{font-style:italic}blockquote em,blockquote i{font-style:normal}blockquote p:last-child{margin-bottom:0}figcaption{font-style:italic}hr{border:none;border-top:1px solid var(--grey);margin:var(--lineSpace)0}img,video{box-sizing:content-box;border:1px solid var(--grey);height:auto;max-width:100%}pre{overflow-x:auto}dl,ol,ul{margin-bottom:var(--lineSpace)}ol,ul{list-style-position:outside;padding-left:var(--lineSpace)}ol{list-style-type:decimal}ul{list-style-type:square}a:link{color:var(--blue);text-decoration:underline}a:visited{color:var(--purple)}a:focus,a:hover,a:active{background-color:var(--blue10)}strong,b{font-weight:700}em,i{font-style:italic}code{font-size:var(--codeInText)}.highlight,pre code,small{font-size:var(--small)}.highlight,code{font-family:var(--monospace)}small{color:var(--grey)}table{width:100%}.table-container{overflow-x:auto}caption{font-style:italic}thead{border-bottom:1px solid var(--grey)}tfoot{border-top:1px solid var(--grey)}th,td{width:auto;padding:var(--halfLine);overflow:auto;text-align:left}th{background-color:var(--grey10);font-weight:700}.table-figures{text-align:right;font-family:var(--monospace)}.site-header{border-left:var(--quarterLine)solid var(--blue);display:flex;flex-wrap:wrap;margin-bottom:var(--lineSpace);padding-left:var(--quarterLine)}.site-title-container{flex-shrink:0;margin-right:var(--lineSpace);max-width:100%}.site-title{font-size:var(--huge);line-height:var(--huge);margin-bottom:0}.site-byline{margin-bottom:0}.site-links{color:var(--grey);list-style-type:none;margin-bottom:0;padding:0}.site-footer{margin-top:var(--bigGap)}article{border-bottom:1px solid var(--grey);margin-bottom:var(--bigGap)}article:last-of-type{border-bottom:none}article header{margin-bottom:var(--lineSpace)}article header h2{margin-bottom:0}article header time{color:var(--grey)}article p{max-width:var(--paragraphWidth)}article li{margin-bottom:var(--halfLine);max-width:calc(var(--paragraphWidth) - var(--lineSpace))}.index-date{color:var(--grey);font-family:var(--monospace);font-size:var(--small);min-width:6rem;margin-right:var(--halfLine)}.index-item{margin-bottom:var(--halfLine)}.index-link{align-items:baseline;display:flex}.index-list{padding-left:0;list-style-type:none}.flag{background-color:var(--blue10);border-left:var(--quarterLine)solid var(--blue);margin-bottom:var(--lineSpace);padding:var(--halfLine)var(--quarterLine)}.flag :last-child{margin-bottom:0}.full-width{max-width:100%}.mute-links a{text-decoration:none;color:inherit}.no-border{border:0}.no-border img{border:0}.no-squish{overflow:auto}.no-squish img{max-width:none}@media screen and (min-width:40rem){.pull-left{float:left;clear:left;margin-right:var(--halfLine)}.pull-right{float:right;clear:right;margin-left:var(--halfLine)}.pull-left img,.pull-right img{display:block;margin-bottom:var(--lineSpace)}}</style></head><body><div class=wrapper><header class=site-header><div class="site-title-container mute-links"><h1 class=site-title><a href=/>Primary Unit</a></h1><p class=site-byline><i>by</i> Rob Wells</p></div><nav id=site-nav><ul class="site-links mute-links"><li><a href=/about/>About</a></li><li><a href=/books/>Books I’ve read</a></li><li>Feed:
+<!doctype html><html lang=en>
+<head>
+<title>Primary Unit – Books</title>
+<meta charset=utf-8>
+<meta http-equiv=content-security-policy content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; block-all-mixed-content; base-uri 'self'">
+<link rel=license href=https://creativecommons.org/licenses/by/4.0/>
+<link rel=alternate type=application/rss+xml href=/rss.xml title="Primary Unit">
+<link rel=alternate type=application/json href=/feed.json title="Primary Unit">
+<link rel=mask-icon href=/favicon.svg color=#1369bf>
+<link rel=apple-touch-icon-precomposed href=/favicon.png>
+<link rel=icon href=/favicon.ico>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="A blog by Rob Wells, mostly about computer stuff.">
+<style>html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strong,sub,sup,var,b,u,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,menu,nav,output,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}input,button{font-family:inherit}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section{display:block}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}html{box-sizing:border-box;text-size-adjust:100%}*,*:before,*:after{box-sizing:inherit}:root{--grey:#607080;--grey10:#eff0f2;--grey5:#f7f8f9;--blue:#1369bf;--blue10:#e7eff8;--purple:#7436b3;--lineSpace:1.75rem;--halfLine:calc(var(--lineSpace) / 2);--quarterLine:calc(var(--lineSpace) / 4);--bigGap:calc(var(--lineSpace) * 2);--paragraphWidth:40rem;--wrapperWidth:50rem;--huge:1.75rem;--big:1.5625rem;--medium:1.375rem;--text:1.125rem;--small:0.875rem;--codeInText:0.875em;--bodyFonts:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Oxygen", Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, sans-serif;--monospace:'Source Code Pro', 'Consolas', 'Menlo', 'Monaco', monospace}body{background-color:var(--grey5);font-family:var(--bodyFonts);font-size:var(--text);font-style:normal;font-weight:400;line-height:1.55555;text-size-adjust:100%;-webkit-text-size-adjust:100%}.wrapper{margin:0 auto;max-width:var(--wrapperWidth);padding:var(--lineSpace)var(--halfLine)}h2,h3,h4{margin:0 0 var(--lineSpace)}h2{font-size:var(--huge)}h3{font-size:var(--big)}h4{font-size:var(--medium)}blockquote,figure,p,pre,table,caption,dl,ol,ul,div.highlight{margin-bottom:var(--lineSpace)}blockquote,pre,div.highlight{background-color:var(--grey10);padding:var(--halfLine)}blockquote{font-style:italic}blockquote em,blockquote i{font-style:normal}blockquote p:last-child{margin-bottom:0}figcaption{font-style:italic}hr{border:none;border-top:1px solid var(--grey);margin:var(--lineSpace)0}img,video{box-sizing:content-box;border:1px solid var(--grey);height:auto;max-width:100%}pre{overflow-x:auto}dl,ol,ul{margin-bottom:var(--lineSpace)}ol,ul{list-style-position:outside;padding-left:var(--lineSpace)}ol{list-style-type:decimal}ul{list-style-type:square}a:link{color:var(--blue);text-decoration:underline}a:visited{color:var(--purple)}a:focus,a:hover,a:active{background-color:var(--blue10)}strong,b{font-weight:700}em,i{font-style:italic}code{font-size:var(--codeInText)}.highlight,pre code,small{font-size:var(--small)}.highlight,code{font-family:var(--monospace)}small{color:var(--grey)}table{width:100%}.table-container{overflow-x:auto}caption{font-style:italic}thead{border-bottom:1px solid var(--grey)}tfoot{border-top:1px solid var(--grey)}th,td{width:auto;padding:var(--halfLine);overflow:auto;text-align:left}th{background-color:var(--grey10);font-weight:700}.table-figures{text-align:right;font-family:var(--monospace)}.site-header{border-left:var(--quarterLine)solid var(--blue);display:flex;flex-wrap:wrap;margin-bottom:var(--lineSpace);padding-left:var(--quarterLine)}.site-title-container{flex-shrink:0;margin-right:var(--lineSpace);max-width:100%}.site-title{font-size:var(--huge);line-height:var(--huge);margin-bottom:0}.site-byline{margin-bottom:0}.site-links{color:var(--grey);list-style-type:none;margin-bottom:0;padding:0}.site-footer{margin-top:var(--bigGap)}article{border-bottom:1px solid var(--grey);margin-bottom:var(--bigGap)}article:last-of-type{border-bottom:none}article header{margin-bottom:var(--lineSpace)}article header h2{margin-bottom:0}article header time{color:var(--grey)}article p{max-width:var(--paragraphWidth)}article li{margin-bottom:var(--halfLine);max-width:calc(var(--paragraphWidth) - var(--lineSpace))}.index-date{color:var(--grey);font-family:var(--monospace);font-size:var(--small);min-width:6rem;margin-right:var(--halfLine)}.index-item{margin-bottom:var(--halfLine)}.index-link{align-items:baseline;display:flex}.index-list{padding-left:0;list-style-type:none}.flag{background-color:var(--blue10);border-left:var(--quarterLine)solid var(--blue);margin-bottom:var(--lineSpace);padding:var(--halfLine)var(--quarterLine)}.flag :last-child{margin-bottom:0}.full-width{max-width:100%}.mute-links a{text-decoration:none;color:inherit}.no-border{border:0}.no-border img{border:0}.no-squish{overflow:auto}.no-squish img{max-width:none}@media screen and (min-width:40rem){.pull-left{float:left;clear:left;margin-right:var(--halfLine)}.pull-right{float:right;clear:right;margin-left:var(--halfLine)}.pull-left img,.pull-right img{display:block;margin-bottom:var(--lineSpace)}}</style>
+</head>
+<body>
+<div class=wrapper>
+<header class=site-header>
+<div class="site-title-container mute-links">
+<h1 class=site-title><a href=/>Primary Unit</a></h1>
+<p class=site-byline><i>by</i> Rob Wells</p>
+</div>
+<nav id=site-nav>
+<ul class="site-links mute-links">
+<li><a href=/about/>About</a></li>
+<li><a href=/books/>Books I’ve read</a></li>
+<li>
+Feed:
 <a href=/feed.json>JSON</a>,
-<a href=/rss.xml>RSS</a></li></ul></nav></header><main><header><h2>Books I’ve read</h2><p>Here’s a list of books that I’ve read, listed by finish date, with summaries of some.</p></header><ul class=index-list><li class=index-item><a class=index-link href=/books/2020/midnight-in-chernobyl/><time class=index-date datetime=2020-05-29>2020-05-29</time>
-<span>Midnight in Chernobyl, by Adam Higginbotham</span></a></li><li class=index-item><a class=index-link href=/books/2020/the-power-of-habit/><time class=index-date datetime=2020-02-15>2020-02-15</time>
-<span>The Power of Habit, by Charles Duhigg</span></a></li><li class=index-item><a class=index-link href=/books/2020/the-art-of-breathing/><time class=index-date datetime=2020-01-05>2020-01-05</time>
-<span>The Art of Breathing, by Danny Penman</span></a></li><li class=index-item><a class=index-link href=/books/2020/the-anatomy-of-fascism/><time class=index-date datetime=2020-01-04>2020-01-04</time>
-<span>The Anatomy of Fascism, by Robert O Paxton</span></a></li><li class=index-item><a class=index-link href=/books/2019/surveillance-valley/><time class=index-date datetime=2019-10-28>2019-10-28</time>
-<span>Surveillance Valley, by Yasha Levine</span></a></li><li class=index-item><a class=index-link href=/books/2019/turings-cathedral/><time class=index-date datetime=2019-09-01>2019-09-01</time>
-<span>Turing’s Cathedral, by George Dyson</span></a></li><li class=index-item><a class=index-link href=/books/2019/mindhunter/><time class=index-date datetime=2019-08-30>2019-08-30</time>
-<span>Mindhunter, by John Douglas and Mark Olshaker</span></a></li><li class=index-item><a class=index-link href=/books/2019/a-history-of-modern-computing/><time class=index-date datetime=2019-08-02>2019-08-02</time>
-<span>A History of Modern Computing, by Paul E Ceruzzi</span></a></li><li class=index-item><a class=index-link href=/books/2019/the-century-of-revolution/><time class=index-date datetime=2019-07-27>2019-07-27</time>
-<span>The Century of Revolution, by Christopher Hill</span></a></li><li class=index-item><a class=index-link href=/books/2019/blackshirts-and-reds/><time class=index-date datetime=2019-04-17>2019-04-17</time>
-<span>Blackshirts and Reds, by Michael Parenti</span></a></li><li class=index-item><a class=index-link href=/books/2019/code/><time class=index-date datetime=2019-04-04>2019-04-04</time>
-<span>Code, by Charles Petzold</span></a></li><li class=index-item><a class=index-link href=/books/2019/mindset/><time class=index-date datetime=2019-01-28>2019-01-28</time>
-<span>Mindset, by Carol S Dweck</span></a></li><li class=index-item><a class=index-link href=/books/2019/narcoland/><time class=index-date datetime=2019-01-09>2019-01-09</time>
-<span>Narcoland, by Anabel Hernández</span></a></li><li class=index-item><span class=index-link><time class=index-date datetime=2018-12-30>2018-12-30</time>
-<span>The EU: Winning a Progressive Settlement, by John Foster</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2018-12-29>2018-12-29</time>
-<span>The Left Case Against the EU, by Costas Lapavitsas</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2018-08-30>2018-08-30</time>
-<span>Irregular Army, by Matt Kennard</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2018-08-25>2018-08-25</time>
-<span>Think Python, by Allen Downey</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2018-08-08>2018-08-08</time>
-<span>Bloody Nasty People, by Daniel Trilling</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2018-07-09>2018-07-09</time>
-<span>Building the Commune: Radical Democracy in Venezuela, by George Ciccariello-Maher</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2018-07-07>2018-07-07</time>
-<span>Nothing to Envy, by Barbara Demick</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2018-06-19>2018-06-19</time>
-<span>Tinker Tailor Soldier Spy, by John le Carré</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2018-06-11>2018-06-11</time>
-<span>World War Z, by Max Brooks</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2018-06-06>2018-06-06</time>
-<span>Getting Things Done, by David Allen</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2018-06-06>2018-06-06</time>
-<span>Paperless, by David Sparks</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2018-04-16>2018-04-16</time>
-<span>Command and Control, by Eric Schlosser</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2018-04-13>2018-04-13</time>
-<span>The Age of Revolution, by Eric Hobsbawm</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2018-02-08>2018-02-08</time>
-<span>The End of Patriarchy, by Robert Jensen</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2018-01-29>2018-01-29</time>
-<span>Pornland, by Gail Dines</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2017-12-09>2017-12-09</time>
-<span>Mastering PostreSQL in Application Development, by Dimitri Fontaine</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2017-09-20>2017-09-20</time>
-<span>Value, Price and Profit, by Karl Marx</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2017-09-18>2017-09-18</time>
-<span>Bike Nation, by Peter Walker</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2017-09-15>2017-09-15</time>
-<span>Fuel on the Fire, by Greg Muttitt</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2017-08-28>2017-08-28</time>
-<span>Full Catastrophe Living, by Jon Kabat-Zinn</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2017-07-23>2017-07-23</time>
-<span>The Mindful Way through Depression, by Mark Williams, John Teasdale, Zindel Segal and Jon Kabat-Zinn</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2017-07-09>2017-07-09</time>
-<span>Woman’s Consciousness, Man’s World, by Sheila Rowbotham</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2017-06-16>2017-06-16</time>
-<span>Fahrenheight 451, by Ray Bradbury</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2017-05-11>2017-05-11</time>
-<span>Head First SQL, by Lynn Beighley</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2017-03-25>2017-03-25</time>
-<span>Raymond Chandler, by Fredric Jameson</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2017-03-09>2017-03-09</time>
-<span>Image and Reality of the Israel-Palestine Conflict, by Norman Finkelstein</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2017-02-15>2017-02-15</time>
-<span>Maus, by Art Spiegelman</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2017-02-01>2017-02-01</time>
-<span>The Production of Money, by Ann Pettifor</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-12-27>2016-12-27</time>
-<span>Secret Affairs, by Mark Curtis</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-12-26>2016-12-26</time>
-<span>Burning Country, by Robbin Yassin-Kassab and Leila al-Shami</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-12-06>2016-12-06</time>
-<span>Corbyn, by Richard Seymour</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-11-26>2016-11-26</time>
-<span>The Candidate, by Alex Nunns</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-09-16>2016-09-16</time>
-<span>Anarchism, by Daniel Guérin</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-08-27>2016-08-27</time>
-<span>A Very British Coup, by Chris Mullin</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-08-23>2016-08-23</time>
-<span>The Enemy Within, by Seumas Milne</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-08-20>2016-08-20</time>
-<span>Map of a Nation, by Rachel Hewitt</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-07-21>2016-07-21</time>
-<span>A Brief History of Neoliberalism, by David Harvey</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-06-29>2016-06-29</time>
-<span>Channel Shore, by Tom Fort</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-05-31>2016-05-31</time>
-<span>Anarcho-Syndicalism, by Rudolf Rocker</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-05-24>2016-05-24</time>
-<span>The Shock Doctrine, by Naomi Klein</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-05-17>2016-05-17</time>
-<span>Hegemony or Survival, by Noam Chomsky</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-05-07>2016-05-07</time>
-<span>Blair's Wars, by John Kampfner</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-04-29>2016-04-29</time>
-<span>Interventions, by Noam Chomsky</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-04-26>2016-04-26</time>
-<span>The Secret World of Oil, by Ken Silverstein</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-04-21>2016-04-21</time>
-<span>Freedom Next Time, by John Pilger</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-04-14>2016-04-14</time>
-<span>Hamas, by Azzam Tamimi</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-04-04>2016-04-04</time>
-<span>Are Prisons Obsolete? by Angela Y Davis</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-03-31>2016-03-31</time>
-<span>How to Teach Quantum Physics to Your Dog, by Chad Orzel</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-03-27>2016-03-27</time>
-<span>Now and After: The ABC of Communist Anarchism, by Alexander Berkman</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-03-20>2016-03-20</time>
-<span>Empire's Workshop, by Greg Grandin</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-03-09>2016-03-09</time>
-<span>The Bolsheviks and Workers' Control, by Maurice Brinton</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-03-08>2016-03-08</time>
-<span>On Anarchism, by Noam Chomsky</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-03-05>2016-03-05</time>
-<span>Perestroika and Germany, by Hans Modrow</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-02-27>2016-02-27</time>
-<span>The Blood Never Dried (2nd ed), by John Newsinger</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-02-26>2016-02-26</time>
-<span>Putin's Russia, by Anna Politkovskaya</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-02-21>2016-02-21</time>
-<span>Israeli Rejectionism, by Zalman Amit and Daphna Levit</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-01-29>2016-01-29</time>
-<span>The Mindful Way through Depression, by Mark Williams, John Teasdale, Zindel Segal and Jon Kabat-Zinn</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-01-12>2016-01-12</time>
-<span>Stasi State or Socialist Paradise? by Bruni de la Motte and John Green</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2016-01-08>2016-01-08</time>
-<span>Fateful Triangle, by Noam Chomsky</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015>2015</time>
-<span>Introduction to Computation and Programming with Python, by John Guttag</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-12-05>2015-12-05</time>
-<span>Unpeople, by Mark Curtis</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-11-23>2015-11-23</time>
-<span>Injustice, by Danny Dorling</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-11-04>2015-11-04</time>
-<span>Perilous Power, by Noam Chomsky and Gilbert Achcar</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-10-31>2015-10-31</time>
-<span>A Short History of Progress, by Ronald Wright</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-10-28>2015-10-28</time>
-<span>Web of Deceit, by Mark Curtis</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-10-19>2015-10-19</time>
-<span>The Triumph of the Political Class, by Peter Oborne</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-10-12>2015-10-12</time>
-<span>Broker, Trader, Lawyer, Spy, by Eamon Javers</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-10-07>2015-10-07</time>
-<span>Hamas: A Beginner's Guide, by Khaled Hroub</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-10-01>2015-10-01</time>
-<span>The Shallows, by Nicholas Carr</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-09-25>2015-09-25</time>
-<span>The Failed Experiment, by Andrew Fisher</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-09-23>2015-09-23</time>
-<span>The Silent State, by Heather Brooke</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-09-07>2015-09-07</time>
-<span>Failed States, by Noam Chomsky</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-08-28>2015-08-28</time>
-<span>Red Harvest, by Dashiell Hammett</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-08-25>2015-08-25</time>
-<span>Murder in Samarkand, by Craig Murray</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-08-20>2015-08-20</time>
-<span>Israel and Palestine: Competing Histories, by Mike Berry and Greg Philo</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-08-18>2015-08-18</time>
-<span>The Blood Never Dried, by John Newsinger</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-08-08>2015-08-08</time>
-<span>The High Window, by Raymond Chandler</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-08-04>2015-08-04</time>
-<span>Blackwater, by Jeremy Scahill</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-07-26>2015-07-26</time>
-<span>Farewell, My Lovely, by Raymond Chandler</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-07-21>2015-07-21</time>
-<span>Power and Terror, by Noam Chomsky</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-07-18>2015-07-18</time>
-<span>The London Underground, by Andrew Emmerson</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-07-15>2015-07-15</time>
-<span>Extreme Rambling, by Mark Thomas</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-07-12>2015-07-12</time>
-<span>People Wasn't Made to Burn, by Joe Allen</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-07-05>2015-07-05</time>
-<span>No Logo, by Naomi Klein</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-06-19>2015-06-19</time>
-<span>The Big Sleep, by Raymond Chandler</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-06-17>2015-06-17</time>
-<span>A People's History of the United States, by Howard Zinn</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-06-05>2015-06-05</time>
-<span>Your Brain on Porn, by Gary Wilson</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-05-30>2015-05-30</time>
-<span>A Bitter Revolution, by Rana Mitter</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-05-23>2015-05-23</time>
-<span>Count Zero, by William Gibson</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2015-05-19>2015-05-19</time>
-<span>The Power Broker, by Robert Caro</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2014-12-14>2014-12-14</time>
-<span>Your Brain on Porn, by Gary Wilson</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2014-12-09>2014-12-09</time>
-<span>Mindfulness in Plain English, by Henepola Gunaratana</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2014-12-07>2014-12-07</time>
-<span>The Man in the High Castle, by Philip K Dick</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2014-11-28>2014-11-28</time>
-<span>Hiroshima, by John Hersey</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2014-11-23>2014-11-23</time>
-<span>Things Fall Apart, by Chinua Achebe</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2014>2014</time>
-<span>Cocoa Programming for OS X, by Aaron Hillegass & Adam Preble</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2014>2014</time>
-<span>Orange is the New Black, by Piper Kerman</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2014>2014</time>
-<span>What If? by Randall Munroe</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2013>2013</time>
-<span>Code, by Charles Petzold</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2013>2013</time>
-<span>Learning Web Design, by Jen Robbins</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2013>2013</time>
-<span>Objective-C Programming, by Aaron Hillegass</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2013>2013</time>
-<span>The Elements of Typographic Style, by Robert Bringhurst</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2013>2013</time>
-<span>Learning Unix for OS X, by Dave Taylor</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2013>2013</time>
-<span>Ordering Disorder, by Khoi Vihn</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2012>2012</time>
-<span>Fahrenheit 451, by Ray Bradbury</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2012>2012</time>
-<span>The Player of Games, by Iain M Banks</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2012>2012</time>
-<span>Common Sense, by Dan Hind</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2012>2012</time>
-<span>The Great Crash, 1929, by John Kenneth Galbraith</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2012>2012</time>
-<span>Heart of Darkness, by Joseph Conrad</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2012>2012</time>
-<span>Saving Darfur, by Rob Crilly</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2012>2012</time>
-<span>Crisis Economics, by Nouriel Roubini</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2012>2012</time>
-<span>The Shadow Over Innsmouth, by HP Lovecraft</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2012>2012</time>
-<span>A Brief History of Neoliberalism, by David Harvey</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2012>2012</time>
-<span>Reasons to be Cheerful, by Mark Steel</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2012>2012</time>
-<span>The War of the Worlds, by HG Wells</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2012>2012</time>
-<span>Neuromancer, by William Gibson</span></span></li><li class=index-item><a class=index-link href=/books/2012/the-call-of-the-weird/><time class=index-date datetime=2012-02-01>2012-02-01</time>
-<span>The Call of the Weird, by Louis Theroux</span></a></li><li class=index-item><span class=index-link><time class=index-date datetime=2011>2011</time>
-<span>A People's History of England, by AL Morton</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2011>2011</time>
-<span>What We Say Goes, by Noam Chomsky</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2011>2011</time>
-<span>The Communist Manifesto, by Karl Marx</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2011>2011</time>
-<span>Treasure Islands, by Nick Shaxson</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2011>2011</time>
-<span>The Black Dahlia, by James Ellroy</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2011>2011</time>
-<span>The Art of War, by Sun Tzu</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2011>2011</time>
-<span>The Resistible Rise of Arturo Ui, by Bertolt Brech</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2010>2010</time>
-<span>9-11, by Noam Chomsky</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2010>2010</time>
-<span>Open Veins of Latin America, by Eduardo Galleano</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2010>2010</time>
-<span>The Kite Runner, by Khaled Hosseini</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2010>2010</time>
-<span>Who Runs This Place? by Anthony Sampson</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2010>2010</time>
-<span>Newspeak in the 21st Century, by David Edwards & David Cromwell</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2010>2010</time>
-<span>Media Control, by Noam Chomsky</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2010>2010</time>
-<span>It's Only a Movie, by Mark Kermode</span></span></li><li class=index-item><span class=index-link><time class=index-date datetime=2010>2010</time>
-<span>Guardians of Power, by David Edwards & David Cromwell</span></span></li></ul></main><footer class=site-footer><small class=mute-links>This work is licensed under a
-<a rel=license href=https://creativecommons.org/licenses/by/4.0/>Creative Commons Attribution 4.0 International License</a>.</small></footer></div></body></html>
+<a href=/rss.xml>RSS</a>
+</li>
+</ul>
+</nav>
+</header>
+<main>
+<header>
+<h2>Books I’ve read</h2>
+<p>Here’s a list of books that I’ve read, listed by finish date, with summaries of some.</p>
+</header>
+<ul class=index-list>
+<li class=index-item>
+<a class=index-link href=/books/2020/midnight-in-chernobyl/>
+<time class=index-date datetime=2020-05-29>2020-05-29</time>
+<span>Midnight in Chernobyl, by Adam Higginbotham</span>
+</a>
+</li>
+<li class=index-item>
+<a class=index-link href=/books/2020/the-power-of-habit/>
+<time class=index-date datetime=2020-02-15>2020-02-15</time>
+<span>The Power of Habit, by Charles Duhigg</span>
+</a>
+</li>
+<li class=index-item>
+<a class=index-link href=/books/2020/the-art-of-breathing/>
+<time class=index-date datetime=2020-01-05>2020-01-05</time>
+<span>The Art of Breathing, by Danny Penman</span>
+</a>
+</li>
+<li class=index-item>
+<a class=index-link href=/books/2020/the-anatomy-of-fascism/>
+<time class=index-date datetime=2020-01-04>2020-01-04</time>
+<span>The Anatomy of Fascism, by Robert O Paxton</span>
+</a>
+</li>
+<li class=index-item>
+<a class=index-link href=/books/2019/surveillance-valley/>
+<time class=index-date datetime=2019-10-28>2019-10-28</time>
+<span>Surveillance Valley, by Yasha Levine</span>
+</a>
+</li>
+<li class=index-item>
+<a class=index-link href=/books/2019/turings-cathedral/>
+<time class=index-date datetime=2019-09-01>2019-09-01</time>
+<span>Turing’s Cathedral, by George Dyson</span>
+</a>
+</li>
+<li class=index-item>
+<a class=index-link href=/books/2019/mindhunter/>
+<time class=index-date datetime=2019-08-30>2019-08-30</time>
+<span>Mindhunter, by John Douglas and Mark Olshaker</span>
+</a>
+</li>
+<li class=index-item>
+<a class=index-link href=/books/2019/a-history-of-modern-computing/>
+<time class=index-date datetime=2019-08-02>2019-08-02</time>
+<span>A History of Modern Computing, by Paul E Ceruzzi</span>
+</a>
+</li>
+<li class=index-item>
+<a class=index-link href=/books/2019/the-century-of-revolution/>
+<time class=index-date datetime=2019-07-27>2019-07-27</time>
+<span>The Century of Revolution, by Christopher Hill</span>
+</a>
+</li>
+<li class=index-item>
+<a class=index-link href=/books/2019/blackshirts-and-reds/>
+<time class=index-date datetime=2019-04-17>2019-04-17</time>
+<span>Blackshirts and Reds, by Michael Parenti</span>
+</a>
+</li>
+<li class=index-item>
+<a class=index-link href=/books/2019/code/>
+<time class=index-date datetime=2019-04-04>2019-04-04</time>
+<span>Code, by Charles Petzold</span>
+</a>
+</li>
+<li class=index-item>
+<a class=index-link href=/books/2019/mindset/>
+<time class=index-date datetime=2019-01-28>2019-01-28</time>
+<span>Mindset, by Carol S Dweck</span>
+</a>
+</li>
+<li class=index-item>
+<a class=index-link href=/books/2019/narcoland/>
+<time class=index-date datetime=2019-01-09>2019-01-09</time>
+<span>Narcoland, by Anabel Hernández</span>
+</a>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2018-12-30>2018-12-30</time>
+<span>The EU: Winning a Progressive Settlement, by John Foster</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2018-12-29>2018-12-29</time>
+<span>The Left Case Against the EU, by Costas Lapavitsas</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2018-08-30>2018-08-30</time>
+<span>Irregular Army, by Matt Kennard</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2018-08-25>2018-08-25</time>
+<span>Think Python, by Allen Downey</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2018-08-08>2018-08-08</time>
+<span>Bloody Nasty People, by Daniel Trilling</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2018-07-09>2018-07-09</time>
+<span>Building the Commune: Radical Democracy in Venezuela, by George Ciccariello-Maher</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2018-07-07>2018-07-07</time>
+<span>Nothing to Envy, by Barbara Demick</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2018-06-19>2018-06-19</time>
+<span>Tinker Tailor Soldier Spy, by John le Carré</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2018-06-11>2018-06-11</time>
+<span>World War Z, by Max Brooks</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2018-06-06>2018-06-06</time>
+<span>Getting Things Done, by David Allen</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2018-06-06>2018-06-06</time>
+<span>Paperless, by David Sparks</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2018-04-16>2018-04-16</time>
+<span>Command and Control, by Eric Schlosser</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2018-04-13>2018-04-13</time>
+<span>The Age of Revolution, by Eric Hobsbawm</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2018-02-08>2018-02-08</time>
+<span>The End of Patriarchy, by Robert Jensen</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2018-01-29>2018-01-29</time>
+<span>Pornland, by Gail Dines</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2017-12-09>2017-12-09</time>
+<span>Mastering PostreSQL in Application Development, by Dimitri Fontaine</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2017-09-20>2017-09-20</time>
+<span>Value, Price and Profit, by Karl Marx</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2017-09-18>2017-09-18</time>
+<span>Bike Nation, by Peter Walker</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2017-09-15>2017-09-15</time>
+<span>Fuel on the Fire, by Greg Muttitt</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2017-08-28>2017-08-28</time>
+<span>Full Catastrophe Living, by Jon Kabat-Zinn</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2017-07-23>2017-07-23</time>
+<span>The Mindful Way through Depression, by Mark Williams, John Teasdale, Zindel Segal and Jon Kabat-Zinn</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2017-07-09>2017-07-09</time>
+<span>Woman’s Consciousness, Man’s World, by Sheila Rowbotham</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2017-06-16>2017-06-16</time>
+<span>Fahrenheight 451, by Ray Bradbury</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2017-05-11>2017-05-11</time>
+<span>Head First SQL, by Lynn Beighley</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2017-03-25>2017-03-25</time>
+<span>Raymond Chandler, by Fredric Jameson</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2017-03-09>2017-03-09</time>
+<span>Image and Reality of the Israel-Palestine Conflict, by Norman Finkelstein</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2017-02-15>2017-02-15</time>
+<span>Maus, by Art Spiegelman</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2017-02-01>2017-02-01</time>
+<span>The Production of Money, by Ann Pettifor</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-12-27>2016-12-27</time>
+<span>Secret Affairs, by Mark Curtis</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-12-26>2016-12-26</time>
+<span>Burning Country, by Robbin Yassin-Kassab and Leila al-Shami</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-12-06>2016-12-06</time>
+<span>Corbyn, by Richard Seymour</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-11-26>2016-11-26</time>
+<span>The Candidate, by Alex Nunns</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-09-16>2016-09-16</time>
+<span>Anarchism, by Daniel Guérin</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-08-27>2016-08-27</time>
+<span>A Very British Coup, by Chris Mullin</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-08-23>2016-08-23</time>
+<span>The Enemy Within, by Seumas Milne</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-08-20>2016-08-20</time>
+<span>Map of a Nation, by Rachel Hewitt</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-07-21>2016-07-21</time>
+<span>A Brief History of Neoliberalism, by David Harvey</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-06-29>2016-06-29</time>
+<span>Channel Shore, by Tom Fort</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-05-31>2016-05-31</time>
+<span>Anarcho-Syndicalism, by Rudolf Rocker</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-05-24>2016-05-24</time>
+<span>The Shock Doctrine, by Naomi Klein</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-05-17>2016-05-17</time>
+<span>Hegemony or Survival, by Noam Chomsky</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-05-07>2016-05-07</time>
+<span>Blair's Wars, by John Kampfner</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-04-29>2016-04-29</time>
+<span>Interventions, by Noam Chomsky</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-04-26>2016-04-26</time>
+<span>The Secret World of Oil, by Ken Silverstein</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-04-21>2016-04-21</time>
+<span>Freedom Next Time, by John Pilger</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-04-14>2016-04-14</time>
+<span>Hamas, by Azzam Tamimi</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-04-04>2016-04-04</time>
+<span>Are Prisons Obsolete? by Angela Y Davis</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-03-31>2016-03-31</time>
+<span>How to Teach Quantum Physics to Your Dog, by Chad Orzel</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-03-27>2016-03-27</time>
+<span>Now and After: The ABC of Communist Anarchism, by Alexander Berkman</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-03-20>2016-03-20</time>
+<span>Empire's Workshop, by Greg Grandin</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-03-09>2016-03-09</time>
+<span>The Bolsheviks and Workers' Control, by Maurice Brinton</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-03-08>2016-03-08</time>
+<span>On Anarchism, by Noam Chomsky</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-03-05>2016-03-05</time>
+<span>Perestroika and Germany, by Hans Modrow</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-02-27>2016-02-27</time>
+<span>The Blood Never Dried (2nd ed), by John Newsinger</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-02-26>2016-02-26</time>
+<span>Putin's Russia, by Anna Politkovskaya</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-02-21>2016-02-21</time>
+<span>Israeli Rejectionism, by Zalman Amit and Daphna Levit</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-01-29>2016-01-29</time>
+<span>The Mindful Way through Depression, by Mark Williams, John Teasdale, Zindel Segal and Jon Kabat-Zinn</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-01-12>2016-01-12</time>
+<span>Stasi State or Socialist Paradise? by Bruni de la Motte and John Green</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2016-01-08>2016-01-08</time>
+<span>Fateful Triangle, by Noam Chomsky</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015>2015</time>
+<span>Introduction to Computation and Programming with Python, by John Guttag</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-12-05>2015-12-05</time>
+<span>Unpeople, by Mark Curtis</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-11-23>2015-11-23</time>
+<span>Injustice, by Danny Dorling</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-11-04>2015-11-04</time>
+<span>Perilous Power, by Noam Chomsky and Gilbert Achcar</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-10-31>2015-10-31</time>
+<span>A Short History of Progress, by Ronald Wright</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-10-28>2015-10-28</time>
+<span>Web of Deceit, by Mark Curtis</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-10-19>2015-10-19</time>
+<span>The Triumph of the Political Class, by Peter Oborne</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-10-12>2015-10-12</time>
+<span>Broker, Trader, Lawyer, Spy, by Eamon Javers</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-10-07>2015-10-07</time>
+<span>Hamas: A Beginner's Guide, by Khaled Hroub</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-10-01>2015-10-01</time>
+<span>The Shallows, by Nicholas Carr</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-09-25>2015-09-25</time>
+<span>The Failed Experiment, by Andrew Fisher</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-09-23>2015-09-23</time>
+<span>The Silent State, by Heather Brooke</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-09-07>2015-09-07</time>
+<span>Failed States, by Noam Chomsky</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-08-28>2015-08-28</time>
+<span>Red Harvest, by Dashiell Hammett</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-08-25>2015-08-25</time>
+<span>Murder in Samarkand, by Craig Murray</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-08-20>2015-08-20</time>
+<span>Israel and Palestine: Competing Histories, by Mike Berry and Greg Philo</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-08-18>2015-08-18</time>
+<span>The Blood Never Dried, by John Newsinger</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-08-08>2015-08-08</time>
+<span>The High Window, by Raymond Chandler</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-08-04>2015-08-04</time>
+<span>Blackwater, by Jeremy Scahill</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-07-26>2015-07-26</time>
+<span>Farewell, My Lovely, by Raymond Chandler</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-07-21>2015-07-21</time>
+<span>Power and Terror, by Noam Chomsky</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-07-18>2015-07-18</time>
+<span>The London Underground, by Andrew Emmerson</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-07-15>2015-07-15</time>
+<span>Extreme Rambling, by Mark Thomas</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-07-12>2015-07-12</time>
+<span>People Wasn't Made to Burn, by Joe Allen</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-07-05>2015-07-05</time>
+<span>No Logo, by Naomi Klein</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-06-19>2015-06-19</time>
+<span>The Big Sleep, by Raymond Chandler</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-06-17>2015-06-17</time>
+<span>A People's History of the United States, by Howard Zinn</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-06-05>2015-06-05</time>
+<span>Your Brain on Porn, by Gary Wilson</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-05-30>2015-05-30</time>
+<span>A Bitter Revolution, by Rana Mitter</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-05-23>2015-05-23</time>
+<span>Count Zero, by William Gibson</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2015-05-19>2015-05-19</time>
+<span>The Power Broker, by Robert Caro</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2014-12-14>2014-12-14</time>
+<span>Your Brain on Porn, by Gary Wilson</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2014-12-09>2014-12-09</time>
+<span>Mindfulness in Plain English, by Henepola Gunaratana</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2014-12-07>2014-12-07</time>
+<span>The Man in the High Castle, by Philip K Dick</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2014-11-28>2014-11-28</time>
+<span>Hiroshima, by John Hersey</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2014-11-23>2014-11-23</time>
+<span>Things Fall Apart, by Chinua Achebe</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2014>2014</time>
+<span>Cocoa Programming for OS X, by Aaron Hillegass & Adam Preble</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2014>2014</time>
+<span>Orange is the New Black, by Piper Kerman</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2014>2014</time>
+<span>What If? by Randall Munroe</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2013>2013</time>
+<span>Code, by Charles Petzold</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2013>2013</time>
+<span>Learning Web Design, by Jen Robbins</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2013>2013</time>
+<span>Objective-C Programming, by Aaron Hillegass</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2013>2013</time>
+<span>The Elements of Typographic Style, by Robert Bringhurst</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2013>2013</time>
+<span>Learning Unix for OS X, by Dave Taylor</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2013>2013</time>
+<span>Ordering Disorder, by Khoi Vihn</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2012>2012</time>
+<span>Fahrenheit 451, by Ray Bradbury</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2012>2012</time>
+<span>The Player of Games, by Iain M Banks</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2012>2012</time>
+<span>Common Sense, by Dan Hind</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2012>2012</time>
+<span>The Great Crash, 1929, by John Kenneth Galbraith</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2012>2012</time>
+<span>Heart of Darkness, by Joseph Conrad</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2012>2012</time>
+<span>Saving Darfur, by Rob Crilly</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2012>2012</time>
+<span>Crisis Economics, by Nouriel Roubini</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2012>2012</time>
+<span>The Shadow Over Innsmouth, by HP Lovecraft</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2012>2012</time>
+<span>A Brief History of Neoliberalism, by David Harvey</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2012>2012</time>
+<span>Reasons to be Cheerful, by Mark Steel</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2012>2012</time>
+<span>The War of the Worlds, by HG Wells</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2012>2012</time>
+<span>Neuromancer, by William Gibson</span>
+</span>
+</li>
+<li class=index-item>
+<a class=index-link href=/books/2012/the-call-of-the-weird/>
+<time class=index-date datetime=2012-02-01>2012-02-01</time>
+<span>The Call of the Weird, by Louis Theroux</span>
+</a>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2011>2011</time>
+<span>A People's History of England, by AL Morton</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2011>2011</time>
+<span>What We Say Goes, by Noam Chomsky</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2011>2011</time>
+<span>The Communist Manifesto, by Karl Marx</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2011>2011</time>
+<span>Treasure Islands, by Nick Shaxson</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2011>2011</time>
+<span>The Black Dahlia, by James Ellroy</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2011>2011</time>
+<span>The Art of War, by Sun Tzu</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2011>2011</time>
+<span>The Resistible Rise of Arturo Ui, by Bertolt Brech</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2010>2010</time>
+<span>9-11, by Noam Chomsky</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2010>2010</time>
+<span>Open Veins of Latin America, by Eduardo Galleano</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2010>2010</time>
+<span>The Kite Runner, by Khaled Hosseini</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2010>2010</time>
+<span>Who Runs This Place? by Anthony Sampson</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2010>2010</time>
+<span>Newspeak in the 21st Century, by David Edwards & David Cromwell</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2010>2010</time>
+<span>Media Control, by Noam Chomsky</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2010>2010</time>
+<span>It's Only a Movie, by Mark Kermode</span>
+</span>
+</li>
+<li class=index-item>
+<span class=index-link>
+<time class=index-date datetime=2010>2010</time>
+<span>Guardians of Power, by David Edwards & David Cromwell</span>
+</span>
+</li>
+</ul>
+</main>
+<footer class=site-footer>
+<small class=mute-links>
+This work is licensed under a
+<a rel=license href=https://creativecommons.org/licenses/by/4.0/>
+Creative Commons Attribution 4.0 International License</a>.
+</small>
+</footer>
+</div>
+</body>
+</html>
