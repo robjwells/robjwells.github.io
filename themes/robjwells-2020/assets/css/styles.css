@@ -304,13 +304,8 @@ article header time {
   color: var(--grey);
 }
 
-article p {
-  max-width: var(--paragraphWidth);
-}
-
 article li {
   margin-bottom: var(--halfLine);
-  max-width: calc(var(--paragraphWidth) - var(--lineSpace));  /* p max-width - ol/ul padding-left */
 }
 
 /* ARCHIVES */
