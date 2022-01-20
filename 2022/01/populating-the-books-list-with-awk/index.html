@@ -1,0 +1,157 @@
+<!doctype html><html lang=en>
+<head>
+<title>Primary Unit – Populating the books list with AWK</title>
+<meta charset=utf-8>
+<meta http-equiv=content-security-policy content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; block-all-mixed-content; base-uri 'self'">
+<link rel=license href=https://creativecommons.org/licenses/by/4.0/>
+<link rel=alternate type=application/rss+xml href=/rss.xml title="Primary Unit">
+<link rel=alternate type=application/json href=/feed.json title="Primary Unit">
+<link rel=mask-icon href=/favicon.svg color=#1369bf>
+<link rel=apple-touch-icon-precomposed href=/favicon.png>
+<link rel=icon href=/favicon.ico>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="A blog by Rob Wells, mostly about computer stuff.">
+<style>html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strong,sub,sup,var,b,u,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,menu,nav,output,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}input,button{font-family:inherit}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section{display:block}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}html{box-sizing:border-box;text-size-adjust:100%}*,*:before,*:after{box-sizing:inherit}:root{--grey:#607080;--grey10:#eff0f2;--grey5:#f7f8f9;--blue:#1369bf;--blue10:#e7eff8;--purple:#7436b3;--lineSpace:1.75rem;--halfLine:calc(var(--lineSpace) / 2);--quarterLine:calc(var(--lineSpace) / 4);--bigGap:calc(var(--lineSpace) * 2);--paragraphWidth:40rem;--wrapperWidth:50rem;--huge:1.75rem;--big:1.5625rem;--medium:1.375rem;--text:1.125rem;--small:0.875rem;--codeInText:0.875em;--bodyFonts:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Oxygen", Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, sans-serif;--monospace:'Source Code Pro', 'Consolas', 'Menlo', 'Monaco', monospace}body{background-color:var(--grey5);font-family:var(--bodyFonts);font-size:var(--text);font-style:normal;font-weight:400;line-height:1.55555;text-size-adjust:100%;-webkit-text-size-adjust:100%}.wrapper{margin:0 auto;max-width:var(--wrapperWidth);padding:var(--lineSpace)var(--halfLine)}h2,h3,h4{margin:0 0 var(--lineSpace)}h2{font-size:var(--huge)}h3{font-size:var(--big)}h4{font-size:var(--medium)}blockquote,figure,p,pre,table,caption,dl,ol,ul,div.highlight{margin-bottom:var(--lineSpace)}blockquote,pre,div.highlight{background-color:var(--grey10);padding:var(--halfLine)}blockquote{font-style:italic}blockquote em,blockquote i{font-style:normal}blockquote p:last-child{margin-bottom:0}figcaption{font-style:italic}hr{border:none;border-top:1px solid var(--grey);margin:var(--lineSpace)0}img,video{box-sizing:content-box;border:1px solid var(--grey);height:auto;max-width:100%}pre{overflow-x:auto}dl,ol,ul{margin-bottom:var(--lineSpace)}ol,ul{list-style-position:outside;padding-left:var(--lineSpace)}ol{list-style-type:decimal}ul{list-style-type:square}a:link{color:var(--blue);text-decoration:underline}a:visited{color:var(--purple)}a:focus,a:hover,a:active{background-color:var(--blue10)}strong,b{font-weight:700}em,i{font-style:italic}code{font-size:var(--codeInText)}.highlight,pre code,small{font-size:var(--small)}.highlight,code{font-family:var(--monospace)}small{color:var(--grey)}table{width:100%}.table-container{overflow-x:auto}caption{font-style:italic}thead{border-bottom:1px solid var(--grey)}tfoot{border-top:1px solid var(--grey)}th,td{width:auto;padding:var(--halfLine);overflow:auto;text-align:left}th{background-color:var(--grey10);font-weight:700}.table-figures{text-align:right;font-family:var(--monospace)}.site-header{border-left:var(--quarterLine)solid var(--blue);display:flex;flex-wrap:wrap;margin-bottom:var(--lineSpace);padding-left:var(--quarterLine)}.site-title-container{flex-shrink:0;margin-right:var(--lineSpace);max-width:100%}.site-title{font-size:var(--huge);line-height:var(--huge);margin-bottom:0}.site-byline{margin-bottom:0}.site-links{color:var(--grey);list-style-type:none;margin-bottom:0;padding:0}.site-footer{margin-top:var(--bigGap)}article{border-bottom:1px solid var(--grey);margin-bottom:var(--bigGap)}article:last-of-type{border-bottom:none}article header{margin-bottom:var(--lineSpace)}article header h2{margin-bottom:0}article header time{color:var(--grey)}article li{margin-bottom:var(--halfLine)}.index-date{color:var(--grey);font-family:var(--monospace);font-size:var(--small);min-width:6rem;margin-right:var(--halfLine)}.index-item{margin-bottom:var(--halfLine)}.index-link{align-items:baseline;display:flex}.index-list{padding-left:0;list-style-type:none}.flag{background-color:var(--blue10);border-left:var(--quarterLine)solid var(--blue);margin-bottom:var(--lineSpace);padding:var(--halfLine)var(--quarterLine)}.flag :last-child{margin-bottom:0}.full-width{max-width:100%}.mute-links a{text-decoration:none;color:inherit}.no-border{border:0}.no-border img{border:0}.no-squish{overflow:auto}.no-squish img{max-width:none}@media screen and (min-width:40rem){.pull-left{float:left;clear:left;margin-right:var(--halfLine)}.pull-right{float:right;clear:right;margin-left:var(--halfLine)}.pull-left img,.pull-right img{display:block;margin-bottom:var(--lineSpace)}}</style>
+<style>div.highlight>pre.chroma{padding:0;margin:0}:root{--lineNumberGrey:#6D6D6D;--operatorOrange:#B45000;--stringGreen:#357D06}.chroma .x{color:#000}.chroma .err{color:#a40000}.chroma .ln{margin-right:var(--halfLine);padding:0;color:var(--lineNumberGrey)}.chroma .k{color:#204a87;font-weight:700}.chroma .kc{color:#204a87;font-weight:700}.chroma .kd{color:#204a87;font-weight:700}.chroma .kn{color:#204a87;font-weight:700}.chroma .kp{color:#204a87;font-weight:700}.chroma .kr{color:#204a87;font-weight:700}.chroma .kt{color:#204a87;font-weight:700}.chroma .n{color:#000}.chroma .na{color:#c4a000}.chroma .nb{color:#204a87}.chroma .bp{color:#3465a4}.chroma .nc{color:#000}.chroma .no{color:#000}.chroma .nd{color:#5c35cc;font-weight:700}.chroma .ni{color:var(--operatorOrange)}.chroma .ne{color:#c00;font-weight:700}.chroma .nf{color:#000}.chroma .fm{color:#000}.chroma .nl{color:#f57900}.chroma .nn{color:#000}.chroma .nx{color:#000}.chroma .py{color:#000}.chroma .nt{color:#204a87;font-weight:700}.chroma .nv{color:#000}.chroma .vc{color:#000}.chroma .vg{color:#000}.chroma .vi{color:#000}.chroma .vm{color:#000}.chroma .l{color:#000}.chroma .ld{color:#000}.chroma .s{color:var(--stringGreen)}.chroma .sa{color:var(--stringGreen)}.chroma .sb{color:var(--stringGreen)}.chroma .sc{color:var(--stringGreen)}.chroma .dl{color:var(--stringGreen)}.chroma .sd{color:#8f5902;font-style:italic}.chroma .s2{color:var(--stringGreen)}.chroma .se{color:var(--stringGreen)}.chroma .sh{color:var(--stringGreen)}.chroma .si{color:var(--stringGreen)}.chroma .sx{color:var(--stringGreen)}.chroma .sr{color:var(--stringGreen)}.chroma .s1{color:var(--stringGreen)}.chroma .ss{color:var(--stringGreen)}.chroma .m{color:#0000cf;font-weight:700}.chroma .mb{color:#0000cf;font-weight:700}.chroma .mf{color:#0000cf;font-weight:700}.chroma .mh{color:#0000cf;font-weight:700}.chroma .mi{color:#0000cf;font-weight:700}.chroma .il{color:#0000cf;font-weight:700}.chroma .mo{color:#0000cf;font-weight:700}.chroma .o{color:var(--operatorOrange);font-weight:700}.chroma .ow{color:#204a87;font-weight:700}.chroma .p{color:#000;font-weight:700}.chroma .c{color:#8f5902;font-style:italic}.chroma .ch{color:#8f5902;font-style:italic}.chroma .cm{color:#8f5902;font-style:italic}.chroma .c1{color:#8f5902;font-style:italic}.chroma .cs{color:#8f5902;font-style:italic}.chroma .cp{color:#8f5902;font-style:italic}.chroma .cpf{color:#8f5902;font-style:italic}.chroma .g{color:#000}.chroma .gd{color:#a40000}.chroma .ge{color:#000;font-style:italic}.chroma .gr{color:#ef2929}.chroma .gh{color:navy;font-weight:700}.chroma .gi{color:#00a000}.chroma .go{color:#000;font-style:italic}.chroma .gp{color:#8f5902}.chroma .gs{color:#000;font-weight:700}.chroma .gu{color:purple;font-weight:700}.chroma .gt{color:#a40000;font-weight:700}.chroma .gl{color:#000;text-decoration:underline}.chroma .w{color:#f8f8f8;text-decoration:underline}</style>
+</head>
+<body>
+<div class=wrapper>
+<header class=site-header>
+<div class="site-title-container mute-links">
+<h1 class=site-title><a href=/>Primary Unit</a></h1>
+<p class=site-byline><i>by</i> Rob Wells</p>
+</div>
+<nav id=site-nav>
+<ul class="site-links mute-links">
+<li><a href=/about/>About</a></li>
+<li><a href=/books/>Books I’ve read</a></li>
+<li>
+Feed:
+<a href=/feed.json>JSON</a>,
+<a href=/rss.xml>RSS</a>
+</li>
+</ul>
+</nav>
+</header>
+<main>
+<article>
+<header>
+<h2 class=mute-links><a href=/2022/01/populating-the-books-list-with-awk/>Populating the books list with AWK</a></h2>
+<p><time datetime=2022-01-20T20:40:28+0000>Thursday, January 20 2022</time></p>
+</header>
+<p>I read <a href=https://www.robjwells.com/books/>48 books</a> last year, which is a lot for me. At least part of
+that, I think, was to keep my mind in gear in a fairly healthy way, when I
+didn’t feel like engaging with the world (poor mental health — thanks
+once-in-a-century pandemic!)</p>
+<p>What I did <em>not</em> do, though, is keep the <a href=https://www.robjwells.com/books/>list of books</a> up to date,
+not since spring 2020.</p>
+<p>Since I’ve been playing around with AWK a little, and had a big TSV file
+containing the details for each of the books, I thought I&rsquo;d pair the two to
+fill out the missing files.</p>
+<p>I use <a href=https://gohugo.io>Hugo</a> to generate this site, and each book is represented by a
+markdown file containing a metadata block with (at least) the title, author’s
+name, and the date on which I finished reading it. For example:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-markdown data-lang=markdown>---
+title: &#34;Empire of Pain&#34;
+author: &#34;Patrick Radden Keefe&#34;
+finish-date: 2022-01-01
+---
+
+<span class=ge>_Short review to come!_</span>
+</code></pre></div><p>AWK is great for processing lines of text, but it’s missing some of the library
+functions you’d like for working with the filesystem. The book files are stored
+in this directory structure, where the markdown files are under each year
+folder:</p>
+<pre tabindex=0><code>content/books
+├── 2019
+├── 2020
+├── 2021
+└── 2022
+</code></pre><p>Those year folders might not exist (<em>did not</em> for 2021 and 2022). I could have
+just created them by hand, but then we’d miss out on some yak-shaving.</p>
+<p>The path to the markdown file is constructed using the book&rsquo;s title (for the
+markdown filename itself) and finish date (for the year directory). We can wrap
+the <code>dirname</code> Unix utility:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-awk data-lang=awk><span class=ln>1</span><span class=kd>function</span> <span class=nx>dirname</span><span class=p>(</span><span class=nx>path</span><span class=p>)</span> <span class=p>{</span>
+<span class=ln>2</span>    <span class=nx>cmd</span> <span class=o>=</span> <span class=s2>&#34;dirname &#34;</span> <span class=nx>path</span>
+<span class=ln>3</span>    <span class=nx>cmd</span> <span class=o>|&amp;</span> <span class=kr>getline</span> <span class=nx>result</span>
+<span class=ln>4</span>    <span class=kr>close</span><span class=p>(</span><span class=nx>cmd</span><span class=p>)</span>
+<span class=ln>5</span>    <span class=k>return</span> <span class=nx>result</span>
+<span class=ln>6</span><span class=p>}</span>
+</code></pre></div><p>The funny <code>|&</code> operator on line 3 executes the command in <code>cmd</code> and then
+<code>getline</code> stores the first line of the output (there&rsquo;s just one for <code>dirname</code>) in
+<code>result</code>. We call <code>close</code> on the command string to release the associated file
+descriptor.</p>
+<p>Let’s wrap our wrapper in a function that just makes sure the directory exists,
+using <code>mkdir -p</code>, to make our lives easier:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-awk data-lang=awk><span class=ln> 8</span><span class=kd>function</span> <span class=nx>ensure_dir</span><span class=p>(</span><span class=nx>path</span><span class=p>)</span> <span class=p>{</span>
+<span class=ln> 9</span>    <span class=kr>system</span><span class=p>(</span><span class=s2>&#34;mkdir -p &#34;</span> <span class=nx>dirname</span><span class=p>(</span><span class=nx>path</span><span class=p>))</span>  
+<span class=ln>10</span><span class=p>}</span>
+</code></pre></div><p>Now we can think about the filename itself. It doesn&rsquo;t have to be anything
+particular, but I like to keep mine <code>really-simple-like-this.md</code>. We’re using
+the title of the books as the filenames, so the key is just to strip out
+non-word characters:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-awk data-lang=awk><span class=ln>12</span><span class=kd>function</span> <span class=nx>safe_name</span><span class=p>(</span><span class=nx>string</span><span class=p>)</span> <span class=p>{</span>
+<span class=ln>13</span>    <span class=k>return</span> <span class=nx>remove_non_word_characters</span><span class=p>(</span> <span class=nx>remove_apostrophes</span><span class=p>(</span> <span class=kr>tolower</span><span class=p>(</span> <span class=nx>string</span> <span class=p>)</span> <span class=p>)</span> <span class=p>)</span>
+<span class=ln>14</span><span class=p>}</span>
+<span class=ln>15</span>
+<span class=ln>16</span><span class=kd>function</span> <span class=nx>remove_apostrophes</span><span class=p>(</span><span class=nx>string</span><span class=p>)</span> <span class=p>{</span>
+<span class=ln>17</span>    <span class=k>return</span> <span class=kr>gensub</span><span class=p>(</span><span class=sr>/[&#39;’]/</span><span class=p>,</span> <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=s2>&#34;g&#34;</span><span class=p>,</span> <span class=nx>string</span><span class=p>)</span>
+<span class=ln>18</span><span class=p>}</span>
+<span class=ln>19</span>
+<span class=ln>20</span><span class=kd>function</span> <span class=nx>remove_non_word_characters</span><span class=p>(</span><span class=nx>string</span><span class=p>)</span> <span class=p>{</span>
+<span class=ln>21</span>    <span class=k>return</span> <span class=kr>gensub</span><span class=p>(</span><span class=sr>/\W+/</span><span class=p>,</span> <span class=s2>&#34;-&#34;</span><span class=p>,</span> <span class=s2>&#34;g&#34;</span><span class=p>,</span> <span class=nx>string</span><span class=p>)</span>
+<span class=ln>22</span><span class=p>}</span>
+</code></pre></div><p>The <code>remove_apostrophes</code> function is not strictly necessary but ensures titles
+such as <em>Hitler’s Army</em> don’t become <code>hitler-s-army</code> when they go through
+<code>remove_non_word_characters</code>.</p>
+<p>With that setup done, we can move on to the meat of the file, the lone
+pattern-action statement:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-awk data-lang=awk><span class=ln>24</span><span class=sr>/^(2020-(0[6-9]|1[0-2])|202[12])/</span> <span class=p>{</span>
+<span class=ln>25</span>    <span class=nx>path_template</span> <span class=o>=</span> <span class=s2>&#34;content/books/%s/%s.md&#34;</span>
+<span class=ln>26</span>    <span class=nx>year</span> <span class=o>=</span> <span class=kr>substr</span><span class=p>(</span><span class=o>$</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>4</span><span class=p>)</span>
+<span class=ln>27</span>    <span class=nx>title_for_path</span> <span class=o>=</span> <span class=nx>safe_name</span><span class=p>(</span><span class=o>$</span><span class=mi>2</span><span class=p>)</span>
+<span class=ln>28</span>    <span class=nx>path</span> <span class=o>=</span> <span class=kr>sprintf</span><span class=p>(</span><span class=nx>path_template</span><span class=p>,</span> <span class=nx>year</span><span class=p>,</span> <span class=nx>title_for_path</span><span class=p>)</span>
+<span class=ln>29</span>
+<span class=ln>30</span>    <span class=nx>content_template</span> <span class=o>=</span> <span class=p>(</span> <span class=err>\</span>
+<span class=ln>31</span>        <span class=s2>&#34;---\n&#34;</span> <span class=err>\</span>
+<span class=ln>32</span>        <span class=s2>&#34;title: \&#34;%s\&#34;\n&#34;</span> <span class=err>\</span>
+<span class=ln>33</span>        <span class=s2>&#34;author: \&#34;%s\&#34;\n&#34;</span> <span class=err>\</span>
+<span class=ln>34</span>        <span class=s2>&#34;finish-date: %s\n&#34;</span> <span class=err>\</span>
+<span class=ln>35</span>        <span class=s2>&#34;---\n&#34;</span> <span class=err>\</span>
+<span class=ln>36</span>        <span class=s2>&#34;\n&#34;</span> <span class=err>\</span>
+<span class=ln>37</span>        <span class=s2>&#34;_Short review to come!_&#34;</span><span class=p>)</span>
+<span class=ln>38</span>    <span class=nx>content</span> <span class=o>=</span> <span class=kr>sprintf</span><span class=p>(</span><span class=nx>content_template</span><span class=p>,</span> <span class=o>$</span><span class=mi>2</span><span class=p>,</span> <span class=o>$</span><span class=mi>3</span><span class=p>,</span> <span class=o>$</span><span class=mi>1</span><span class=p>)</span>
+<span class=ln>39</span>
+<span class=ln>40</span>    <span class=nx>ensure_dir</span><span class=p>(</span><span class=nx>path</span><span class=p>)</span>
+<span class=ln>41</span>    <span class=kr>print</span> <span class=nx>content</span> <span class=o>&gt;</span> <span class=nx>path</span>
+<span class=ln>42</span><span class=p>}</span>
+</code></pre></div><p>We match lines that start with dates representing June 2020 (the last update
+being in May 2020) through 2022. Next, we pull out the year from the date
+(field 1), and munge the book title (field 2), before formatting them into the
+path template with the built-in <code>sprintf</code> function.</p>
+<p>The <code>content_template</code> is just the markdown you saw earlier in the post, again
+formatted using <code>sprintf</code> and this time involving the author name (field 3).</p>
+<p>We ensure the directory exists for the target markdown file, and just print the
+formatted template via redirection into the file.</p>
+<p>So, would I use AWK over Python for things like this in the future? Maybe. The
+disadvantage with AWK is that it’s missing built-in tools for working with
+the system, and the work done above would be easier with, say, <a href=https://docs.python.org/3.10/library/pathlib.html#module-pathlib>Python’s
+pathlib module</a>. Or, then again, I could have just done <code>mkdir 2021 2022</code> — but I wanted to get a feel for calling tools from AWK.</p>
+<p>I think this tool is perhaps just on the edge where it could go either way.
+Python has more tools available, but AWK is so focussed on text processing that
+it does some of that boring work you’d have to do manually in Python.</p>
+<p>It was fun, and I look forward to using AWK for more in the future. (I’ve
+bought <a href=https://archive.org/details/pdfy-MgN0H1joIoDVoIC7>the book</a> second-hand.)</p>
+</article>
+</main>
+<footer class=site-footer>
+<small class=mute-links>
+This work is licensed under a
+<a rel=license href=https://creativecommons.org/licenses/by/4.0/>
+Creative Commons Attribution 4.0 International License</a>.
+</small>
+</footer>
+</div>
+</body>
+</html>

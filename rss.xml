@@ -1,4 +1,106 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Primary Unit</title><link>https://www.robjwells.com</link><description>A blog by Rob Wells, mostly about computer stuff.</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution 4.0 International License.</copyright><lastBuildDate>Sun, 09 Jan 2022 20:48:27 +0000</lastBuildDate><atom:link href="https://www.robjwells.com/rss.xml" rel="self" type="application/rss+xml"/><item><title>Ejecting all disks</title><link>https://www.robjwells.com/2022/01/ejecting-all-disks/</link><pubDate>Sun, 09 Jan 2022 20:48:27 +0000</pubDate><guid>https://www.robjwells.com/2022/01/ejecting-all-disks/</guid><description>&lt;p>David Sparks posted this week about &lt;a href="https://www.macsparky.com/blog/2022/01/using-keyboard-maestro-and-applescript-to-eject-external-drives/">ejecting disks using AppleScript
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Primary Unit</title><link>https://www.robjwells.com</link><description>A blog by Rob Wells, mostly about computer stuff.</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution 4.0 International License.</copyright><lastBuildDate>Thu, 20 Jan 2022 20:40:28 +0000</lastBuildDate><atom:link href="https://www.robjwells.com/rss.xml" rel="self" type="application/rss+xml"/><item><title>Populating the books list with AWK</title><link>https://www.robjwells.com/2022/01/populating-the-books-list-with-awk/</link><pubDate>Thu, 20 Jan 2022 20:40:28 +0000</pubDate><guid>https://www.robjwells.com/2022/01/populating-the-books-list-with-awk/</guid><description>&lt;p>I read &lt;a href="https://www.robjwells.com/books/">48 books&lt;/a> last year, which is a lot for me. At least part of
+that, I think, was to keep my mind in gear in a fairly healthy way, when I
+didn’t feel like engaging with the world (poor mental health — thanks
+once-in-a-century pandemic!)&lt;/p>
+&lt;p>What I did &lt;em>not&lt;/em> do, though, is keep the &lt;a href="https://www.robjwells.com/books/">list of books&lt;/a> up to date,
+not since spring 2020.&lt;/p>
+&lt;p>Since I’ve been playing around with AWK a little, and had a big TSV file
+containing the details for each of the books, I thought I&amp;rsquo;d pair the two to
+fill out the missing files.&lt;/p>
+&lt;p>I use &lt;a href="https://gohugo.io">Hugo&lt;/a> to generate this site, and each book is represented by a
+markdown file containing a metadata block with (at least) the title, author’s
+name, and the date on which I finished reading it. For example:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-markdown" data-lang="markdown">---
+title: &amp;#34;Empire of Pain&amp;#34;
+author: &amp;#34;Patrick Radden Keefe&amp;#34;
+finish-date: 2022-01-01
+---
+&lt;span class="ge">_Short review to come!_&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>AWK is great for processing lines of text, but it’s missing some of the library
+functions you’d like for working with the filesystem. The book files are stored
+in this directory structure, where the markdown files are under each year
+folder:&lt;/p>
+&lt;pre tabindex="0">&lt;code>content/books
+├── 2019
+├── 2020
+├── 2021
+└── 2022
+&lt;/code>&lt;/pre>&lt;p>Those year folders might not exist (&lt;em>did not&lt;/em> for 2021 and 2022). I could have
+just created them by hand, but then we’d miss out on some yak-shaving.&lt;/p>
+&lt;p>The path to the markdown file is constructed using the book&amp;rsquo;s title (for the
+markdown filename itself) and finish date (for the year directory). We can wrap
+the &lt;code>dirname&lt;/code> Unix utility:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-awk" data-lang="awk">&lt;span class="ln">1&lt;/span>&lt;span class="kd">function&lt;/span> &lt;span class="nx">dirname&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">path&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="ln">2&lt;/span> &lt;span class="nx">cmd&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;dirname &amp;#34;&lt;/span> &lt;span class="nx">path&lt;/span>
+&lt;span class="ln">3&lt;/span> &lt;span class="nx">cmd&lt;/span> &lt;span class="o">|&amp;amp;&lt;/span> &lt;span class="kr">getline&lt;/span> &lt;span class="nx">result&lt;/span>
+&lt;span class="ln">4&lt;/span> &lt;span class="kr">close&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">cmd&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">5&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="nx">result&lt;/span>
+&lt;span class="ln">6&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The funny &lt;code>|&amp;amp;&lt;/code> operator on line 3 executes the command in &lt;code>cmd&lt;/code> and then
+&lt;code>getline&lt;/code> stores the first line of the output (there&amp;rsquo;s just one for &lt;code>dirname&lt;/code>) in
+&lt;code>result&lt;/code>. We call &lt;code>close&lt;/code> on the command string to release the associated file
+descriptor.&lt;/p>
+&lt;p>Let’s wrap our wrapper in a function that just makes sure the directory exists,
+using &lt;code>mkdir -p&lt;/code>, to make our lives easier:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-awk" data-lang="awk">&lt;span class="ln"> 8&lt;/span>&lt;span class="kd">function&lt;/span> &lt;span class="nx">ensure_dir&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">path&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="ln"> 9&lt;/span> &lt;span class="kr">system&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;mkdir -p &amp;#34;&lt;/span> &lt;span class="nx">dirname&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">path&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;span class="ln">10&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now we can think about the filename itself. It doesn&amp;rsquo;t have to be anything
+particular, but I like to keep mine &lt;code>really-simple-like-this.md&lt;/code>. We’re using
+the title of the books as the filenames, so the key is just to strip out
+non-word characters:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-awk" data-lang="awk">&lt;span class="ln">12&lt;/span>&lt;span class="kd">function&lt;/span> &lt;span class="nx">safe_name&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">string&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="ln">13&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="nx">remove_non_word_characters&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="nx">remove_apostrophes&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="kr">tolower&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="nx">string&lt;/span> &lt;span class="p">)&lt;/span> &lt;span class="p">)&lt;/span> &lt;span class="p">)&lt;/span>
+&lt;span class="ln">14&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;span class="ln">15&lt;/span>
+&lt;span class="ln">16&lt;/span>&lt;span class="kd">function&lt;/span> &lt;span class="nx">remove_apostrophes&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">string&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="ln">17&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="kr">gensub&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sr">/[&amp;#39;’]/&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;g&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">string&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">18&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;span class="ln">19&lt;/span>
+&lt;span class="ln">20&lt;/span>&lt;span class="kd">function&lt;/span> &lt;span class="nx">remove_non_word_characters&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">string&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="ln">21&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="kr">gensub&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sr">/\W+/&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;-&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;g&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">string&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">22&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The &lt;code>remove_apostrophes&lt;/code> function is not strictly necessary but ensures titles
+such as &lt;em>Hitler’s Army&lt;/em> don’t become &lt;code>hitler-s-army&lt;/code> when they go through
+&lt;code>remove_non_word_characters&lt;/code>.&lt;/p>
+&lt;p>With that setup done, we can move on to the meat of the file, the lone
+pattern-action statement:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-awk" data-lang="awk">&lt;span class="ln">24&lt;/span>&lt;span class="sr">/^(2020-(0[6-9]|1[0-2])|202[12])/&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="ln">25&lt;/span> &lt;span class="nx">path_template&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;content/books/%s/%s.md&amp;#34;&lt;/span>
+&lt;span class="ln">26&lt;/span> &lt;span class="nx">year&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">substr&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">$&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">4&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">27&lt;/span> &lt;span class="nx">title_for_path&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">safe_name&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">$&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">28&lt;/span> &lt;span class="nx">path&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">sprintf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">path_template&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">year&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">title_for_path&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">29&lt;/span>
+&lt;span class="ln">30&lt;/span> &lt;span class="nx">content_template&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="err">\&lt;/span>
+&lt;span class="ln">31&lt;/span> &lt;span class="s2">&amp;#34;---\n&amp;#34;&lt;/span> &lt;span class="err">\&lt;/span>
+&lt;span class="ln">32&lt;/span> &lt;span class="s2">&amp;#34;title: \&amp;#34;%s\&amp;#34;\n&amp;#34;&lt;/span> &lt;span class="err">\&lt;/span>
+&lt;span class="ln">33&lt;/span> &lt;span class="s2">&amp;#34;author: \&amp;#34;%s\&amp;#34;\n&amp;#34;&lt;/span> &lt;span class="err">\&lt;/span>
+&lt;span class="ln">34&lt;/span> &lt;span class="s2">&amp;#34;finish-date: %s\n&amp;#34;&lt;/span> &lt;span class="err">\&lt;/span>
+&lt;span class="ln">35&lt;/span> &lt;span class="s2">&amp;#34;---\n&amp;#34;&lt;/span> &lt;span class="err">\&lt;/span>
+&lt;span class="ln">36&lt;/span> &lt;span class="s2">&amp;#34;\n&amp;#34;&lt;/span> &lt;span class="err">\&lt;/span>
+&lt;span class="ln">37&lt;/span> &lt;span class="s2">&amp;#34;_Short review to come!_&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">38&lt;/span> &lt;span class="nx">content&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">sprintf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">content_template&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">39&lt;/span>
+&lt;span class="ln">40&lt;/span> &lt;span class="nx">ensure_dir&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">path&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">41&lt;/span> &lt;span class="kr">print&lt;/span> &lt;span class="nx">content&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="nx">path&lt;/span>
+&lt;span class="ln">42&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>We match lines that start with dates representing June 2020 (the last update
+being in May 2020) through 2022. Next, we pull out the year from the date
+(field 1), and munge the book title (field 2), before formatting them into the
+path template with the built-in &lt;code>sprintf&lt;/code> function.&lt;/p>
+&lt;p>The &lt;code>content_template&lt;/code> is just the markdown you saw earlier in the post, again
+formatted using &lt;code>sprintf&lt;/code> and this time involving the author name (field 3).&lt;/p>
+&lt;p>We ensure the directory exists for the target markdown file, and just print the
+formatted template via redirection into the file.&lt;/p>
+&lt;p>So, would I use AWK over Python for things like this in the future? Maybe. The
+disadvantage with AWK is that it’s missing built-in tools for working with
+the system, and the work done above would be easier with, say, &lt;a href="https://docs.python.org/3.10/library/pathlib.html#module-pathlib">Python’s
+pathlib module&lt;/a>. Or, then again, I could have just done &lt;code>mkdir 2021 2022&lt;/code> — but I wanted to get a feel for calling tools from AWK.&lt;/p>
+&lt;p>I think this tool is perhaps just on the edge where it could go either way.
+Python has more tools available, but AWK is so focussed on text processing that
+it does some of that boring work you’d have to do manually in Python.&lt;/p>
+&lt;p>It was fun, and I look forward to using AWK for more in the future. (I’ve
+bought &lt;a href="https://archive.org/details/pdfy-MgN0H1joIoDVoIC7">the book&lt;/a> second-hand.)&lt;/p></description></item><item><title>Ejecting all disks</title><link>https://www.robjwells.com/2022/01/ejecting-all-disks/</link><pubDate>Sun, 09 Jan 2022 20:48:27 +0000</pubDate><guid>https://www.robjwells.com/2022/01/ejecting-all-disks/</guid><description>&lt;p>David Sparks posted this week about &lt;a href="https://www.macsparky.com/blog/2022/01/using-keyboard-maestro-and-applescript-to-eject-external-drives/">ejecting disks using AppleScript
 and Keyboard Maestro&lt;/a>. I’m grateful to David for posting
 about this — it’s something I’ve needed for a while but hadn’t got
 around to doing. Currently I plug my laptop into several external drives
@@ -363,66 +465,4 @@ alt="A screenshot showing the resulting list of files in reverse date order in L
 alt="A screenshot of a Keyboard Maestro macro to transpose characters in Firefox on macOS." width="473" height="471"/>&lt;/a>
 &lt;/figure>
 &lt;p>“Poorly” because it’s slower than ⌃T usually is in supporting applications, and it makes no attempt to clean up your clipboard history.&lt;/p>
-&lt;p>If you’re interested, you’d probably want to implement some clipboard-repair, but I use LaunchBar’s clipboard history and I can’t find a way of using the &lt;a href="https://wiki.keyboardmaestro.com/action/Delete_Past_Clipboard">Delete Past Clipboard&lt;/a> action in a way that doesn’t put additional unwanted items into my clipboard history. Keyboard Maestro has its own clipboard history manager, so if you’re using that (or not using one at all) then you should be well served by Delete Past Clipboard.&lt;/p></description></item><item><title>Shortlogging</title><link>https://www.robjwells.com/2020/04/shortlogging/</link><pubDate>Sat, 11 Apr 2020 10:47:05 +0100</pubDate><guid>https://www.robjwells.com/2020/04/shortlogging/</guid><description>&lt;p>Back in 2018, I was trying to think of a way where I could record work or personal activities, and what I came up with was to create a daily log file for my life, like you might have from a program with &lt;code>logger.setLevel(INFO)&lt;/code>.&lt;/p>
-&lt;p>I set up a &lt;a href="https://getdrafts.com/">Drafts&lt;/a> action on my phone, and stuck with it for a couple of months. But there was always a certain amount of friction, more so after I changed jobs to one where I use a fairly locked-down Windows PC for most of the day.&lt;/p>
-&lt;p>In 2018 I stuck with it for a few months. Now, with the current coronavirus lockdown in Britain, I’m working from home and thought it might be a good idea to revive it. But I had to resolve the problem that caused me to stop in the first place: friction.&lt;/p>
-&lt;p>I use &lt;a href="https://www.beeminder.com">Beeminder&lt;/a> and knew they had something along these lines, called &lt;a href="https://github.com/tagtime/TagTime">TagTime&lt;/a>. But it’s not quite what I was after — it’s more of a time-tracking approach, for which I use &lt;a href="https://www.rescuetime.com/">RescueTime&lt;/a>.&lt;/p>
-&lt;p>RescueTime itself has a &lt;a href="https://blog.rescuetime.com/highlights/">highlights feature&lt;/a>, which is philosophically what I want — record the meaningful things that you did to complement time-tracking — but recording the highlights has the same problem. I actually came to resent RescueTime a bit as I had an alert set (I think it’s one of the suggested ones) that prompts you to enter highlights after a certain amount of “productive” time. The problem was, this alert would activate my web browser and open a new tab on the highlights page, typically while I was in the middle of working on something!&lt;/p>
-&lt;p>Brett Terpstra has a tool called &lt;a href="https://github.com/ttscoff/doing">doing&lt;/a>, which now that I look at it behaves how I want (recording activities as complete) but it’s very featureful and a bit much for me.&lt;/p>
-&lt;p>So, obviously, I decided to roll my own.&lt;/p>
-&lt;p>The core of my setup is a folder which I keep at &lt;code>~/Dropbox/notes/shortlog/&lt;/code>, in which reside files like &lt;code>shortlog-2020-04-09.txt&lt;/code>. The contents of these files looks like this:&lt;/p>
-&lt;pre tabindex="0">&lt;code>2020-04-09 09:46:36 | Read Kirk Baker’s SVD notes (…)
-2020-04-09 10:00:15 | Set up Python environment for NLP coursework 2 (…)
-2020-04-09 11:30:07 | Had CND Team Meeting
-&lt;/code>&lt;/pre>&lt;p>I created a &lt;a href="https://www.keyboardmaestro.com/main/">Keyboard Maestro&lt;/a> macro to make logging easy (&lt;a href="shortlog-prompt.kmmacros">click to download&lt;/a>):&lt;/p>
-&lt;figure class="full-width">&lt;a href="shortlog-prompt.kmmacros">&lt;img src="shortlog-prompt-kmmacro.png"
-alt="A screenshot showing the Keyboard Maestro macro I use to enter shortlog entries."/>&lt;/a>
-&lt;/figure>
-&lt;p>When you invoke the macro, you get a pop-up dialog like this:&lt;/p>
-&lt;figure>&lt;img src="shortlog-prompt.png"
-alt="A screenshot of the shortlog pop-up window prompting for an entry, with a text entry field and buttons labelled “More”, “Cancel” and “Done”."/>
-&lt;/figure>
-&lt;p>“More” lets you log more than one entry. For convenience, if the entry field is empty and you choose “Done”, it exits without logging anything.&lt;/p>
-&lt;p>These entries get prepended with the date and then appended to a file named after the current date.&lt;/p>
-&lt;p>TagTime randomly polls you at an interval drawn from a Poisson distribution. I didn’t want to get into the weeds on that, so I took their average poll time (45 minutes) and set up another macro to invoke the shortlog entry macro that often during my normal waking hours. This can be a bit annoying if you’re focussed on a particular task, in a similar way to the RescueTime highlight prompt, so I found it useful to create a macro that toggles the automatic prompting (which I invoke through Keyboard Maestro’s find-by-name palette as it doesn’t need its own shortcut).&lt;/p>
-&lt;p>On my iPhone, I’ve kept the Drafts action (&lt;a href="https://actions.getdrafts.com/a/17R">which is available online&lt;/a>). It’s just a single Dropbox step, with the following attributes:&lt;/p>
-&lt;table>
-&lt;thead>
-&lt;tr>
-&lt;th>Attribute&lt;/th>
-&lt;th>Value&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td>&lt;em>fileNameTemplate&lt;/em>&lt;/td>
-&lt;td>&lt;code>shortlog-[[date|%Y-%m-%d]].txt&lt;/code>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;em>folderTemplate&lt;/em>&lt;/td>
-&lt;td>&lt;code>/notes/shortlog/&lt;/code>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;em>template&lt;/em>&lt;/td>
-&lt;td>&lt;code>[[date|%Y-%m-%d %H:%M:%S]] | [[draft]]&lt;/code>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;em>writeType&lt;/em>&lt;/td>
-&lt;td>&lt;code>append&lt;/code>&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;p>Drafts writes a newline before the content defined in &lt;em>template&lt;/em>, which I can’t seem to disable. (Advice greatly appreciated.) I’ve got a simple &lt;code>sed&lt;/code> command I run occasionally to remove the blank lines if it’s bugging me.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-zsh" data-lang="zsh">sed -i &lt;span class="s1">&amp;#39;&amp;#39;&lt;/span> -e &lt;span class="s1">&amp;#39;/^\s*$/d&amp;#39;&lt;/span>
-&lt;span class="s2">&amp;#34;/Users/&lt;/span>&lt;span class="nv">$USER&lt;/span>&lt;span class="s2">/Dropbox/notes/shortlog/shortlog-&lt;/span>&lt;span class="k">$(&lt;/span>date +%Y-%m-%d&lt;span class="k">)&lt;/span>&lt;span class="s2">.txt&amp;#34;&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>Lastly, I also wanted these shortlog entries available as RescueTime highlights, as it allows you to review your tracked time with your manual “annotations” alongside. I wrote a fairly short Python script to do this (&lt;a href="https://github.com/robjwells/shortlog_to_rescuetime_highlights">repo&lt;/a>, &lt;a href="https://github.com/robjwells/shortlog_to_rescuetime_highlights/blob/master/shortlog_to_rescuetime.py">script itself&lt;/a>), which runs each morning and logs the previous days’s entries as highlights by POSTing them to the RescueTime API. It’s nuts-and-bolts so I won’t review the code here.&lt;/p>
-&lt;p>The one thing that I do want to note is that I have a job set up in &lt;a href="https://www.peterborgapps.com/lingon/">Lingon&lt;/a> (a friendly interface to &lt;code>launchd&lt;/code>) to do this each day, and that &lt;code>launchd&lt;/code> will run jobs missed while asleep (though not those missed if the computer is powered off) at the next opportunity:&lt;/p>
-&lt;blockquote>
-&lt;p>Unlike &lt;code>cron&lt;/code> which skips job invocations when the computer is asleep, &lt;code>launchd&lt;/code> will start the job the next time the computer wakes up. If multiple intervals transpire before the computer is woken, those events will be coalesced into one event upon wake from sleep.
-(From &lt;code>man launchd.plist&lt;/code>)&lt;/p>
-&lt;/blockquote>
-&lt;p>I don’t believe that you can achieve this with Keyboard Maestro, as the &lt;a href="https://wiki.keyboardmaestro.com/trigger/Time_of_Day">wiki page for the time of day trigger&lt;/a> contains this warning:&lt;/p>
-&lt;blockquote>
-&lt;p>Remember that the Mac must be awake for the trigger to happen, and if the Mac is sleeping the macro will not fire at a later time.&lt;/p>
-&lt;/blockquote>
-&lt;p>But I’d be very happy to be corrected if there’s a way to achieve the &lt;code>launchd&lt;/code> behaviour through Keyboard Maestro.&lt;/p></description></item></channel></rss>
+&lt;p>If you’re interested, you’d probably want to implement some clipboard-repair, but I use LaunchBar’s clipboard history and I can’t find a way of using the &lt;a href="https://wiki.keyboardmaestro.com/action/Delete_Past_Clipboard">Delete Past Clipboard&lt;/a> action in a way that doesn’t put additional unwanted items into my clipboard history. Keyboard Maestro has its own clipboard history manager, so if you’re using that (or not using one at all) then you should be well served by Delete Past Clipboard.&lt;/p></description></item></channel></rss>
