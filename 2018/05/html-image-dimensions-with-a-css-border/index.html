@@ -1,50 +1,6 @@
-<!doctype html><html lang=en>
-<head>
-<title>Primary Unit – HTML image dimensions with a CSS border</title>
-<meta charset=utf-8>
-<meta http-equiv=content-security-policy content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; block-all-mixed-content; base-uri 'self'">
-<link rel=license href=https://creativecommons.org/licenses/by/4.0/>
-<link rel=alternate type=application/rss+xml href=/rss.xml title="Primary Unit">
-<link rel=alternate type=application/json href=/feed.json title="Primary Unit">
-<link rel=mask-icon href=/favicon.svg color=#1369bf>
-<link rel=apple-touch-icon-precomposed href=/favicon.png>
-<link rel=icon href=/favicon.ico>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="A blog by Rob Wells, mostly about computer stuff.">
-<style>html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strong,sub,sup,var,b,u,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,menu,nav,output,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}input,button{font-family:inherit}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section{display:block}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}html{box-sizing:border-box;text-size-adjust:100%}*,*:before,*:after{box-sizing:inherit}:root{--grey:#607080;--grey10:#eff0f2;--grey5:#f7f8f9;--blue:#1369bf;--blue10:#e7eff8;--purple:#7436b3;--lineSpace:1.75rem;--halfLine:calc(var(--lineSpace) / 2);--quarterLine:calc(var(--lineSpace) / 4);--bigGap:calc(var(--lineSpace) * 2);--paragraphWidth:40rem;--wrapperWidth:50rem;--huge:1.75rem;--big:1.5625rem;--medium:1.375rem;--text:1.125rem;--small:0.875rem;--codeInText:0.875em;--bodyFonts:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Oxygen", Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, sans-serif;--monospace:'Source Code Pro', 'Consolas', 'Menlo', 'Monaco', monospace}body{background-color:var(--grey5);font-family:var(--bodyFonts);font-size:var(--text);font-style:normal;font-weight:400;line-height:1.55555;text-size-adjust:100%;-webkit-text-size-adjust:100%}.wrapper{margin:0 auto;max-width:var(--wrapperWidth);padding:var(--lineSpace)var(--halfLine)}h2,h3,h4{margin:0 0 var(--lineSpace)}h2{font-size:var(--huge)}h3{font-size:var(--big)}h4{font-size:var(--medium)}blockquote,figure,p,pre,table,caption,dl,ol,ul,div.highlight{margin-bottom:var(--lineSpace)}blockquote,pre,div.highlight{background-color:var(--grey10);padding:var(--halfLine)}blockquote{font-style:italic}blockquote em,blockquote i{font-style:normal}blockquote p:last-child{margin-bottom:0}figcaption{font-style:italic}hr{border:none;border-top:1px solid var(--grey);margin:var(--lineSpace)0}img,video{box-sizing:content-box;border:1px solid var(--grey);height:auto;max-width:100%}pre{overflow-x:auto}dl,ol,ul{margin-bottom:var(--lineSpace)}ol,ul{list-style-position:outside;padding-left:var(--lineSpace)}ol{list-style-type:decimal}ul{list-style-type:square}a:link{color:var(--blue);text-decoration:underline}a:visited{color:var(--purple)}a:focus,a:hover,a:active{background-color:var(--blue10)}strong,b{font-weight:700}em,i{font-style:italic}code{font-size:var(--codeInText)}.highlight,pre code,small{font-size:var(--small)}.highlight,code{font-family:var(--monospace)}small{color:var(--grey)}table{width:100%}.table-container{overflow-x:auto}caption{font-style:italic}thead{border-bottom:1px solid var(--grey)}tfoot{border-top:1px solid var(--grey)}th,td{width:auto;padding:var(--halfLine);overflow:auto;text-align:left}th{background-color:var(--grey10);font-weight:700}.table-figures{text-align:right;font-family:var(--monospace)}.site-header{border-left:var(--quarterLine)solid var(--blue);display:flex;flex-wrap:wrap;margin-bottom:var(--lineSpace);padding-left:var(--quarterLine)}.site-title-container{flex-shrink:0;margin-right:var(--lineSpace);max-width:100%}.site-title{font-size:var(--huge);line-height:var(--huge);margin-bottom:0}.site-byline{margin-bottom:0}.site-links{color:var(--grey);list-style-type:none;margin-bottom:0;padding:0}.site-footer{margin-top:var(--bigGap)}article{border-bottom:1px solid var(--grey);margin-bottom:var(--bigGap)}article:last-of-type{border-bottom:none}article header{margin-bottom:var(--lineSpace)}article header h2{margin-bottom:0}article header time{color:var(--grey)}article li{margin-bottom:var(--halfLine)}.index-date{color:var(--grey);font-family:var(--monospace);font-size:var(--small);min-width:6rem;margin-right:var(--halfLine)}.index-item{margin-bottom:var(--halfLine)}.index-link{align-items:baseline;display:flex}.index-list{padding-left:0;list-style-type:none}.flag{background-color:var(--blue10);border-left:var(--quarterLine)solid var(--blue);margin-bottom:var(--lineSpace);padding:var(--halfLine)var(--quarterLine)}.flag :last-child{margin-bottom:0}.full-width{max-width:100%}.mute-links a{text-decoration:none;color:inherit}.no-border{border:0}.no-border img{border:0}.no-squish{overflow:auto}.no-squish img{max-width:none}@media screen and (min-width:40rem){.pull-left{float:left;clear:left;margin-right:var(--halfLine)}.pull-right{float:right;clear:right;margin-left:var(--halfLine)}.pull-left img,.pull-right img{display:block;margin-bottom:var(--lineSpace)}}</style>
-</head>
-<body>
-<div class=wrapper>
-<header class=site-header>
-<div class="site-title-container mute-links">
-<h1 class=site-title><a href=/>Primary Unit</a></h1>
-<p class=site-byline><i>by</i> Rob Wells</p>
-</div>
-<nav id=site-nav>
-<ul class="site-links mute-links">
-<li><a href=/about/>About</a></li>
-<li><a href=/books/>Books I’ve read</a></li>
-<li>
-Feed:
+<!doctype html><html lang=en><head><title>Primary Unit – HTML image dimensions with a CSS border</title><meta charset=utf-8><meta http-equiv=content-security-policy content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; block-all-mixed-content; base-uri 'self'"><link rel=license href=https://creativecommons.org/licenses/by/4.0/><link rel=alternate type=application/rss+xml href=/rss.xml title="Primary Unit"><link rel=alternate type=application/json href=/feed.json title="Primary Unit"><link rel=mask-icon href=/favicon.svg color=#1369bf><link rel=apple-touch-icon-precomposed href=/favicon.png><link rel=icon href=/favicon.ico><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="A blog by Rob Wells, mostly about computer stuff."><style>html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strong,sub,sup,var,b,u,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,menu,nav,output,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}input,button{font-family:inherit}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section{display:block}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}html{box-sizing:border-box;text-size-adjust:100%}*,*:before,*:after{box-sizing:inherit}:root{--grey:#607080;--grey10:#eff0f2;--grey5:#f7f8f9;--blue:#1369bf;--blue10:#e7eff8;--purple:#7436b3;--lineSpace:1.75rem;--halfLine:calc(var(--lineSpace) / 2);--quarterLine:calc(var(--lineSpace) / 4);--bigGap:calc(var(--lineSpace) * 2);--paragraphWidth:40rem;--wrapperWidth:50rem;--huge:1.75rem;--big:1.5625rem;--medium:1.375rem;--text:1.125rem;--small:0.875rem;--codeInText:0.875em;--bodyFonts:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Oxygen", Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, sans-serif;--monospace:'Source Code Pro', 'Consolas', 'Menlo', 'Monaco', monospace}body{background-color:var(--grey5);font-family:var(--bodyFonts);font-size:var(--text);font-style:normal;font-weight:400;line-height:1.55555;text-size-adjust:100%;-webkit-text-size-adjust:100%}.wrapper{margin:0 auto;max-width:var(--wrapperWidth);padding:var(--lineSpace)var(--halfLine)}h2,h3,h4{margin:0 0 var(--lineSpace)}h2{font-size:var(--huge)}h3{font-size:var(--big)}h4{font-size:var(--medium)}blockquote,figure,p,pre,table,caption,dl,ol,ul,div.highlight{margin-bottom:var(--lineSpace)}blockquote,pre,div.highlight{background-color:var(--grey10);padding:var(--halfLine)}blockquote{font-style:italic}blockquote em,blockquote i{font-style:normal}blockquote p:last-child{margin-bottom:0}figcaption{font-style:italic}hr{border:none;border-top:1px solid var(--grey);margin:var(--lineSpace)0}img,video{box-sizing:content-box;border:1px solid var(--grey);height:auto;max-width:100%}pre{overflow-x:auto}dl,ol,ul{margin-bottom:var(--lineSpace)}ol,ul{list-style-position:outside;padding-left:var(--lineSpace)}ol{list-style-type:decimal}ul{list-style-type:square}a:link{color:var(--blue);text-decoration:underline}a:visited{color:var(--purple)}a:focus,a:hover,a:active{background-color:var(--blue10)}strong,b{font-weight:700}em,i{font-style:italic}code{font-size:var(--codeInText)}.highlight,pre code,small{font-size:var(--small)}.highlight,code{font-family:var(--monospace)}small{color:var(--grey)}table{width:100%}.table-container{overflow-x:auto}caption{font-style:italic}thead{border-bottom:1px solid var(--grey)}tfoot{border-top:1px solid var(--grey)}th,td{width:auto;padding:var(--halfLine);overflow:auto;text-align:left}th{background-color:var(--grey10);font-weight:700}.table-figures{text-align:right;font-family:var(--monospace)}.site-header{border-left:var(--quarterLine)solid var(--blue);display:flex;flex-wrap:wrap;margin-bottom:var(--lineSpace);padding-left:var(--quarterLine)}.site-title-container{flex-shrink:0;margin-right:var(--lineSpace);max-width:100%}.site-title{font-size:var(--huge);line-height:var(--huge);margin-bottom:0}.site-byline{margin-bottom:0}.site-links{color:var(--grey);list-style-type:none;margin-bottom:0;padding:0}.site-footer{margin-top:var(--bigGap)}article{border-bottom:1px solid var(--grey);margin-bottom:var(--bigGap)}article:last-of-type{border-bottom:none}article header{margin-bottom:var(--lineSpace)}article header h2{margin-bottom:0}article header time{color:var(--grey)}article li{margin-bottom:var(--halfLine)}.index-date{color:var(--grey);font-family:var(--monospace);font-size:var(--small);min-width:6rem;margin-right:var(--halfLine)}.index-item{margin-bottom:var(--halfLine)}.index-link{align-items:baseline;display:flex}.index-list{padding-left:0;list-style-type:none}.flag{background-color:var(--blue10);border-left:var(--quarterLine)solid var(--blue);margin-bottom:var(--lineSpace);padding:var(--halfLine)var(--quarterLine)}.flag :last-child{margin-bottom:0}.full-width{max-width:100%}.mute-links a{text-decoration:none;color:inherit}.no-border{border:0}.no-border img{border:0}.no-squish{overflow:auto}.no-squish img{max-width:none}@media screen and (min-width:40rem){.pull-left{float:left;clear:left;margin-right:var(--halfLine)}.pull-right{float:right;clear:right;margin-left:var(--halfLine)}.pull-left img,.pull-right img{display:block;margin-bottom:var(--lineSpace)}}</style></head><body><div class=wrapper><header class=site-header><div class="site-title-container mute-links"><h1 class=site-title><a href=/>Primary Unit</a></h1><p class=site-byline><i>by</i> Rob Wells</p></div><nav id=site-nav><ul class="site-links mute-links"><li><a href=/about/>About</a></li><li><a href=/books/>Books I’ve read</a></li><li>Feed:
 <a href=/feed.json>JSON</a>,
-<a href=/rss.xml>RSS</a>
-</li>
-</ul>
-</nav>
-</header>
-<main>
-<article>
-<header>
-<h2 class=mute-links><a href=/2018/05/html-image-dimensions-with-a-css-border/>HTML image dimensions with a CSS border</a></h2>
-<p><time datetime=2018-05-17T21:00:00+0000>Thursday, May 17 2018</time></p>
-</header>
-<p>When I use images here, I tend to give ones without any transparency a border, which is done using CSS and applied to <code>img</code> tags unless they have a <code>no-border</code> class.</p>
-<p>Like a good web citizen, I also <a href=http://w3c.github.io/html/semantics-embedded-content.html#example-82f39213>specify image dimensions in HTML</a>:</p>
-<blockquote>
-<p>“The image’s rendered size is given in the width and height attributes, which allows the user agent to allocate space for the image before it is downloaded.”</p>
-</blockquote>
-<p>In fact my BBEdit <code>image</code> snippet makes it a doddle:</p>
-<pre><code>&lt;p &lt;#* class=&quot;full-width&quot;#&gt;&gt;
+<a href=/rss.xml>RSS</a></li></ul></nav></header><main><article><header><h2 class=mute-links><a href=/2018/05/html-image-dimensions-with-a-css-border/>HTML image dimensions with a CSS border</a></h2><p><time datetime=2018-05-17T21:00:00+0000>Thursday, May 17 2018</time></p></header><p>When I use images here, I tend to give ones without any transparency a border, which is done using CSS and applied to <code>img</code> tags unless they have a <code>no-border</code> class.</p><p>Like a good web citizen, I also <a href=http://w3c.github.io/html/semantics-embedded-content.html#example-82f39213>specify image dimensions in HTML</a>:</p><blockquote><p>“The image’s rendered size is given in the width and height attributes, which allows the user agent to allocate space for the image before it is downloaded.”</p></blockquote><p>In fact my BBEdit <code>image</code> snippet makes it a doddle:</p><pre><code>&lt;p &lt;#* class=&quot;full-width&quot;#&gt;&gt;
     &lt;img
         src=&quot;/images/#SELECTIONORINSERTION#&quot;
         alt=&quot;&lt;#alt text#&gt;&quot;
@@ -53,54 +9,12 @@ Feed:
         height=&lt;#height#&gt;
         /&gt;
 &lt;/p&gt;
-</code></pre>
-<p>But this causes a problem, which I’ve spotted in a couple of my recent posts.</p>
-<p>If you specify the image dimensions, and use a CSS border, <em>and</em> have your CSS <code>box-sizing</code> set to <code>border-box</code>, then the CSS border shrinks the amount of space available to the image to its specified dimensions − 2 × the border width.</p>
-<p>So if you specify your <code>img</code> dimensions to match the dimensions of the file, then the image itself will be shrunk within the element.</p>
-<p>This animation shows this situation, and what happens when you toggle the CSS border. Watch what happens to the image itself.</p>
-<p class=full-width>
-<img src=/images/2018-05-17-border-with-dimensions.gif alt="An animation showing an image being squeezed within the space it has been allocated, causing distortion." class=no-border width=565 height=385>
-</p>
-<p>(It’s got a slight offset from the text because it’s a screenshot of this blog and includes some of the background on each side.)</p>
-<p>In contrast, this animation shows what happens when the dimensions are not specified, and so the image is free to grow when the border is applied:</p>
-<p class=full-width>
-<img src=/images/2018-05-17-border-no-dimensions.gif alt="An animation showing an image growing when a CSS border is applied, with no distortion to the image itself." class=no-border width=565 height=385>
-</p>
-<p>Really the culprit here is <code>box-sizing: border-box</code>, forcing the border to remain within the size of the <code>img</code> element itself. This is a behaviour you actually want, as it solves the old CSS problem of juggling widths, borders and padding within a parent element. Check out <a href=https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing>MDN’s <code>box-sizing</code> page</a> to see what I mean.</p>
-<p>What are my options, then?</p>
-<ul>
-<li>
-<p>Change box-sizing.</p>
-<p>I’m not touching this because the potential sizing headaches are not worth it, even just for <code>img</code> elements.</p>
-</li>
-<li>
-<p>Apply a border to the image files themselves.</p>
-<p>No, because if I change my mind about the CSS, previously posted images are stuck with the old style forever. CSS borders should also work correctly across high-density displays, whereas a 1px border in the file may not.</p>
-</li>
-<li>
-<p>Don’t specify dimensions in the HTML.</p>
-<p>I don’t like the idea of making pages of this site slower to render, but I think this is the least bad option, particularly given that <a href=/2017/04/page-speed/>this site is already pretty fast</a>.</p>
-</li>
-</ul>
-<p>It’s not ideal, but that BBEdit snippet is now just:</p>
-<pre><code>&lt;p &lt;#* class=&quot;full-width&quot;#&gt;&gt;
+</code></pre><p>But this causes a problem, which I’ve spotted in a couple of my recent posts.</p><p>If you specify the image dimensions, and use a CSS border, <em>and</em> have your CSS <code>box-sizing</code> set to <code>border-box</code>, then the CSS border shrinks the amount of space available to the image to its specified dimensions − 2 × the border width.</p><p>So if you specify your <code>img</code> dimensions to match the dimensions of the file, then the image itself will be shrunk within the element.</p><p>This animation shows this situation, and what happens when you toggle the CSS border. Watch what happens to the image itself.</p><p class=full-width><img src=/images/2018-05-17-border-with-dimensions.gif alt="An animation showing an image being squeezed within the space it has been allocated, causing distortion." class=no-border width=565 height=385></p><p>(It’s got a slight offset from the text because it’s a screenshot of this blog and includes some of the background on each side.)</p><p>In contrast, this animation shows what happens when the dimensions are not specified, and so the image is free to grow when the border is applied:</p><p class=full-width><img src=/images/2018-05-17-border-no-dimensions.gif alt="An animation showing an image growing when a CSS border is applied, with no distortion to the image itself." class=no-border width=565 height=385></p><p>Really the culprit here is <code>box-sizing: border-box</code>, forcing the border to remain within the size of the <code>img</code> element itself. This is a behaviour you actually want, as it solves the old CSS problem of juggling widths, borders and padding within a parent element. Check out <a href=https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing>MDN’s <code>box-sizing</code> page</a> to see what I mean.</p><p>What are my options, then?</p><ul><li><p>Change box-sizing.</p><p>I’m not touching this because the potential sizing headaches are not worth it, even just for <code>img</code> elements.</p></li><li><p>Apply a border to the image files themselves.</p><p>No, because if I change my mind about the CSS, previously posted images are stuck with the old style forever. CSS borders should also work correctly across high-density displays, whereas a 1px border in the file may not.</p></li><li><p>Don’t specify dimensions in the HTML.</p><p>I don’t like the idea of making pages of this site slower to render, but I think this is the least bad option, particularly given that <a href=/2017/04/page-speed/>this site is already pretty fast</a>.</p></li></ul><p>It’s not ideal, but that BBEdit snippet is now just:</p><pre><code>&lt;p &lt;#* class=&quot;full-width&quot;#&gt;&gt;
     &lt;img
         src=&quot;/images/#SELECTIONORINSERTION#&quot;
         alt=&quot;&lt;#alt text#&gt;&quot;
         &lt;#* class=&quot;no-border&quot;#&gt;
         /&gt;
 &lt;/p&gt;
-</code></pre>
-<p>Hey, at least it makes images quicker to include in posts!</p>
-</article>
-</main>
-<footer class=site-footer>
-<small class=mute-links>
-This work is licensed under a
-<a rel=license href=https://creativecommons.org/licenses/by/4.0/>
-Creative Commons Attribution 4.0 International License</a>.
-</small>
-</footer>
-</div>
-</body>
-</html>
+</code></pre><p>Hey, at least it makes images quicker to include in posts!</p></article></main><footer class=site-footer><small class=mute-links>This work is licensed under a
+<a rel=license href=https://creativecommons.org/licenses/by/4.0/>Creative Commons Attribution 4.0 International License</a>.</small></footer></div></body></html>
