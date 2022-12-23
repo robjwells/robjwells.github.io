@@ -65,7 +65,7 @@ h m h m h m h m
 &lt;p>&lt;img src="keyboard-maestro-sunrise.png" alt="A screenshot of the sunrise macro in Keyboard Maestro">&lt;/p>
 &lt;p>As a convenience, there&amp;rsquo;s an SQL script in the repo to find when these times are from the database file.&lt;/p>
 &lt;p>One other convenience is a LaunchBar action that shows duration between the current time and today&amp;rsquo;s sunrise and sunset:&lt;/p>
-&lt;video src="launchbar-sunrise-sunset.mp4">
+&lt;video src="launchbar-sunrise-sunset.mp4" controls muted playsinline>
 &lt;p>You&amp;rsquo;ll have to create the actual action yourself through LaunchBar&amp;rsquo;s Action Editor, but the file &lt;a href="https://github.com/robjwells/sunrise-sunset/blob/main/launchbar-sunrise-sunset.sh">&lt;code>launchbar-sunrise-sunset.sh&lt;/code>&lt;/a> can be pasted in to the default shell script in a new action, with of course the database file path and table names adjusted.&lt;/p></description></item><item><title>Typinator is on sale</title><link>https://www.robjwells.com/2022/12/typinator-is-on-sale/</link><pubDate>Fri, 09 Dec 2022 11:37:57 +0000</pubDate><guid>https://www.robjwells.com/2022/12/typinator-is-on-sale/</guid><description>&lt;p>Long time! Lots to talk about, some point soon.&lt;/p>
 &lt;p>In the mean time, &lt;a href="https://www.ergonis.com/typinator">Typinator&lt;/a> is currently on sale (along with all ergonis
 software), at 30% off, to celebrate the snazzy new ergonis website.&lt;/p>
