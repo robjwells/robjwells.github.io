@@ -129,7 +129,7 @@ As a convenience, there's an SQL script in the repo to find when these times are
 
 One other convenience is a LaunchBar action that shows duration between the current time and today's sunrise and sunset:
 
-<video src="launchbar-sunrise-sunset.mp4">
+<p><video src="launchbar-sunrise-sunset.mp4" controls muted playsinline></p>
 
 You'll have to create the actual action yourself through LaunchBar's Action Editor, but the file [`launchbar-sunrise-sunset.sh`][lb] can be pasted in to the default shell script in a new action, with of course the database file path and table names adjusted.
 
