@@ -1,5 +1,5 @@
 {
-    "version": "https://jsonfeed.org/version/1",
+    "version": "https://jsonfeed.org/version/1.1",
     "title": "{{ .Site.Title }}",
     "home_page_url": {{ .Permalink | jsonify }},
     "feed_url": {{ with .OutputFormats.Get "jsonfeed" -}}
@@ -11,6 +11,13 @@
         "url": {{ .Site.Author.url | jsonify }},
         "avatar": {{ .Site.Author.avatar | jsonify }}
     },
+    "authors": [
+        {
+            "name": {{ .Site.Author.name | jsonify }},
+            "url": {{ .Site.Author.url | jsonify }},
+            "avatar": {{ .Site.Author.avatar | jsonify }}
+        }
+    ],
     "items": [
       {{ with .Site.GetPage "section" "posts" }}
       {{ range $index, $entry := first 10 .Pages }}
