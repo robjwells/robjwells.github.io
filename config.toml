@@ -40,3 +40,6 @@ unsafe = "true"
 style = "tango"
 noClasses = false
 lineNumbersInTable = false
+
+[minify]
+disableXML = true
